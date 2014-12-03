@@ -16,7 +16,7 @@ public class App extends Application {
         Parse.initialize(this, "4bkQnt3kNmAOe4Uu9ut30iqhudHe5HrFr39Yszn9", "2yJTXRxSCYEz9EbS0sNfZB3KnAnZeleJt1M2Psy5");
         ParseObject testObject = new ParseObject("TestObject");
 
-        testObject.put("foo", "bar");
+        testObject.put("lol1", "lol2");
         testObject.saveInBackground();
 
         super.onCreate();

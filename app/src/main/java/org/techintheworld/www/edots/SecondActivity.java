@@ -4,36 +4,21 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 
-public class MainActivity extends Activity {
+public class SecondActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_second);
     }
-
-    public void sendMessage(View view) {
-        // Do something in response to button
-
-        EditText editText = (EditText) findViewById(R.id.Search2);
-        String message = editText.getText().toString();
-
-        TextView textView = (TextView) findViewById(R.id.searchResults);
-        textView.setText(message);
-
-    }
-
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_second, menu);
         return true;
     }
 
