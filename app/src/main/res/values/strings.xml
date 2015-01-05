@@ -9,5 +9,8 @@
     <string name="form_hint3"> Hi</string>
     <string name="button_send">Send</string>
     <string name="title_activity_second">SecondActivity</string>
+    <string name="title_activity_get_patient">GetPatient</string>
+    <string name="title_activity_new_patient_data">NewPatientData</string>
+    <string name="title_activity_check_finger_print">CheckFingerPrint</string>
 
 </resources>
