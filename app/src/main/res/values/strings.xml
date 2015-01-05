@@ -12,5 +12,9 @@
     <string name="title_activity_get_patient">GetPatient</string>
     <string name="title_activity_new_patient_data">NewPatientData</string>
     <string name="title_activity_check_finger_print">CheckFingerPrint</string>
+    <string name="title_activity_confirm_patient">ConfirmPatient</string>
+    <string name="title_activity_patient_home">PatientHome</string>
+    <string name="title_activity_medical_history">MedicalHistory</string>
+    <string name="title_activity_new_visit">NewVisit</string>
 
 </resources>

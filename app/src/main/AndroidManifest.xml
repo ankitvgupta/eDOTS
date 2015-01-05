@@ -40,6 +40,22 @@
             android:name=".CheckFingerPrint"
             android:label="@string/title_activity_check_finger_print" >
         </activity>
+        <activity
+            android:name=".ConfirmPatient"
+            android:label="@string/title_activity_confirm_patient" >
+        </activity>
+        <activity
+            android:name=".PatientHome"
+            android:label="@string/title_activity_patient_home" >
+        </activity>
+        <activity
+            android:name=".MedicalHistory"
+            android:label="@string/title_activity_medical_history" >
+        </activity>
+        <activity
+            android:name=".NewVisit"
+            android:label="@string/title_activity_new_visit" >
+        </activity>
     </application>
 
 </manifest>
