@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // This is a comment
         try{
             FileInputStream inputStream = openFileInput(filename);
             StringBuffer fileContent = new StringBuffer("");
