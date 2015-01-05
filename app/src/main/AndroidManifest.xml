@@ -29,32 +29,40 @@
                 android:value="org.techintheworld.www.edots.MainActivity" />
         </activity>
         <activity
-            android:name=".GetPatient"
+            android:name=".GetPatientActivity"
             android:label="@string/title_activity_get_patient" >
         </activity>
         <activity
-            android:name=".NewPatientData"
+            android:name=".NewPatientDataActivity"
             android:label="@string/title_activity_new_patient_data" >
         </activity>
         <activity
-            android:name=".CheckFingerPrint"
+            android:name=".CheckFingerPrintActivity"
             android:label="@string/title_activity_check_finger_print" >
         </activity>
         <activity
-            android:name=".ConfirmPatient"
+            android:name=".ConfirmPatientActivity"
             android:label="@string/title_activity_confirm_patient" >
         </activity>
         <activity
-            android:name=".PatientHome"
+            android:name=".PatientHomeActivity"
             android:label="@string/title_activity_patient_home" >
         </activity>
         <activity
-            android:name=".MedicalHistory"
+            android:name=".MedicalHistoryActivity"
             android:label="@string/title_activity_medical_history" >
         </activity>
         <activity
-            android:name=".NewVisit"
+            android:name=".NewVisitActivity"
             android:label="@string/title_activity_new_visit" >
+        </activity>
+        <activity
+            android:name=".WorkerLoginActivity"
+            android:label="@string/title_activity_worker_login" >
+        </activity>
+        <activity
+            android:name=".PatientTypeActivity"
+            android:label="@string/title_activity_patient_type" >
         </activity>
     </application>
 

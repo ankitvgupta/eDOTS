@@ -6,19 +6,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ConfirmPatient extends Activity {
+public class CheckFingerPrintActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirm_patient);
+        setContentView(R.layout.activity_check_finger_print);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_confirm_patient, menu);
+        getMenuInflater().inflate(R.menu.menu_check_finger_print, menu);
         return true;
     }
 

@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class NewPatientData extends Activity {
+public class NewPatientDataActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
