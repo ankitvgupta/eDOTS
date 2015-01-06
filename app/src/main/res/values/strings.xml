@@ -4,7 +4,7 @@
     <string name="action_settings">Settings</string>
     <string name="button_send">Send</string>
     <string name="button_checkFingerPrint">Check Finger Print</string>
-    <string name="button_worker_login"> Login</string>
+    <string name="button_promoter_login"> Login</string>
     <string name="confirm_patient">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="check_finger_print_scan_on_device">Scan On Device</string>
@@ -40,16 +40,16 @@
     <string name="title_activity_patient_home">PatientHome</string>
     <string name="title_activity_medical_history">MedicalHistory</string>
     <string name="title_activity_new_visit">NewVisit</string>
-    <string name="title_activity_worker_login">WorkerLogin</string>
+    <string name="title_activity_promoter_login">promoterLogin</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
     <string name="new_visit_date">Date</string>
     <string name="new_visit_site">Site</string>
     <string name="new_visit_treatment">Active Treatments</string>
     <string name="new_visit_done">Submit</string>
 
-    <string name="worker_login_username"> Username :</string>
-    <string name="worker_login_password"> Password :</string>
-    <string name="worker_login_locale"> Locale :</string>
+    <string name="promoter_login_username"> Username :</string>
+    <string name="promoter_login_password"> Password :</string>
+    <string name="promoter_login_locale"> Locale :</string>
 
     <string name="hello_world"> hello world </string>
     <string name="form_hint1"> hello world </string>
