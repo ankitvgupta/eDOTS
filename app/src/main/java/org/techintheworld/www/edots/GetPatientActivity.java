@@ -1,9 +1,11 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class GetPatientActivity extends Activity {
@@ -35,5 +37,17 @@ public class GetPatientActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // switch to PatientHomeActivity
+    public void switchPatientHome(View view){
+        Intent intent = new Intent(this, PatientHomeActivity.class);
+        startActivity(intent);
+    }
+
+    // switch to CheckFingerPrintActivity
+    public void switchCheckFingerPrint(View view) {
+        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+        startActivity(intent);
     }
 }

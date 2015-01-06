@@ -28,5 +28,10 @@
     <string name="patient_home_button_logNewVisit">Log New Visit</string>
     <string name="patient_home_id_number">National ID Number:</string>
     <string name="patient_home_name">Name:</string>
+    <string name="get_patient_national_id">Enter Patient\'s National ID</string>
+    <string name="get_patient_search_national_id">National ID #</string>
+    <string name="get_patient_button_use_national_id">Go</string>
+    <string name="get_patient_button_checkFingerPrint">Continue Using Fingerprint Scanner</string>
+    <string name="get_patient_or">Or</string>
 
 </resources>
