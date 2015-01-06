@@ -26,12 +26,10 @@
         <activity
             android:name=".GetPatientActivity"
             android:label="@string/title_activity_get_patient"
-            android:parentActivityName="org.techintheworld.www.edots.PatientTypeActivity" >
         </activity>
         <activity
             android:name=".NewPatientDataActivity"
             android:label="@string/title_activity_new_patient_data"
-            android:parentActivityName="org.techintheworld.www.edots.PatientTypeActivity" >
         </activity>
         <activity
             android:name=".CheckFingerPrintActivity"
@@ -48,12 +46,10 @@
         <activity
             android:name=".MedicalHistoryActivity"
             android:label="@string/title_activity_medical_history"
-            android:parentActivityName="org.techintheworld.www.edots.PatientHomeActivity" >
         </activity>
         <activity
             android:name=".NewVisitActivity"
             android:label="@string/title_activity_new_visit"
-            android:parentActivityName="org.techintheworld.www.edots.PatientHomeActivity" >
         </activity>
         <activity
             android:name=".WorkerLoginActivity"
@@ -67,7 +63,6 @@
         <activity
             android:name=".PatientTypeActivity"
             android:label="@string/title_activity_patient_type"
-            android:parentActivityName="org.techintheworld.www.edots.WorkerLoginActivity" >
         </activity>
         </application>
 
