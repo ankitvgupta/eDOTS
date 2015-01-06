@@ -50,7 +50,7 @@ public class PatientTypeActivity extends Activity {
     }
 
     public void logOut(View view) {
-        Intent intent = new Intent(this, WorkerLoginActivity.class);
+        Intent intent = new Intent(this, PromoterLoginActivity.class);
         startActivity(intent);
     }
 }

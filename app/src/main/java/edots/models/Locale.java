@@ -4,11 +4,11 @@ import java.util.ArrayList;
 /**
  * Created by jfang on 1/6/15.
  */
-public class Site {
+public class Locale {
     private String name;
-    private ArrayList<Promoter> sitePromoters = new ArrayList<Promoter>();
+    private ArrayList<Promoter> localePromoters = new ArrayList<Promoter>();
 
-    public Site(){
+    public Locale(){
 
     }
     public String getName(){
@@ -20,10 +20,10 @@ public class Site {
     }
 
     public void addPromoter(Promoter p){
-        sitePromoters.add(p);
+        localePromoters.add(p);
     }
-    public ArrayList<Promoter> getSitePromoters(){
-        return sitePromoters;
+    public ArrayList<Promoter> getLocalePromoters(){
+        return localePromoters;
     }
 
 }

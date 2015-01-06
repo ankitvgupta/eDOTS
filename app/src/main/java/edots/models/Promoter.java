@@ -6,7 +6,7 @@ package edots.models;
 public class Promoter {
     private String username;
     private String name;
-    private Site site;
+    private Locale locale;
 
     public Promoter(){
 
@@ -19,8 +19,8 @@ public class Promoter {
         return name;
     }
 
-    public Site getSite(){
-        return site;
+    public Locale getLocale(){
+        return locale;
     }
 
     public void setUsername(String u){
@@ -31,8 +31,7 @@ public class Promoter {
         name=n;
     }
 
-    public void setSite(Site s){
-        site=s;
+    public void setLocale(Locale l){locale=l;
     }
 
 }
