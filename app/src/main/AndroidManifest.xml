@@ -64,7 +64,8 @@
         </activity>
         <activity
             android:name=".PatientTypeActivity"
-            android:label="@string/title_activity_patient_type" >
+            android:label="@string/title_activity_patient_type"
+            android:parentActivityName="org.techintheworld.www.edots.WorkerLoginActivity" >
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
