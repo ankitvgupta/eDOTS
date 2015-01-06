@@ -32,11 +32,6 @@
             android:name=".NewPatientDataActivity"
             android:label="@string/title_activity_new_patient_data"
             android:parentActivityName="org.techintheworld.www.edots.PatientTypeActivity" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".CheckFingerPrintActivity"
