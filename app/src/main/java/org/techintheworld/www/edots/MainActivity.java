@@ -25,13 +25,28 @@ import java.io.FileOutputStream;
 
 public class MainActivity extends Activity {
 
-    public class PatientConfirmDialogFragment extends DialogFragment {
+
+
+     public class PatientConfirmDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
 
-            builder.setView(inflater.inflate(R.layout.dialog_patient_confirmation, null))
+            // inflate the dialog view, and then set the text values for the subviews
+            View dialog = inflater.inflate(R.layout.dialog_patient_confirmation, null);
+
+            TextView patientname = (TextView) dialog.findViewById(R.id.patientname);
+            patientname.setText("Patient Name: ");
+
+            TextView nationalid = (TextView) dialog.findViewById(R.id.nationalid);
+            nationalid.setText("National Id: ");
+
+
+            //TextView textView = (TextView) findViewById(R.id.patientname);
+            //textView.setText("Brendannn");
+
+            builder.setView(dialog)
                 .setPositiveButton(R.string.confirm_patient, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Confirm Patient -> move to next activity
