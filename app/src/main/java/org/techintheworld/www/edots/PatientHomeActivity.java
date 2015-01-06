@@ -40,13 +40,13 @@ public class PatientHomeActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void switchMedicalHistoryActivity(View view){
-        Intent intent = new Intent(this, MedicalHistoryActivity.class);
-        startActivity(intent);
-    }
-
-    public void switchNewVisitActivity(View view){
-        Intent intent = new Intent(this, NewVisitActivity.class);
-        startActivity(intent);
-    }
+//    public void switchMedicalHistoryActivity(View view){
+//        Intent intent = new Intent(this, MedicalHistoryActivity.class);
+//        startActivity(intent);
+//    }
+//
+//    public void switchNewVisitActivity(View view){
+//        Intent intent = new Intent(this, NewVisitActivity.class);
+//        startActivity(intent);
+//    }
 }
