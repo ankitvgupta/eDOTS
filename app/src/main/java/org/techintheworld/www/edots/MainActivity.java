@@ -78,7 +78,6 @@ public class MainActivity extends Activity {
     public void switchCheckFingerprint(View view){
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
         startActivity(intent);
-
     }
 
 

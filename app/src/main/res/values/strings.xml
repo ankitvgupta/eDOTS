@@ -24,5 +24,9 @@
     <string name="worker_login_password"> Password</string>
     <string name="button_worker_login"> Login</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
+    <string name="patient_home_button_checkMedicalHistory">Check Medical History</string>
+    <string name="patient_home_button_logNewVisit">Log New Visit</string>
+    <string name="patient_home_id_number">National ID Number:</string>
+    <string name="patient_home_name">Name:</string>
 
 </resources>
