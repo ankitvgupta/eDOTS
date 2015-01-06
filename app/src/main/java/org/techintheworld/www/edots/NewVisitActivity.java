@@ -1,6 +1,7 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,20 +42,12 @@ public class NewVisitActivity extends Activity {
         lv.setMinimumHeight(200);
 
 
-        /*for(int i = 0; i < num_projects; i++) {
-            CheckBox checkBox = new CheckBox(getApplicationContext());
-            String n = patientProjects.get(i).getName();
-            checkBoxesText.add(n);
-            Log.v("WERE HERE", n);
+    }
 
-            checkBox.setText(n);
-            checkBox.setTextColor(getResources().getColor(R.color.black));
-            checkBox.setChecked(true);
-            projectsView.addView(checkBox);
-
-        }*/
-
-
+    public void submitVisit()
+    {
+        Intent intent = new Intent(this, GetPatientActivity.class);
+        startActivity(intent);
     }
 
 
