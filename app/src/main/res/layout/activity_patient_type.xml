@@ -26,7 +26,7 @@
     <Button
         android:layout_width="277dp"
         android:layout_height="wrap_content"
-        android:text="@string/old_patient"
+        android:text="@string/existing_patient"
         android:onClick="oldPatient"
         android:layout_weight="0.12"
         android:layout_gravity="center_horizontal" />
