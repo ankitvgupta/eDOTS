@@ -1,9 +1,11 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class PatientTypeActivity extends Activity {
@@ -35,5 +37,15 @@ public class PatientTypeActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void newPatient(View view) {
+        Intent intent = new Intent(this, NewPatientDataActivity.class);
+        startActivity(intent);
+    }
+
+    public void oldPatient(View view) {
+        Intent intent = new Intent(this, GetPatientActivity.class);
+        startActivity(intent);
     }
 }

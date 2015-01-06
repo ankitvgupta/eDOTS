@@ -1,12 +1,36 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="org.techintheworld.www.edots.PatientTypeActivity">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical"
+    android:layout_gravity="center_vertical"
+    tools:context="org.techintheworld.www.edots.PatientTypeActivity"
+    android:weightSum="1">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"></LinearLayout>
 
-</RelativeLayout>
+    <TextView
+        android:text="@string/app_name"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="60sp" />
+
+    <Button
+        android:layout_width="281dp"
+        android:layout_height="wrap_content"
+        android:text="@string/new_patient"
+        android:onClick="newPatient"
+        android:layout_weight="0.12" />
+    <Button
+        android:layout_width="277dp"
+        android:layout_height="wrap_content"
+        android:text="@string/old_patient"
+        android:onClick="oldPatient"
+        android:layout_weight="0.12" />
+
+</LinearLayout>
