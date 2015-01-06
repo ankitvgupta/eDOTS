@@ -19,5 +19,9 @@
     <string name="title_activity_new_visit">NewVisit</string>
     <string name="title_activity_worker_login">WorkerLogin</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
+    <string name="patient_home_button_checkMedicalHistory">Check Medical History</string>
+    <string name="patient_home_button_logNewVisit">Log New Visit</string>
+    <string name="patient_home_id_number">National ID Number:</string>
+    <string name="patient_home_name">Name:</string>
 
 </resources>
