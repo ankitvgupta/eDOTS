@@ -31,6 +31,7 @@
     <string name="title_activity_worker_login">WorkerLogin</string>
     <string name="worker_login_username"> Username</string>
     <string name="worker_login_password"> Password</string>
+    <string name="worker_login_site"> Site</string>
     <string name="button_worker_login"> Login</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
     <string name="dialog_confirm_patient">Is this the patient?</string>

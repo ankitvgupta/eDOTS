@@ -18,9 +18,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAlignment="center"
+            android:textSize="60sp"
             android:text="@string/app_name"
-            android:id="@+id/textView"
             android:layout_gravity="center_horizontal" />
 
         <!--username field-->
@@ -38,6 +38,15 @@
             android:layout_height="wrap_content"
             android:hint="@string/worker_login_password"
             android:inputType="textPassword"
+            android:layout_width="fill_parent">
+        </EditText>
+
+        <!--site field-->
+        <EditText
+            android:id="@+id/Password"
+            android:layout_height="wrap_content"
+            android:hint="@string/worker_login_site"
+            android:inputType="text"
             android:layout_width="fill_parent">
         </EditText>
 
