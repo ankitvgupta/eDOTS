@@ -43,6 +43,5 @@ public class WorkerLoginActivity extends Activity {
     public void switchPatientType (View view){
         Intent intent = new Intent(this, PatientTypeActivity.class);
         startActivity(intent);
-
     }
 }

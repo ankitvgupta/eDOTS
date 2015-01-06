@@ -35,5 +35,7 @@
     <string name="get_patient_button_use_national_id">Go</string>
     <string name="get_patient_button_checkFingerPrint">Continue Using Fingerprint Scanner</string>
     <string name="get_patient_or">Or</string>
+    <string name="check_finger_print_scan_on_device">Scan On Device</string>
+    <string name="check_finger_print_done">Done</string>
 
 </resources>
