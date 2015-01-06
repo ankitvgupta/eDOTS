@@ -21,6 +21,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/worker_login_username"/>
 
+
         <EditText
             android:id="@+id/username"
             android:layout_height="wrap_content"
