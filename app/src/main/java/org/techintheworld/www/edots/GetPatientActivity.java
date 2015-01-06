@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import edots.models.Patient;
 
 
 public class GetPatientActivity extends Activity {
@@ -39,15 +43,51 @@ public class GetPatientActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    // switch to PatientHomeActivity
-    public void switchPatientHome(View view){
-        Intent intent = new Intent(this, PatientHomeActivity.class);
-        startActivity(intent);
+    public Patient lookupPatient(int pid) {
+        Patient p = new Patient("Brendan");
+        return p;
+
     }
+
+    public void fillTable(View view) {
+        //
+        EditText editText = (EditText) findViewById(R.id.nationalid_input);
+        String message = editText.getText().toString();
+        int pid = Integer.parseInt(message);
+
+        Patient lookedup = lookupPatient(pid);
+
+        TextView patientname = (TextView) findViewById(R.id.patientname);
+        TextView nationalid = (TextView) findViewById(R.id.nationalid);
+        TextView dob = (TextView) findViewById(R.id.dob);
+        TextView sex = (TextView) findViewById(R.id.sex);
+
+        patientname.setText(lookedup.getName());
+        nationalid.setText(lookedup.getNationalID().toString());
+        dob.setText(lookedup.getBirthDate().toString());
+        sex.setText(lookedup.getSex());
+
+    }
+//
+//    // switch to PatientHomeActivity
+//    public void switchPatientHome(View view){
+//        Intent intent = new Intent(this, PatientHomeActivity.class);
+//        startActivity(intent);
+//    }
 
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+        startActivity(intent);
+    }
+
+    public void switchMedicalHistoryActivity(View view){
+        Intent intent = new Intent(this, MedicalHistoryActivity.class);
+        startActivity(intent);
+    }
+
+    public void switchNewVisitActivity(View view){
+        Intent intent = new Intent(this, NewVisitActivity.class);
         startActivity(intent);
     }
 }
