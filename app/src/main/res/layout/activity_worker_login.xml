@@ -14,6 +14,7 @@
 
         <!--Put form controls here-->
 
+        <!--eDOTS button-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
             android:text="@string/app_name"
             android:id="@+id/textView" />
 
+        <!--username field-->
         <EditText
             android:id="@+id/Search2"
             android:layout_height="wrap_content"
@@ -29,6 +31,7 @@
             android:layout_width="fill_parent">
         </EditText>
 
+        <!--password field-->
         <EditText
             android:id="@+id/Password"
             android:layout_height="wrap_content"
@@ -42,6 +45,8 @@
             <!--android:layout_height="wrap_content"-->
             <!--android:id="@+id/searchResults"-->
             <!--android:layout_weight="0.92" />-->
+
+        <!--login button-->
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
