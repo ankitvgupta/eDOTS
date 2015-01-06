@@ -48,4 +48,9 @@ public class PatientTypeActivity extends Activity {
         Intent intent = new Intent(this, GetPatientActivity.class);
         startActivity(intent);
     }
+
+    public void switchLogin(View view) {
+        Intent intent = new Intent(this, WorkerLoginActivity.class);
+        startActivity(intent);
+    }
 }
