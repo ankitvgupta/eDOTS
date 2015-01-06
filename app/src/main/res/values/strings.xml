@@ -43,6 +43,11 @@
     <string name="title_activity_new_visit">NewVisit</string>
     <string name="title_activity_worker_login">WorkerLogin</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
+    <string name="new_visit_date">Date</string>
+    <string name="new_visit_site">Site</string>
+    <string name="new_visit_treatment">Active Treatments</string>
+    <string name="new_visit_done">Submit</string>
+
     <string name="worker_login_username"> Username :</string>
     <string name="worker_login_password"> Password :</string>
     <string name="worker_login_locale"> Locale :</string>
