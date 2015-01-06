@@ -1,8 +1,6 @@
 package edots.models;
 import java.util.ArrayList;
-
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Created by jfang on 1/6/15.

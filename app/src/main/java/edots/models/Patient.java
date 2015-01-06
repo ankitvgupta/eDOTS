@@ -11,7 +11,7 @@ import java.util.Date;
 public class Patient {
     private String name;
     private Date birthDate;
-    private long nationalID;
+    private Long nationalID;
     private String sex;
     private ArrayList<Project> enrolledProjects = new ArrayList<Project>();
 
@@ -23,7 +23,7 @@ public class Patient {
     public Patient(String n){
         name=n;
         birthDate= new Date();
-        nationalID= Integer.MAX_VALUE;
+        nationalID= Long.MAX_VALUE;
         sex="Female";
         Project testProject = new Project("testProject1");
         Project testProject2 = new Project("testProject2");
@@ -39,7 +39,7 @@ public class Patient {
         return birthDate;
     }
 
-    public long getNationalID(){
+    public Long getNationalID(){
         return nationalID;
     }
 
