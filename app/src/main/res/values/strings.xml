@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">eDOTS</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -19,5 +18,7 @@
     <string name="title_activity_new_visit">NewVisit</string>
     <string name="title_activity_worker_login">WorkerLogin</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
-
+    <string name="dialog_confirm_patient">Is this the patient?</string>
+    <string name="confirm_patient">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -1,14 +1,20 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,12 +25,40 @@ import java.io.FileOutputStream;
 
 public class MainActivity extends Activity {
 
+    public class PatientConfirmDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+
+            builder.setView(inflater.inflate(R.layout.dialog_patient_confirmation, null))
+                .setPositiveButton(R.string.confirm_patient, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Confirm Patient -> move to next activity
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Cancel and return to the previous one
+                    }
+                });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String filename = "myfile";
         JSONObject newObject = new JSONObject();
+
+        DialogFragment newFragment = new PatientConfirmDialogFragment();
+        newFragment.show(getFragmentManager(), "missles");
+
+
+
         try {
             newObject.put("location", 90210);
             newObject.put("name","brendan");
@@ -78,7 +112,6 @@ public class MainActivity extends Activity {
     public void switchCheckFingerprint(View view){
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
         startActivity(intent);
-
     }
 
 
