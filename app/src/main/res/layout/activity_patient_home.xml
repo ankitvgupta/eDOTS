@@ -14,29 +14,33 @@
         android:orientation="vertical"
         android:layout_height="fill_parent"
         android:weightSum="1">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/patient_home_name" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/patient_home_id_number" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/patient_home_button_checkMedicalHistory"
-        android:onClick="switchMedicalHistoryActivity"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/patient_home_button" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/patient_home_button_logNewVisit"
-        android:onClick="switchNewVisitActivity"
-        android:layout_gravity="center_horizontal" />
+        <!--displays name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/patient_home_name" />
+        <!-- displays national id number-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/patient_home_id_number" />
+        <!-- button to check medical history-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/patient_home_button_checkMedicalHistory"
+            android:onClick="switchMedicalHistoryActivity"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/patient_home_button" />
+        <!-- button to log new visit -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/patient_home_button_logNewVisit"
+            android:onClick="switchNewVisitActivity"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">eDOTS</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -25,9 +24,17 @@
     <string name="worker_login_password"> Password</string>
     <string name="button_worker_login"> Login</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
+    <string name="dialog_confirm_patient">Is this the patient?</string>
+    <string name="confirm_patient">Confirm</string>
+    <string name="cancel">Cancel</string>
     <string name="patient_home_button_checkMedicalHistory">Check Medical History</string>
     <string name="patient_home_button_logNewVisit">Log New Visit</string>
     <string name="patient_home_id_number">National ID Number:</string>
     <string name="patient_home_name">Name:</string>
+    <string name="get_patient_national_id">Enter Patient\'s National ID</string>
+    <string name="get_patient_search_national_id">National ID #</string>
+    <string name="get_patient_button_use_national_id">Go</string>
+    <string name="get_patient_button_checkFingerPrint">Continue Using Fingerprint Scanner</string>
+    <string name="get_patient_or">Or</string>
 
 </resources>
