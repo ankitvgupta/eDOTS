@@ -25,12 +25,11 @@
         <EditText
             android:id="@+id/nationalid_input"
             android:layout_height="wrap_content"
-            android:hint="@string/get_patient_search_national_id"
-            android:inputType="text"
+            android:inputType="number"
             android:layout_width="fill_parent">
         </EditText>
 
-        <!-- button for continuting using national id -->
+        <!-- button for continuing using national id -->
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
