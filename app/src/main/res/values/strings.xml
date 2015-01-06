@@ -20,7 +20,6 @@
     <string name="main_menu">Main Menu</string>
     <string name="new_patient_data_national_ID"> National ID</string>
     <string name="new_patient_data_fingerprint"> Enter Fingerprint</string>
-    <string name="new_patient_data_next"> Next</string>
     <string name="new_patient_data_name"> Name</string>
     <string name="new_patient_data_fathers_name"> Fathers Name</string>
     <string name="new_patient_data_mothers_name"> Mothers Name</string>
