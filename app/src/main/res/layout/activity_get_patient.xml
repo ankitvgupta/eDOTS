@@ -42,9 +42,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/get_patient_or"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/textView" />
-
+            android:layout_gravity="center_horizontal" />
         <!-- button for using FingerPrint -->
         <Button
             android:layout_width="wrap_content"

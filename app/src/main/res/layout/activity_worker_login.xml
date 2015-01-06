@@ -14,38 +14,44 @@
 
         <!--Put form controls here-->
 
-        <!--eDOTS button-->
+        <!--username field-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/app_name"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/worker_login_username"/>
 
-        <!--username field-->
         <EditText
-            android:id="@+id/Search2"
+            android:id="@+id/username"
             android:layout_height="wrap_content"
-            android:hint="@string/worker_login_username"
             android:inputType="text"
             android:layout_width="fill_parent">
         </EditText>
 
         <!--password field-->
-        <EditText
-            android:id="@+id/Password"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/worker_login_password"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/worker_login_password"/>
+        <EditText
+            android:id="@+id/password"
+            android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:layout_width="fill_parent">
         </EditText>
 
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/searchResults"-->
-            <!--android:layout_weight="0.92" />-->
+        <!--locale field-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/worker_login_locale"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner" />
 
         <!--login button-->
         <Button
