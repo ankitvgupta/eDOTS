@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import edots.models.Patient;
+
 
 public class GetPatientActivity extends Activity {
 
@@ -42,8 +44,8 @@ public class GetPatientActivity extends Activity {
     }
 
     public Patient lookupPatient(int pid) {
-        // TODO: ask JN
-
+        Patient p = new Patient("Brendan");
+        return p;
 
     }
 
@@ -61,8 +63,8 @@ public class GetPatientActivity extends Activity {
         TextView sex = (TextView) findViewById(R.id.sex);
 
         patientname.setText(lookedup.getName());
-        nationalid.setText(lookedup.getNationalId());
-        dob.setText(lookedup.getBirthdate());
+        nationalid.setText(lookedup.getNationalID());
+        dob.setText(lookedup.getBirthDate().toString());
         sex.setText(lookedup.getSex());
 
     }
