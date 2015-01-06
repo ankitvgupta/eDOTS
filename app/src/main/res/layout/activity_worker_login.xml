@@ -6,7 +6,49 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="org.techintheworld.www.edots.WorkerLoginActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="fill_parent"
+        android:weightSum="1">
+
+        <!--Put form controls here-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/app_name"
+            android:id="@+id/textView" />
+
+        <EditText
+            android:id="@+id/Search2"
+            android:layout_height="wrap_content"
+            android:hint="@string/worker_login_username"
+            android:inputType="text"
+            android:layout_width="fill_parent">
+        </EditText>
+
+        <EditText
+            android:id="@+id/Password"
+            android:layout_height="wrap_content"
+            android:hint="@string/worker_login_password"
+            android:inputType="textPassword"
+            android:layout_width="fill_parent">
+        </EditText>
+
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/searchResults"-->
+            <!--android:layout_weight="0.92" />-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_worker_login"
+            android:onClick="switchPatientType"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
 
 </RelativeLayout>
