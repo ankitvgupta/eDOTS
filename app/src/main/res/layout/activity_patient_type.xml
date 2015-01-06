@@ -7,30 +7,28 @@
     tools:context="org.techintheworld.www.edots.PatientTypeActivity"
     android:weightSum="1">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"></LinearLayout>
-
     <TextView
         android:text="@string/app_name"
-        android:layout_width="284dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="60sp" />
+        android:textSize="60sp"
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="281dp"
         android:layout_height="wrap_content"
         android:text="@string/new_patient"
         android:onClick="newPatient"
-        android:layout_weight="0.12" />
+        android:layout_weight="0.12"
+        android:layout_gravity="center_horizontal" />
+
     <Button
         android:layout_width="277dp"
         android:layout_height="wrap_content"
         android:text="@string/old_patient"
         android:onClick="oldPatient"
-        android:layout_weight="0.12" />
+        android:layout_weight="0.12"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/app_name"
-            android:id="@+id/textView" />
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal" />
 
         <!--username field-->
         <EditText
