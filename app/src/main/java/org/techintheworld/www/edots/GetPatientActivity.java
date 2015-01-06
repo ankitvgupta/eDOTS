@@ -63,7 +63,7 @@ public class GetPatientActivity extends Activity {
         TextView sex = (TextView) findViewById(R.id.sex);
 
         patientname.setText(lookedup.getName());
-        nationalid.setText(lookedup.getNationalID());
+        nationalid.setText(lookedup.getNationalID().toString());
         dob.setText(lookedup.getBirthDate().toString());
         sex.setText(lookedup.getSex());
 
