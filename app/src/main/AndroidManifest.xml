@@ -25,13 +25,11 @@
         </activity>
         <activity
             android:name=".GetPatientActivity"
-            android:label="@string/title_activity_get_patient"
-            android:parentActivityName="org.techintheworld.www.edots.PatientTypeActivity" >
+            android:label="@string/title_activity_get_patient" >
         </activity>
         <activity
             android:name=".NewPatientDataActivity"
-            android:label="@string/title_activity_new_patient_data"
-            android:parentActivityName="org.techintheworld.www.edots.PatientTypeActivity" >
+            android:label="@string/title_activity_new_patient_data" >
         </activity>
         <activity
             android:name=".CheckFingerPrintActivity"
@@ -47,17 +45,15 @@
         </activity>
         <activity
             android:name=".MedicalHistoryActivity"
-            android:label="@string/title_activity_medical_history"
-            android:parentActivityName="org.techintheworld.www.edots.PatientHomeActivity" >
+            android:label="@string/title_activity_medical_history" >
         </activity>
         <activity
             android:name=".NewVisitActivity"
-            android:label="@string/title_activity_new_visit"
-            android:parentActivityName="org.techintheworld.www.edots.PatientHomeActivity" >
+            android:label="@string/title_activity_new_visit" >
         </activity>
         <activity
-            android:name=".WorkerLoginActivity"
-            android:label="@string/title_activity_worker_login" >
+            android:name=".PromoterLoginActivity"
+            android:label="@string/title_activity_promoter_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -66,7 +62,7 @@
         <activity
             android:name=".PatientTypeActivity"
             android:label="@string/title_activity_patient_type"
-            android:parentActivityName="org.techintheworld.www.edots.WorkerLoginActivity" >
+            android:parentActivityName=".PromoterLoginActivity" >
         </activity>
         </application>
 
