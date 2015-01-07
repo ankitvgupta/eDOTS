@@ -1,11 +1,18 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+
+import edots.models.Locale;
+import edots.models.Promoter;
 
 
 public class PromoterLoginActivity extends Activity {
@@ -40,8 +47,52 @@ public class PromoterLoginActivity extends Activity {
     }
 
     // switch to PatientType activity
-    public void switchPatientType (View view){
-        Intent intent = new Intent(this, PatientTypeActivity.class);
-        startActivity(intent);
+    public void switchPatientType (View view) throws Exception{
+        EditText u= (EditText)findViewById(R.id.username);
+        EditText p= (EditText)findViewById(R.id.password);
+        String username = u.getText().toString();
+        String password = u.getText().toString();
+        boolean validLogin = checkLogin(username, password);
+        Log.v("PRINTING FROM HERE", username);
+        Log.v("PRINTING FROM HERE", password);
+        if (validLogin){
+            Intent intent = new Intent(this, PatientTypeActivity.class);
+            startActivity(intent);
+        }
+        else{
+            AlertDialog.Builder loginError = new AlertDialog.Builder(this);
+            loginError.setTitle("Login Error");
+            loginError.setMessage("Your username or password was incorrect or invalid");
+            loginError.setPositiveButton(R.string.login_try_again, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    EditText us= (EditText)findViewById(R.id.username);
+                    EditText pw= (EditText)findViewById(R.id.password);
+                    us.clearComposingText();
+                    pw.clearComposingText();
+
+                }
+            });
+            loginError.show();
+        }
+
     }
+
+    public boolean checkLogin(String username, String password) {
+
+        if(password != null && !password.isEmpty()) {
+            //String saltedHash = ProcessPassword.getSaltedHash(password);
+            Promoter p = getPromoterInfo(username);
+            //ProcessPassword.check(saltedHash, p.getPassword());
+            return password.equals(p.getPassword());
+        }
+        else{
+            return false;
+        }
+    }
+
+    public Promoter getPromoterInfo(String username){
+
+        return new Promoter("edots","Name", new Locale(), "edots");
+    }
+
 }

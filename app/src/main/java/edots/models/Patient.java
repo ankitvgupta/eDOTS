@@ -19,6 +19,13 @@ public class Patient {
 
     }
 
+    public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects){
+        name=n;
+        birthDate = d;
+        nationalID = id;
+        sex = s;
+        enrolledProjects = projects;
+    }
     // For testing only
     public Patient(String n){
         name=n;
