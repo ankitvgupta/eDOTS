@@ -2,16 +2,39 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import org.json.JSONObject;
+
+import edots.models.Patient;
+
 
 
 public class MedicalHistoryActivity extends Activity {
+
+    Patient currpatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
+        try {
+            Log.v("Intent!", getIntent().toString());
+            Log.v("getExtras!", getIntent().getExtras().toString());
+            Log.v("string itself", getIntent().getExtras().toString());
+            JSONObject temp = new JSONObject(getIntent().getExtras().getString("Patient"));
+            currpatient = new Patient(temp);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        TextView test = (TextView) findViewById(R.id.medicalhistory1);
+        test.setText(currpatient.getName());
     }
 
 

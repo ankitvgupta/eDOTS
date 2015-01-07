@@ -14,6 +14,8 @@ import edots.models.Patient;
 
 public class GetPatientActivity extends Activity {
 
+    private Patient currpatient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +47,13 @@ public class GetPatientActivity extends Activity {
 
     public Patient lookupPatient(int pid) {
         Patient p = new Patient("Brendan");
+        currpatient = p;
         return p;
 
     }
 
     public void fillTable(View view) {
-        //
+
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
         String message = editText.getText().toString();
         int pid = Integer.parseInt(message);
@@ -78,16 +81,21 @@ public class GetPatientActivity extends Activity {
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+        intent.putExtra("Patient", currpatient.toString());
         startActivity(intent);
     }
 
-    public void switchMedicalHistoryActivity(View view){
+    public void switchMedicalHistoryActivity(View view) {
         Intent intent = new Intent(this, MedicalHistoryActivity.class);
+        intent.putExtra("Patient", currpatient.toString());
         startActivity(intent);
     }
 
-    public void switchNewVisitActivity(View view){
+    public void switchNewVisitActivity(View view) {
         Intent intent = new Intent(this, NewVisitActivity.class);
+        intent.putExtra("Patient", currpatient.toString());
         startActivity(intent);
     }
+
+
 }

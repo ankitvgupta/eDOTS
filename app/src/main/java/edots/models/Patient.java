@@ -1,5 +1,9 @@
 package edots.models;
 
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -30,6 +34,31 @@ public class Patient {
         enrolledProjects= new ArrayList<Project>(Arrays.asList(testProject, testProject2));
 
     }
+
+    /** Added to parse a string back into the JSON form.
+     *  Done by ankitgupta
+     */
+    public Patient (JSONObject n) {
+        try {
+            name = String.valueOf(n.get("name"));
+
+
+            SimpleDateFormat tmp = new SimpleDateFormat();
+            birthDate = tmp.parse(n.get("birthDate").toString());
+            nationalID = Long.valueOf(n.get("nationalID").toString());
+            sex = String.valueOf(n.get("sex"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // TODO: Need to figure out how to parse the arraylist representation (probably easy just haven't done it yet)
+
+
+
+    }
+
+
 
     public String getName(){
         return name;
