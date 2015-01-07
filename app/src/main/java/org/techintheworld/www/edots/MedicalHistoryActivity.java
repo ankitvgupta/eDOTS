@@ -31,7 +31,7 @@ public class MedicalHistoryActivity extends Activity {
 
         //Log.v("The object is", currpatient.toString());
         TextView test = (TextView) findViewById(R.id.medicalhistory1);
-        test.setText(currpatient.getName());
+        test.setText(Long.toString(currpatient.getBirthDate().getTime()));
     }
 
 
