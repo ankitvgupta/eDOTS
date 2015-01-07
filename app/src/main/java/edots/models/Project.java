@@ -25,7 +25,7 @@ public class Project {
         medications=m;
     }
 
-   public void setName(String s){
+    public void setName(String s){
        name=s;
    }
 

@@ -6,6 +6,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ListView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import edots.models.Patient;
+import edots.models.Project;
 
 
 public class NewPatientDataActivity extends Activity {
@@ -14,6 +24,28 @@ public class NewPatientDataActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
+
+//        Patient p = new Patient("Brendan");
+//        ArrayList<Project> patientProjects= p.getEnrolledProjects();
+//        int num_projects = patientProjects.size();
+//        ArrayList<String> checkBoxesText = new ArrayList<String>();
+//        for(int i = 0; i < num_projects; i++) {
+//            CheckBox checkBox = new CheckBox(getApplicationContext());
+//            String n = patientProjects.get(i).getName();
+//            checkBoxesText.add(n);
+//        }
+
+        String[] treatmentList = {"plsWork1, plsWork2"};
+        ArrayList<String> checkBoxesText = new ArrayList<String>(Arrays.asList(treatmentList));
+
+        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
+        ListView lv= (ListView)findViewById(R.id.treatments);
+        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        for (int i=0; i<checkBoxesText.size()+1; i++){
+            lv.setItemChecked(i, true);
+        }
+        lv.setAdapter(adapter);
+        lv.setMinimumHeight(200);
     }
 
 

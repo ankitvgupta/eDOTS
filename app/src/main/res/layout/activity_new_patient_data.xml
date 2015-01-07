@@ -111,19 +111,32 @@
                 android:layout_width="fill_parent">
             </EditText>
 
-            <!--Treatment field-->
+            <!--Active Treatments field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/new_patient_data_treatment"/>
 
-            <EditText
-                android:id="@+id/Treatment"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:layout_width="fill_parent">
-            </EditText>
+            <ListView
+                android:id="@+id/treatments"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:paddingLeft="2dp" >
+            </ListView>
+
+            <!--<EditText-->
+                <!--android:id="@+id/Treatment"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:inputType="text"-->
+                <!--android:layout_width="fill_parent">-->
+            <!--</EditText>-->
 
             <!--Sex-->
             <!--<Spinner-->

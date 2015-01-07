@@ -28,7 +28,6 @@ public class Patient {
         Project testProject = new Project("testProject1");
         Project testProject2 = new Project("testProject2");
         enrolledProjects= new ArrayList<Project>(Arrays.asList(testProject, testProject2));
-
     }
 
     public String getName(){
