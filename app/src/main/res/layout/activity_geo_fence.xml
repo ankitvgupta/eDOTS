@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".Login" >
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvwLocal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="1"
+            android:shadowDy="2"
+            android:shadowRadius="1.5"
+            android:text="@string/txtLocal"
+            android:textColor="#151414"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+        <Spinner
+            android:id="@+id/spnGeofence"
+            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/btnShow_selected_local"
+            android:text="@string/show_selected_local"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spnGeofence"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:layout_gravity="left"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+</LinearLayout>
