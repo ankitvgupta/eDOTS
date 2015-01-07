@@ -3,9 +3,11 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -25,6 +27,9 @@ public class NewPatientDataActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
 
+        String TAG = "MyActivity";
+        Log.v(TAG, "HELLOOOOOOOOOOOOOOOOOOOOOOOO");
+
 //        Patient p = new Patient("Brendan");
 //        ArrayList<Project> patientProjects= p.getEnrolledProjects();
 //        int num_projects = patientProjects.size();
@@ -35,17 +40,19 @@ public class NewPatientDataActivity extends Activity {
 //            checkBoxesText.add(n);
 //        }
 
-        String[] treatmentList = {"plsWork1, plsWork2"};
-        ArrayList<String> checkBoxesText = new ArrayList<String>(Arrays.asList(treatmentList));
+//        ListView listview = (ListView) findViewById(R.id.treatments);
+//        String[] treatmentList = {"studyProject1", "studyProject2"};
+//
+//        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(treatmentList));
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_checked, checkboxesText);
+//        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+//        for (int i=0; i < checkboxesText.size()+1; i++){
+//            listview.setItemChecked(i, true);
+//        }
+//        listview.setAdapter(adapter);
 
-        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
-        ListView lv= (ListView)findViewById(R.id.treatments);
-        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        for (int i=0; i<checkBoxesText.size()+1; i++){
-            lv.setItemChecked(i, true);
-        }
-        lv.setAdapter(adapter);
-        lv.setMinimumHeight(200);
     }
 
 
@@ -60,7 +67,7 @@ public class NewPatientDataActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify a parent activit  y in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
