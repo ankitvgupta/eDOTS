@@ -1,5 +1,8 @@
 package edots.models;
 
+import android.util.Log;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -40,13 +43,10 @@ public class Patient {
      */
     public Patient (JSONObject n) {
         try {
-            name = String.valueOf(n.get("name"));
-
-
-            SimpleDateFormat tmp = new SimpleDateFormat();
-            birthDate = tmp.parse(n.get("birthDate").toString());
+            name = n.get("name").toString();
+            birthDate = new Date(Long.valueOf(n.get("birthDate").toString()));
             nationalID = Long.valueOf(n.get("nationalID").toString());
-            sex = String.valueOf(n.get("sex"));
+            sex = n.get("sex").toString();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -58,7 +58,22 @@ public class Patient {
 
     }
 
+    @Override
+    public String toString() {
+        JSONObject temp = new JSONObject();
+        try {
+            temp.put("name", getName());
+            temp.put("birthDate", Long.toString(getBirthDate().getTime()));
+            temp.put("nationalID", getNationalID());
+            temp.put("sex", getSex());
+            temp.put("enrolledProjects", getEnrolledProjects());
+        } catch (JSONException e) {
+            Log.v("JSON Exception", "Found a JSON Exception");
+            e.printStackTrace();
+        }
 
+        return temp.toString();
+    }
 
     public String getName(){
         return name;

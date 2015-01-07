@@ -3,6 +3,7 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,6 +88,7 @@ public class GetPatientActivity extends Activity {
 
     public void switchMedicalHistoryActivity(View view) {
         Intent intent = new Intent(this, MedicalHistoryActivity.class);
+        Log.v("The patient string is: ", currpatient.toString());
         intent.putExtra("Patient", currpatient.toString());
         startActivity(intent);
     }

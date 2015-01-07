@@ -22,9 +22,6 @@ public class MedicalHistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
         try {
-            Log.v("Intent!", getIntent().toString());
-            Log.v("getExtras!", getIntent().getExtras().toString());
-            Log.v("string itself", getIntent().getExtras().toString());
             JSONObject temp = new JSONObject(getIntent().getExtras().getString("Patient"));
             currpatient = new Patient(temp);
         }
@@ -32,7 +29,7 @@ public class MedicalHistoryActivity extends Activity {
             e.printStackTrace();
         }
 
-
+        //Log.v("The object is", currpatient.toString());
         TextView test = (TextView) findViewById(R.id.medicalhistory1);
         test.setText(currpatient.getName());
     }
