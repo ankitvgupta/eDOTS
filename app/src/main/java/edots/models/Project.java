@@ -14,6 +14,8 @@ import java.util.List;
  * Created by jfang on 1/6/15.
  */
 public class Project {
+
+    // TODO: Figure out why JSONArray is needed instead of ArrayList (basically it's a parsing issue)
     private JSONArray medications = new JSONArray();
     private int stages;
     private String name;
@@ -39,11 +41,7 @@ public class Project {
     public Project (String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
-            Log.v("The JSON Project Object is", n.toString());
             name = n.get("name").toString();
-
-
-            Log.v("The array to be parsed is", n.get("medications").toString());
             medications = new JSONArray(n.get("medications").toString());
             stages = medications.length();
 
