@@ -18,13 +18,22 @@ import edots.models.Project;
 
 public class NewVisitActivity extends Activity {
 
+    private Patient currentPatient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_visit);
 
-        Patient p = new Patient("Brendan");
-        ArrayList<Project> patientProjects= p.getEnrolledProjects();
+        try {
+            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //Patient p = new Patient("Brendan");
+        ArrayList<Project> patientProjects= currentPatient.getEnrolledProjects();
         int num_projects = patientProjects.size();
         ArrayList<String> checkBoxesText = new ArrayList<String>();
         for(int i = 0; i < num_projects; i++) {
