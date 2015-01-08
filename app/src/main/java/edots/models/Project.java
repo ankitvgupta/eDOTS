@@ -35,6 +35,7 @@ public class Project {
         }
     }
 
+
     public Project (String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
@@ -59,6 +60,15 @@ public class Project {
         }
     }
 
+    
+    public Project(String n, JSONArray meds){
+        medications = meds;
+        name = n;
+
+    }
+
+
+
     @Override
     public String toString(){
         JSONObject temp = new JSONObject();
@@ -78,6 +88,7 @@ public class Project {
     }
 
     public void setName(String s){
+
        name = s;
    }
 

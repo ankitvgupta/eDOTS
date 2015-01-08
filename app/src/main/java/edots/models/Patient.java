@@ -6,8 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -27,7 +25,15 @@ public class Patient {
 
     }
 
+    public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects){
+        name=n;
+        birthDate = d;
+        nationalID = id;
+        sex = s;
+        enrolledProjects = projects;
+    }
     // For testing only
+
     public Patient(Long n){
         name ="Brendan";
         birthDate = new Date();
@@ -36,6 +42,7 @@ public class Patient {
         Project testProject = new Project();
         Project testProject2 = new Project();
         enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
+
 
     }
 

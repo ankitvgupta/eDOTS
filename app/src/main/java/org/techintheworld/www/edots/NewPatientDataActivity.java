@@ -1,11 +1,28 @@
 package org.techintheworld.www.edots;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import edots.models.Patient;
+import edots.models.Project;
 
 
 public class NewPatientDataActivity extends Activity {
@@ -14,6 +31,34 @@ public class NewPatientDataActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
+
+//        Patient p = new Patient("Brendan");
+//        ArrayList<Project> patientProjects= p.getEnrolledProjects();
+//        int num_projects = patientProjects.size();
+//        ArrayList<String> checkBoxesText = new ArrayList<String>();
+//        for(int i = 0; i < num_projects; i++) {
+//            CheckBox checkBox = new CheckBox(getApplicationContext());
+//            String n = patientProjects.get(i).getName();
+//            checkBoxesText.add(n);
+//        }
+
+        // list of treatment study groups
+        String[] treatmentList = {"studyProject1", "studyProject2", "studyProject3", "studyProject4"};
+
+        // sets layout_height for ListView based on number of treatments
+        ListView treatmentView = (ListView)findViewById(R.id.treatments);
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50*treatmentList.length, getResources().getDisplayMetrics());
+        treatmentView.getLayoutParams().height = height;
+
+        // creating adapter for ListView
+        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(treatmentList));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_checked, checkboxesText);
+
+        // creates ListView checkboxes
+        ListView listview = (ListView) findViewById(R.id.treatments);
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listview.setAdapter(adapter);
     }
 
 
@@ -28,7 +73,7 @@ public class NewPatientDataActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify a parent activit  y in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

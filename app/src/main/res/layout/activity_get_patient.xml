@@ -6,140 +6,152 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="org.techintheworld.www.edots.GetPatientActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="fill_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:id="@+id/linearLayout">
-
-        <!--national id text-->
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/get_patient_national_id"
-            android:id="@+id/textView" />
+            android:weightSum="1"
+            android:id="@+id/linearLayout">
 
-        <!--national id field-->
-        <EditText
-            android:id="@+id/nationalid_input"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:layout_width="fill_parent">
-        </EditText>
-
-        <!-- button for continuing using national id -->
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/get_patient_button_use_national_id"
-            android:onClick="fillTable"
-            android:layout_gravity="center_horizontal" />
-        <!--the text "or"-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/get_patient_or"
-            android:layout_gravity="center_horizontal" />
-        <!-- button for using FingerPrint -->
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/get_patient_button_checkFingerPrint"
-            android:onClick="fillTable"
-            android:layout_gravity="center_horizontal" />
-
-    </LinearLayout>
-
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/linearLayout">
-
-        <TableRow
-            android:id="@+id/tableRow0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip" >
-
+            <!--national id text-->
             <TextView
-                android:text="Patient Name: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            <TextView
-                android:id="@+id/patientname"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/get_patient_national_id"
+                android:id="@+id/textView" />
 
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip" >
+            <!--national id field-->
+            <EditText
+                android:id="@+id/nationalid_input"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_width="fill_parent">
+            </EditText>
 
-            <TextView
-                android:text="National ID: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            <TextView
-                android:id="@+id/nationalid"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip" >
-
-            <TextView
-                android:text="Date of Birth: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            <TextView
-                android:id="@+id/dob"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip" >
-
-            <TextView
-                android:text="Sex: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            <TextView
-                android:id="@+id/sex"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        </TableRow>
-
-
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip" >
-
+            <!-- button for continuing using national id -->
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/patient_home_button_checkMedicalHistory"
-                android:onClick="switchMedicalHistoryActivity"
+                android:text="@string/get_patient_button_use_national_id"
+                android:onClick="fillTable"
                 android:layout_gravity="center_horizontal" />
+            <!--the text "or"-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/get_patient_or"
+                android:layout_gravity="center_horizontal" />
+            <!-- button for using FingerPrint -->
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/patient_home_button_logNewVisit"
-                android:onClick="switchNewVisitActivity"
+                android:text="@string/get_patient_button_checkFingerPrint"
+                android:onClick="fillTable"
                 android:layout_gravity="center_horizontal" />
 
-        </TableRow>
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/linearLayout">
 
-    </TableLayout>
+                <TableRow
+                    android:id="@+id/tableRow0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip" >
+
+                    <TextView
+                        android:text="Patient Name: "
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <TextView
+                        android:id="@+id/patientname"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                </TableRow>
+                <TableRow
+                    android:id="@+id/tableRow1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip" >
+
+                    <TextView
+                        android:text="National ID: "
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <TextView
+                        android:id="@+id/nationalid"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                </TableRow>
+                <TableRow
+                    android:id="@+id/tableRow2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip" >
+
+                    <TextView
+                        android:text="Date of Birth: "
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <TextView
+                        android:id="@+id/dob"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                </TableRow>
+                <TableRow
+                    android:id="@+id/tableRow3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip" >
+
+                    <TextView
+                        android:text="Sex: "
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <TextView
+                        android:id="@+id/sex"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                </TableRow>
+
+
+                <TableRow
+                    android:id="@+id/tableRow4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip" >
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/patient_home_button_checkMedicalHistory"
+                        android:onClick="switchMedicalHistoryActivity"
+                        android:layout_gravity="center_horizontal" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/patient_home_button_logNewVisit"
+                        android:onClick="switchNewVisitActivity"
+                        android:layout_gravity="center_horizontal" />
+
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

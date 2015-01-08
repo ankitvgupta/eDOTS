@@ -47,6 +47,7 @@ public class GetPatientActivity extends Activity {
     }
 
     public Patient lookupPatient(int pid) {
+
         Patient p = new Patient(Long.valueOf(123456));
         currentPatient = p;
         return p;
@@ -88,7 +89,7 @@ public class GetPatientActivity extends Activity {
 
     public void switchNewVisitActivity(View view) {
         Intent intent = new Intent(this, NewVisitActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
+        //intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 
