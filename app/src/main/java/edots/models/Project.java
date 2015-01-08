@@ -58,8 +58,6 @@ public class Project {
 
     }
 
-
-
     @Override
     public String toString(){
         JSONObject temp = new JSONObject();
@@ -79,7 +77,6 @@ public class Project {
     }
 
     public void setName(String s){
-
        name = s;
    }
 

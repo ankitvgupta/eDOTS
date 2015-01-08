@@ -25,7 +25,7 @@ public class Patient {
     }
 
     public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects){
-        name=n;
+        name = n;
         birthDate = d;
         nationalID = id;
         sex = s;
@@ -60,7 +60,6 @@ public class Patient {
             for (int i = 0; i < arry.length(); i++){
                 enrolledProjects.add(new Project(arry.getString(i)));
             }
-
         }
         catch (JSONException e) {
             e.printStackTrace();

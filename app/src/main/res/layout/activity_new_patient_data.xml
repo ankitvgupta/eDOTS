@@ -154,6 +154,12 @@
                 android:text="@string/new_patient_data_fingerprint"
                 android:onClick="switchCheckFingerPrint"/>
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Patient"
+                android:onClick="switchGetPatient"/>
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
