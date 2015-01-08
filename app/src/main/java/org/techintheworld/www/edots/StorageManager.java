@@ -20,7 +20,7 @@ import edots.models.Promoter;
  */
 public class StorageManager {
 
-    // Gets local storage file and deserializes into Patient object
+    // Gets local storage file and deserializes into Promoter object
     public static Promoter GetLocalPromoterData(String promoterUsername, Context c){
         GetWebPromoterData(promoterUsername, c);
         String fileName= promoterUsername.concat("_data");
@@ -56,6 +56,7 @@ public class StorageManager {
         return null;
     }
 
+    // Gets Promoter info from web and saves as local file
     public static Promoter GetWebPromoterData(String promoterUsername, Context c){
         // TODO: add connection to web and retrieve all info of that promoter
         Promoter p = new Promoter("username", "Brendan","Lima", "edots", new ArrayList<String>(Arrays.asList("Patient1, Patient2")));
@@ -80,15 +81,6 @@ public class StorageManager {
     // TODO: Allow client to send requests to change remote db for adding patients, edit Promoter info
     // Send deltas rather than rewriting
     public void UpdateWebService(){
-
-    }
-
-    public String SerializePatients(Promoter p){
-        return null;
-    }
-
-    public void EditPatientData(String patient_username){
-
 
     }
 

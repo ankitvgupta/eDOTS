@@ -5,11 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by jfang on 1/6/15.
@@ -18,7 +14,7 @@ public class Project {
 
     // TODO: Figure out why JSONArray is needed instead of ArrayList (basically it's a parsing issue)
     private ArrayList<String> medications = new ArrayList<String>();
-    private int stages;
+    private ArrayList<String> types = new ArrayList<String>();
     private String name;
 
 
@@ -31,7 +27,6 @@ public class Project {
             medications.add("Med 2");
             Log.v("The original medical thing is ", medications.toString());
             //JSONArray medications2 = new JSONArray(medications);
-            stages = medications.size();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -48,7 +43,6 @@ public class Project {
             for (int i = 0; i < temp.length(); i++){
                 medications.add(temp.get(i).toString());
             }
-            stages = medications.size();
 
         }
         catch (JSONException e) {
@@ -57,9 +51,10 @@ public class Project {
     }
 
     
-    public Project(String n, ArrayList<String> meds){
+    public Project(String n, ArrayList<String> meds, ArrayList<String> t){
         medications = meds;
         name = n;
+        types = t;
 
     }
 
@@ -69,7 +64,8 @@ public class Project {
         try {
             JSONArray version = new JSONArray(getMedications());
             temp.put("medications", version);
-            temp.put("stages", Integer.toString(getStages()));
+            JSONArray types = new JSONArray(getTypes());
+            temp.put("types", types);
             temp.put("name", getName());
         } catch (JSONException e) {
             Log.v("JSON Exception", "Found a JSON Exception");
@@ -86,13 +82,11 @@ public class Project {
        name = s;
    }
 
-    public ArrayList getMedications(){
+    public ArrayList<String> getTypes(){return types;}
+    public ArrayList<String> getMedications(){
         return medications;
     }
 
-    public int getStages(){
-        return stages;
-    }
 
     public String getName(){
         return name;
