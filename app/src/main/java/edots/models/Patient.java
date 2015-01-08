@@ -47,8 +47,6 @@ public class Patient {
         Project testProject = new Project();
         Project testProject2 = new Project();
         enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
-
-
     }
 
     /** Added to parse a string back into the JSON form.
