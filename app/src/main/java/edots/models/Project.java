@@ -45,13 +45,6 @@ public class Project {
 
             Log.v("The array to be parsed is", n.get("medications").toString());
             medications = new JSONArray(n.get("medications").toString());
-            //Log.v("The length of the tmpArray is", Integer.toString(tmpArray.length()));
-            //Log.v("The stuff in the tmpArray is", tmpArray.toString());
-            //medications = () n.get("medications");
-            //medications = new JSONArray();
-            //for (int i = 0; i < tmpArray.length(); i++){
-              //  medications.add(tmpArray.getString(i));
-            //}
             stages = medications.length();
 
         }
