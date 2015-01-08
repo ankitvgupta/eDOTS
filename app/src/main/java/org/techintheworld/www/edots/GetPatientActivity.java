@@ -15,7 +15,7 @@ import edots.models.Patient;
 
 public class GetPatientActivity extends Activity {
 
-    private Patient currpatient;
+    private Patient currentPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,20 +82,20 @@ public class GetPatientActivity extends Activity {
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
-        intent.putExtra("Patient", currpatient.toString());
+        intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 
     public void switchMedicalHistoryActivity(View view) {
         Intent intent = new Intent(this, MedicalHistoryActivity.class);
-        Log.v("The patient string is: ", currpatient.toString());
-        intent.putExtra("Patient", currpatient.toString());
+        Log.v("The patient string is: ", currentPatient.toString());
+        intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 
     public void switchNewVisitActivity(View view) {
         Intent intent = new Intent(this, NewVisitActivity.class);
-        intent.putExtra("Patient", currpatient.toString());
+        intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 
