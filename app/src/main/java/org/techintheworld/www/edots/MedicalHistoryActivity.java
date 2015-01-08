@@ -15,7 +15,7 @@ import edots.models.Patient;
 
 public class MedicalHistoryActivity extends Activity {
 
-    Patient currpatient;
+    Patient currentPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class MedicalHistoryActivity extends Activity {
         setContentView(R.layout.activity_medical_history);
         try {
             JSONObject temp = new JSONObject(getIntent().getExtras().getString("Patient"));
-            currpatient = new Patient(temp);
+            currentPatient = new Patient(temp);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -31,7 +31,7 @@ public class MedicalHistoryActivity extends Activity {
 
         //Log.v("The object is", currpatient.toString());
         TextView test = (TextView) findViewById(R.id.medicalhistory1);
-        test.setText(Long.toString(currpatient.getBirthDate().getTime()));
+        test.setText(Long.toString(currentPatient.getBirthDate().getTime()));
     }
 
 
