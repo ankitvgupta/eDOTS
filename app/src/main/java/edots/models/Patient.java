@@ -2,6 +2,7 @@ package edots.models;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,30 +28,39 @@ public class Patient {
     }
 
     // For testing only
-    public Patient(String n){
-        name=n;
-        birthDate= new Date();
-        nationalID= Long.MAX_VALUE;
-        sex="Female";
-        Project testProject = new Project("testProject1");
-        Project testProject2 = new Project("testProject2");
-        enrolledProjects= new ArrayList<Project>(Arrays.asList(testProject, testProject2));
+    public Patient(Long n){
+        name ="Brendan";
+        birthDate = new Date();
+        nationalID = n;
+        sex ="Female";
+        Project testProject = new Project();
+        Project testProject2 = new Project();
+        enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
 
     }
 
     /** Added to parse a string back into the JSON form.
      *  Done by ankitgupta
      */
-    public Patient (JSONObject n) {
+    public Patient (String JSONString) {
         try {
+            JSONObject n = new JSONObject(JSONString);
             name = n.get("name").toString();
             birthDate = new Date(Long.valueOf(n.get("birthDate").toString()));
             nationalID = Long.valueOf(n.get("nationalID").toString());
             sex = n.get("sex").toString();
+            enrolledProjects = new ArrayList<Project>();
+            JSONArray arry = new JSONArray(n.get("enrolledProjects").toString());
+            for (int i = 0; i < arry.length(); i++){
+                enrolledProjects.add(new Project(arry.getString(i)));
+            }
+
         }
-        catch (Exception e) {
+        catch (JSONException e) {
             e.printStackTrace();
         }
+
+
 
         // TODO: Need to figure out how to parse the arraylist representation (probably easy just haven't done it yet)
 
@@ -68,11 +78,11 @@ public class Patient {
             temp.put("sex", getSex());
             temp.put("enrolledProjects", getEnrolledProjects());
         } catch (JSONException e) {
-            Log.v("JSON Exception", "Found a JSON Exception");
             e.printStackTrace();
         }
 
         return temp.toString();
+
     }
 
     public String getName(){
