@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Project {
 
     // TODO: Figure out why JSONArray is needed instead of ArrayList (basically it's a parsing issue)
-    private JSONArray medications = new JSONArray();
+    private ArrayList<String> medications = new ArrayList<String>();
     private int stages;
     private String name;
 
@@ -25,12 +26,12 @@ public class Project {
     public Project(){
         try {
             name = "Temp";
-            medications = new JSONArray();
-            medications.put("Med 1");
-            medications.put("Med 2");
+            medications = new ArrayList<String>();
+            medications.add("Med 1");
+            medications.add("Med 2");
             Log.v("The original medical thing is ", medications.toString());
-            JSONArray medications2 = new JSONArray(medications.toString());
-            stages = medications.length();
+            //JSONArray medications2 = new JSONArray(medications);
+            stages = medications.size();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -42,8 +43,12 @@ public class Project {
         try {
             JSONObject n = new JSONObject(JSONString);
             name = n.get("name").toString();
-            medications = new JSONArray(n.get("medications").toString());
-            stages = medications.length();
+            JSONArray temp = new JSONArray(n.get("medications").toString());
+            medications = new ArrayList<String>();
+            for (int i = 0; i < temp.length(); i++){
+                medications.add(temp.get(i).toString());
+            }
+            stages = medications.size();
 
         }
         catch (JSONException e) {
@@ -52,7 +57,7 @@ public class Project {
     }
 
     
-    public Project(String n, JSONArray meds){
+    public Project(String n, ArrayList<String> meds){
         medications = meds;
         name = n;
 
@@ -62,7 +67,8 @@ public class Project {
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("medications", getMedications());
+            JSONArray version = new JSONArray(getMedications());
+            temp.put("medications", version);
             temp.put("stages", Integer.toString(getStages()));
             temp.put("name", getName());
         } catch (JSONException e) {
@@ -72,7 +78,7 @@ public class Project {
         return temp.toString();
     }
 
-    public void setMedications(JSONArray m){
+    public void setMedications(ArrayList<String> m){
         medications = m;
     }
 
@@ -80,7 +86,7 @@ public class Project {
        name = s;
    }
 
-    public JSONArray getMedications(){
+    public ArrayList getMedications(){
         return medications;
     }
 

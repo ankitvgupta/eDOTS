@@ -73,7 +73,7 @@ public class GetPatientActivity extends Activity {
         sex.setText(currentPatient.getSex());
     }
 
-    public void parseAndFill() {
+    public void parseAndFill(View view) {
 
         // clear the entered text and make new hint to search for new patient
 
