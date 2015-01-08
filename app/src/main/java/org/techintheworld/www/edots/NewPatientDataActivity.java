@@ -124,7 +124,7 @@ public class NewPatientDataActivity extends Activity {
 
 
         // Instantiate a patient using the given details.
-        currentPatient = new Patient (name, date, nationalid, sex, enrolledProjects);
+        currentPatient = new Patient (name, date, nationalid, sex, enrolledProjects, motherName, fatherName);
 
 
         // TODO: Submit the patient data to the server.
