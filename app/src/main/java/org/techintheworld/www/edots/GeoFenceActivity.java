@@ -13,20 +13,13 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
-
 import java.util.concurrent.ExecutionException;
-
 import edots.models.Geofence;
 
 
-public class GeoFenceActivity extends Activity {
-    private Geofence[] lstGeofence;
 
-    private static final String TAG = "MainActivity";
+public class GeoFenceActivity extends Activity {
+    private static final String TAG = "GeoFenceActivity";
     private Spinner spnGeofence;
     private Button btnShow_selected_local;
     private Geofence[] objGeofence;
@@ -37,7 +30,7 @@ public class GeoFenceActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_geo_fence);
 
         spnGeofence = (Spinner) findViewById(R.id.spnGeofence);
         btnShow_selected_local  = (Button) findViewById(R.id.btnShow_selected_local);
@@ -76,7 +69,7 @@ public class GeoFenceActivity extends Activity {
 
         loadGeofence = tareaGeofence.execute(url);
         Log.i(TAG,".loadGeofenceSpinner:"+url);
-        //Geofence[] objGeofence;
+        Geofence[] objGeofence;
         String[] wee;
         try {
 
