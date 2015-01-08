@@ -43,7 +43,7 @@ public class PromoterLoginActivity extends Activity {
 
         // creates ListView checkboxes
         ListView listview = (ListView) findViewById(R.id.sites);
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listview.setAdapter(adapter);
     }
 
