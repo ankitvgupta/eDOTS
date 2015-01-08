@@ -39,8 +39,8 @@ public class CheckFingerPrintActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void switchNewVisit(View view){
-        Intent intent = new Intent(this, NewVisitActivity.class);
+    public void switchGetPatient(View view){
+        Intent intent = new Intent(this, GetPatientActivity.class);
         startActivity(intent);
     }
 }

@@ -56,8 +56,13 @@ public class GetPatientActivity extends Activity {
 
     public void fillTable(View view) {
 
+        // clear the entered text and make new hint to search for new patient
+
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
         String message = editText.getText().toString();
+        editText.setText("Search for new patient", TextView.BufferType.EDITABLE);
+
+
         int pid = Integer.parseInt(message);
 
         Patient lookedup = lookupPatient(pid);

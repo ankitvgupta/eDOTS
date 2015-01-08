@@ -15,7 +15,8 @@
     <string name="generate_visit"> Generate Visit</string>
     <string name="get_patient_national_id">Enter Patient\'s National ID</string>
     <string name="get_patient_search_national_id">National ID #</string>
-    <string name="get_patient_button_use_national_id">Go</string>
+    <string name="get_patient_button_use_national_id">Search</string>
+    <string name="get_patient_search_new_patient">Search for new patient</string>
     <string name="get_patient_button_checkFingerPrint">Continue Using Fingerprint Scanner</string>
     <string name="get_patient_or">Or</string>
     <string name="main_menu">Main Menu</string>
