@@ -61,7 +61,6 @@ public class Patient {
             for (int i = 0; i < arry.length(); i++){
                 enrolledProjects.add(new Project(arry.getString(i)));
             }
-
         }
         catch (JSONException e) {
             e.printStackTrace();

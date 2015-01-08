@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import edots.models.Patient;
 import edots.models.Project;

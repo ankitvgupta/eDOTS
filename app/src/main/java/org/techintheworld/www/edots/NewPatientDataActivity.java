@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,12 +21,15 @@ import android.widget.ListView;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import edots.models.Patient;
 import edots.models.Project;
 
 
 public class NewPatientDataActivity extends Activity {
+
+    private Patient currentPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +96,42 @@ public class NewPatientDataActivity extends Activity {
     }
 
     // switch to PatientHome activity
-    public void switchPatientHome (View view){
-        Intent intent = new Intent(this, PatientHomeActivity.class);
+    public void switchGetPatient (View view){
+
+        // get the national id
+        EditText editor = (EditText) findViewById(R.id.National_ID);
+        Long nationalid = Long.valueOf(editor.getText().toString());
+
+        // get the name
+        editor = (EditText) findViewById(R.id.Name);
+        String name = editor.getText().toString();
+
+        // get the father's name
+        editor = (EditText) findViewById(R.id.Fathers_name);
+        String fatherName = editor.getText().toString();
+
+        // get the mother's name
+        editor = (EditText) findViewById(R.id.Mothers_name);
+        String motherName = editor.getText().toString();
+
+        // TODO: Do not hardcode date and sex
+        // TODO: Change sex to be a dropdown with either male or female
+        Date date = new Date();
+        String sex = "f";
+
+        // TODO: Get the projects that are selected.
+        ArrayList<Project> enrolledProjects = new ArrayList<Project>();
+
+
+        // Instantiate a patient using the given details.
+        currentPatient = new Patient (name, date, nationalid, sex, enrolledProjects);
+
+
+        // TODO: Submit the patient data to the server.
+
+
+        Intent intent = new Intent(this, GetPatientActivity.class);
+        intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
 
     }
