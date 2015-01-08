@@ -60,6 +60,7 @@ public class PromoterLoginActivity extends Activity {
             startActivity(intent);
         }
         else{
+            // Alert if username and password are not entered
             AlertDialog.Builder loginError = new AlertDialog.Builder(this);
             loginError.setTitle("Login Error");
             loginError.setMessage("Your username or password was incorrect or invalid");

@@ -5,8 +5,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -50,6 +48,7 @@ public class Patient {
      */
     public Patient (JSONObject n) {
         try {
+
             name = n.get("name").toString();
             birthDate = new Date(Long.valueOf(n.get("birthDate").toString()));
             nationalID = Long.valueOf(n.get("nationalID").toString());

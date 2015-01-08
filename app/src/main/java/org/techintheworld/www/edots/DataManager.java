@@ -1,11 +1,12 @@
 package org.techintheworld.www.edots;
 
 import android.content.Context;
+import android.util.Log;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileInputStream;
 
 import edots.models.Patient;
 import edots.models.Promoter;
@@ -16,22 +17,22 @@ import edots.models.Promoter;
 public class DataManager {
 
     // Gets local storage file and deserializes into Patient object
-    public Patient GetLocalPatientData(Promoter p, Context c){
-        String fileName= p.getUsername().concat("_data");
-        String toWrite = "hello";
+    public Patient GetLocalPatientData(String promoterUsername, Context c){
+        String fileName= promoterUsername.concat("_data");
 
         try {
             // Opens file for reading
             FileInputStream fos = c.openFileInput(fileName);
-            fos.write(toWrite.getBytes());
+            fos.read();
             fos.close();
         } catch (FileNotFoundException e) {
-
+            Log.w("File Not Found Exception", "Patient files cannot be found");
             e.printStackTrace();
         } catch (IOException e) {
 
             e.printStackTrace();
         }
+        return null;
     }
 
     public Patient GetWebPatientData(Promoter p, Context c){
@@ -46,11 +47,12 @@ public class DataManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
 
     }
 
     public String SerializePatients(Promoter p){
-
+        return null;
     }
 
     public void EditPatientData(String patient_username){
