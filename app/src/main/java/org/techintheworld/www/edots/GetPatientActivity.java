@@ -47,7 +47,8 @@ public class GetPatientActivity extends Activity {
     }
 
     public Patient lookupPatient(int pid) {
-        Patient p = new Patient("Brendan");
+
+        Patient p = new Patient(Long.valueOf(123456));
         currentPatient = p;
         return p;
 
@@ -72,12 +73,6 @@ public class GetPatientActivity extends Activity {
         sex.setText(lookedup.getSex());
 
     }
-//
-//    // switch to PatientHomeActivity
-//    public void switchPatientHome(View view){
-//        Intent intent = new Intent(this, PatientHomeActivity.class);
-//        startActivity(intent);
-//    }
 
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
@@ -88,14 +83,13 @@ public class GetPatientActivity extends Activity {
 
     public void switchMedicalHistoryActivity(View view) {
         Intent intent = new Intent(this, MedicalHistoryActivity.class);
-        Log.v("The patient string is: ", currentPatient.toString());
         intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 
     public void switchNewVisitActivity(View view) {
         Intent intent = new Intent(this, NewVisitActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
+        //intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 

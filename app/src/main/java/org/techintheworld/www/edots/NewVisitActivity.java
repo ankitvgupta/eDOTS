@@ -3,6 +3,7 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -34,15 +35,18 @@ public class NewVisitActivity extends Activity {
             checkBoxesText.add(n);
         }
 
-        // Shows projects that the patient is enrolled in as checkboxes
+        // sets layout_height for ListView based on number of treatments
+        ListView treatmentView = (ListView)findViewById(R.id.active_treatments);
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * num_projects, getResources().getDisplayMetrics());
+        treatmentView.getLayoutParams().height = height;
+
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
         ListView lv= (ListView)findViewById(R.id.active_treatments);
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        lv.setAdapter(adapter);
         for (int i=0; i<checkBoxesText.size(); i++){
             lv.setItemChecked(i, true);
         }
-
-        lv.setAdapter(adapter);
         lv.setMinimumHeight(200);
 
 

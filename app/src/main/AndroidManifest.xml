@@ -57,6 +57,7 @@
             android:label="@string/title_activity_promoter_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -65,6 +66,10 @@
             android:label="@string/title_activity_patient_type"
             android:parentActivityName=".PromoterLoginActivity" >
         </activity>
-        </application>
+        <activity
+            android:name=".GeoFenceActivity"
+            android:label="@string/title_activity_geo_fence" >
+        </activity>
+    </application>
 
-    </manifest>
+</manifest>

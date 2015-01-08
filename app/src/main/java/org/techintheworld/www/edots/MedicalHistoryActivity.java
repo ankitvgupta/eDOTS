@@ -21,8 +21,7 @@ public class MedicalHistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
         try {
-            JSONObject temp = new JSONObject(getIntent().getExtras().getString("Patient"));
-            currentPatient = new Patient(temp);
+            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -30,6 +29,7 @@ public class MedicalHistoryActivity extends Activity {
 
         TextView test = (TextView) findViewById(R.id.medicalhistory1);
         test.setText(Long.toString(currentPatient.getBirthDate().getTime()));
+        test.setText(currentPatient.getEnrolledProjects().toString());
     }
 
 
