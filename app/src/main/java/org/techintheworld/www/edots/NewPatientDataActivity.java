@@ -28,7 +28,6 @@ public class NewPatientDataActivity extends Activity {
         setContentView(R.layout.activity_new_patient_data);
 
         String TAG = "MyActivity";
-        Log.v(TAG, "HELLOOOOOOOOOOOOOOOOOOOOOOOO");
 
 //        Patient p = new Patient("Brendan");
 //        ArrayList<Project> patientProjects= p.getEnrolledProjects();
@@ -40,18 +39,27 @@ public class NewPatientDataActivity extends Activity {
 //            checkBoxesText.add(n);
 //        }
 
-//        ListView listview = (ListView) findViewById(R.id.treatments);
-//        String[] treatmentList = {"studyProject1", "studyProject2"};
-//
-//        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(treatmentList));
-//
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_checked, checkboxesText);
-//        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-//        for (int i=0; i < checkboxesText.size()+1; i++){
-//            listview.setItemChecked(i, true);
+        ListView listview = (ListView) findViewById(R.id.treatments);
+        String[] treatmentList = {"studyProject1", "studyProject2", "studyProject3"};
+
+        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(treatmentList));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_checked, checkboxesText);
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+//        Log.v(TAG, "length:" + listview);
+
+        listview.setAdapter(adapter);
+
+//        for (int i=0; i < checkboxesText.size(); i++){
+//            listview.setItemChecked(i, false);
 //        }
-//        listview.setAdapter(adapter);
+
+        Log.v(TAG, "length:" + listview.getItemAtPosition(1));
+
+        Log.v(TAG, "length:" + listview.getItemAtPosition(2));
+
 
     }
 

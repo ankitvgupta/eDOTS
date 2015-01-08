@@ -121,7 +121,7 @@
             <ListView
                 android:id="@+id/treatments"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="500dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/transparent"

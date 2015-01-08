@@ -35,10 +35,10 @@ public class NewVisitActivity extends Activity {
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
         ListView lv= (ListView)findViewById(R.id.active_treatments);
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        lv.setAdapter(adapter);
         for (int i=0; i<checkBoxesText.size(); i++){
             lv.setItemChecked(i, true);
         }
-        lv.setAdapter(adapter);
         lv.setMinimumHeight(200);
 
 
