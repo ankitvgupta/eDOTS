@@ -26,7 +26,7 @@ public class Patient {
     }
 
     public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects){
-        name=n;
+        name = n;
         birthDate = d;
         nationalID = id;
         sex = s;
