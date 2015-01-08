@@ -10,8 +10,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-import edots.models.Patient;
 import edots.models.Promoter;
 
 /**
@@ -20,8 +21,8 @@ import edots.models.Promoter;
 public class StorageManager {
 
     // Gets local storage file and deserializes into Patient object
-    public static Patient GetLocalPatientData(String promoterUsername, Context c){
-        GetWebPatientData(promoterUsername, c);
+    public static Promoter GetLocalPromoterData(String promoterUsername, Context c){
+        GetWebPromoterData(promoterUsername, c);
         String fileName= promoterUsername.concat("_data");
         try {
             // Opens file for reading
@@ -39,9 +40,9 @@ public class StorageManager {
             fis.close();
 
             // Convert to JSON
-            JSONObject newerObject=new JSONObject(fileContent);
-            String name = (String) newerObject.get("string");
-            Log.e("File Read is", name);
+            JSONObject promoterJSON=new JSONObject(fileContent);
+            return new Promoter(promoterJSON.toString());
+
 
         } catch (FileNotFoundException e) {
             Log.e("File Not Found Exception", "Patient files cannot be found");
@@ -55,37 +56,30 @@ public class StorageManager {
         return null;
     }
 
-    public static Patient GetWebPatientData(String promoterUsername, Context c){
-        Promoter p = new Promoter();
+    public static Promoter GetWebPromoterData(String promoterUsername, Context c){
+        // TODO: add connection to web and retrieve all info of that promoter
+        Promoter p = new Promoter("username", "Brendan","Lima", "edots", new ArrayList<String>(Arrays.asList("Patient1, Patient2")));
+
+        // Save to local file
         String filename = promoterUsername.concat("_data");
-        String testString = "{\n" +
-                "  \"array\": [\n" +
-                "    1,\n" +
-                "    2,\n" +
-                "    3\n" +
-                "  ],\n" +
-                "  \"boolean\": true,\n" +
-                "  \"null\": null,\n" +
-                "  \"number\": 123,\n" +
-                "  \"object\": {\n" +
-                "    \"a\": \"b\",\n" +
-                "    \"c\": \"d\",\n" +
-                "    \"e\": \"f\"\n" +
-                "  },\n" +
-                "  \"string\": \"Hello World\"\n" +
-                "}";
+        String promoterData = p.toString();
         FileOutputStream outputStream;
-        Log.e("File written is",testString);
 
         try {
             outputStream = c.openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(testString.getBytes());
+            outputStream.write(promoterData.getBytes());
             outputStream.close();
         } catch (Exception e) {
             Log.e("Saving Patient files error", "Cannot write to patient file");
             e.printStackTrace();
         }
         return null;
+
+    }
+
+    // TODO: Allow client to send requests to change remote db for adding patients, edit Promoter info
+    // Send deltas rather than rewriting
+    public void UpdateWebService(){
 
     }
 

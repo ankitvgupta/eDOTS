@@ -1,7 +1,5 @@
 package edots.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,12 +65,6 @@ public class Patient {
         catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
-        // TODO: Need to figure out how to parse the arraylist representation (probably easy just haven't done it yet)
-
-
 
     }
 
