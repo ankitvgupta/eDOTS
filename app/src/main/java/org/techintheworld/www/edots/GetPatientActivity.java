@@ -95,7 +95,7 @@ public class GetPatientActivity extends Activity {
 
     public void switchNewVisitActivity(View view) {
         Intent intent = new Intent(this, NewVisitActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
+        //intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 
