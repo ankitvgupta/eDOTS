@@ -50,6 +50,7 @@
     <string name="promoter_login_username"> Username :</string>
     <string name="promoter_login_password"> Password :</string>
     <string name="promoter_login_locale"> Locale :</string>
+    <string name="login_try_again">Try Again</string>
 
     <string name="hello_world"> hello world </string>
     <string name="form_hint1"> hello world </string>

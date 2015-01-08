@@ -4,15 +4,36 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import org.json.JSONObject;
+
+import edots.models.Patient;
+
 
 
 public class MedicalHistoryActivity extends Activity {
+
+    Patient currentPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
+        try {
+            JSONObject temp = new JSONObject(getIntent().getExtras().getString("Patient"));
+            currentPatient = new Patient(temp);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //Log.v("The object is", currpatient.toString());
+        TextView test = (TextView) findViewById(R.id.medicalhistory1);
+        test.setText(Long.toString(currentPatient.getBirthDate().getTime()));
     }
+
+
 
 
     @Override

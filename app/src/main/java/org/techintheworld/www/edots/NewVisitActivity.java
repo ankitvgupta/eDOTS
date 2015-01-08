@@ -39,6 +39,11 @@ public class NewVisitActivity extends Activity {
         for (int i=0; i<checkBoxesText.size(); i++){
             lv.setItemChecked(i, true);
         }
+<<<<<<< HEAD
+=======
+
+        lv.setAdapter(adapter);
+>>>>>>> 18e93a45de2fa7126cb874be5d80217ff9bfddff
         lv.setMinimumHeight(200);
 
 

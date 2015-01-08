@@ -3,6 +3,7 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,8 @@ import edots.models.Patient;
 
 
 public class GetPatientActivity extends Activity {
+
+    private Patient currentPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +48,13 @@ public class GetPatientActivity extends Activity {
 
     public Patient lookupPatient(int pid) {
         Patient p = new Patient("Brendan");
+        currentPatient = p;
         return p;
 
     }
 
     public void fillTable(View view) {
-        //
+
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
         String message = editText.getText().toString();
         int pid = Integer.parseInt(message);
@@ -78,16 +82,22 @@ public class GetPatientActivity extends Activity {
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+        intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 
-    public void switchMedicalHistoryActivity(View view){
+    public void switchMedicalHistoryActivity(View view) {
         Intent intent = new Intent(this, MedicalHistoryActivity.class);
+        Log.v("The patient string is: ", currentPatient.toString());
+        intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
 
-    public void switchNewVisitActivity(View view){
+    public void switchNewVisitActivity(View view) {
         Intent intent = new Intent(this, NewVisitActivity.class);
+        intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
     }
+
+
 }

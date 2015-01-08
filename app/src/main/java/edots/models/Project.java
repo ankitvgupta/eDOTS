@@ -14,6 +14,14 @@ public class Project {
 
     }
 
+    
+    public Project(String n, ArrayList<String> meds){
+        medications = meds;
+        name = n;
+
+    }
+
+
     // For testing only
     public Project(String n){
         name=n;
