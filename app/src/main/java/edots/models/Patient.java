@@ -1,7 +1,5 @@
 package edots.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +13,7 @@ import java.util.Date;
  * Created by jfang on 1/6/15.
  */
 public class Patient {
+    private Long id;
     private String name;
     private Date birthDate;
     private Long nationalID;
@@ -65,12 +64,6 @@ public class Patient {
         catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
-        // TODO: Need to figure out how to parse the arraylist representation (probably easy just haven't done it yet)
-
-
 
     }
 
