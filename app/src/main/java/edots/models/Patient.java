@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * Created by jfang on 1/6/15.
+ * Modified by ankitvgupta since
  */
 public class Patient {
     private Long id;
@@ -26,6 +27,7 @@ public class Patient {
 
     }
 
+    // For production
     public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects, String mother, String father){
         name = n;
         birthDate = d;
@@ -35,8 +37,8 @@ public class Patient {
         mothersName = mother;
         fathersName = father;
     }
-    // For testing only
 
+    // For testing only
     public Patient(Long n){
         name ="Brendan";
         birthDate = new Date();
