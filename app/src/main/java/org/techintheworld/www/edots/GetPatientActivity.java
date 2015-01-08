@@ -48,7 +48,7 @@ public class GetPatientActivity extends Activity {
 
     public Patient lookupPatient(int pid) {
         Patient p = new Patient("Brendan");
-        currpatient = p;
+        currentPatient = p;
         return p;
 
     }
