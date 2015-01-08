@@ -1,15 +1,20 @@
 package org.techintheworld.www.edots;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.lang.reflect.Array;
@@ -27,8 +32,6 @@ public class NewPatientDataActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
 
-        String TAG = "MyActivity";
-
 //        Patient p = new Patient("Brendan");
 //        ArrayList<Project> patientProjects= p.getEnrolledProjects();
 //        int num_projects = patientProjects.size();
@@ -40,7 +43,12 @@ public class NewPatientDataActivity extends Activity {
 //        }
 
         ListView listview = (ListView) findViewById(R.id.treatments);
-        String[] treatmentList = {"studyProject1", "studyProject2", "studyProject3"};
+        String[] treatmentList = {"studyProject1", "studyProject2", "studyProject3", "studyProject4"};
+
+//        sets layout_height for ListView based on number of treatments
+        ListView treatmentView = (ListView)findViewById(R.id.treatments);
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50*treatmentList.length, getResources().getDisplayMetrics());
+        treatmentView.getLayoutParams().height = height;
 
         ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(treatmentList));
 
@@ -48,17 +56,7 @@ public class NewPatientDataActivity extends Activity {
                 android.R.layout.simple_list_item_checked, checkboxesText);
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-//        Log.v(TAG, "length:" + listview);
-
         listview.setAdapter(adapter);
-
-//        for (int i=0; i < checkboxesText.size(); i++){
-//            listview.setItemChecked(i, false);
-//        }
-
-        Log.v(TAG, "length:" + listview.getItemAtPosition(1));
-
-        Log.v(TAG, "length:" + listview.getItemAtPosition(2));
 
 
     }
