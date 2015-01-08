@@ -7,10 +7,20 @@ public class Promoter {
     private String username;
     private String name;
     private Locale locale;
+    private String password;
 
     public Promoter(){
 
     }
+
+    public Promoter(String u, String n, Locale l, String p){
+        username = u;
+        name=n;
+        locale = l;
+        password= p;
+
+    }
+
     public String getUsername(){
         return username;
     }
@@ -23,6 +33,10 @@ public class Promoter {
         return locale;
     }
 
+    public String getPassword(){
+        return password;
+    }
+
     public void setUsername(String u){
         username=u;
     }
@@ -32,6 +46,10 @@ public class Promoter {
     }
 
     public void setLocale(Locale l){locale=l;
+    }
+
+    public void setPassword(String p){
+        password = p;
     }
 
 }

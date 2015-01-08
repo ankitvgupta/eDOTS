@@ -2,7 +2,6 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -33,6 +32,8 @@ public class MedicalHistoryActivity extends Activity {
         TextView test = (TextView) findViewById(R.id.medicalhistory1);
         test.setText(Long.toString(currentPatient.getBirthDate().getTime()));
     }
+
+
 
 
     @Override
