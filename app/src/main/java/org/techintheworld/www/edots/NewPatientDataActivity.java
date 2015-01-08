@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -107,9 +108,17 @@ public class NewPatientDataActivity extends Activity {
         EditText sexText = (EditText) findViewById(R.id.Sex);
         String sex = sexText.getText().toString();
 
-        // need to figure out which treatments are checked and then store the name of each into an
-        // ArrayList<Project> (or is it ArrayList<String> ???)
-
+        // determines which treatments are checked and stores them in ArrayList of Projects
+        ArrayList<Project> treatmentList = new ArrayList<Project>();
+        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
+        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
+        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+            if (checkedItems.get(i)) {
+                String treatment = treatmentListText.getAdapter().getItem(i).toString();
+                Project proj = new Project(treatment);
+                treatmentList.add(proj);
+            }
+        }
 
         Patient p = new Patient(name, date, nationalID, sex, treatmentList)
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
