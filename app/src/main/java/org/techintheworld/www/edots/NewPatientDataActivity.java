@@ -42,23 +42,23 @@ public class NewPatientDataActivity extends Activity {
 //            checkBoxesText.add(n);
 //        }
 
-        ListView listview = (ListView) findViewById(R.id.treatments);
+        // list of treatment study groups
         String[] treatmentList = {"studyProject1", "studyProject2", "studyProject3", "studyProject4"};
 
-//        sets layout_height for ListView based on number of treatments
+        // sets layout_height for ListView based on number of treatments
         ListView treatmentView = (ListView)findViewById(R.id.treatments);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50*treatmentList.length, getResources().getDisplayMetrics());
         treatmentView.getLayoutParams().height = height;
 
+        // creating adapter for ListView
         ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(treatmentList));
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_checked, checkboxesText);
+
+        // creates ListView checkboxes
+        ListView listview = (ListView) findViewById(R.id.treatments);
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
         listview.setAdapter(adapter);
-
-
     }
 
 
