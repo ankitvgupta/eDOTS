@@ -31,7 +31,7 @@ public class PromoterLoginActivity extends Activity {
         // list of sites
         String[] sites = {"site1", "site2", "site3", "site4"};
 
-        // sets layout_height for ListView based on number of treatments
+        // sets layout_height for ListView based on number of sites
         ListView siteView = (ListView)findViewById(R.id.sites);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * sites.length, getResources().getDisplayMetrics());
         siteView.getLayoutParams().height = height;
