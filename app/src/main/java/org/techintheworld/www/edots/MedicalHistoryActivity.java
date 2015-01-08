@@ -28,7 +28,6 @@ public class MedicalHistoryActivity extends Activity {
             e.printStackTrace();
         }
 
-        //Log.v("The object is", currpatient.toString());
         TextView test = (TextView) findViewById(R.id.medicalhistory1);
         test.setText(Long.toString(currentPatient.getBirthDate().getTime()));
     }

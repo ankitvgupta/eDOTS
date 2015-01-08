@@ -14,6 +14,7 @@ import java.util.Date;
  * Created by jfang on 1/6/15.
  */
 public class Patient {
+    private Long id;
     private String name;
     private Date birthDate;
     private Long nationalID;

@@ -26,12 +26,15 @@ public class NewVisitActivity extends Activity {
         ArrayList<Project> patientProjects= p.getEnrolledProjects();
         int num_projects = patientProjects.size();
         ArrayList<String> checkBoxesText = new ArrayList<String>();
+
+        // Retrieve list of projects of this patient
         for(int i = 0; i < num_projects; i++) {
             CheckBox checkBox = new CheckBox(getApplicationContext());
             String n = patientProjects.get(i).getName();
             checkBoxesText.add(n);
         }
 
+        // Shows projects that the patient is enrolled in as checkboxes
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
         ListView lv= (ListView)findViewById(R.id.active_treatments);
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

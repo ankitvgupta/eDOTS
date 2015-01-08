@@ -1,5 +1,7 @@
 package edots.models;
 
+import java.util.ArrayList;
+
 /**
  * Created by jfang on 1/6/15.
  */
@@ -8,18 +10,22 @@ public class Promoter {
     private String name;
     private Locale locale;
     private String password;
+    private ArrayList<String> patient_ids;
 
     public Promoter(){
 
     }
 
-    public Promoter(String u, String n, Locale l, String p){
+    public Promoter(String u, String n, Locale l, String p, ArrayList<String> pt){
         username = u;
         name=n;
         locale = l;
         password= p;
+        patient_ids=pt;
 
     }
+
+    public ArrayList<String> getPatient_ids(){return patient_ids;}
 
     public String getUsername(){
         return username;
@@ -37,6 +43,7 @@ public class Promoter {
         return password;
     }
 
+    public void setPatient_ids(ArrayList<String> p_ids){ patient_ids = p_ids;}
     public void setUsername(String u){
         username=u;
     }
