@@ -2,6 +2,7 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -27,11 +28,11 @@ public class MedicalHistoryActivity extends Activity {
             e.printStackTrace();
         }
 
-        //Log.v("The object is", currpatient.toString());
         TextView test = (TextView) findViewById(R.id.medicalhistory1);
         //test.setText(Long.toString(currentPatient.getBirthDate().getTime()));
         //test.setText(currentPatient.getEnrolledProjects().toString());
         test.setText(currentPatient.toString());
+        //test.setText(currentPatient.getEnrolledProjects().toString());
     }
 
 

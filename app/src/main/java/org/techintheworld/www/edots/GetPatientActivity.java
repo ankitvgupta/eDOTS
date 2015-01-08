@@ -73,7 +73,7 @@ public class GetPatientActivity extends Activity {
         sex.setText(currentPatient.getSex());
     }
 
-    public void parseAndFill() {
+    public void parseAndFill(View view) {
 
         // clear the entered text and make new hint to search for new patient
 
@@ -103,21 +103,28 @@ public class GetPatientActivity extends Activity {
 
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
-        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+        if (currentPatient != null){
+            Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
     }
 
     public void switchMedicalHistoryActivity(View view) {
-        Intent intent = new Intent(this, MedicalHistoryActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+        if (currentPatient != null){
+            Intent intent = new Intent(this, MedicalHistoryActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
+
     }
 
     public void switchNewVisitActivity(View view) {
-        Intent intent = new Intent(this, NewVisitActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+        if (currentPatient != null) {
+            Intent intent = new Intent(this, NewVisitActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
     }
 
 
