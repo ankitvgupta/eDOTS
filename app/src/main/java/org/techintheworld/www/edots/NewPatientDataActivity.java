@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -86,17 +88,33 @@ public class NewPatientDataActivity extends Activity {
 
     // switch to CheckFingerPrint Activity
     public void switchCheckFingerPrint(View view){
+
+        EditText nationalIDText = (EditText) findViewById(R.id.National_ID);
+        Long nationalID = nationalIDText.getText().toString();
+
+        EditText nameText = (EditText) findViewById(R.id.Name);
+        String name = nameText.getText().toString();
+
+        EditText fathersNameText = (EditText) findViewById(R.id.Fathers_name);
+        String fathersName = fathersNameText.getText().toString();
+
+        EditText mothersNameText = (EditText) findViewById(R.id.Mothers_name);
+        String mothersName = mothersNameText.getText().toString();
+
+        EditText birthdateText = (EditText) findViewById(R.id.Birthdate);
+        String date = birthdateText.getText().toString();
+
+        EditText sexText = (EditText) findViewById(R.id.Sex);
+        String sex = sexText.getText().toString();
+
+        // need to figure out which treatments are checked and then store the name of each into an
+        // ArrayList<Project> (or is it ArrayList<String> ???)
+
+
+        Patient p = new Patient(name, date, nationalID, sex, treatmentList)
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
         startActivity(intent);
 
     }
-
-    // switch to PatientHome activity
-    public void switchPatientHome (View view){
-        Intent intent = new Intent(this, PatientHomeActivity.class);
-        startActivity(intent);
-
-    }
-
 
 }
