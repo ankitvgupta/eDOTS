@@ -15,6 +15,8 @@ import java.util.Date;
 public class Patient {
     private Long id;
     private String name;
+    private String fathersName;
+    private String mothersName;
     private Date birthDate;
     private Long nationalID;
     private String sex;
@@ -24,12 +26,14 @@ public class Patient {
 
     }
 
-    public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects){
+    public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects, String mother, String father){
         name = n;
         birthDate = d;
         nationalID = id;
         sex = s;
         enrolledProjects = projects;
+        mothersName = mother;
+        fathersName = father;
     }
     // For testing only
 
@@ -38,6 +42,8 @@ public class Patient {
         birthDate = new Date();
         nationalID = n;
         sex ="Female";
+        mothersName = "Mary";
+        fathersName = "John";
         Project testProject = new Project();
         Project testProject2 = new Project();
         enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
@@ -52,6 +58,8 @@ public class Patient {
         try {
             JSONObject n = new JSONObject(JSONString);
             name = n.get("name").toString();
+            fathersName = n.get("fathersName").toString();
+            mothersName = n.get("mothersName").toString();
             birthDate = new Date(Long.valueOf(n.get("birthDate").toString()));
             nationalID = Long.valueOf(n.get("nationalID").toString());
             sex = n.get("sex").toString();
@@ -72,6 +80,8 @@ public class Patient {
         JSONObject temp = new JSONObject();
         try {
             temp.put("name", getName());
+            temp.put("fathersName", getFathersName());
+            temp.put("mothersName", getMothersName());
             temp.put("birthDate", Long.toString(getBirthDate().getTime()));
             temp.put("nationalID", getNationalID());
             temp.put("sex", getSex());
@@ -86,6 +96,14 @@ public class Patient {
 
     public String getName(){
         return name;
+    }
+
+    public String getFathersName(){
+        return fathersName;
+    }
+
+    public String getMothersName(){
+        return mothersName;
     }
 
     public Date getBirthDate(){
@@ -106,6 +124,14 @@ public class Patient {
 
     public void setName(String n){
         name=n;
+    }
+
+    public void setFathersName(String n){
+        fathersName=n;
+    }
+
+    public void setMothersName(String n){
+        mothersName=n;
     }
 
     public void setBirthDate(Date d){
