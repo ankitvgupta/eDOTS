@@ -50,7 +50,6 @@ public class NewPatientDataActivity extends Activity {
 //        }
 
         // list of treatment study groups
-        //ArrayList<Project> treatmentList = new ArrayList<Project>();
         treatmentList.add(new Project());
         treatmentList.add(new Project());
         treatmentList.add(new Project());
@@ -69,7 +68,6 @@ public class NewPatientDataActivity extends Activity {
             checkboxesText.add(treatmentList.get(i).getName());
         }
         // creating adapter for ListView
-        //ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(treatmentList));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_checked, checkboxesText);
 
@@ -139,9 +137,6 @@ public class NewPatientDataActivity extends Activity {
         for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
             if (checkedItems.get(i)) {
                 //String treatment = treatmentListText.getAdapter().getItem(i).toString();
-                // won't need this line afterwards
-                //Project proj = new Project(treatment);
-
                 enrolledProjects.add(treatmentList.get(i));
             }
         }
