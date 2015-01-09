@@ -81,7 +81,9 @@ public class Promoter {
         return password;
     }
 
+
     public void setPatient_ids(ArrayList<String> p_ids){ patient_ids = p_ids;}
+
     public void setUsername(String u){
         username=u;
     }
