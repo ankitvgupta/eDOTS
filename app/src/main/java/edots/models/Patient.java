@@ -28,10 +28,10 @@ public class Patient extends Object{
     }
 
     // For production
-    public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects, String mother, String father, String patientID){
+    public Patient (String n, Date d, Long nid, String s, ArrayList<Project> projects, String mother, String father, String patientID){
         name = n;
         birthDate = d;
-        nationalID = id;
+        nationalID = nid;
         sex = s;
         enrolledProjects = projects;
         mothersName = mother;

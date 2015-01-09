@@ -8,7 +8,12 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+
 import edots.models.Patient;
+import edots.models.Project;
 
 public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
@@ -18,7 +23,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
     @Override
     protected Patient doInBackground(String... params) {
 
-        Patient resul= null;
+        Patient p= null;
 
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
@@ -48,15 +53,25 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
             SoapObject ic = (SoapObject)resSoap.getProperty(0);
 
-            Patient p = new Patient();
-
             String patientID = ic.getProperty(0).toString();
             String name = ic.getProperty(1).toString();
             String fathersName = ic.getProperty(2).toString();
             String mothersName = ic.getProperty(3).toString();
-            Integer nationalID = Integer.parseInt(ic.getProperty(4).toString());
+            Long nationalID = Long.valueOf(ic.getProperty(5).toString());
+            Date birthDate = new Date();
+            Integer sexInt = Integer.parseInt(ic.getProperty(7).toString());
+            String sex = "null";
+            if (sexInt == 0){
+                sex = "Female";}
+            else{
+                sex = "Male";}
+            Project testProject = new Project();
+            Project testProject2 = new Project();
+            ArrayList<Project> enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
 
             Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
+
+            p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID);
 //
 //            p.latitud = ic.getProperty(3).toString();
 //            p.longitud = ic.getProperty(4).toString();
@@ -69,13 +84,16 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 //                resul = lstGeofence;
 //            }
 
+            Log.v("patient object:", p.toString());
+
         }
         catch (Exception e)
         {
-            resul = null;
+            e.printStackTrace();
+            p = null;
         }
 
-        return resul;
+        return p;
     }
 
 }
