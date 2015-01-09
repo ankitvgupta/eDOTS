@@ -14,13 +14,13 @@ public class Promoter extends Object{
     private String name;
     private String locale;
     private String password;
-    private ArrayList<String> patient_ids;
+    private ArrayList<Long> patient_ids;
 
     public Promoter(){
 
     }
 
-    public Promoter(String u, String n,String l, String p, ArrayList<String> pt){
+    public Promoter(String u, String n,String l, String p, ArrayList<Long> pt){
         username = u;
         name=n;
         locale = l;
@@ -36,10 +36,10 @@ public class Promoter extends Object{
             username = n.get("username").toString();
             locale = n.get("locale").toString();
             password = n.get("password").toString();
-            patient_ids = new ArrayList<String>();
+            patient_ids = new ArrayList<Long>();
             JSONArray arry = new JSONArray(n.get("patient_ids").toString());
             for (int i = 0; i < arry.length(); i++) {
-                patient_ids.add(arry.getString(i));
+                patient_ids.add(arry.getLong(i));
             }
 
         } catch (JSONException e) {
@@ -63,7 +63,7 @@ public class Promoter extends Object{
 
     }
 
-    public ArrayList<String> getPatient_ids(){return patient_ids;}
+    public ArrayList<Long> getPatient_ids(){return patient_ids;}
 
     public String getUsername(){
         return username;
@@ -82,7 +82,7 @@ public class Promoter extends Object{
     }
 
 
-    public void setPatient_ids(ArrayList<String> p_ids){ patient_ids = p_ids;}
+    public void setPatient_ids(ArrayList<Long> p_ids){ patient_ids = p_ids;}
 
     public void setUsername(String u){
         username=u;
