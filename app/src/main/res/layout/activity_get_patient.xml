@@ -28,8 +28,9 @@
             <EditText
                 android:id="@+id/nationalid_input"
                 android:layout_height="wrap_content"
+                android:layout_width="match_parent"
                 android:inputType="number"
-                android:layout_width="match_parent">
+                android:hint="@string/get_patient_national_id">
             </EditText>
 
             <!-- button for continuing using national id -->
@@ -67,11 +68,15 @@
                     android:padding="5dip" >
 
                     <TextView
-                        android:text="Patient Name: "
+                        android:layout_width="0dip"
+                        android:layout_weight="0.4"
+                        android:text="@string/name"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                     <TextView
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
                         android:id="@+id/patientname"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
                 </TableRow>
                 <TableRow
                     android:layout_width="wrap_content"
@@ -79,9 +84,13 @@
                     android:padding="5dip" >
 
                     <TextView
-                        android:text="National ID: "
+                        android:layout_width="0dip"
+                        android:layout_weight="0.4"
+                        android:text="@string/no"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                     <TextView
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
                         android:id="@+id/nationalid"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -94,9 +103,13 @@
                     android:padding="5dip" >
 
                     <TextView
-                        android:text="Date of Birth: "
+                        android:layout_width="0dip"
+                        android:layout_weight="0.4"
+                        android:text="@string/birthdate"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                     <TextView
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
                         android:id="@+id/dob"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -107,9 +120,13 @@
                     android:padding="5dip" >
 
                     <TextView
-                        android:text="Sex: "
+                        android:layout_width="0dip"
+                        android:layout_weight="0.4"
+                        android:text="@string/sex"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                     <TextView
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
                         android:id="@+id/sex"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -122,14 +139,16 @@
                     android:padding="5dip" >
 
                     <Button
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/patient_home_button_checkMedicalHistory"
                         android:onClick="switchMedicalHistoryActivity"
                         android:layout_gravity="center_horizontal" />
 
                     <Button
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/patient_home_button_logNewVisit"
                         android:onClick="switchNewVisitActivity"
