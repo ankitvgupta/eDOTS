@@ -9,9 +9,6 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import edots.models.Locale;
 
-/**
- * Created by brendan on 1/9/15.
- */
 public class LocaleLoadTask extends AsyncTask<String,String,Locale[]> {
 
     private Locale[] lstLocales;

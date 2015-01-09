@@ -34,7 +34,7 @@ public class PromoterLoginActivity extends Activity {
     private Button loginButton;
     private EditText username;
     private EditText password;
-    private Spinner spnLocal;
+    private Spinner spnLocale;
     private TextView tvwMensaje;
 //    private AsyncTask<String, String, Login> asyncTask;
     private AsyncTask<String, String, Locale[]> loadLocale;
@@ -48,7 +48,8 @@ public class PromoterLoginActivity extends Activity {
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
         loginButton = (Button)findViewById(R.id.loginButton);
-        spnLocal = (Spinner) findViewById(R.id.locale_spinner);
+        spnLocale = (Spinner) findViewById(R.id.locale_spinner);
+        loadLocaleSpinner("http://demo.sociosensalud.org.pe");
 
         // list of sites
 //        String[] sites = {"site1", "site2", "site3", "site4"};
@@ -130,7 +131,7 @@ public class PromoterLoginActivity extends Activity {
         boolean validLogin = checkLogin(username, password);
         if (validLogin){
             Intent intent = new Intent(this, MainMenuActivity.class);
-            StorageManager.GetLocalData(username,username, this);
+            StorageManager.GetLocalData(username, username, this);
             startActivity(intent);
         }
         else{
@@ -183,7 +184,7 @@ public class PromoterLoginActivity extends Activity {
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, wee);
             spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-            spnLocal.setAdapter(spinnerArrayAdapter);
+            spnLocale.setAdapter(spinnerArrayAdapter);
 
         } catch (InterruptedException e1) {
             e1.printStackTrace();
