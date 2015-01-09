@@ -4,28 +4,45 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Promoter;
 
 
 public class PromoterLoginActivity extends Activity {
+    private Button loginButton;
+    private EditText username;
+    private EditText password;
+    private Spinner spnLocal;
+    private TextView tvwMensaje;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promoter_login);
+        username = (EditText)findViewById(R.id.username);
+        password = (EditText)findViewById(R.id.password);
+        loginButton = (Button)findViewById(R.id.loginButton);
+        spnLocal = (Spinner) findViewById(R.id.spnLocal);
 
         // list of sites
         String[] sites = {"site1", "site2", "site3", "site4"};
@@ -44,6 +61,45 @@ public class PromoterLoginActivity extends Activity {
         ListView listview = (ListView) findViewById(R.id.sites);
         listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listview.setAdapter(adapter);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("login", "OnClick_connected:" + connected);
+                if (connected){
+                    String userName=txtUsuario.getText().toString();
+                    String password=txtPassword.getText().toString();
+
+                    try {
+
+
+                        if(response.equals(getString(R.string.session_init_key)) || response.equals(getString(R.string.password_expired_key))){
+
+                            editor.commit();
+                            // Remote Server
+                            Intent intent=new Intent(MainActivity.this,Menu_principal.class);
+                            startActivity(intent);
+
+                            finish();
+
+                        }else{
+                            Log.i("login", "Datos incorrectos" );
+                            dismissDialog(PROGRESS_DIALOG);
+                            Toast.makeText(getBaseContext(), response, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (InterruptedException e1) {
+                        response = e1.getMessage();
+                    } catch (ExecutionException e2) {
+                        response = e2.getMessage();
+                    } catch (Exception e3) {
+                        response = e3.getMessage();
+                    }
+                    tvwMensaje.setText(response);
+
+                }
+            }
+
+        });
     }
 
 
