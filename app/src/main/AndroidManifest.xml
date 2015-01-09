@@ -26,7 +26,8 @@
         </activity>
         <activity
             android:name=".GetPatientActivity"
-            android:label="@string/title_activity_get_patient" >
+            android:label="@string/title_activity_get_patient"
+            android:parentActivityName=".MainMenuActivity">
         </activity>
         <activity
             android:name=".NewPatientDataActivity"
