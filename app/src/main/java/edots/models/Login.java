@@ -6,20 +6,20 @@ import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.PropertyInfo;
 
 public class Login implements KvmSerializable {
-    public int Username;
+    public int UserID;
     public String Message;
 
 
     public Login()
     {
-        Username = 0;
+        UserID = 0;
         Message = "";
 
     }
 
     public Login(int Username, String Mensaje)
     {
-        this.Username = Username;
+        this.UserID = Username;
         this.Message = Mensaje;
 
     }
@@ -30,7 +30,7 @@ public class Login implements KvmSerializable {
         switch(arg0)
         {
             case 0:
-                return Username;
+                return UserID;
             case 1:
                 return Message;
 
@@ -66,7 +66,7 @@ public class Login implements KvmSerializable {
         switch(ind)
         {
             case 0:
-                Username = Integer.parseInt(val.toString());
+                UserID = Integer.parseInt(val.toString());
                 break;
             case 1:
                 Message = val.toString();

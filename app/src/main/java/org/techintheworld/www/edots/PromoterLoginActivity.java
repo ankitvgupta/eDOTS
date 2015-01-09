@@ -49,8 +49,8 @@ public class PromoterLoginActivity extends Activity {
         password = (EditText)findViewById(R.id.password);
         loginButton = (Button)findViewById(R.id.loginButton);
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
-        loadLocaleSpinner("http://demo.sociosensalud.org.pe");
-
+        String myurl = "http://demo.sociosensalud.org.pe";
+        loadLocaleSpinner(myurl);
         // list of sites
 //        String[] sites = {"site1", "site2", "site3", "site4"};
 
@@ -72,12 +72,12 @@ public class PromoterLoginActivity extends Activity {
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                String userName=username.getText().toString();
+//                String uname=username.getText().toString();
 //                String password=password.getText().toString();
 //
 //                }
 //            }
-
+//
 //        });
 //        // list of sites
 //        String[] sites = {"site1", "site2", "site3", "site4"};
@@ -128,10 +128,12 @@ public class PromoterLoginActivity extends Activity {
         EditText p= (EditText)findViewById(R.id.password);
         String username = u.getText().toString();
         String password = u.getText().toString();
-        boolean validLogin = checkLogin(username, password);
+        boolean validLogin = checkLogin(username, password, "2"); // TODO: get locale
         if (validLogin){
             Intent intent = new Intent(this, MainMenuActivity.class);
-            StorageManager.GetLocalData(username, username, this);
+            Log.e("LOGGED IN:", username.concat(password) );
+            // TODO: fix storage manager for login
+            //StorageManager.GetLocalData(username, username, this);
             startActivity(intent);
         }
         else{
@@ -153,13 +155,19 @@ public class PromoterLoginActivity extends Activity {
 
     }
 
-    public boolean checkLogin(String username, String password) {
-
+    public boolean checkLogin(String username, String password, String locale) {
         if(password != null && !password.isEmpty()) {
+            String message =  AccountLogin.login(username,password,locale,this);
             //String saltedHash = ProcessPassword.getSaltedHash(password);
-            Promoter p = getPromoterInfo(username);
-            //ProcessPassword.check(saltedHash, p.getPassword());
-            return password.equals(p.getPassword());
+            if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
+                // Remote Server
+                return true;
+
+            }else{
+                Log.i("login", "Datos incorrectos" );
+                Toast.makeText(getBaseContext(), message,Toast.LENGTH_SHORT).show();
+            }
+            return false;
         }
         else{
             return false;

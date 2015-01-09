@@ -1,6 +1,7 @@
 package org.techintheworld.www.edots;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -21,7 +22,7 @@ public class LocaleLoadTask extends AsyncTask<String,String,Locale[]> {
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "ListadoLocales" + "";
+        final String METHOD_NAME = "ListadoLocales";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
@@ -48,7 +49,7 @@ public class LocaleLoadTask extends AsyncTask<String,String,Locale[]> {
                 Locale loc = new Locale();
 
                 loc.id = Integer.parseInt(ic.getProperty(0).toString());
-                loc.name = ic.getProperty(2).toString();
+                loc.name = ic.getProperty(1).toString();
                 lstLocales[i] = loc;
             }
             if (resSoap.getPropertyCount()>0){
@@ -57,7 +58,11 @@ public class LocaleLoadTask extends AsyncTask<String,String,Locale[]> {
         }
         catch (Exception e)
         {
-            resul = null;
+            //to do hard code when not possible
+            lstLocales = new Locale[1];
+            lstLocales[0] = new Locale(1,"Brendan");
+            resul = lstLocales;
+            Log.e("error from local load task", e.toString());
         }
 
         return resul;
