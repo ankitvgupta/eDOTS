@@ -23,12 +23,15 @@ import android.widget.TextView;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import edots.models.Patient;
 import edots.models.Project;
 
 
 public class NewPatientDataActivity extends Activity {
+
+    private Patient currentPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,40 +91,58 @@ public class NewPatientDataActivity extends Activity {
     }
 
     // switch to CheckFingerPrint Activity
-    public void switchCheckFingerPrint(View view){
+    public void switchCheckFingerPrint(View view) {
 
-        EditText nationalIDText = (EditText) findViewById(R.id.National_ID);
-        Long nationalID = nationalIDText.getText().toString();
+        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+    }
 
-        EditText nameText = (EditText) findViewById(R.id.Name);
-        String name = nameText.getText().toString();
+    // switch to PatientHome activity
+    public void switchGetPatient (View view){
 
-        EditText fathersNameText = (EditText) findViewById(R.id.Fathers_name);
-        String fathersName = fathersNameText.getText().toString();
+        // get the national id
+        EditText editor = (EditText) findViewById(R.id.National_ID);
+        Long nationalid = Long.valueOf(editor.getText().toString());
 
-        EditText mothersNameText = (EditText) findViewById(R.id.Mothers_name);
-        String mothersName = mothersNameText.getText().toString();
+        // get the name
+        editor = (EditText) findViewById(R.id.Name);
+        String name = editor.getText().toString();
 
-        EditText birthdateText = (EditText) findViewById(R.id.Birthdate);
-        String date = birthdateText.getText().toString();
+        // get the father's name
+        editor = (EditText) findViewById(R.id.Fathers_name);
+        String fatherName = editor.getText().toString();
 
-        EditText sexText = (EditText) findViewById(R.id.Sex);
-        String sex = sexText.getText().toString();
+        // get the mother's name
+        editor = (EditText) findViewById(R.id.Mothers_name);
+        String motherName = editor.getText().toString();
+
+        // TODO: Do not hardcode date and sex
+        // TODO: Change sex to be a dropdown with either male or female
+        Date date = new Date();
+        String sex = "f";
 
         // determines which treatments are checked and stores them in ArrayList of Projects
-        ArrayList<Project> treatmentList = new ArrayList<Project>();
+        ArrayList<Project> enrolledProjects = new ArrayList<Project>();
         ListView treatmentListText = (ListView) findViewById(R.id.treatments);
         SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
         for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
             if (checkedItems.get(i)) {
                 String treatment = treatmentListText.getAdapter().getItem(i).toString();
+                // won't need this line afterwards
                 Project proj = new Project(treatment);
-                treatmentList.add(proj);
+                enrolledProjects.add(proj);
             }
         }
 
-        Patient p = new Patient(name, date, nationalID, sex, treatmentList)
-        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+
+        // Instantiate a patient using the given details.
+        currentPatient = new Patient (name, date, nationalid, sex, enrolledProjects, motherName, fatherName);
+
+
+        // TODO: Submit the patient data to the server.
+
+
+        Intent intent = new Intent(this, GetPatientActivity.class);
+        intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
 
     }

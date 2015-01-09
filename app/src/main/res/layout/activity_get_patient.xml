@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/get_patient_button_use_national_id"
-                android:onClick="fillTable"
+                android:onClick="parseAndFill"
                 android:layout_gravity="center_horizontal" />
             <!--the text "or"-->
             <TextView

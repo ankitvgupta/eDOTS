@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import edots.models.Patient;
 import edots.models.Project;
@@ -36,6 +37,8 @@ public class NewVisitActivity extends Activity {
         ArrayList<Project> patientProjects= currentPatient.getEnrolledProjects();
         int num_projects = patientProjects.size();
         ArrayList<String> checkBoxesText = new ArrayList<String>();
+
+        // Retrieve list of projects of this patient
         for(int i = 0; i < num_projects; i++) {
             CheckBox checkBox = new CheckBox(getApplicationContext());
             String n = patientProjects.get(i).getName();

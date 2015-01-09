@@ -21,6 +21,14 @@ public class GetPatientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_patient);
+        try {
+            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
+            fillTable();
+        }
+        catch (Exception e){
+            Log.v("There is no patient already", "There is no patient already");
+        }
+
     }
 
 
@@ -49,12 +57,23 @@ public class GetPatientActivity extends Activity {
     public Patient lookupPatient(int pid) {
 
         Patient p = new Patient(Long.valueOf(123456));
-        currentPatient = p;
         return p;
 
     }
 
-    public void fillTable(View view) {
+    public void fillTable(){
+        TextView patientname = (TextView) findViewById(R.id.patientname);
+        TextView nationalid = (TextView) findViewById(R.id.nationalid);
+        TextView dob = (TextView) findViewById(R.id.dob);
+        TextView sex = (TextView) findViewById(R.id.sex);
+
+        patientname.setText(currentPatient.getName());
+        nationalid.setText(currentPatient.getNationalID().toString());
+        dob.setText(currentPatient.getBirthDate().toString());
+        sex.setText(currentPatient.getSex());
+    }
+
+    public void parseAndFill(View view) {
 
         // clear the entered text and make new hint to search for new patient
 
@@ -63,39 +82,49 @@ public class GetPatientActivity extends Activity {
         editText.setText("Search for new patient", TextView.BufferType.EDITABLE);
 
 
+
+
         int pid = Integer.parseInt(message);
 
-        Patient lookedup = lookupPatient(pid);
+        currentPatient = lookupPatient(pid);
+        fillTable();
 
-        TextView patientname = (TextView) findViewById(R.id.patientname);
-        TextView nationalid = (TextView) findViewById(R.id.nationalid);
-        TextView dob = (TextView) findViewById(R.id.dob);
-        TextView sex = (TextView) findViewById(R.id.sex);
-
-        patientname.setText(lookedup.getName());
-        nationalid.setText(lookedup.getNationalID().toString());
-        dob.setText(lookedup.getBirthDate().toString());
-        sex.setText(lookedup.getSex());
+//        TextView patientname = (TextView) findViewById(R.id.patientname);
+//        TextView nationalid = (TextView) findViewById(R.id.nationalid);
+//        TextView dob = (TextView) findViewById(R.id.dob);
+//        TextView sex = (TextView) findViewById(R.id.sex);
+//
+//        patientname.setText(lookedup.getName());
+//        nationalid.setText(lookedup.getNationalID().toString());
+//        dob.setText(lookedup.getBirthDate().toString());
+//        sex.setText(lookedup.getSex());
 
     }
 
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
-        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+        if (currentPatient != null){
+            Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
     }
 
     public void switchMedicalHistoryActivity(View view) {
-        Intent intent = new Intent(this, MedicalHistoryActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+        if (currentPatient != null){
+            Intent intent = new Intent(this, MedicalHistoryActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
+
     }
 
     public void switchNewVisitActivity(View view) {
-        Intent intent = new Intent(this, NewVisitActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+        if (currentPatient != null) {
+            Intent intent = new Intent(this, NewVisitActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
     }
 
 

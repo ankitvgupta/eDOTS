@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +15,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
-import edots.models.Locale;
 import edots.models.Promoter;
 
 
@@ -72,15 +71,15 @@ public class PromoterLoginActivity extends Activity {
 
     // switch to PatientType activity
     public void switchPatientType (View view) throws Exception{
+
         EditText u= (EditText)findViewById(R.id.username);
         EditText p= (EditText)findViewById(R.id.password);
         String username = u.getText().toString();
         String password = u.getText().toString();
         boolean validLogin = checkLogin(username, password);
-        Log.v("PRINTING FROM HERE", username);
-        Log.v("PRINTING FROM HERE", password);
         if (validLogin){
             Intent intent = new Intent(this, PatientTypeActivity.class);
+            StorageManager.GetLocalPromoterData(username, this);
             startActivity(intent);
         }
         else{
@@ -117,7 +116,7 @@ public class PromoterLoginActivity extends Activity {
 
     public Promoter getPromoterInfo(String username){
 
-        return new Promoter("edots","Name", new Locale(), "edots");
+        return new Promoter("edots","Name","Lima", "edots", new ArrayList<String>(Arrays.asList("Med 1", "Med 2")));
     }
 
 }
