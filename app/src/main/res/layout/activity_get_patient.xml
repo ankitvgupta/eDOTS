@@ -71,7 +71,8 @@
                         android:layout_width="0dip"
                         android:layout_weight="0.4"
                         android:text="@string/name"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#808080" />
                     <TextView
                         android:layout_width="0dip"
                         android:layout_weight="1"
@@ -86,8 +87,9 @@
                     <TextView
                         android:layout_width="0dip"
                         android:layout_weight="0.4"
-                        android:text="@string/no"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:text="@string/ID"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#808080" />
                     <TextView
                         android:layout_width="0dip"
                         android:layout_weight="1"
@@ -106,7 +108,8 @@
                         android:layout_width="0dip"
                         android:layout_weight="0.4"
                         android:text="@string/birthdate"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#808080" />
                     <TextView
                         android:layout_width="0dip"
                         android:layout_weight="1"
@@ -123,7 +126,8 @@
                         android:layout_width="0dip"
                         android:layout_weight="0.4"
                         android:text="@string/sex"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#808080" />
                     <TextView
                         android:layout_width="0dip"
                         android:layout_weight="1"
