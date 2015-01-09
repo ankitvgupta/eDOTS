@@ -24,26 +24,38 @@ import edots.models.Promoter;
 public class StorageManager {
 
     // Gets local storage file and deserializes into request object
-    public static String GetLocalData(String objectType, String id, Context c){
-        if (objectType.equals("Promoter") || objectType.equals("Patient")){
+    public static String GetLocalData(String objectType, String promoterUsername, Context c){
 
-            String fileName= id.concat("_data");
+        if (!(objectType.equals("Promoter") && !(objectType.equals("Patient")))){
+            return null;
+        }
+        String fileName=null;
+        if (objectType.equals("Promoter")) {
+            fileName= promoterUsername.concat("_data");
+        }
+        else if(objectType.equals("Patient")) {
+            fileName= "patient".concat("_data");
+
+        }
+        try{
+            if (!(fileName==null)){
+                JSONObject jsonObject = getJSONFromLocal(c, fileName);
+                return jsonObject.toString();
+            }
+
+        }
+        catch (FileNotFoundException e){
+            GetWebPromoterData(objectType, c);
             try{
                 JSONObject jsonObject = getJSONFromLocal(c, fileName);
                 return jsonObject.toString();
             }
-            catch (FileNotFoundException e){
-                GetWebPromoterData(objectType, c);
-                try{
-                    JSONObject jsonObject = getJSONFromLocal(c, fileName);
-                    return jsonObject.toString();
-                }
-                catch (FileNotFoundException ex){
-                    Log.e("Saving patient file unsuccessful: ", fileName.toString().concat(" error") );
-                    ex.printStackTrace();
-                }
+            catch (FileNotFoundException ex){
+                Log.e("Saving patient file unsuccessful: ", fileName.toString().concat(" error") );
+                ex.printStackTrace();
             }
         }
+
         return null;
 
     }
@@ -86,7 +98,7 @@ public class StorageManager {
         Promoter p = new Promoter("username", "Brendan","Lima", "edots", new ArrayList<Long>(Arrays.asList(new Long("1234"),new Long("5678"))));
 
         // Save to local file for Projects
-        String filename = promoterUsername.concat("_data");
+        String filename = "patient".concat("_data");
         String promoterData = p.toString();
         FileOutputStream outputStream;
 

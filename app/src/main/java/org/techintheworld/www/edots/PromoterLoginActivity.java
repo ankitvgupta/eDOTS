@@ -75,7 +75,7 @@ public class PromoterLoginActivity extends Activity {
         boolean validLogin = checkLogin(username, password);
         if (validLogin){
             Intent intent = new Intent(this, MainMenuActivity.class);
-            StorageManager.GetLocalData(username,username, this);
+            String fileJSON = StorageManager.GetLocalData("Promoter", username, this);
             startActivity(intent);
         }
         else{
@@ -112,7 +112,7 @@ public class PromoterLoginActivity extends Activity {
 
     public Promoter getPromoterInfo(String username){
 
-        return new Promoter("e","Name","Lima", "e", new ArrayList<String>(Arrays.asList("Med 1", "Med 2")));
+        return new Promoter("e","Name","Lima", "e", new ArrayList<Long>(Arrays.asList(new Long("12312"), new Long("12312"))));
     }
 
 }
