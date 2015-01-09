@@ -2,21 +2,27 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
 
+import java.util.concurrent.ExecutionException;
+
+import edots.models.Geofence;
 import edots.models.Patient;
 
 
 public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
+    private AsyncTask<String, String, Patient> patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +63,22 @@ public class GetPatientActivity extends Activity {
 
     public Patient lookupPatient(int nationalid) {
 
-        GetPatientLoadTask newP = new GetPatientLoadTask();
-        newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
+        currentPatient = null;
 
-        Patient p = new Patient(Long.valueOf(123456));
-        return p;
+        // Instantiate a loader task and load the given patient via nationalid
+        GetPatientLoadTask newP = new GetPatientLoadTask();
+        AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
+
+        // parse the result, and return it
+        try {
+            currentPatient = (Patient) p.get();
+            Log.v("Patient that we got is", currentPatient.toString());
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        }
+        return currentPatient;
 
     }
 
