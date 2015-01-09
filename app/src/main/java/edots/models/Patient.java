@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by jfang on 1/6/15.
  * Modified by ankitvgupta since
  */
-public class Patient {
+public class Patient extends Object{
     private Long id;
     private String name;
     private String fathersName;

@@ -129,8 +129,8 @@ public class PromoterLoginActivity extends Activity {
         String password = u.getText().toString();
         boolean validLogin = checkLogin(username, password);
         if (validLogin){
-            Intent intent = new Intent(this, PatientTypeActivity.class);
-            StorageManager.GetLocalPromoterData(username, this);
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            StorageManager.GetLocalData(username,username, this);
             startActivity(intent);
         }
         else{
@@ -195,7 +195,7 @@ public class PromoterLoginActivity extends Activity {
 
     public Promoter getPromoterInfo(String username){
 
-        return new Promoter("edots","Name","Lima", "edots", new ArrayList<String>(Arrays.asList("Med 1", "Med 2")));
+        return new Promoter("e","Name","Lima", "e", new ArrayList<String>(Arrays.asList("Med 1", "Med 2")));
     }
 
 }

@@ -19,7 +19,6 @@
     <string name="get_patient_search_new_patient">Search for new patient</string>
     <string name="get_patient_button_checkFingerPrint">Scan Fingerprint</string>
     <string name="get_patient_or">Or</string>
-    <string name="main_menu">Main Menu</string>
     <string name="message">You have missed your appointment.</string>
     <string name="patient_home_button_checkMedicalHistory">Medical History</string>
     <string name="patient_home_button_logNewVisit">Log New Visit</string>
