@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by jfang on 1/6/15.
@@ -25,7 +26,9 @@ public class Project {
     // For testing only
     public Project(){
         try {
-            name = "Temp";
+            Random r = new Random();
+            int num = r.nextInt(100);
+            name = Integer.toString(num);
             medications = new ArrayList<String>();
             medications.add("Med 1");
             medications.add("Med 2");
