@@ -1,8 +1,5 @@
 package org.techintheworld.www.edots;
 
-import edots.models.Geofence;
-import edots.models.Patient;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,6 +7,8 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import edots.models.Patient;
 
 public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
@@ -45,28 +44,29 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             Log.v("The object we got is", resSoap.toString());
 
 
-            //Geofence lstGeofence = new Geofence[resSoap.getPropertyCount()];
-/*
-            for (int i = 0; i < lstGeofence.length; i++)
-            {
-                SoapObject ic = (SoapObject)resSoap.getProperty(i);
+            SoapObject ic = (SoapObject)resSoap.getProperty(0);
 
-                Geofence geo = new Geofence();
+            Patient p = new Patient();
 
-                geo.codigogeofence = Integer.parseInt(ic.getProperty(0).toString());
-                geo.codigolocal = Integer.parseInt(ic.getProperty(1).toString());
-                geo.nombre = ic.getProperty(2).toString();
-                geo.latitud = ic.getProperty(3).toString();
-                geo.longitud = ic.getProperty(4).toString();
-                geo.radio = ic.getProperty(5).toString();
-                geo.duracionexpiracion = ic.getProperty(6).toString();
-                geo.tipotransicion = Integer.parseInt(ic.getProperty(7).toString());
-                lstGeofence[i] = geo;
-            }
-            if (resSoap.getPropertyCount()>0){
-                resul = lstGeofence;
-            }
-            */
+            String patientID = ic.getProperty(0).toString();
+            String name = ic.getProperty(1).toString();
+            String fathersName = ic.getProperty(2).toString();
+            String mothersName = ic.getProperty(3).toString();
+            Integer nationalID = Integer.parseInt(ic.getProperty(4).toString());
+
+            Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
+//
+//            p.latitud = ic.getProperty(3).toString();
+//            p.longitud = ic.getProperty(4).toString();
+//            p.radio = ic.getProperty(5).toString();
+//            p.duracionexpiracion = ic.getProperty(6).toString();
+//            p.tipotransicion = Integer.parseInt(ic.getProperty(7).toString());
+//            lstGeofence[i] = p;
+//
+//            if (resSoap.getPropertyCount()>0){
+//                resul = lstGeofence;
+//            }
+
         }
         catch (Exception e)
         {
