@@ -26,11 +26,13 @@
         </activity>
         <activity
             android:name=".GetPatientActivity"
-            android:label="@string/title_activity_get_patient" >
+            android:label="@string/title_activity_get_patient"
+            android:parentActivityName=".MainMenuActivity">
         </activity>
         <activity
             android:name=".NewPatientDataActivity"
-            android:label="@string/title_activity_new_patient_data" >
+            android:label="@string/title_activity_new_patient_data"
+            android:parentActivityName=".MainMenuActivity">
         </activity>
         <activity
             android:name=".CheckFingerPrintActivity"
@@ -62,7 +64,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PatientTypeActivity"
+            android:name=".MainMenuActivity"
             android:label="@string/title_activity_patient_type"
             android:parentActivityName=".PromoterLoginActivity" >
         </activity>

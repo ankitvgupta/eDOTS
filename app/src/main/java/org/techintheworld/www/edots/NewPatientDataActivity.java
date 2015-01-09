@@ -34,6 +34,7 @@ public class NewPatientDataActivity extends Activity {
     private Patient currentPatient;
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

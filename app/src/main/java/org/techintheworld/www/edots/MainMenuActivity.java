@@ -15,13 +15,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-public class PatientTypeActivity extends Activity {
+public class MainMenuActivity extends Activity {
     Button btnSendSMS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_type);
+        setContentView(R.layout.activity_main_menu);
 
         btnSendSMS = (Button) findViewById(R.id.btnSendSMS);
 

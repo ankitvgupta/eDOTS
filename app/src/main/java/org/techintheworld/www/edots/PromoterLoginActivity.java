@@ -74,7 +74,7 @@ public class PromoterLoginActivity extends Activity {
         String password = u.getText().toString();
         boolean validLogin = checkLogin(username, password);
         if (validLogin){
-            Intent intent = new Intent(this, PatientTypeActivity.class);
+            Intent intent = new Intent(this, MainMenuActivity.class);
             StorageManager.GetLocalData(username,username, this);
             startActivity(intent);
         }
