@@ -72,7 +72,7 @@ public class GetPatientActivity extends Activity {
         // parse the result, and return it
         try {
             currentPatient = (Patient) p.get();
-            Log.v("Patient that we got is", currentPatient.toString());
+            //Log.v("Patient that we got is", currentPatient.toString());
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         } catch (ExecutionException e1) {
@@ -82,7 +82,11 @@ public class GetPatientActivity extends Activity {
 
     }
 
+
     public void fillTable(){
+        if (currentPatient == null){
+            return;
+        }
         TextView patientname = (TextView) findViewById(R.id.patientname);
         TextView nationalid = (TextView) findViewById(R.id.nationalid);
         TextView dob = (TextView) findViewById(R.id.dob);
@@ -108,6 +112,9 @@ public class GetPatientActivity extends Activity {
         int pid = Integer.parseInt(message);
 
         currentPatient = lookupPatient(pid);
+        if (currentPatient == null){
+            return;
+        }
         fillTable();
 
 //        TextView patientname = (TextView) findViewById(R.id.patientname);

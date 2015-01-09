@@ -46,6 +46,10 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             transporte.call(SOAP_ACTION, envelope);
 
             SoapObject resSoap =(SoapObject)envelope.getResponse();
+            if (resSoap.getPropertyCount() == 0){
+                Log.v("This is not a valid person", "This is not a valid person");
+                return null;
+            }
 
             SoapObject resSoap2 = (SoapObject) resSoap.getProperty(0);
 
@@ -66,7 +70,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             Date birthDate = parser.parse(birthday);
 
             String sex = "null";
-            if (sexInt == 0){ sex = "Female";}
+            if (sexInt == 2){ sex = "Female";}
             else { sex = "Male"; }
             Project testProject = new Project();
             Project testProject2 = new Project();
