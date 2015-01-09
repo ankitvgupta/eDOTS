@@ -107,6 +107,10 @@ public class NewPatientDataActivity extends Activity {
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
     }
 
+    public void addToDatabase(Patient p){
+
+    }
+
     // switch to PatientHome activity
     public void switchGetPatient (View view){
 
@@ -145,7 +149,7 @@ public class NewPatientDataActivity extends Activity {
         String patientID = "1231-X21231";
 
         // Instantiate a patient using the given details.
-        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName, patientID);
+        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName, patientID, 1);
 
 
         // TODO: Submit the patient data to the server.

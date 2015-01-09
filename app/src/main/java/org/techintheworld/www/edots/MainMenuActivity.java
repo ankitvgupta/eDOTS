@@ -30,7 +30,7 @@ public class MainMenuActivity extends Activity {
             public void onClick(View v)
             {
                 String phoneNo = "943229757";
-                String message = "yo dude, you missed your appointment!";
+                String message = Integer.toString(R.string.message);
                 if (phoneNo.length()>0 && message.length()>0)
                     sendSMS(phoneNo, message);
                 else
@@ -90,6 +90,7 @@ public class MainMenuActivity extends Activity {
                 switch (getResultCode())
                 {
                     case Activity.RESULT_OK:
+                        //TODO: define delivered in strings.xml instead of hardcoding
                         Toast.makeText(getBaseContext(), "SMS delivered",
                                 Toast.LENGTH_SHORT).show();
                         break;

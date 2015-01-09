@@ -16,8 +16,11 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Project;
 
-public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
+/**
+ * Created by Ankit on 1/9/15.
+ */
+public class NewPatientUploadTask extends AsyncTask<String,String,Patient> {
 
     private Patient lstGeofence;
 
@@ -33,7 +36,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
-		request.addProperty("DocIdentidad", params[1]);
+        request.addProperty("DocIdentidad", params[1]);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
 

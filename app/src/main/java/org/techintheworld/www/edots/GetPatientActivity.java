@@ -1,6 +1,7 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,14 +9,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-
+import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 
-import edots.models.Geofence;
 import edots.models.Patient;
 
 
@@ -23,6 +25,7 @@ public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
     private AsyncTask<String, String, Patient> patient;
+    Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,18 @@ public class GetPatientActivity extends Activity {
         catch (Exception e){
             Log.v("There is no patient already", "There is no patient already");
         }
+
+        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                hideKeyboard();
+                parseAndFill(v);
+            }
+        });
+
+    //TODO: disable medical history and log new visit button if no patient is loaded
 
     }
 
@@ -72,7 +87,7 @@ public class GetPatientActivity extends Activity {
         // parse the result, and return it
         try {
             currentPatient = (Patient) p.get();
-            Log.v("Patient that we got is", currentPatient.toString());
+            //Log.v("Patient that we got is", currentPatient.toString());
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         } catch (ExecutionException e1) {
@@ -82,44 +97,43 @@ public class GetPatientActivity extends Activity {
 
     }
 
+
     public void fillTable(){
+        hideKeyboard();
+        if (currentPatient == null){
+            return;
+        }
         TextView patientname = (TextView) findViewById(R.id.patientname);
         TextView nationalid = (TextView) findViewById(R.id.nationalid);
         TextView dob = (TextView) findViewById(R.id.dob);
         TextView sex = (TextView) findViewById(R.id.sex);
 
+        SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
+
+
         patientname.setText(currentPatient.getName());
         nationalid.setText(currentPatient.getNationalID().toString());
-        dob.setText(currentPatient.getBirthDate().toString());
+        dob.setText(parser.format(currentPatient.getBirthDate()));
         sex.setText(currentPatient.getSex());
     }
 
     public void parseAndFill(View view) {
 
         // clear the entered text and make new hint to search for new patient
-
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
         String message = editText.getText().toString();
-        editText.setText("Search for new patient", TextView.BufferType.EDITABLE);
-
-
-
+        editText.setText("", TextView.BufferType.EDITABLE);
 
         int pid = Integer.parseInt(message);
 
         currentPatient = lookupPatient(pid);
+        // pop up error message when the national id is not found
+        if (currentPatient == null){
+            Toast.makeText(getBaseContext(), R.string.patient_not_found,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         fillTable();
-
-//        TextView patientname = (TextView) findViewById(R.id.patientname);
-//        TextView nationalid = (TextView) findViewById(R.id.nationalid);
-//        TextView dob = (TextView) findViewById(R.id.dob);
-//        TextView sex = (TextView) findViewById(R.id.sex);
-//
-//        patientname.setText(lookedup.getName());
-//        nationalid.setText(lookedup.getNationalID().toString());
-//        dob.setText(lookedup.getBirthDate().toString());
-//        sex.setText(lookedup.getSex());
-
     }
 
     // switch to CheckFingerPrintActivity
@@ -145,6 +159,15 @@ public class GetPatientActivity extends Activity {
             Intent intent = new Intent(this, NewVisitActivity.class);
             intent.putExtra("Patient", currentPatient.toString());
             startActivity(intent);
+        }
+    }
+
+    private void hideKeyboard() {
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 
