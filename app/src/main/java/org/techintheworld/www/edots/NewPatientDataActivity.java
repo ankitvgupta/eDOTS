@@ -107,6 +107,10 @@ public class NewPatientDataActivity extends Activity {
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
     }
 
+    public void addToDatabase(Patient p){
+
+    }
+
     // switch to PatientHome activity
     public void switchGetPatient (View view){
 

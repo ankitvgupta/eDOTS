@@ -1,9 +1,13 @@
 package edots.models;
 
+import com.parse.Parse;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -67,7 +71,9 @@ public class Patient extends Object{
             name = n.get("name").toString();
             fathersName = n.get("fathersName").toString();
             mothersName = n.get("mothersName").toString();
-            birthDate = new Date(Long.valueOf(n.get("birthDate").toString()));
+
+            SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
+            birthDate = parser.parse(n.get("birthDate").toString());
             nationalID = Long.valueOf(n.get("nationalID").toString());
             sex = n.get("sex").toString();
             pid = n.get("pid").toString();
@@ -81,6 +87,9 @@ public class Patient extends Object{
         catch (JSONException e) {
             e.printStackTrace();
         }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -91,7 +100,11 @@ public class Patient extends Object{
             temp.put("name", getName());
             temp.put("fathersName", getFathersName());
             temp.put("mothersName", getMothersName());
-            temp.put("birthDate", Long.toString(getBirthDate().getTime()));
+
+            SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
+            String birthday = parser.format(getBirthDate());
+            temp.put("birthDate", birthday);
+
             temp.put("nationalID", getNationalID());
             temp.put("sex", getSex());
             temp.put("enrolledProjects", getEnrolledProjects());

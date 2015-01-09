@@ -10,6 +10,7 @@
     <string name="cancel">Cancel</string>
     <string name="check_finger_print_scan_on_device">Scan On Device</string>
     <string name="check_finger_print_done">Done</string>
+    <string name="data_format">dd/MM/yyyy</string>
     <string name="dialog_confirm_patient">Is this the patient?</string>
     <string name="done"> Done</string>
     <string name="generate_visit"> Generate Visit</string>

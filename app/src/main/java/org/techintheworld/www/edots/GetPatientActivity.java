@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
@@ -89,9 +91,12 @@ public class GetPatientActivity extends Activity {
         TextView dob = (TextView) findViewById(R.id.dob);
         TextView sex = (TextView) findViewById(R.id.sex);
 
+        SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
+
+
         patientname.setText(currentPatient.getName());
         nationalid.setText(currentPatient.getNationalID().toString());
-        dob.setText(currentPatient.getBirthDate().toString());
+        dob.setText(parser.format(currentPatient.getBirthDate()));
         sex.setText(currentPatient.getSex());
     }
 
