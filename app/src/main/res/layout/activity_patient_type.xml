@@ -36,6 +36,14 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
+        android:id="@+id/btnSendSMS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/send_sms"
+        android:layout_weight="0.12"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/log_out"

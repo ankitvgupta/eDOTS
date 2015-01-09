@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import edots.models.Project;
 public class NewPatientDataActivity extends Activity {
 
     private Patient currentPatient;
+    private ArrayList<Project> treatmentList = new ArrayList<Project>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +50,24 @@ public class NewPatientDataActivity extends Activity {
 //        }
 
         // list of treatment study groups
-        String[] treatmentList = {"studyProject1", "studyProject2", "studyProject3", "studyProject4"};
+        treatmentList.add(new Project());
+        treatmentList.add(new Project());
+        treatmentList.add(new Project());
+        treatmentList.add(new Project());
+
+        //        {"studyProject1", "studyProject2", "studyProject3", "studyProject4"};
 
         // sets layout_height for ListView based on number of treatments
         ListView treatmentView = (ListView)findViewById(R.id.treatments);
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50*treatmentList.length, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50*treatmentList.size(), getResources().getDisplayMetrics());
         treatmentView.getLayoutParams().height = height;
 
+
+        ArrayList<String> checkboxesText = new ArrayList<String>();
+        for (int i = 0; i < treatmentList.size(); i ++){
+            checkboxesText.add(treatmentList.get(i).getName());
+        }
         // creating adapter for ListView
-        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(treatmentList));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_checked, checkboxesText);
 
@@ -89,10 +101,9 @@ public class NewPatientDataActivity extends Activity {
     }
 
     // switch to CheckFingerPrint Activity
-    public void switchCheckFingerPrint(View view){
-        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
-        startActivity(intent);
+    public void switchCheckFingerPrint(View view) {
 
+        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
     }
 
     // switch to PatientHome activity
@@ -100,7 +111,7 @@ public class NewPatientDataActivity extends Activity {
 
         // get the national id
         EditText editor = (EditText) findViewById(R.id.National_ID);
-        Long nationalid = Long.valueOf(editor.getText().toString());
+        Long nationalID = Long.valueOf(editor.getText().toString());
 
         // get the name
         editor = (EditText) findViewById(R.id.Name);
@@ -119,12 +130,20 @@ public class NewPatientDataActivity extends Activity {
         Date date = new Date();
         String sex = "f";
 
-        // TODO: Get the projects that are selected.
+        // determines which treatments are checked and stores them in ArrayList of Projects
         ArrayList<Project> enrolledProjects = new ArrayList<Project>();
+        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
+        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
+        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+            if (checkedItems.get(i)) {
+                //String treatment = treatmentListText.getAdapter().getItem(i).toString();
+                enrolledProjects.add(treatmentList.get(i));
+            }
+        }
 
 
         // Instantiate a patient using the given details.
-        currentPatient = new Patient (name, date, nationalid, sex, enrolledProjects, motherName, fatherName);
+        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName);
 
 
         // TODO: Submit the patient data to the server.
@@ -135,6 +154,5 @@ public class NewPatientDataActivity extends Activity {
         startActivity(intent);
 
     }
-
 
 }
