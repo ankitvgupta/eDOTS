@@ -15,6 +15,7 @@ import java.util.Date;
  */
 public class Patient extends Object{
     private String pid;
+    private int doctype;
     private String name;
     private String fathersName;
     private String mothersName;
@@ -28,7 +29,7 @@ public class Patient extends Object{
     }
 
     // For production
-    public Patient (String n, Date d, Long nid, String s, ArrayList<Project> projects, String mother, String father, String patientID){
+    public Patient (String n, Date d, Long nid, String s, ArrayList<Project> projects, String mother, String father, String patientID, int doc){
         name = n;
         birthDate = d;
         nationalID = nid;
@@ -37,6 +38,9 @@ public class Patient extends Object{
         mothersName = mother;
         fathersName = father;
         pid = patientID;
+        doctype = doc;
+
+
     }
 
     // For testing only
@@ -51,6 +55,7 @@ public class Patient extends Object{
         Project testProject = new Project();
         Project testProject2 = new Project();
         enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
+        doctype = 1;
     }
 
     /** Added to parse a string back into the JSON form.
@@ -66,6 +71,7 @@ public class Patient extends Object{
             nationalID = Long.valueOf(n.get("nationalID").toString());
             sex = n.get("sex").toString();
             pid = n.get("pid").toString();
+            doctype = Integer.valueOf(n.get("doctype").toString());
             enrolledProjects = new ArrayList<Project>();
             JSONArray arry = new JSONArray(n.get("enrolledProjects").toString());
             for (int i = 0; i < arry.length(); i++){
@@ -90,6 +96,7 @@ public class Patient extends Object{
             temp.put("sex", getSex());
             temp.put("enrolledProjects", getEnrolledProjects());
             temp.put("pid", getPid());
+            temp.put("doctype",  Integer.toString(getDoctype()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -104,6 +111,10 @@ public class Patient extends Object{
 
     public String getPid(){
         return pid;
+    }
+
+    public int getDoctype(){
+        return doctype;
     }
 
     public String getFathersName(){
@@ -134,6 +145,8 @@ public class Patient extends Object{
         name=n;
     }
 
+    public void setDoctype(int n) {doctype = n;}
+
     public void setFathersName(String n){
         fathersName=n;
     }
@@ -149,9 +162,11 @@ public class Patient extends Object{
     public void setNationalID(long i){
         nationalID=i;
     }
+
     public void setSex(String s){
         sex=s;
     }
+
     public void setPid(String s){
         pid=s;
     }

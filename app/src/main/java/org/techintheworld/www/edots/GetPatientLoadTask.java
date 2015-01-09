@@ -60,6 +60,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
             Long nationalID = Long.valueOf(ic.getProperty(5).toString());
             Integer sexInt = Integer.parseInt(ic.getProperty(7).toString());
+            Integer docType = Integer.parseInt(ic.getProperty(4).toString());
             String birthday = ic.getProperty(6).toString();
             SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
             Date birthDate = parser.parse(birthday);
@@ -73,7 +74,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
             Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
 
-            p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID);
+            p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
 
             Log.v("patient object:", p.toString());
 
