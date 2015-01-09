@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
 import edots.models.Patient;
 
 
@@ -54,7 +55,10 @@ public class GetPatientActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public Patient lookupPatient(int pid) {
+    public Patient lookupPatient(int nationalid) {
+
+        GetPatientLoadTask newP = new GetPatientLoadTask();
+        newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
 
         Patient p = new Patient(Long.valueOf(123456));
         return p;

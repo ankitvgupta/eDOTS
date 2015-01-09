@@ -1,8 +1,10 @@
 package org.techintheworld.www.edots;
 
 import edots.models.Geofence;
+import edots.models.Patient;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -12,21 +14,21 @@ import org.ksoap2.transport.HttpTransportSE;
 public class GetPatientLoadTask extends AsyncTask<String,String,Geofence[]> {
 
 
-    private Geofence[] lstGeofence;
+    private Patient lstGeofence;
 
     @Override
-    protected Geofence[] doInBackground(String... params) {
+    protected Patient doInBackground(String... params) {
 
         Geofence[] resul= null;
 
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "ListadoGeofences";
+        final String METHOD_NAME = "BuscarParticipante";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
-//		request.addProperty("DocIdentidad", params[0]);
+		request.addProperty("DocIdentidad", params[1]);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
 
@@ -40,8 +42,11 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Geofence[]> {
 
             SoapObject resSoap =(SoapObject)envelope.getResponse();
 
-            lstGeofence = new Geofence[resSoap.getPropertyCount()];
+            Log.v("The object we got is", resSoap.toString());
 
+
+            //Geofence lstGeofence = new Geofence[resSoap.getPropertyCount()];
+/*
             for (int i = 0; i < lstGeofence.length; i++)
             {
                 SoapObject ic = (SoapObject)resSoap.getProperty(i);
@@ -61,13 +66,14 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Geofence[]> {
             if (resSoap.getPropertyCount()>0){
                 resul = lstGeofence;
             }
+            */
         }
         catch (Exception e)
         {
             resul = null;
         }
 
-        return resul;
+        //return resul;
     }
 
 }
