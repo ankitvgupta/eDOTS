@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 import edots.models.Promoter;
 
+//TODO: remember session, auto login
 
 public class PromoterLoginActivity extends Activity {
 

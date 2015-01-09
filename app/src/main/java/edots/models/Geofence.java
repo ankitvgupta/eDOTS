@@ -4,7 +4,7 @@ import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.PropertyInfo;
 import java.util.Hashtable;
 
-
+// TODO: consitent naming: geofence or locale
 public class Geofence implements KvmSerializable  {
     public int codigogeofence;
     public int codigolocal;
