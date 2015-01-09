@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/new_patient_data_national_ID"/>
+                android:text="@string/national_ID"/>
 
             <EditText
                 android:id="@+id/National_ID"
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/new_patient_data_fathers_name"/>
+                android:text="@string/fathers_name"/>
 
             <EditText
                 android:id="@+id/Fathers_name"
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/new_patient_data_mothers_name"/>
+                android:text="@string/mothers_name"/>
 
             <EditText
                 android:id="@+id/Mothers_name"
@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/new_patient_data_birthdate"/>
+                android:text="@string/birthdate"/>
 
             <EditText
                 android:id="@+id/Birthdate"
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/new_patient_data_sex"/>
+                android:text="@string/sex"/>
 
             <EditText
                 android:id="@+id/Sex"
@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/new_patient_data_treatment"/>
+                android:text="@string/data_treatment"/>
 
             <ListView
                 android:id="@+id/treatments"
@@ -151,7 +151,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/new_patient_data_fingerprint"
+                android:text="@string/scan_fingerprint"
                 android:onClick="switchCheckFingerPrint"/>
 
             <Button

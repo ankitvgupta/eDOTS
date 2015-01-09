@@ -8,14 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
 import java.util.concurrent.ExecutionException;
 
-import edots.models.Geofence;
 import edots.models.Patient;
 
 
@@ -100,7 +97,7 @@ public class GetPatientActivity extends Activity {
 
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
         String message = editText.getText().toString();
-        editText.setText("Search for new patient", TextView.BufferType.EDITABLE);
+        editText.setText("", TextView.BufferType.EDITABLE);
 
 
 
