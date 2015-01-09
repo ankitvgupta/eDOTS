@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by jfang on 1/6/15.
  */
-public class Promoter {
+public class Promoter extends Object{
     private String username;
     private String name;
     private String locale;

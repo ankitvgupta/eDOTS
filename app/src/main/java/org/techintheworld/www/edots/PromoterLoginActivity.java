@@ -15,7 +15,6 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import edots.models.Promoter;
 
@@ -79,7 +78,7 @@ public class PromoterLoginActivity extends Activity {
         boolean validLogin = checkLogin(username, password);
         if (validLogin){
             Intent intent = new Intent(this, PatientTypeActivity.class);
-            StorageManager.GetLocalPromoterData(username, this);
+            StorageManager.GetLocalData(username,username, this);
             startActivity(intent);
         }
         else{
@@ -116,7 +115,7 @@ public class PromoterLoginActivity extends Activity {
 
     public Promoter getPromoterInfo(String username){
 
-        return new Promoter("edots","Name","Lima", "edots", new ArrayList<String>(Arrays.asList("Med 1", "Med 2")));
+        return new Promoter("e","Name","Lima", "e", new ArrayList<String>(Arrays.asList("Med 1", "Med 2")));
     }
 
 }

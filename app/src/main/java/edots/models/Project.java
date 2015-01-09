@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class Project {
 
-    // TODO: Figure out why JSONArray is needed instead of ArrayList (basically it's a parsing issue)
     private ArrayList<String> medications = new ArrayList<String>();
     private ArrayList<String> types = new ArrayList<String>();
     private String name;
