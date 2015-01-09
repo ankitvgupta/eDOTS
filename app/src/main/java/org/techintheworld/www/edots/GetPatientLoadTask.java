@@ -11,7 +11,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-public class GetPatientLoadTask extends AsyncTask<String,String,Geofence[]> {
+public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
 
     private Patient lstGeofence;
@@ -19,7 +19,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Geofence[]> {
     @Override
     protected Patient doInBackground(String... params) {
 
-        Geofence[] resul= null;
+        Patient resul= null;
 
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
@@ -73,7 +73,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Geofence[]> {
             resul = null;
         }
 
-        //return resul;
+        return resul;
     }
 
 }
