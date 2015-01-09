@@ -8,6 +8,9 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import edots.models.Patient;
 
 public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
@@ -45,8 +48,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
             Log.v("The object we got is", resSoap2.getProperty(0).toString());
 
-
-            SoapObject ic = (SoapObject)resSoap.getProperty(0);
+            SoapObject ic = (SoapObject) resSoap.getProperty(0);
 
             Patient p = new Patient();
 
@@ -55,8 +57,13 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             String fathersName = ic.getProperty(2).toString();
             String mothersName = ic.getProperty(3).toString();
             Integer nationalID = Integer.parseInt(ic.getProperty(4).toString());
+            String birthday = ic.getProperty(6).toString();
+            SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
+            Date dt = parser.parse(birthday);
 
-            Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
+
+
+            Log.v("patient data", patientID+name+fathersName+mothersName+nationalID+dt.getYear().toString());
 //
 //            p.latitud = ic.getProperty(3).toString();
 //            p.longitud = ic.getProperty(4).toString();
@@ -72,6 +79,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             resul = null;
         }
 
