@@ -2,11 +2,11 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
@@ -23,19 +23,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
-=======
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 
-import java.util.ArrayList;
-import java.util.Arrays;
->>>>>>> 81cbc9de682a62c15ee4f64fc1bd5c6a52a2b702
-
+//import edots.models.Login;
 import edots.models.Promoter;
+import edots.models.Locale;
 
 
 public class PromoterLoginActivity extends Activity {
@@ -44,6 +36,10 @@ public class PromoterLoginActivity extends Activity {
     private EditText password;
     private Spinner spnLocal;
     private TextView tvwMensaje;
+//    private AsyncTask<String, String, Login> asyncTask;
+    private AsyncTask<String, String, Locale[]> loadLocale;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,65 +48,36 @@ public class PromoterLoginActivity extends Activity {
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
         loginButton = (Button)findViewById(R.id.loginButton);
-        spnLocal = (Spinner) findViewById(R.id.spnLocal);
+        spnLocal = (Spinner) findViewById(R.id.locale_spinner);
 
-<<<<<<< HEAD
         // list of sites
-        String[] sites = {"site1", "site2", "site3", "site4"};
+//        String[] sites = {"site1", "site2", "site3", "site4"};
 
         // sets layout_height for ListView based on number of sites
-        ListView siteView = (ListView)findViewById(R.id.sites);
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * sites.length, getResources().getDisplayMetrics());
-        siteView.getLayoutParams().height = height;
+//        ListView siteView = (ListView)findViewById(R.id.sites);
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * sites.length, getResources().getDisplayMetrics());
+//        siteView.getLayoutParams().height = height;
 
         // creating adapter for ListView
-        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(sites));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_checked, checkboxesText);
+//        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(sites));
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_checked, checkboxesText);
 
         // creates ListView checkboxes
-        ListView listview = (ListView) findViewById(R.id.sites);
-        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listview.setAdapter(adapter);
+//        ListView listview = (ListView) findViewById(R.id.sites);
+//        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//        listview.setAdapter(adapter);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("login", "OnClick_connected:" + connected);
-                if (connected){
-                    String userName=txtUsuario.getText().toString();
-                    String password=txtPassword.getText().toString();
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String userName=username.getText().toString();
+//                String password=password.getText().toString();
+//
+//                }
+//            }
 
-                    try {
-
-
-                        if(response.equals(getString(R.string.session_init_key)) || response.equals(getString(R.string.password_expired_key))){
-
-                            editor.commit();
-                            // Remote Server
-                            Intent intent=new Intent(MainActivity.this,Menu_principal.class);
-                            startActivity(intent);
-
-                            finish();
-
-                        }else{
-                            Log.i("login", "Datos incorrectos" );
-                            dismissDialog(PROGRESS_DIALOG);
-                            Toast.makeText(getBaseContext(), response, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (InterruptedException e1) {
-                        response = e1.getMessage();
-                    } catch (ExecutionException e2) {
-                        response = e2.getMessage();
-                    } catch (Exception e3) {
-                        response = e3.getMessage();
-                    }
-                    tvwMensaje.setText(response);
-
-                }
-            }
-
-        });
+//        });
 //        // list of sites
 //        String[] sites = {"site1", "site2", "site3", "site4"};
 //
@@ -196,6 +163,34 @@ public class PromoterLoginActivity extends Activity {
         else{
             return false;
         }
+    }
+
+
+    public void loadLocaleSpinner(String url){
+        LocaleLoadTask localeTask = new LocaleLoadTask();
+
+        loadLocale = localeTask.execute(url);
+        Locale[] objLocale;
+        String[] wee;
+        try {
+
+            objLocale = loadLocale.get();
+            wee = new String[objLocale.length];
+
+            for(int i = 0;i < objLocale.length; i++){
+                wee[i]= objLocale[i].name;
+            }
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                    this, android.R.layout.simple_spinner_item, wee);
+            spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+            spnLocal.setAdapter(spinnerArrayAdapter);
+
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        }
+
     }
 
     public Promoter getPromoterInfo(String username){
