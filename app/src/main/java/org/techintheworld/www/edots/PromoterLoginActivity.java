@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,6 +25,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+=======
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+>>>>>>> 81cbc9de682a62c15ee4f64fc1bd5c6a52a2b702
 
 import edots.models.Promoter;
 
@@ -44,6 +54,7 @@ public class PromoterLoginActivity extends Activity {
         loginButton = (Button)findViewById(R.id.loginButton);
         spnLocal = (Spinner) findViewById(R.id.spnLocal);
 
+<<<<<<< HEAD
         // list of sites
         String[] sites = {"site1", "site2", "site3", "site4"};
 
@@ -100,6 +111,23 @@ public class PromoterLoginActivity extends Activity {
             }
 
         });
+//        // list of sites
+//        String[] sites = {"site1", "site2", "site3", "site4"};
+//
+//        // sets layout_height for ListView based on number of sites
+//        ListView siteView = (ListView)findViewById(R.id.sites);
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * sites.length, getResources().getDisplayMetrics());
+//        siteView.getLayoutParams().height = height;
+//
+//        // creating adapter for ListView
+//        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(sites));
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_checked, checkboxesText);
+//
+//        // creates ListView checkboxes
+//        ListView listview = (ListView) findViewById(R.id.sites);
+//        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//        listview.setAdapter(adapter);
     }
 
 

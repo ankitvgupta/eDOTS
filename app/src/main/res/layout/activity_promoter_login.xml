@@ -18,55 +18,46 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/promoter_login_username"/>
-
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/app_name"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal" />
 
         <EditText
             android:id="@+id/username"
+            android:layout_marginTop="40dp"
             android:layout_height="wrap_content"
             android:inputType="text"
+            android:hint="@string/promoter_login_username"
             android:layout_width="fill_parent">
         </EditText>
 
         <!--password field-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/promoter_login_password"/>
         <EditText
             android:id="@+id/password"
+            android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:hint="@string/promoter_login_password"
             android:layout_width="fill_parent">
         </EditText>
 
         <!--locale field-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/promoter_login_locale"/>
 
-        <ListView
-            android:id="@+id/sites"
+        <Spinner
+            android:id="@+id/locale_spinner"
+            android:layout_marginTop="20dp"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@android:color/transparent"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="#CCCCCC"
-            android:dividerHeight="1dp"
-            android:paddingLeft="2dp" >
-        </ListView>
+            android:layout_height="wrap_content"
+            android:text="@string/promoter_login_locale"
+        />
 
         <!--login button-->
         <Button
             android:id="@+id/loginButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="@string/button_promoter_login"
             android:onClick="switchPatientType"
             android:layout_gravity="center_horizontal" />
