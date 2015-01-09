@@ -42,7 +42,9 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
             SoapObject resSoap =(SoapObject)envelope.getResponse();
 
-            Log.v("The object we got is", resSoap.toString());
+            SoapObject resSoap2 = (SoapObject) resSoap.getProperty(0);
+
+            Log.v("The object we got is", resSoap2.getProperty(0).toString());
 
 
             //Geofence lstGeofence = new Geofence[resSoap.getPropertyCount()];
