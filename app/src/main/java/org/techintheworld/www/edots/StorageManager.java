@@ -20,10 +20,20 @@ import edots.models.Promoter;
  */
 public class StorageManager {
 
-    // Gets local storage file and deserializes into Patient object
-    public static Promoter GetLocalPromoterData(String promoterUsername, Context c){
-        GetWebPromoterData(promoterUsername, c);
-        String fileName= promoterUsername.concat("_data");
+    // Gets local storage file and deserializes into request object
+    public static String GetLocalData(String objectType, String id, Context c){
+        if (objectType.equals("Promoter") || objectType.equals("Patient")){
+            GetWebPromoterData(objectType, c);
+            String fileName= objectType.concat("_data");
+            JSONObject jsonObject = getJSONFromLocal(c, fileName);
+            return jsonObject.toString();
+        }
+        return null;
+
+    }
+
+
+    private static JSONObject getJSONFromLocal(Context c, String fileName){
         try {
             // Opens file for reading
             FileInputStream fis = c.openFileInput(fileName);
@@ -40,8 +50,7 @@ public class StorageManager {
             fis.close();
 
             // Convert to JSON
-            JSONObject promoterJSON=new JSONObject(fileContent);
-            return new Promoter(promoterJSON.toString());
+            return new JSONObject(fileContent);
 
 
         } catch (FileNotFoundException e) {
@@ -56,12 +65,13 @@ public class StorageManager {
         return null;
     }
 
+    // Gets Promoter info from web and saves as local file
     public static Promoter GetWebPromoterData(String promoterUsername, Context c){
         // TODO: add connection to web and retrieve all info of that promoter
         Promoter p = new Promoter("username", "Brendan","Lima", "edots", new ArrayList<String>(Arrays.asList("Patient1, Patient2")));
 
-        // Save to local file
-        String filename = promoterUsername.concat("_data");
+        // Save to local file for Projects
+        String filename = "Promoter".concat("_data");
         String promoterData = p.toString();
         FileOutputStream outputStream;
 
@@ -73,22 +83,30 @@ public class StorageManager {
             Log.e("Saving Patient files error", "Cannot write to patient file");
             e.printStackTrace();
         }
+
+
+        // Save to local file for Patients
+        String patients_filename = "Patients".concat("_data");
+        String patientsData = p.toString();
+        //FileOutputStream outputStream;
+        /*
+        try {
+            outputStream = c.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(promoterData.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            Log.e("Saving Patient files error", "Cannot write to patient file");
+            e.printStackTrace();
+        }*/
         return null;
+
+
 
     }
 
     // TODO: Allow client to send requests to change remote db for adding patients, edit Promoter info
     // Send deltas rather than rewriting
     public void UpdateWebService(){
-
-    }
-
-    public String SerializePatients(Promoter p){
-        return null;
-    }
-
-    public void EditPatientData(String patient_username){
-
 
     }
 
