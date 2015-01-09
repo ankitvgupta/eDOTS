@@ -14,7 +14,7 @@ import java.util.Date;
  * Modified by ankitvgupta since
  */
 public class Patient extends Object{
-    private Long id;
+    private String pid;
     private String name;
     private String fathersName;
     private String mothersName;
@@ -28,19 +28,21 @@ public class Patient extends Object{
     }
 
     // For production
-    public Patient (String n, Date d, Long id, String s, ArrayList<Project> projects, String mother, String father){
+    public Patient (String n, Date d, Long nid, String s, ArrayList<Project> projects, String mother, String father, String patientID){
         name = n;
         birthDate = d;
-        nationalID = id;
+        nationalID = nid;
         sex = s;
         enrolledProjects = projects;
         mothersName = mother;
         fathersName = father;
+        pid = patientID;
     }
 
     // For testing only
     public Patient(Long n){
         name ="Brendan";
+        pid = "01723-X72312-7123";
         birthDate = new Date();
         nationalID = n;
         sex ="Female";
@@ -63,6 +65,7 @@ public class Patient extends Object{
             birthDate = new Date(Long.valueOf(n.get("birthDate").toString()));
             nationalID = Long.valueOf(n.get("nationalID").toString());
             sex = n.get("sex").toString();
+            pid = n.get("pid").toString();
             enrolledProjects = new ArrayList<Project>();
             JSONArray arry = new JSONArray(n.get("enrolledProjects").toString());
             for (int i = 0; i < arry.length(); i++){
@@ -86,6 +89,7 @@ public class Patient extends Object{
             temp.put("nationalID", getNationalID());
             temp.put("sex", getSex());
             temp.put("enrolledProjects", getEnrolledProjects());
+            temp.put("pid", getPid());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -96,6 +100,10 @@ public class Patient extends Object{
 
     public String getName(){
         return name;
+    }
+
+    public String getPid(){
+        return pid;
     }
 
     public String getFathersName(){
@@ -143,5 +151,8 @@ public class Patient extends Object{
     }
     public void setSex(String s){
         sex=s;
+    }
+    public void setPid(String s){
+        pid=s;
     }
 }
