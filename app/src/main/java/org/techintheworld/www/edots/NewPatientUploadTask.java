@@ -31,7 +31,7 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
         request.addProperty("Nombres", params[1]);
         request.addProperty("ApellidoP", params[2]);
         request.addProperty("ApellidoM", params[3]);
-        request.addProperty("CodigoTipoDocumento", Integer.valueOf(params[4]));
+        request.addProperty("CodigoTipoDocumento", params[4]);
         request.addProperty("DocumentoIdentidad", params[5]);
 
         SimpleDateFormat reverseParse = new SimpleDateFormat("dd/MM/yyyy");
@@ -43,7 +43,7 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
         catch (ParseException e){
             e.printStackTrace();
         }
-        request.addProperty("Sexo", Integer.valueOf(params[7]));
+        request.addProperty("Sexo", params[7]);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
