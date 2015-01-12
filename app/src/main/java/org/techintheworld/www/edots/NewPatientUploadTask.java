@@ -9,9 +9,6 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 
 /**
  * Created by Ankit on 1/9/15.
@@ -34,16 +31,7 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
         request.addProperty("CodigoTipoDocumento", params[4]);
         Log.i("national id", params[5]);
         request.addProperty("DocumentoIdentidad", params[5]);
-
-        SimpleDateFormat reverseParse = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat sqlParse = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
-
-        try {
-            request.addProperty("FechaNacimiento", sqlParse.format(reverseParse.parse(params[6])));
-        }
-        catch (ParseException e){
-            e.printStackTrace();
-        }
+        request.addProperty("FechaNacimiento", params[6]);
         request.addProperty("Sexo", params[7]);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);

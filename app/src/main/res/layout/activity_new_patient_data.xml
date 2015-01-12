@@ -17,16 +17,6 @@
             android:layout_height="fill_parent"
             android:weightSum="1">
 
-            <!--Put form controls here-->
-
-            <!--eDOTS button-->
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-                <!--android:text="@string/app_name"-->
-                <!--android:id="@+id/textView" />-->
-
             <!--national ID field-->
             <TextView
                 android:layout_width="wrap_content"
@@ -141,21 +131,6 @@
                 android:dividerHeight="1dp"
                 android:paddingLeft="2dp" >
             </ListView>
-
-            <!--<EditText-->
-                <!--android:id="@+id/Treatment"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="text"-->
-                <!--android:layout_width="fill_parent">-->
-            <!--</EditText>-->
-
-            <!--Sex-->
-            <!--<Spinner-->
-                <!--android:id="@+id/Sex"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:hint="@string/new_patient_data_sex">-->
-            <!--</Spinner>-->
 
             <!--fingerprint button-->
             <Button

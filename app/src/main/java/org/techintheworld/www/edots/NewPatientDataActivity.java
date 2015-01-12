@@ -1,6 +1,7 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,24 +23,37 @@ import edots.models.Patient;
 import edots.models.Project;
 
 
-public class NewPatientDataActivity extends Activity {
+public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener{
 
     private Patient currentPatient;
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
-
+    EditText datePicker;
+    private String date_string;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
 
+        // get the birthdate
+        datePicker = (EditText) findViewById(R.id.Birthdate);
+        datePicker.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+                DialogFragment picker = new DatePickerFragment();
+                picker.show(getFragmentManager(), "datePicker");
+            }
+
+        });
+
         // list of treatment study groups
         treatmentList.add(new Project());
         treatmentList.add(new Project());
         treatmentList.add(new Project());
         treatmentList.add(new Project());
-
-        //        {"studyProject1", "studyProject2", "studyProject3", "studyProject4"};
 
         // sets layout_height for ListView based on number of treatments
         ListView treatmentView = (ListView)findViewById(R.id.treatments);
@@ -61,6 +75,14 @@ public class NewPatientDataActivity extends Activity {
         listview.setAdapter(adapter);
     }
 
+    // set the text field as
+    @Override
+    public void returnDate(String date) {
+        // TODO Auto-generated method stub
+        datePicker.setText(date);
+        date_string = date+" 00:00:00.0";
+        Log.i("date_string", date_string);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,10 +151,6 @@ public class NewPatientDataActivity extends Activity {
         editor = (EditText) findViewById(R.id.Mothers_name);
         String motherName = editor.getText().toString();
 
-        // get the birthdate
-        editor = (EditText) findViewById(R.id.Birthdate);
-        String date = editor.getText().toString();
-
         // get the sex
         String sex = "";
         RadioButton buttn = (RadioButton) findViewById(R.id.radio_female);
@@ -158,7 +176,7 @@ public class NewPatientDataActivity extends Activity {
 
         Date date2 = new Date();
         // Submit the patient data to the server.
-        addToDatabase(name, fatherName, motherName, "2", nationalID, date, sex);
+        addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, sex);
         // Instantiate a patient using the given details.
         currentPatient = new Patient (name, date2, Long.valueOf(nationalID), sex, enrolledProjects, motherName, fatherName, "1923745", 1);
 

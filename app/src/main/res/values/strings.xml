@@ -74,6 +74,11 @@
     <string name="view_all_patients">View all Patients</string>
     <string name="namespace">http://demo.sociosensalud.org.pe</string>
     <string name="serverurl">EdotsWS/Service1.asmx</string>
+    <string name="title_activity_main">MainActivity</string>
 
+    <string name="date_label_set">Press the button to set the date</string>
+    <string name="date_button_set">Set Date</string>
+    <string name="date_view_set">The Date is: </string>
+    <string name="date_selected"></string>
 
 </resources>
