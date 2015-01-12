@@ -105,12 +105,22 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/sex"/>
 
-            <EditText
-                android:id="@+id/Sex"
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:layout_width="fill_parent">
-            </EditText>
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/male"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/female"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
 
             <!--Active Treatments field-->
             <TextView

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,6 +106,10 @@ public class NewPatientDataActivity extends Activity {
         return;
     }
 
+    public void onRadioButtonClicked(View view){
+        return;
+    }
+
     // switch to PatientHome activity
     public void addPatientBtn (View view){
 
@@ -129,8 +134,18 @@ public class NewPatientDataActivity extends Activity {
         String date = editor.getText().toString();
 
         // get the sex
-        editor = (EditText) findViewById(R.id.Sex);
-        String sex = editor.getText().toString();
+        String sex = "";
+        RadioButton buttn = (RadioButton) findViewById(R.id.radio_female);
+        if (buttn.isChecked()){
+            sex = "2";
+        }
+        buttn = (RadioButton) findViewById(R.id.radio_male);
+        if (buttn.isChecked()){
+            sex = "1";
+        }
+
+        //editor = (EditText) findViewById(R.id.Sex);
+        //String sex = editor.getText().toString();
 
 
         // determines which treatments are checked and stores them in ArrayList of Projects

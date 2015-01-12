@@ -13,6 +13,8 @@
     <string name="data_format">dd/MM/yyyy</string>
     <string name="dialog_confirm_patient">Is this the patient?</string>
     <string name="done"> Done</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string name="generate_visit"> Generate Visit</string>
     <string name="get_patient_national_id">National ID</string>
     <string name="get_patient_search_national_id">National ID #</string>
