@@ -144,9 +144,6 @@ public class NewPatientDataActivity extends Activity {
             sex = "1";
         }
 
-        //editor = (EditText) findViewById(R.id.Sex);
-        //String sex = editor.getText().toString();
-
 
         // determines which treatments are checked and stores them in ArrayList of Projects
         ArrayList<Project> enrolledProjects = new ArrayList<Project>();

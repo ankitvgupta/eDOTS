@@ -28,7 +28,6 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
-        Log.v("The number of params is", Integer.toString(params.length));
         request.addProperty("Nombres", params[1]);
         request.addProperty("ApellidoP", params[2]);
         request.addProperty("ApellidoM", params[3]);
@@ -60,12 +59,6 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
             transporte.call(SOAP_ACTION, envelope);
 
             SoapPrimitive resSoap = (SoapPrimitive) envelope.getResponse();
-            /*if (resSoap.getPropertyCount() == 0){
-                Log.v("This is not a valid person", "This is not a valid person");
-                return null;
-            }*/
-
-           // SoapObject resSoap2 = (SoapObject) resSoap.getProperty(0);
 
             Log.v("The object we got is", resSoap.toString());
             returnvalue = resSoap.toString();
