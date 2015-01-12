@@ -33,6 +33,7 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
         request.addProperty("ApellidoP", params[2]);
         request.addProperty("ApellidoM", params[3]);
         request.addProperty("CodigoTipoDocumento", params[4]);
+        Log.i("national id", params[5]);
         request.addProperty("DocumentoIdentidad", params[5]);
 
         SimpleDateFormat reverseParse = new SimpleDateFormat("dd/MM/yyyy");

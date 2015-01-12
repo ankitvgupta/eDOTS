@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,6 +98,7 @@ public class GetPatientActivity extends Activity {
 
 
     public void fillTable(){
+        // TODO: clear existing patient data when searched again
         hideKeyboard();
         if (currentPatient == null){
             return;

@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
@@ -28,16 +31,6 @@ public class NewPatientDataActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
-
-//        Patient p = new Patient("Brendan");
-//        ArrayList<Project> patientProjects= p.getEnrolledProjects();
-//        int num_projects = patientProjects.size();
-//        ArrayList<String> checkBoxesText = new ArrayList<String>();
-//        for(int i = 0; i < num_projects; i++) {
-//            CheckBox checkBox = new CheckBox(getApplicationContext());
-//            String n = patientProjects.get(i).getName();
-//            checkBoxesText.add(n);
-//        }
 
         // list of treatment study groups
         treatmentList.add(new Project());
@@ -79,7 +72,7 @@ public class NewPatientDataActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activit  y in AndroidManifest.xml.
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -115,53 +108,52 @@ public class NewPatientDataActivity extends Activity {
     // switch to PatientHome activity
     public void addPatientBtn (View view){
 
-//        // get the national id
-//        EditText editor = (EditText) findViewById(R.id.National_ID);
-//        Long nationalID = Long.valueOf(editor.getText().toString());
-//
-//        // get the name
-//        editor = (EditText) findViewById(R.id.Name);
-//        String name = editor.getText().toString();
-//
-//        // get the father's name
-//        editor = (EditText) findViewById(R.id.Fathers_name);
-//        String fatherName = editor.getText().toString();
-//
-//        // get the mother's name
-//        editor = (EditText) findViewById(R.id.Mothers_name);
-//        String motherName = editor.getText().toString();
-//
-//        // TODO: Do not hardcode date and sex
-//        // TODO: Change sex to be a dropdown with either male or female
-//        Date date = new Date();
-//        String sex = "f";
-//
-//
-//
-//        // determines which treatments are checked and stores them in ArrayList of Projects
-//        ArrayList<Project> enrolledProjects = new ArrayList<Project>();
-//        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
-//        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
-//        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
-//            if (checkedItems.get(i)) {
-//                //String treatment = treatmentListText.getAdapter().getItem(i).toString();
-//                enrolledProjects.add(treatmentList.get(i));
-//            }
-//        }
-//
-//        String patientID = "1231-X21231";
+        // get the national id
+        EditText editor = (EditText) findViewById(R.id.National_ID);
+        String nationalID = editor.getText().toString();
+
+        // get the name
+        editor = (EditText) findViewById(R.id.Name);
+        String name = editor.getText().toString();
+
+        // get the father's name
+        editor = (EditText) findViewById(R.id.Fathers_name);
+        String fatherName = editor.getText().toString();
+
+        // get the mother's name
+        editor = (EditText) findViewById(R.id.Mothers_name);
+        String motherName = editor.getText().toString();
+
+        // get the birthdate
+        editor = (EditText) findViewById(R.id.Birthdate);
+        String date = editor.getText().toString();
+
+        // get the sex
+        editor = (EditText) findViewById(R.id.Sex);
+        String sex = editor.getText().toString();
 
 
+        // determines which treatments are checked and stores them in ArrayList of Projects
+        ArrayList<Project> enrolledProjects = new ArrayList<Project>();
+        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
+        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
+        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+            if (checkedItems.get(i)) {
+                //String treatment = treatmentListText.getAdapter().getItem(i).toString();
+                enrolledProjects.add(treatmentList.get(i));
+            }
+        }
+
+        Date date2 = new Date();
         // Submit the patient data to the server.
-        addToDatabase("brendan","father","mother","1", "87654321","28/01/2008", "3");
-        // addToDatabase(name,fatherName,motherName,"1", Long.toString(nationalID),"28/01/2008", "1");
+        addToDatabase(name, fatherName, motherName, "2", nationalID, date, sex);
         // Instantiate a patient using the given details.
-//        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName, patientID, 1);
+        currentPatient = new Patient (name, date2, Long.valueOf(nationalID), sex, enrolledProjects, motherName, fatherName, "1923745", 1);
 
         // switch to NewVisitActivity
-//        Intent intent = new Intent(this, NewVisitActivity.class);
-//        intent.putExtra("Patient", currentPatient.toString());
-//        startActivity(intent);
+        Intent intent = new Intent(this, NewVisitActivity.class);
+        intent.putExtra("Patient", currentPatient.toString());
+        startActivity(intent);
 
     }
 
