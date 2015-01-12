@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +53,8 @@ public class PromoterLoginActivity extends Activity {
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
         String myurl = "http://demo.sociosensalud.org.pe";
         loadLocaleSpinner(myurl);
+
+
         // list of sites
 //        String[] sites = {"site1", "site2", "site3", "site4"};
 
@@ -129,8 +132,23 @@ public class PromoterLoginActivity extends Activity {
         EditText p= (EditText)findViewById(R.id.password);
         String username = u.getText().toString();
         String password = u.getText().toString();
-        String locale_name = spnLocale.setOnItemSelectedListener(this);
-        boolean validLogin = checkLogin(username, password, "2"); // TODO: get locale
+        String locale_name = spnLocale.getItemAtPosition(spnLocale.getSelectedItemPosition()).toString();
+        String locale_num = "1";
+        Locale[] objLocale;
+        String[] wee;
+        try {
+            objLocale = loadLocale.get();
+            for(int i = 0;i < objLocale.length; i++){
+                if (locale_name.equals(objLocale[i].name)) {
+                    locale_num = String.valueOf(objLocale[i].id);
+                };
+            }
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        }
+        boolean validLogin = checkLogin(username, password, locale_num); // TODO: get locale
         if (validLogin){
             Intent intent = new Intent(this, MainMenuActivity.class);
             Log.e("LOGGED IN:", username.concat(password) );
@@ -204,8 +222,8 @@ public class PromoterLoginActivity extends Activity {
 
     }
 
-    public Promoter getPromoterInfo(String username){
 
+    public Promoter getPromoterInfo(String username){
         return new Promoter("e","Name","Lima", "e", new ArrayList<String>(Arrays.asList("Med 1", "Med 2")));
     }
 
