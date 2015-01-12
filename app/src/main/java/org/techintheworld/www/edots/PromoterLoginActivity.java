@@ -128,6 +128,7 @@ public class PromoterLoginActivity extends Activity {
         EditText p= (EditText)findViewById(R.id.password);
         String username = u.getText().toString();
         String password = u.getText().toString();
+        String locale_name = spnLocale.setOnItemSelectedListener(this);
         boolean validLogin = checkLogin(username, password, "2"); // TODO: get locale
         if (validLogin){
             Intent intent = new Intent(this, MainMenuActivity.class);
