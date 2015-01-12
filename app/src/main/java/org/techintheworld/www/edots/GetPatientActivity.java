@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
+import edots.tasks.GetPatientLoadTask;
 
 
 public class GetPatientActivity extends Activity {

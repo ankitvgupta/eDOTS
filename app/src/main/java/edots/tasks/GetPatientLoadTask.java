@@ -1,4 +1,4 @@
-package org.techintheworld.www.edots;
+package edots.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -17,9 +17,6 @@ import edots.models.Patient;
 import edots.models.Project;
 
 public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
-
-
-    private Patient lstGeofence;
 
     @Override
     protected Patient doInBackground(String... params) {
