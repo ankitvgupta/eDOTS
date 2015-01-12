@@ -10,6 +10,7 @@
     <string name="cancel">Cancel</string>
     <string name="check_finger_print_scan_on_device">Scan On Device</string>
     <string name="check_finger_print_done">Done</string>
+    <string name="data_format">dd/MM/yyyy</string>
     <string name="dialog_confirm_patient">Is this the patient?</string>
     <string name="done"> Done</string>
     <string name="generate_visit"> Generate Visit</string>
@@ -20,8 +21,9 @@
     <string name="get_patient_button_checkFingerPrint">Scan Fingerprint</string>
     <string name="get_patient_or">Or</string>
     <string name="message">You have missed your appointment.</string>
-    <string name="patient_home_button_checkMedicalHistory">Medical History</string>
-    <string name="patient_home_button_logNewVisit">Log New Visit</string>
+    <string name="patient_not_found">Patient not found!</string>
+    <string name="patient_home_button_checkMedicalHistory">History</string>
+    <string name="patient_home_button_logNewVisit">New Visit</string>
     <string name="patient_home_id_number">National ID Number:</string>
     <string name="patient_home_name">Name:</string>
     <string name="register_participant">Register Participant</string>
@@ -37,14 +39,16 @@
     <string name="title_activity_new_visit">NewVisit</string>
     <string name="title_activity_promoter_login">promoterLogin</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
-    <string name="new_patient_data_national_ID"> National ID</string>
-    <string name="new_patient_data_fingerprint"> Enter Fingerprint</string>
+    <string name="name"> Name </string>
+    <string name="national_ID"> National ID</string>
+    <string name="scan_fingerprint"> Scan Fingerprint</string>
     <string name="new_patient_data_name"> Name</string>
-    <string name="new_patient_data_fathers_name"> Fathers Name</string>
-    <string name="new_patient_data_mothers_name"> Mothers Name</string>
-    <string name="new_patient_data_birthdate"> Birthdate</string>
-    <string name="new_patient_data_sex"> Sex</string>
-    <string name="new_patient_data_treatment"> Active Treatments</string>
+    <string name="fathers_name"> Father\`s Name</string>
+    <string name="mothers_name"> Mother\`s Name</string>
+    <string name="birthdate"> Birthdate</string>
+    <string name="sex"> Sex</string>
+    <string name="data_treatment"> Active Treatments</string>
+    <string name="ID">ID</string>
     <string name="new_visit_date">Date</string>
     <string name="new_visit_site">Site</string>
     <string name="new_visit_treatment">Active Treatments</string>
@@ -59,5 +63,11 @@
     <string name="hello_world">Hello World</string>
     <string name="form_hint1">Hello World</string>
     <string name="patient_data_filename">patient_data</string>
+    <string name="login_username">username</string>
+    <string name="login_password">password</string>
+    <string name="key_userid">userid</string>
+    <string name="login_locale">local_id</string>
+    <string name="session_init_key">Gracias por Iniciar Sesion</string>
+    <string name="password_expired_key">Contraseña caducada</string>
 
 </resources>

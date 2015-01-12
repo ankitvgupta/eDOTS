@@ -24,6 +24,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
@@ -107,6 +108,22 @@ public class NewPatientDataActivity extends Activity {
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
     }
 
+    public void addToDatabase(String name, String father, String mother, String docType, String nationalID, String birthDate, String sex){
+
+        NewPatientUploadTask uploader = new NewPatientUploadTask();
+        try {
+            String result = uploader.execute("http://demo.sociosensalud.org.pe", name, father, mother, docType, nationalID, birthDate, sex).get();
+            Log.v("What we got was", result);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e){
+            e.printStackTrace();
+        }
+        return;
+    }
+
     // switch to PatientHome activity
     public void switchGetPatient (View view){
 
@@ -131,6 +148,8 @@ public class NewPatientDataActivity extends Activity {
         Date date = new Date();
         String sex = "f";
 
+
+
         // determines which treatments are checked and stores them in ArrayList of Projects
         ArrayList<Project> enrolledProjects = new ArrayList<Project>();
         ListView treatmentListText = (ListView) findViewById(R.id.treatments);
@@ -142,9 +161,11 @@ public class NewPatientDataActivity extends Activity {
             }
         }
 
+        String patientID = "1231-X21231";
 
         // Instantiate a patient using the given details.
-        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName);
+        addToDatabase(name,fatherName,motherName,"1", Long.toString(nationalID),"28/01/2008", "1");
+        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName, patientID, 1);
 
 
         // TODO: Submit the patient data to the server.
