@@ -66,7 +66,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             Integer sexInt = Integer.parseInt(ic.getProperty(7).toString());
             Integer docType = Integer.parseInt(ic.getProperty(4).toString());
             String birthday = ic.getProperty(6).toString();
-            SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
             Date birthDate = parser.parse(birthday);
 
             String sex = "null";
