@@ -10,12 +10,6 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-
-import edots.models.Patient;
-import edots.models.Project;
 
 
 /**
@@ -23,12 +17,8 @@ import edots.models.Project;
  */
 public class NewPatientUploadTask extends AsyncTask<String,String,String> {
 
-    //private Patient lstGeofence;
-
     @Override
     protected String doInBackground(String... params) {
-
-        //Patient p= null;
 
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
