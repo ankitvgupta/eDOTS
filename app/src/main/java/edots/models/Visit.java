@@ -27,11 +27,11 @@ public class Visit {
     }
 
     // for production
-    public Visit(String site, String project, String visitgroup,
+    public Visit(String site, String project, String visitGroup,
                  String vis, String patient, String date, String time, String promoter){
         SiteCode=site;
         ProjectCode=project;
-        VisitGroupCode = visitgroup;
+        VisitGroupCode = visitGroup;
         VisitCode = vis;
         PacientCode = patient;
         VisitDate = date;

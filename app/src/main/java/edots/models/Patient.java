@@ -1,10 +1,14 @@
 package edots.models;
 
+import android.os.AsyncTask;
+
 import com.parse.Parse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.techintheworld.www.edots.GetHistoryLoadTask;
+import org.techintheworld.www.edots.GetPatientLoadTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,6 +119,15 @@ public class Patient extends Object{
         }
 
         return temp.toString();
+
+    }
+
+    public void getPatientHistory (){
+        //String patientCode = pid; // for production
+        String patientCode = "0B717865-BD22-47D1-A62F-A5C3883D0D34"; // for testing only
+        GetHistoryLoadTask newP = new GetHistoryLoadTask();
+        AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
+
 
     }
 

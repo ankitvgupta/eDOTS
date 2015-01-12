@@ -86,6 +86,7 @@ public class GetPatientActivity extends Activity {
         // parse the result, and return it
         try {
             currentPatient = (Patient) p.get();
+            currentPatient.getPatientHistory();
             //Log.v("Patient that we got is", currentPatient.toString());
         } catch (InterruptedException e1) {
             e1.printStackTrace();
