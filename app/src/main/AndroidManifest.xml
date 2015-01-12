@@ -13,18 +13,6 @@
         android:theme="@style/AppTheme"
         android:debuggable="true" >
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".SecondActivity"
-            android:label="@string/title_activity_second"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.techintheworld.www.edots.MainActivity" />
-        </activity>
-        <activity
             android:name=".GetPatientActivity"
             android:label="@string/title_activity_get_patient"
             android:parentActivityName=".MainMenuActivity">
@@ -67,10 +55,6 @@
             android:name=".MainMenuActivity"
             android:label="@string/title_activity_patient_type"
             android:parentActivityName=".PromoterLoginActivity" >
-        </activity>
-        <activity
-            android:name=".GeoFenceActivity"
-            android:label="@string/title_activity_geo_fence" >
         </activity>
     </application>
 

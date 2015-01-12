@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="ArrayOfLocal">
+    <item>Select a Local</item>
+    <item>CB</item>
+    <item>SMP</item>
+    <item>SB</item>
+    <item>CO</item>
+    <item>HNSB</item>
+    <item>HNHU</item>
+</string-array>
+</resources>
