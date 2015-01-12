@@ -153,7 +153,7 @@ public class NewPatientDataActivity extends Activity {
 
 
         // Submit the patient data to the server.
-        addToDatabase("brendan","father","mother","1", "12345678","28/01/2008", "3");
+        addToDatabase("brendan","father","mother","1", "87654321","28/01/2008", "3");
         // addToDatabase(name,fatherName,motherName,"1", Long.toString(nationalID),"28/01/2008", "1");
         // Instantiate a patient using the given details.
 //        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName, patientID, 1);

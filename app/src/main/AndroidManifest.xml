@@ -21,10 +21,10 @@
             android:name=".NewPatientDataActivity"
             android:label="@string/title_activity_new_patient_data"
             android:parentActivityName=".MainMenuActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".CheckFingerPrintActivity"
@@ -58,6 +58,10 @@
             android:name=".MainMenuActivity"
             android:label="@string/title_activity_patient_type"
             android:parentActivityName=".PromoterLoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
