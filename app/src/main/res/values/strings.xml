@@ -68,6 +68,7 @@
     <string name="login_locale">local_id</string>
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
+    <string name="view_all_patients">View all Patients</string>
 
 
 </resources>
