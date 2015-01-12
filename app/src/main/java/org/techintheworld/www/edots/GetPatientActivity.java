@@ -32,7 +32,7 @@ public class GetPatientActivity extends Activity {
             fillTable();
         }
         catch (Exception e){
-            Log.v("There is no patient already", "There is no patient already");
+            //Log.v("There is no patient already", "There is no patient already");
         }
 
     }
