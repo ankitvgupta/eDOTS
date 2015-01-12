@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
@@ -57,7 +58,7 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
         {
             transporte.call(SOAP_ACTION, envelope);
 
-            SoapObject resSoap = (SoapObject) envelope.getResponse();
+            SoapPrimitive resSoap = (SoapPrimitive) envelope.getResponse();
             /*if (resSoap.getPropertyCount() == 0){
                 Log.v("This is not a valid person", "This is not a valid person");
                 return null;
