@@ -1,29 +1,17 @@
 package org.techintheworld.www.edots;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
@@ -125,55 +113,55 @@ public class NewPatientDataActivity extends Activity {
     }
 
     // switch to PatientHome activity
-    public void switchGetPatient (View view){
+    public void addPatientBtn (View view){
 
-        // get the national id
-        EditText editor = (EditText) findViewById(R.id.National_ID);
-        Long nationalID = Long.valueOf(editor.getText().toString());
+//        // get the national id
+//        EditText editor = (EditText) findViewById(R.id.National_ID);
+//        Long nationalID = Long.valueOf(editor.getText().toString());
+//
+//        // get the name
+//        editor = (EditText) findViewById(R.id.Name);
+//        String name = editor.getText().toString();
+//
+//        // get the father's name
+//        editor = (EditText) findViewById(R.id.Fathers_name);
+//        String fatherName = editor.getText().toString();
+//
+//        // get the mother's name
+//        editor = (EditText) findViewById(R.id.Mothers_name);
+//        String motherName = editor.getText().toString();
+//
+//        // TODO: Do not hardcode date and sex
+//        // TODO: Change sex to be a dropdown with either male or female
+//        Date date = new Date();
+//        String sex = "f";
+//
+//
+//
+//        // determines which treatments are checked and stores them in ArrayList of Projects
+//        ArrayList<Project> enrolledProjects = new ArrayList<Project>();
+//        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
+//        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
+//        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+//            if (checkedItems.get(i)) {
+//                //String treatment = treatmentListText.getAdapter().getItem(i).toString();
+//                enrolledProjects.add(treatmentList.get(i));
+//            }
+//        }
+//
+//        String patientID = "1231-X21231";
 
-        // get the name
-        editor = (EditText) findViewById(R.id.Name);
-        String name = editor.getText().toString();
 
-        // get the father's name
-        editor = (EditText) findViewById(R.id.Fathers_name);
-        String fatherName = editor.getText().toString();
-
-        // get the mother's name
-        editor = (EditText) findViewById(R.id.Mothers_name);
-        String motherName = editor.getText().toString();
-
-        // TODO: Do not hardcode date and sex
-        // TODO: Change sex to be a dropdown with either male or female
-        Date date = new Date();
-        String sex = "f";
-
-
-
-        // determines which treatments are checked and stores them in ArrayList of Projects
-        ArrayList<Project> enrolledProjects = new ArrayList<Project>();
-        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
-        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
-        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
-            if (checkedItems.get(i)) {
-                //String treatment = treatmentListText.getAdapter().getItem(i).toString();
-                enrolledProjects.add(treatmentList.get(i));
-            }
-        }
-
-        String patientID = "1231-X21231";
-
+        // Submit the patient data to the server.
+        addToDatabase("brendan","father","mother","1", "12345678","28/01/2008", "3");
+        // addToDatabase(name,fatherName,motherName,"1", Long.toString(nationalID),"28/01/2008", "1");
         // Instantiate a patient using the given details.
-        addToDatabase(name,fatherName,motherName,"1", Long.toString(nationalID),"28/01/2008", "1");
-        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName, patientID, 1);
+//        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName, patientID, 1);
 
-
-        // TODO: Submit the patient data to the server.
-
-
-        Intent intent = new Intent(this, GetPatientActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+        // switch to NewVisitActivity
+//        Intent intent = new Intent(this, NewVisitActivity.class);
+//        intent.putExtra("Patient", currentPatient.toString());
+//        startActivity(intent);
 
     }
 

@@ -67,39 +67,10 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
 
             Log.v("The object we got is", resSoap.toString());
             returnvalue = resSoap.toString();
-
-            //SoapObject ic = (SoapObject) resSoap.getProperty(0);
-
-            /*String patientID = ic.getProperty(0).toString();
-            String name = ic.getProperty(1).toString();
-            String fathersName = ic.getProperty(2).toString();
-            String mothersName = ic.getProperty(3).toString();
-
-            Long nationalID = Long.valueOf(ic.getProperty(5).toString());
-            Integer sexInt = Integer.parseInt(ic.getProperty(7).toString());
-            Integer docType = Integer.parseInt(ic.getProperty(4).toString());
-            String birthday = ic.getProperty(6).toString();
-            SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
-            Date birthDate = parser.parse(birthday);
-
-            String sex = "null";
-            if (sexInt == 2){ sex = "Female";}
-            else { sex = "Male"; }
-            Project testProject = new Project();
-            Project testProject2 = new Project();
-            ArrayList<Project> enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
-
-            Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
-
-            p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
-
-            Log.v("patient object:", p.toString());
-*/
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            //p = null;
         }
 
 
