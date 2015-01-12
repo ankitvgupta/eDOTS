@@ -58,6 +58,7 @@
     <string name="promoter_login_username"> Username</string>
     <string name="promoter_login_password"> Password</string>
     <string name="promoter_login_locale"> Locale</string>
+    <string name="select_locale">Select a Local!!</string>
     <string name="login_try_again">Try Again</string>
     <string name="title_activity_geo_fence">GeoFenceActivity</string>
     <string name="show_selected_local">Show Selected Local</string>
