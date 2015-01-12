@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
@@ -74,13 +77,11 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         listview.setAdapter(adapter);
     }
 
-    // set the text field as
+    // set the text field as the selected date
     @Override
     public void returnDate(String date) {
-        // TODO Auto-generated method stub
         datePicker.setText(date);
-        date_string = date+" 00:00:00.0";
-        Log.i("date_string", date_string);
+        date_string = date;
     }
 
     @Override
@@ -135,6 +136,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     public void addPatientBtn (View view){
 
         // get the national id
+        // TODO: error message for invalid national ID
         EditText editor = (EditText) findViewById(R.id.National_ID);
         String nationalID = editor.getText().toString();
 
@@ -161,7 +163,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             sex = "1";
         }
 
-
         // determines which treatments are checked and stores them in ArrayList of Projects
         ArrayList<Project> enrolledProjects = new ArrayList<Project>();
         ListView treatmentListText = (ListView) findViewById(R.id.treatments);
@@ -173,11 +174,18 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             }
         }
 
-        Date date2 = new Date();
         // Submit the patient data to the server.
-        addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, sex);
+        addToDatabase(name, fatherName, motherName, "2", nationalID, date_string+" 00:00:00.0", sex);
         // Instantiate a patient using the given details.
-        currentPatient = new Patient (name, date2, Long.valueOf(nationalID), sex, enrolledProjects, motherName, fatherName, "1923745", 1);
+        Date date = null;
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+            date =  df.parse(date_string);
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
+        currentPatient = new Patient (name, date, Long.valueOf(nationalID), sex, enrolledProjects, motherName, fatherName, "1923745", 1);
+        Log.i("date object", date.toString());
 
         // switch to NewVisitActivity
         Intent intent = new Intent(this, NewVisitActivity.class);

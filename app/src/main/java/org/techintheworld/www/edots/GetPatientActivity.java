@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +36,7 @@ public class GetPatientActivity extends Activity {
             fillTable();
         }
         catch (Exception e){
-            //Log.v("There is no patient already", "There is no patient already");
+            Log.v("There is no patient already", "There is no patient already");
         }
 
         btnSearch = (Button) findViewById(R.id.btnSearch);

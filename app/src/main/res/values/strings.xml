@@ -51,7 +51,8 @@
     <string name="sex"> Sex</string>
     <string name="data_treatment"> Active Treatments</string>
     <string name="ID">ID</string>
-    <string name="new_visit_date">Date</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
     <string name="new_visit_site">Site</string>
     <string name="new_visit_treatment">Active Treatments</string>
     <string name="new_visit_done">Submit</string>
