@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Promoter;
 import edots.models.Locale;
 
+//TODO: remember session, auto login
 
 public class PromoterLoginActivity extends Activity {
     private Button loginButton;
