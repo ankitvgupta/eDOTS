@@ -42,7 +42,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
             @Override
             public void onClick(View arg0) {
-                // TODO Auto-generated method stub
                 DialogFragment picker = new DatePickerFragment();
                 picker.show(getFragmentManager(), "datePicker");
             }

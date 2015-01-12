@@ -88,7 +88,6 @@
             </EditText>
 
             <!--Sex field-->
-            <!--we should make this a checkbox type thing-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
