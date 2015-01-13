@@ -95,7 +95,11 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         listview.setAdapter(adapter);
     }
 
-    // set the text field as the selected date
+    /**
+     * @author lili
+     * @param date
+     * set the text field as the selected date
+     */
     @Override
     public void returnDate(Date date) {
         datePicker.setText(displayDateFormat.format(date));
@@ -136,7 +140,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         NewPatientUploadTask uploader = new NewPatientUploadTask();
         try {
             String result = uploader.execute("http://demo.sociosensalud.org.pe", name, father, mother, docType, nationalID, birthDate, sex).get();
-            Log.v("What we got was", result);
+            Log.v("New patient: what we got was", result);
         }
         catch (InterruptedException e){
             e.printStackTrace();

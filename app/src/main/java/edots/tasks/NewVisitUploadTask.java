@@ -1,4 +1,4 @@
-package org.techintheworld.www.edots;
+package edots.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
