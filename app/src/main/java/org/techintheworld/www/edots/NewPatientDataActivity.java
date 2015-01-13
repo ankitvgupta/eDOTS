@@ -17,11 +17,7 @@ import android.widget.ListView;
 
 import android.widget.RadioButton;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
@@ -84,6 +80,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     // set the text field as the selected date
     @Override
     public void returnDate(String date) {
+        // TODO: display the date in dd/MM/yyyy format
         datePicker.setText(date);
         date_string = date;
     }
@@ -196,7 +193,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         }
 
         // switch to NewVisitActivity
-        Intent intent = new Intent(this, MedicalHistoryActivity.class);
+        Intent intent = new Intent(this, GetPatientActivity.class);
         intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
 
