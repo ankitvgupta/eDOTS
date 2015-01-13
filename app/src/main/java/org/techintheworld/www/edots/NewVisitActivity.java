@@ -29,7 +29,7 @@ import edots.tasks.NewPatientUploadTask;
  *
  * Controller for Adding a Visit
  *     Associated View: activity_new_visit.xml
- *     Associated Models: Visit
+ *     Associated git Models: Visit
  *
  *  Adds a new visit to the db
  */
