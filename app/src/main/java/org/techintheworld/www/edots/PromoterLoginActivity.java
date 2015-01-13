@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Locale;
@@ -66,7 +68,11 @@ public class PromoterLoginActivity extends Activity {
         }
     }
 
-
+    /**
+     * Checks Shared Preferences if already logged in by checking if saved username is the same as the current one
+     * @author JN
+     * @return username of the promoter that is logged in
+     */
     private String checkAlreadyLoggedIn(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString((getString(R.string.login_username)), null);
@@ -100,7 +106,15 @@ public class PromoterLoginActivity extends Activity {
     }
 
     // switch to PatientType activity
-    public  void switchPatientType (View view) throws Exception{
+
+    /**
+     * Check if login is successful and save promoter and patient files locally if successful
+     * show alert if login not successful
+     * @author JN
+     * @param view
+     * @throws Exception
+     */
+    public  void switchPatientType (View view){
 
         EditText u= (EditText)findViewById(R.id.username);
         EditText p= (EditText)findViewById(R.id.password);
@@ -127,12 +141,16 @@ public class PromoterLoginActivity extends Activity {
 
         boolean validLogin = checkLogin(username, password, locale_num);
         if (validLogin){
+            try{
+                Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, this);
+                OfflineStorageManager.SaveWebPatientData(new_promoter, this);
+                Intent intent = new Intent(this, MainMenuActivity.class);
+                startActivity(intent);
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
 
-            Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, this);
-            int num_patients = new_promoter.getPatient_ids().size();
-            OfflineStorageManager.SaveWebPatientData(new_promoter, this);
-            Intent intent = new Intent(this, MainMenuActivity.class);
-            startActivity(intent);
         }
         else{
            AlertError("Login Error","Your username or password was incorrect or invalid" );
@@ -140,6 +158,12 @@ public class PromoterLoginActivity extends Activity {
 
     }
 
+    /**
+     * Shows dialog with parameters if there is a login error
+     * @author JN
+     * @param title title of dialogue
+     * @param message message of dialogue
+     */
     public void AlertError(String title, String message){
         // Alert if username and password are not entered
         AlertDialog.Builder loginError = new AlertDialog.Builder(this);
@@ -154,12 +178,19 @@ public class PromoterLoginActivity extends Activity {
         loginError.show();
     }
 
-    // Calls login web service and returns true if login is successful
+    /**
+     * Calls login web service and returns true if login is successful
+     * @author JN
+     * @param username input promoter username
+     * @param password input promoter password
+     * @param locale input promoter locale from Spinner
+     * @return true if login successful from Service, false if not successful
+     */
     public boolean checkLogin(String username, String password, String locale) {
         if(password != null && !password.isEmpty()) {
             String message =  AccountLogin.login(username,password,locale,this);
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
-                // Remote Server
+                OfflineStorageManager.SetLastLocalUpdateTime(this);
                 return true;
 
             }else{
