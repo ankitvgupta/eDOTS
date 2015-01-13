@@ -25,6 +25,7 @@ import edots.models.Patient;
 import edots.models.Project;
 
 import edots.tasks.NewPatientUploadTask;
+import edots.tasks.NewVisitUploadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.TimePickerFragment;
 
