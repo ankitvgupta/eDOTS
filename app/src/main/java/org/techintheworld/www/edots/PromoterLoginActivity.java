@@ -173,23 +173,27 @@ public class PromoterLoginActivity extends Activity {
         }
     }
 
-
+    /**
+     * @author Brendan
+     * @brief loads the spinner for all the locales by pulling down from server
+     * @param url the url of the server
+     */
     public void loadLocaleSpinner(String url){
         LocaleLoadTask localeTask = new LocaleLoadTask();
 
         loadLocale = localeTask.execute(url);
         Locale[] objLocale;
-        String[] wee;
+        String[] locales;
         try {
 
             objLocale = loadLocale.get();
-            wee = new String[objLocale.length];
+            locales = new String[objLocale.length];
 
             for(int i = 0;i < objLocale.length; i++){
-                wee[i]= objLocale[i].name;
+                locales[i]= objLocale[i].name;
             }
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                    this, android.R.layout.simple_spinner_item, wee);
+                    this, android.R.layout.simple_spinner_item, locales);
             spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
             spnLocale.setAdapter(spinnerArrayAdapter);
 
