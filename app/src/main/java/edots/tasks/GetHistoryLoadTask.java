@@ -18,7 +18,7 @@ import edots.models.Project;
 import edots.models.Visit;
 
 /**
- * Created by Ankit on 1/12/15.
+ * Written by Ankit on 1/12/15.
  */
 public class GetHistoryLoadTask extends AsyncTask<String,String,ArrayList<Visit>> {
 

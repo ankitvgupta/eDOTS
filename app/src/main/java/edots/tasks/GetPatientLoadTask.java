@@ -16,6 +16,9 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Project;
 
+/*
+ * Written by Ankit
+ */
 public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
     // TODO: Technically this only gets the first patient that matches the DocIdentidad - if multiple match, it just returns the first.

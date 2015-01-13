@@ -14,6 +14,7 @@ import edots.models.Patient;
 
 /**
  * Created by jfang on 1/12/15.
+ * Reviewed by Ankit on 1/13/15
  */
 public class LoadPatientFromPromoterTask extends AsyncTask<String, String, ArrayList<String>> {
 

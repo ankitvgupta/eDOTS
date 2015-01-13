@@ -13,6 +13,7 @@ import edots.models.Locale;
 /*
  * Written by Brendan
  * Reviewed by Ankit
+ *
  * Pulls all of the locales available during login from the database.
  */
 public class LocaleLoadTask extends AsyncTask<String,String,Locale[]> {
