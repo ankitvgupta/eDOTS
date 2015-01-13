@@ -26,7 +26,7 @@ import edots.tasks.LoadPatientFromPromoterTask;
 /**
  * Created by jfang on 1/7/15.
  */
-public class StorageManager {
+public class OfflineStorageManager {
 
 
     public static String getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
@@ -102,6 +102,7 @@ public class StorageManager {
         }
 
         // Saves patients data of this promoter to a file named under patients_filename
+
         String patientData = ja.toString();
 
         FileOutputStream p_outputStream;

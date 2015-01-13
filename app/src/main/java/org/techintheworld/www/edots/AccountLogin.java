@@ -13,9 +13,11 @@ import edots.models.Login;
 import edots.tasks.LoginTask;
 
 public class AccountLogin {
+
     // TODO: refactor dialog back into promoter login activity
     public static String login(String username, String password, String locale, Context c) {
         // TODO: check internet connection
+
         LoginTask runner = new LoginTask();
         AsyncTask<String, String, Login> loginAsyncTask;
         String response = "";
@@ -26,20 +28,23 @@ public class AccountLogin {
         SharedPreferences.Editor editor = mPreferences.edit();
         Log.i("login", "OnClick_url:" + url);
 
+        ProgressDialog p = ProgressDialog.show(c, "", "Login in progress", true);
+        loginAsyncTask = runner.execute(username, password, locale, url);
+
+
 
         try {
-            loginAsyncTask = runner.execute(username, password, locale, url);
 
-            // TODO: change to progress dialog
-            Login login = loginAsyncTask.get();
-            response = login.Message;
+
             ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
             loginProgress.setTitle("Login in progress");
             loginProgress.setMessage("Your username or password was incorrect or invalid");
             loginProgress.show();
 
-            Log.i("login", login.Message);
 
+            // TODO: change to progress dialog
+            Login login = loginAsyncTask.get();
+            response = login.Message;
             editor.putString(c.getString(R.string.login_username), username);
             editor.putString(c.getString(R.string.key_userid), String.valueOf(login.UserID));
             editor.putString(c.getString(R.string.login_locale), locale);
@@ -50,6 +55,7 @@ public class AccountLogin {
 
                 editor.commit();
             }
+            p.dismiss();
 
 
         } catch (InterruptedException e1) {
