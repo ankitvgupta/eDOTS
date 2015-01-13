@@ -39,6 +39,20 @@ public class Visit {
         UserCode = promoter;
     }
 
+    public String getSiteCode() {return SiteCode;}
 
+    public String getProjectCode() {return ProjectCode;}
+
+    public String getVisitGroupCode() {return VisitGroupCode;}
+
+    public String getVisitCode() {return VisitCode;}
+
+    public String getPacientCode() {return PacientCode;}
+
+    public String getVisitDate() {return VisitDate;}
+
+    public String getTimeVal() {return TimeVal;}
+
+    public String getUserCode() {return UserCode;}
 
 }
