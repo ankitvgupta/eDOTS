@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Locale;
 import edots.models.Promoter;
 import edots.tasks.LocaleLoadTask;
+import edots.utils.OfflineStorageManager;
 
 //import edots.models.Login;
 
@@ -196,8 +197,5 @@ public class PromoterLoginActivity extends Activity {
         } catch (ExecutionException e1) {
             e1.printStackTrace();
         }
-
     }
-
-
 }

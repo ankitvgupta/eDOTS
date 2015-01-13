@@ -1,4 +1,4 @@
-package org.techintheworld.www.edots;
+package edots.utils;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author lilijiang
+ * @author lili
  * @since 1/13/15
  * Time picker dialog class
  */

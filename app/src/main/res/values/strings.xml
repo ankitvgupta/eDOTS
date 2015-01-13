@@ -58,7 +58,7 @@
     <string name="new_visit_done">Submit</string>
     <string name="promoter_login_username"> Username</string>
     <string name="promoter_login_password"> Password</string>
-    <string name="promoter_login_locale"> Locale</string>
+    <string name="locale"> Locale</string>
     <string name="select_locale">Select a Local!!</string>
     <string name="login_try_again">Try Again</string>
     <string name="title_activity_geo_fence">GeoFenceActivity</string>
@@ -84,5 +84,7 @@
     <string name="date_view_set">The Date is: </string>
     <string name="date_selected"></string>
     <string name="new_visit_date">New Visit Data</string>
+    <string name="patient_select_spinner">Select Patient</string>
+    <string name="get_patient_select_patient">Select Your Patient:</string>
 
 </resources>

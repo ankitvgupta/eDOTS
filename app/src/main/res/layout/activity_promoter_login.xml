@@ -49,7 +49,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/promoter_login_locale"
+            android:text="@string/locale"
         />
 
         <!--login button-->
