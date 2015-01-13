@@ -20,10 +20,13 @@ public class LoadPatientFromPromoterTask extends AsyncTask<String, String, Array
     protected ArrayList<String> doInBackground(String... params) {
         Patient p = null;
 
+        // check to make sure we have right number of parameters
         int count = params.length;
         if (count != 2) {
             return null;
         }
+
+        // setup server parameters
         String urlserver = params[0];
         final String NAMESPACE = urlserver + "/";
         final String URL = NAMESPACE + "EdotsWS/Service1.asmx";
@@ -31,6 +34,7 @@ public class LoadPatientFromPromoterTask extends AsyncTask<String, String, Array
         final String SOAP_ACTION = NAMESPACE + METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
+        // add the CodigoUsuario (Promoter ID) to the request
         request.addProperty("CodigoUsuario", params[1]);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -43,18 +47,23 @@ public class LoadPatientFromPromoterTask extends AsyncTask<String, String, Array
         try {
             transporte.call(SOAP_ACTION, envelope);
 
+            // get the response
             SoapObject resSoap = (SoapObject) envelope.getResponse();
+
+            // Checks for no rows returned.
             if (resSoap.getPropertyCount() == 0) {
                 Log.v("QUERY ERROR:", "This is not a valid person");
                 return null;
             }
+
+            // determine number of patients
             int num_patients = resSoap.getPropertyCount();
             ArrayList<String> patients = new ArrayList<String>();
 
-
+            // for each of the patients, added the CodigoPaciente to the patients ArrayList
             for (int i = 0; i < num_patients; i++) {
                 SoapObject ic = (SoapObject) resSoap.getProperty(i);
-                String p_id = ic.getProperty(0).toString();
+                String p_id = ic.getProperty("CodigoPaciente").toString();
                 patients.add(p_id);
             }
 
