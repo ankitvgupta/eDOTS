@@ -7,6 +7,7 @@ import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
@@ -17,19 +18,20 @@ import java.util.Date;
 
 import edots.models.Patient;
 import edots.models.Project;
+import edots.models.Visit;
 
 /**
  * Created by Ankit on 1/12/15.
  */
-public class GetHistoryLoadTask extends AsyncTask<String,String,Patient> {
+public class GetHistoryLoadTask extends AsyncTask<String,String,ArrayList<Visit>> {
 
 
-    private Patient lstGeofence;
+    //private Patient lstGeofence;
 
     @Override
-    protected Patient doInBackground(String... params) {
+    protected ArrayList<Visit> doInBackground(String... params) {
 
-        Patient p= null;
+        ArrayList<Visit> results = new ArrayList<Visit>();
 
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
@@ -50,53 +52,44 @@ public class GetHistoryLoadTask extends AsyncTask<String,String,Patient> {
         {
             transporte.call(SOAP_ACTION, envelope);
 
-            SoapObject resSoap =(SoapObject)envelope.getResponse();
+            SoapObject resSoap = (SoapObject) envelope.getResponse();
+            SoapObject resSoapTemp = null;
+
+            int numVisits = resSoap.getPropertyCount();
+            for (int i = 0; i < numVisits; i++){
+                resSoapTemp  = (SoapObject) resSoap.getProperty(i);
+                String SiteCode = "Locale"; // need to change the C# function to actually pull the locale
+                String ProjectCode = resSoapTemp.getProperty("CodigoProyecto").toString();
+                String VisitGroupCode = (String) resSoapTemp.getProperty("CodigoGrupoVisita").toString();
+                String VisitCode = (String) resSoapTemp.getProperty("CodigoVisita").toString();
+                String PacientCode = params[1];
+                String VisitDate = (String) resSoapTemp.getProperty("FechaVisita").toString();
+                String TimeVal = (String) resSoapTemp.getProperty("HoraCita").toString();
+                String UserCode = "NOUSERCODEYET";
+                Visit tmp = new Visit(SiteCode, ProjectCode, VisitGroupCode,
+                        VisitCode, PacientCode, VisitDate, TimeVal, UserCode);
+                results.add(tmp);
+            }
+
             if (resSoap.getPropertyCount() == 0){
-                Log.v("This is not a valid person", "This is not a valid person");
+                Log.v("GetHistoryLoadTask: This is not a valid person or has no visits", "This is not a valid person or has no visits");
                 return null;
             }
 
             SoapObject resSoap2 = (SoapObject) resSoap.getProperty(0);
 
-            Log.v("The object we got is", resSoap2.toString());
+            Log.v("GetHistoryLoadTask: The history object we got is", resSoap.toString());
 
-            /*
-            SoapObject ic = (SoapObject) resSoap.getProperty(0);
 
-            String patientID = ic.getProperty(0).toString();
-            String name = ic.getProperty(1).toString();
-            String fathersName = ic.getProperty(2).toString();
-            String mothersName = ic.getProperty(3).toString();
-
-            Long nationalID = Long.valueOf(ic.getProperty(5).toString());
-            Integer sexInt = Integer.parseInt(ic.getProperty(7).toString());
-            Integer docType = Integer.parseInt(ic.getProperty(4).toString());
-            String birthday = ic.getProperty(6).toString();
-            SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
-            Date birthDate = parser.parse(birthday);
-
-            String sex = "null";
-            if (sexInt == 2){ sex = "Female";}
-            else { sex = "Male"; }
-            Project testProject = new Project();
-            Project testProject2 = new Project();
-            ArrayList<Project> enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
-
-            Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
-
-            p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
-
-            Log.v("patient object:", p.toString());
-            */
 
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            p = null;
+            //results = null;
         }
 
-        return p;
+        return results;
     }
 
 }

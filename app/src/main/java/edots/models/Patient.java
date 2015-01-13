@@ -1,6 +1,7 @@
 package edots.models;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.parse.Parse;
 
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -124,9 +126,19 @@ public class Patient extends Object{
 
     public void getPatientHistory (){
         //String patientCode = pid; // for production
-        String patientCode = "0B717865-BD22-47D1-A62F-A5C3883D0D34"; // for testing only
+        String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
         GetHistoryLoadTask newP = new GetHistoryLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
+        try {
+            ArrayList<Visit> visits = (ArrayList<Visit>) p.get();
+            Log.v("Patient.java: The visits are", visits.toString());
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
 
     }
