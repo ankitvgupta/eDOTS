@@ -274,7 +274,7 @@ public class GetPatientActivity extends Activity {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
+    // This is the patient spinner
     private void loadPatientSpinner(){
         JSONArray object;
         try {
