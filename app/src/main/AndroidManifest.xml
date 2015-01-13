@@ -61,7 +61,7 @@
         </activity>
         <activity
             android:name=".MainMenuActivity"
-            android:label="@string/title_activity_patient_type"
+            android:label="MainMenuActivity"
             android:parentActivityName=".PromoterLoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
