@@ -36,7 +36,7 @@ public class GetPatientActivity extends Activity {
             fillTable();
         }
         catch (Exception e){
-            //Log.v("There is no patient already", "There is no patient already");
+            Log.v("There is no patient already", "There is no patient already");
         }
 
         btnSearch = (Button) findViewById(R.id.btnSearch);
@@ -87,6 +87,7 @@ public class GetPatientActivity extends Activity {
         // parse the result, and return it
         try {
             currentPatient = (Patient) p.get();
+            currentPatient.getPatientHistory();
             //Log.v("Patient that we got is", currentPatient.toString());
         } catch (InterruptedException e1) {
             e1.printStackTrace();
@@ -99,6 +100,7 @@ public class GetPatientActivity extends Activity {
 
 
     public void fillTable(){
+        // TODO: clear existing patient data when searched again
         hideKeyboard();
         if (currentPatient == null){
             return;

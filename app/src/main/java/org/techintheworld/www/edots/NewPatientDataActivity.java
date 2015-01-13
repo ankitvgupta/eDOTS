@@ -1,7 +1,9 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -13,6 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import android.widget.RadioButton;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
@@ -20,36 +27,39 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Patient;
 import edots.models.Project;
 import edots.tasks.NewPatientUploadTask;
+import edots.tasks.GetPatientLoadTask;
 
 
-public class NewPatientDataActivity extends Activity {
+public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener{
 
     private Patient currentPatient;
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
-
+    EditText datePicker;
+    private String date_string;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
 
-//        Patient p = new Patient("Brendan");
-//        ArrayList<Project> patientProjects= p.getEnrolledProjects();
-//        int num_projects = patientProjects.size();
-//        ArrayList<String> checkBoxesText = new ArrayList<String>();
-//        for(int i = 0; i < num_projects; i++) {
-//            CheckBox checkBox = new CheckBox(getApplicationContext());
-//            String n = patientProjects.get(i).getName();
-//            checkBoxesText.add(n);
-//        }
+        // get the birthdate
+        datePicker = (EditText) findViewById(R.id.Birthdate);
+        datePicker.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View arg0) {
+                DialogFragment picker = new DatePickerFragment();
+                picker.show(getFragmentManager(), "datePicker");
+            }
+
+        });
 
         // list of treatment study groups
         treatmentList.add(new Project());
         treatmentList.add(new Project());
         treatmentList.add(new Project());
         treatmentList.add(new Project());
-
-        //        {"studyProject1", "studyProject2", "studyProject3", "studyProject4"};
 
         // sets layout_height for ListView based on number of treatments
         ListView treatmentView = (ListView)findViewById(R.id.treatments);
@@ -71,6 +81,12 @@ public class NewPatientDataActivity extends Activity {
         listview.setAdapter(adapter);
     }
 
+    // set the text field as the selected date
+    @Override
+    public void returnDate(String date) {
+        datePicker.setText(date);
+        date_string = date;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,7 +99,7 @@ public class NewPatientDataActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activit  y in AndroidManifest.xml.
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -116,12 +132,17 @@ public class NewPatientDataActivity extends Activity {
         return;
     }
 
+    public void onRadioButtonClicked(View view){
+        return;
+    }
+
     // switch to PatientHome activity
-    public void switchGetPatient (View view){
+    public void addPatientBtn (View view){
 
         // get the national id
+        // TODO: error message for invalid national ID
         EditText editor = (EditText) findViewById(R.id.National_ID);
-        Long nationalID = Long.valueOf(editor.getText().toString());
+        String nationalID = editor.getText().toString();
 
         // get the name
         editor = (EditText) findViewById(R.id.Name);
@@ -135,12 +156,16 @@ public class NewPatientDataActivity extends Activity {
         editor = (EditText) findViewById(R.id.Mothers_name);
         String motherName = editor.getText().toString();
 
-        // TODO: Do not hardcode date and sex
-        // TODO: Change sex to be a dropdown with either male or female
-        Date date = new Date();
-        String sex = "f";
-
-
+        // get the sex
+        String sex = "";
+        RadioButton buttn = (RadioButton) findViewById(R.id.radio_female);
+        if (buttn.isChecked()){
+            sex = "2";
+        }
+        buttn = (RadioButton) findViewById(R.id.radio_male);
+        if (buttn.isChecked()){
+            sex = "1";
+        }
 
         // determines which treatments are checked and stores them in ArrayList of Projects
         ArrayList<Project> enrolledProjects = new ArrayList<Project>();
@@ -153,17 +178,25 @@ public class NewPatientDataActivity extends Activity {
             }
         }
 
-        String patientID = "1231-X21231";
+        // Submit the patient data to the server.
+        addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, sex);
 
-        // Instantiate a patient using the given details.
-        addToDatabase(name,fatherName,motherName,"1", Long.toString(nationalID),"28/01/2008", "1");
-        currentPatient = new Patient (name, date, nationalID, sex, enrolledProjects, motherName, fatherName, patientID, 1);
+        // then query the database to get the patient, including the patient code generated by server
+        GetPatientLoadTask getP = new GetPatientLoadTask();
+        try {
+            AsyncTask p = getP.execute("http://demo.sociosensalud.org.pe", nationalID);
+            currentPatient = (Patient) p.get();
+            Log.v("What we got was", currentPatient.toString());
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e){
+            e.printStackTrace();
+        }
 
-
-        // TODO: Submit the patient data to the server.
-
-
-        Intent intent = new Intent(this, GetPatientActivity.class);
+        // switch to NewVisitActivity
+        Intent intent = new Intent(this, MedicalHistoryActivity.class);
         intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
 

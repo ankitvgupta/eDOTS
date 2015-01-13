@@ -1,4 +1,6 @@
-package edots.tasks;
+
+
+package org.techintheworld.www.edots;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,7 +18,13 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Project;
 
-public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
+/**
+ * Created by Ankit on 1/12/15.
+ */
+public class GetHistoryLoadTask extends AsyncTask<String,String,Patient> {
+
+
+    private Patient lstGeofence;
 
     @Override
     protected Patient doInBackground(String... params) {
@@ -26,11 +34,11 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "BuscarParticipante";
+        final String METHOD_NAME = "ListadoVisitas1";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
-		request.addProperty("DocIdentidad", params[1]);
+        request.addProperty("CodigoPaciente", params[1]);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
 
@@ -50,8 +58,9 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
             SoapObject resSoap2 = (SoapObject) resSoap.getProperty(0);
 
-            Log.v("The object we got is", resSoap2.getProperty(0).toString());
+            Log.v("The object we got is", resSoap2.toString());
 
+            /*
             SoapObject ic = (SoapObject) resSoap.getProperty(0);
 
             String patientID = ic.getProperty(0).toString();
@@ -78,6 +87,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
 
             Log.v("patient object:", p.toString());
+            */
 
         }
         catch (Exception e)

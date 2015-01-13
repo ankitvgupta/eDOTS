@@ -17,16 +17,6 @@
             android:layout_height="fill_parent"
             android:weightSum="1">
 
-            <!--Put form controls here-->
-
-            <!--eDOTS button-->
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-                <!--android:text="@string/app_name"-->
-                <!--android:id="@+id/textView" />-->
-
             <!--national ID field-->
             <TextView
                 android:layout_width="wrap_content"
@@ -98,19 +88,28 @@
             </EditText>
 
             <!--Sex field-->
-            <!--we should make this a checkbox type thing-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/sex"/>
 
-            <EditText
-                android:id="@+id/Sex"
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:layout_width="fill_parent">
-            </EditText>
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/male"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/female"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
 
             <!--Active Treatments field-->
             <TextView
@@ -132,21 +131,6 @@
                 android:paddingLeft="2dp" >
             </ListView>
 
-            <!--<EditText-->
-                <!--android:id="@+id/Treatment"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="text"-->
-                <!--android:layout_width="fill_parent">-->
-            <!--</EditText>-->
-
-            <!--Sex-->
-            <!--<Spinner-->
-                <!--android:id="@+id/Sex"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:hint="@string/new_patient_data_sex">-->
-            <!--</Spinner>-->
-
             <!--fingerprint button-->
             <Button
                 android:layout_width="wrap_content"
@@ -158,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add Patient"
-                android:onClick="switchGetPatient"/>
+                android:onClick="addPatientBtn"/>
 
         </LinearLayout>
     </ScrollView>

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.telephony.gsm.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ public class MainMenuActivity extends Activity {
         {
             public void onClick(View v)
             {
+                Log.i("sms", "as");
                 String phoneNo = "943229757";
                 String message = Integer.toString(R.string.message);
                 if (phoneNo.length()>0 && message.length()>0)

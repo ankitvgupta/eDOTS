@@ -4,23 +4,32 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" >
+    </uses-permission>
 
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:debuggable="true" >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".GetPatientActivity"
             android:label="@string/title_activity_get_patient"
-            android:parentActivityName=".MainMenuActivity">
+            android:parentActivityName=".MainMenuActivity" >
         </activity>
         <activity
             android:name=".NewPatientDataActivity"
             android:label="@string/title_activity_new_patient_data"
-            android:parentActivityName=".MainMenuActivity">
+            android:parentActivityName=".MainMenuActivity" >
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".CheckFingerPrintActivity"
@@ -45,22 +54,21 @@
         <activity
             android:name=".PromoterLoginActivity"
             android:label="@string/title_activity_promoter_login" >
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".MainMenuActivity"
+            android:label="@string/title_activity_patient_type"
+            android:parentActivityName=".PromoterLoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainMenuActivity"
-            android:label="@string/title_activity_patient_type"
-            android:parentActivityName=".PromoterLoginActivity" >
-        </activity>
     </application>
-
-    <uses-permission android:name="android.permission.SEND_SMS">
-    </uses-permission>
-    <uses-permission android:name="android.permission.RECEIVE_SMS">
-    </uses-permission>
 
 </manifest>

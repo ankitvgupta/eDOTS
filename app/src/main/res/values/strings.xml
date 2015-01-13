@@ -13,6 +13,8 @@
     <string name="data_format">dd/MM/yyyy</string>
     <string name="dialog_confirm_patient">Is this the patient?</string>
     <string name="done"> Done</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string name="generate_visit"> Generate Visit</string>
     <string name="get_patient_national_id">National ID</string>
     <string name="get_patient_search_national_id">National ID #</string>
@@ -49,7 +51,8 @@
     <string name="sex"> Sex</string>
     <string name="data_treatment"> Active Treatments</string>
     <string name="ID">ID</string>
-    <string name="new_visit_date">Date</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
     <string name="new_visit_site">Site</string>
     <string name="new_visit_treatment">Active Treatments</string>
     <string name="new_visit_done">Submit</string>
@@ -71,5 +74,13 @@
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
     <string name="view_all_patients">View all Patients</string>
+    <string name="namespace">http://demo.sociosensalud.org.pe</string>
+    <string name="serverurl">EdotsWS/Service1.asmx</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="date_label_set">Press the button to set the date</string>
+    <string name="date_button_set">Set Date</string>
+    <string name="date_view_set">The Date is: </string>
+    <string name="date_selected"></string>
 
 </resources>
