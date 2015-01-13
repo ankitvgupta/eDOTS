@@ -1,4 +1,4 @@
-package org.techintheworld.www.edots;
+package edots.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,24 +16,22 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Project;
 
-public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
+/**
+ * Created by jfang on 1/12/15.
+ */
+public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
 
-
-    private Patient lstGeofence;
-
-    @Override
     protected Patient doInBackground(String... params) {
-
         Patient p= null;
 
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "BuscarParticipante";
+        final String METHOD_NAME = "BuscarParticipanteConCodigo";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
-		request.addProperty("DocIdentidad", params[1]);
+        request.addProperty("CodigoPaciente", params[1]);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
 
@@ -51,9 +49,6 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
                 return null;
             }
 
-            SoapObject resSoap2 = (SoapObject) resSoap.getProperty(0);
-
-            Log.v("The object we got is", resSoap2.getProperty(0).toString());
 
             SoapObject ic = (SoapObject) resSoap.getProperty(0);
 
@@ -61,12 +56,17 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             String name = ic.getProperty(1).toString();
             String fathersName = ic.getProperty(2).toString();
             String mothersName = ic.getProperty(3).toString();
-
-            Long nationalID = Long.valueOf(ic.getProperty(5).toString());
+            Long nationalID;
+            try{
+                nationalID = Long.valueOf(ic.getProperty(5).toString());
+            }
+            catch (NumberFormatException e){
+                nationalID=null;
+            }
             Integer sexInt = Integer.parseInt(ic.getProperty(7).toString());
             Integer docType = Integer.parseInt(ic.getProperty(4).toString());
             String birthday = ic.getProperty(6).toString();
-            SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
             Date birthDate = parser.parse(birthday);
 
             String sex = "null";
@@ -76,11 +76,11 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             Project testProject2 = new Project();
             ArrayList<Project> enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
 
-            Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
+            Log.e("patient data", patientID+name+fathersName+mothersName+nationalID);
 
             p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
 
-            Log.v("patient object:", p.toString());
+            Log.e("patient object:", p.toString());
 
         }
         catch (Exception e)
@@ -91,6 +91,4 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 
         return p;
     }
-
 }
-

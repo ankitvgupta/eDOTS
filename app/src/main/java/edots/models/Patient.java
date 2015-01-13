@@ -1,20 +1,19 @@
 package edots.models;
 
 import android.os.AsyncTask;
-
-import com.parse.Parse;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.techintheworld.www.edots.GetHistoryLoadTask;
-import org.techintheworld.www.edots.GetPatientLoadTask;
+import edots.tasks.GetHistoryLoadTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -122,11 +121,23 @@ public class Patient extends Object{
 
     }
 
-    public void getPatientHistory (){
+    public ArrayList<Visit> getPatientHistory (){
         //String patientCode = pid; // for production
-        String patientCode = "0B717865-BD22-47D1-A62F-A5C3883D0D34"; // for testing only
+        String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
         GetHistoryLoadTask newP = new GetHistoryLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
+        try {
+            ArrayList<Visit> visits = (ArrayList<Visit>) p.get();
+            Log.v("Patient.java: The visits are", visits.toString());
+            return visits;
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
 
 
     }

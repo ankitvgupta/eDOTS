@@ -6,7 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.telephony.gsm.SmsManager;
 import android.util.Log;
 import android.view.Menu;
@@ -142,6 +144,10 @@ public class MainMenuActivity extends Activity {
     }
 
     public void logOut(View view) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
         Intent intent = new Intent(this, PromoterLoginActivity.class);
         startActivity(intent);
     }

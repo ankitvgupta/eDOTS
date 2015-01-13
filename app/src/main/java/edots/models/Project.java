@@ -6,9 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -30,7 +27,6 @@ public class Project {
             medications = new ArrayList<String>();
             medications.add("Med 1");
             medications.add("Med 2");
-            Log.v("The original medical thing is ", medications.toString());
             //JSONArray medications2 = new JSONArray(medications);
         }
         catch (Exception e){
