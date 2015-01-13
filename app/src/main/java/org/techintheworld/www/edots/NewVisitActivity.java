@@ -137,7 +137,9 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_patient_data, menu);
+
+        getMenuInflater().inflate(R.menu.menu_new_visit, menu);
+
         return true;
     }
 
