@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
@@ -29,6 +31,8 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
     EditText datePicker;
     private String date_string;
+    DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +80,9 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
     // set the text field as
     @Override
-    public void returnDate(String date) {
-        // TODO Auto-generated method stub
-        datePicker.setText(date);
-        date_string = date+" 00:00:00.0";
+    public void returnDate(Date date) {
+        datePicker.setText(displayDateFormat.format(date));
+        date_string = dbDateFormat.format(date)+" 00:00:00.0";
         Log.i("date_string", date_string);
     }
 

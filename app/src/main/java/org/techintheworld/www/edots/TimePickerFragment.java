@@ -9,7 +9,9 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 /**
- * Created by lilijiang on 1/13/15.
+ * @author lilijiang
+ * @since 1/13/15
+ * Time picker dialog class
  */
 
 public class TimePickerFragment extends DialogFragment
@@ -37,7 +39,7 @@ public class TimePickerFragment extends DialogFragment
     public void onTimeSet(TimePicker view, int hour, int minute) {
         if (listener != null)
         {
-            listener.returnTime(Integer.toString(hour)+":"+Integer.toString(minute));
+            listener.returnTime(String.format("%02d", hour)+":"+String.format("%02d", minute));
         }
     }
 }

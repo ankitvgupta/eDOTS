@@ -23,7 +23,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:ems="10"
-                android:id="@+id/visitDate" />
+                android:id="@+id/visitDate"
+                android:focusable="false" />
 
             <!--time field-->
             <TextView android:text="@string/time"
@@ -34,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:ems="10"
-                android:id="@+id/visitTime" />
+                android:id="@+id/visitTime"
+                android:focusable="false" />
 
             <!--site field-->
             <TextView android:text="@string/new_visit_site"

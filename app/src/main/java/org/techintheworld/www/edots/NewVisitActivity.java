@@ -24,8 +24,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
     EditText datePicker;
     EditText timePicker;
-    private String date_string;
-    private String time_string;
+    DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat displayTimeFormat = new SimpleDateFormat("hh:mm");
+    DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    Date visitDate = new Date();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +37,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // get the visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
         Date currentTime = new Date();
-        DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        DateFormat displayTimeFormat = new SimpleDateFormat("hh:mm");
-        DateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
         // set the default date to today
         datePicker.setText(displayDateFormat.format(currentTime));
         // pop up date picker dialog when clicked
@@ -69,16 +68,15 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     // set the text field as the selected date
     @Override
-    public void returnDate(String date) {
+    public void returnDate(Date date) {
         // TODO: format display text in "dd/MM/yyyy"
-        datePicker.setText(date);
-        date_string = date;
-        Log.i("new visit: date", date);
+        datePicker.setText(displayDateFormat.format(date));
+        visitDate = date;
+
     }
 
     public void returnTime(String time) {
         timePicker.setText(time);
-        time_string = time;
     }
 
     @Override
@@ -110,10 +108,12 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     public void submitVisit(View view)
     {
-          Log.i("new visit: time", date_string+" "+time_string+":00.0");
-          addToDatabase();
-//        Intent intent = new Intent(this, GetPatientActivity.class);
-//        startActivity(intent);
+        String date_string = dbDateFormat.format(visitDate);
+        String time_string = timePicker.getText().toString();
+        Log.i("new visit: time", date_string+" "+time_string+":00.0");
+        addToDatabase();
+//      Intent intent = new Intent(this, GetPatientActivity.class);
+//      startActivity(intent);
     }
 
 
