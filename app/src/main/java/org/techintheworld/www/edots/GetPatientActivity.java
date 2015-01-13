@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,7 +49,8 @@ public class GetPatientActivity extends Activity {
     private Patient currentPatient;
     private AsyncTask<String, String, Patient> patient;
     private Spinner spnPatient;
-    Button btnSearch;
+    private Button btnSearch;
+    JSONArray object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,37 @@ public class GetPatientActivity extends Activity {
         setContentView(R.layout.activity_get_patient);
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();
+        try {
+            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+        }
+        catch(JSONException e1){
+            e1.printStackTrace();
+        }
+        catch(FileNotFoundException e1){
+            e1.printStackTrace();
+        }
+        spnPatient.setOnItemSelectedListener(new OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                int index = arg0.getSelectedItemPosition();
+                try{
+                    currentPatient = new Patient(object.getJSONObject(index).toString());
+                    fillTable();
+                }
+                catch (NullPointerException e1){
+                    e1.printStackTrace();
+                }
+                catch (JSONException e1){
+                    e1.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
             fillTable();
@@ -72,6 +106,7 @@ public class GetPatientActivity extends Activity {
                 parseAndFill(v);
             }
         });
+
 
     //TODO: disable medical history and log new visit button if no patient is loaded
 
@@ -162,12 +197,22 @@ public class GetPatientActivity extends Activity {
         TextView sex = (TextView) findViewById(R.id.sex);
 
         SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
+        patientname.setText("");
+        nationalid.setText("");
+        dob.setText("");
+        sex.setText("");
 
 
         patientname.setText(currentPatient.getName());
-        nationalid.setText(currentPatient.getNationalID().toString());
-        dob.setText(parser.format(currentPatient.getBirthDate()));
-        sex.setText(currentPatient.getSex());
+        if (currentPatient.getNationalID() != null) {
+            nationalid.setText(currentPatient.getNationalID().toString());
+        }
+        if (currentPatient.getBirthDate() != null) {
+            dob.setText(parser.format(currentPatient.getBirthDate()));
+        }
+        if (currentPatient.getSex() != null) {
+            sex.setText(currentPatient.getSex());
+        }
     }
 
     public void parseAndFill(View view) {
@@ -238,12 +283,8 @@ public class GetPatientActivity extends Activity {
             for (int i = 0; i < object.length(); i++){
                 JSONObject obj = object.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
-                try {
                     patients[i] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
-                }
-                catch(NullPointerException e1){
-                    e1.printStackTrace();
-                }
+
             }
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, patients);
@@ -256,6 +297,10 @@ public class GetPatientActivity extends Activity {
         catch(FileNotFoundException e1) {
             e1.printStackTrace();
         }
+        catch(NullPointerException e1){
+            e1.printStackTrace();
+        }
+
 
     }
 
