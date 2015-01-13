@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import edots.utils.OfflineStorageManager;
 
 public class MainMenuActivity extends Activity {
     Button btnSendSMS;
