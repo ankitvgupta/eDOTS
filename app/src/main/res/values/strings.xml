@@ -81,5 +81,6 @@
     <string name="date_button_set">Set Date</string>
     <string name="date_view_set">The Date is: </string>
     <string name="date_selected"></string>
+    <string name="new_visit_date">New Visit Data</string>
 
 </resources>

@@ -11,10 +11,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import edots.models.Login;
 
-/**
- * @author jtomaylla
- *
- */
+
 public class AsyncTaskLogin extends  AsyncTask<String,String,Login>{
 
     @Override
