@@ -66,6 +66,7 @@
     <string name="txtLocal">Local</string>
     <string name="hello_world">Hello World</string>
     <string name="form_hint1">Hello World</string>
+    <string name="patient_data_filename">patient_data</string>
     <string name="login_username">username</string>
     <string name="login_password">password</string>
     <string name="key_userid">userid</string>

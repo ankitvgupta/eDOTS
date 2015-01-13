@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import android.widget.RadioButton;
 
 import java.text.DateFormat;
@@ -25,6 +26,8 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
+import edots.tasks.NewPatientUploadTask;
+import edots.tasks.GetPatientLoadTask;
 
 
 public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener{

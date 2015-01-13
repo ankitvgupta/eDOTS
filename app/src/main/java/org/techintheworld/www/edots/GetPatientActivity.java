@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
+import edots.tasks.GetPatientLoadTask;
 
 
 public class GetPatientActivity extends Activity {
