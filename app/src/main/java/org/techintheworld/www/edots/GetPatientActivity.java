@@ -85,7 +85,7 @@ public class GetPatientActivity extends Activity {
         GetPatientLoadTask newP = new GetPatientLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
 
-        // parse the result, and return it
+        // parse the result, and return itg
         try {
             currentPatient = (Patient) p.get();
             currentPatient.getPatientHistory();
