@@ -19,6 +19,9 @@ import edots.models.Project;
 /**
  * Created by jfang on 1/12/15.
  * Reviewed by Ankit on 1/13/15
+ *
+ * Given a PatientID, queries the server and returns a patient object corresponding to that ID
+ *
  */
 public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
 

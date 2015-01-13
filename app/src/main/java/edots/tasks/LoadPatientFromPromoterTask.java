@@ -15,6 +15,8 @@ import edots.models.Patient;
 /**
  * Created by jfang on 1/12/15.
  * Reviewed by Ankit on 1/13/15
+ *
+ * Given a PromoterID, queries the database and returns an ArrayList of the PatientIDs corresponding to that Promoter
  */
 public class LoadPatientFromPromoterTask extends AsyncTask<String, String, ArrayList<String>> {
 

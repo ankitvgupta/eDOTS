@@ -19,6 +19,8 @@ import edots.models.Visit;
 
 /**
  * Written by Ankit on 1/12/15.
+ *
+ * Given a PatientID, queries the database and returns an ArrayList of the corresponding patient's visits
  */
 public class GetHistoryLoadTask extends AsyncTask<String,String,ArrayList<Visit>> {
 

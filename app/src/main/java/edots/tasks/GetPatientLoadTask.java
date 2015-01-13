@@ -18,6 +18,8 @@ import edots.models.Project;
 
 /*
  * Written by Ankit
+ *
+ * Given a NationalID, queries the server and returns the patient object of the corresponding patient.
  */
 public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
 

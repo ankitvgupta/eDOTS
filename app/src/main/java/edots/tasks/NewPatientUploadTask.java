@@ -12,6 +12,8 @@ import org.ksoap2.transport.HttpTransportSE;
 
 /**
  * Created by Ankit on 1/9/15.
+ *
+ * Given the attributes of a patient, adds that patient to the database
  */
 public class NewPatientUploadTask extends AsyncTask<String,String,String> {
 
