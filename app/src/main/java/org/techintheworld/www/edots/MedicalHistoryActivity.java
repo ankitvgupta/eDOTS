@@ -1,10 +1,14 @@
 package org.techintheworld.www.edots;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -57,7 +61,7 @@ public class MedicalHistoryActivity extends Activity {
 
         LinearLayout encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
 
-        for (int i = 0; i < patientVisits.size(); i++) {
+        for (int i = (patientVisits.size() - 1); i >= 0; i--) {
             siteCode = patientVisits.get(i).getSiteCode();
             visitDate = patientVisits.get(i).getVisitDate();
             timeVal = patientVisits.get(i).getTimeVal();
@@ -88,10 +92,18 @@ public class MedicalHistoryActivity extends Activity {
 
             // assign text to each TextView
             visitHeader.setText(siteCode + " - " + visitDate + " - " + timeVal);
-            project.setText("Project: " + projectCode);
-            promoter.setText("Promoter: " + userCode);
-            visit.setText("Visit: " + visitCode);
-            visitGroup.setText("Visit Group: " + visitGroupCode);
+
+            project.setText(Html.fromHtml("<b>" + "Project: " + "</b>" + projectCode));
+            promoter.setText(Html.fromHtml("<b>" + "Promoter: " + "</b>" + userCode));
+            visit.setText(Html.fromHtml("<b>" + "Visit: " + "</b>" + visitCode));
+            visitGroup.setText(Html.fromHtml("<b>" + "Visit Group: " + "</b>" + visitGroupCode));
+
+            // sets text size for each TextView
+            visitHeader.setTextSize(20);
+            project.setTextSize(20);
+            promoter.setTextSize(20);
+            visit.setTextSize(20);
+            visitGroup.setTextSize(20);
 
             // set position of each TextView within RelativeLayout
             RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -120,6 +132,15 @@ public class MedicalHistoryActivity extends Activity {
 
             // add RelativeLayout to LinearLayout
             encloseScrollLayout.addView(newVisit);
+
+            // adds horizontal divider
+            View v = new View(this);
+            v.setLayoutParams(new LinearLayout.LayoutParams(
+                    ActionBar.LayoutParams.MATCH_PARENT,
+                    5
+            ));
+            v.setBackgroundColor(Color.parseColor("#B3B3B3"));
+            encloseScrollLayout.addView(v);
         }
 
     }
