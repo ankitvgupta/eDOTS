@@ -2,7 +2,6 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,12 +18,14 @@ import edots.models.Patient;
 import edots.models.Project;
 
 
-public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener{
+public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
 
     private Patient currentPatient;
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
     EditText datePicker;
+    EditText timePicker;
     private String date_string;
+    private String time_string;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +34,35 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
         // get the visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
-        Date today = new Date();
-        DateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date currentTime = new Date();
+        DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat displayTimeFormat = new SimpleDateFormat("hh:mm");
         DateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
-        datePicker.setText(displayFormat.format(today));
+        // set the default date to today
+        datePicker.setText(displayDateFormat.format(currentTime));
+        // pop up date picker dialog when clicked
         datePicker.setOnClickListener(new View.OnClickListener()
         {
-
             @Override
             public void onClick(View arg0) {
                 DialogFragment picker = new DatePickerFragment();
                 picker.show(getFragmentManager(), "datePicker");
             }
+        });
 
+
+        // get the visit time
+        timePicker = (EditText) findViewById(R.id.visitTime);
+        // set the default date to today
+        timePicker.setText(displayTimeFormat.format(currentTime));
+        // pop up time picker dialog when clicked
+        timePicker.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View arg0) {
+                DialogFragment picker = new TimePickerFragment();
+                picker.show(getFragmentManager(), "timePicker");
+            }
         });
 
     }
@@ -53,9 +70,15 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     // set the text field as the selected date
     @Override
     public void returnDate(String date) {
+        // TODO: format display text in "dd/MM/yyyy"
         datePicker.setText(date);
-        date_string = date+" 00:00:00.0";
-        Log.i("date_string", date_string);
+        date_string = date;
+        Log.i("new visit: date", date);
+    }
+
+    public void returnTime(String time) {
+        timePicker.setText(time);
+        time_string = time;
     }
 
     @Override
@@ -80,20 +103,23 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return super.onOptionsItemSelected(item);
     }
 
-    // switch to CheckFingerPrint Activity
-    public void switchCheckFingerPrint(View view) {
-
-        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
-    }
 
     public void addToDatabase(){
         return;
     }
 
+    public void submitVisit(View view)
+    {
+          Log.i("new visit: time", date_string+" "+time_string+":00.0");
+          addToDatabase();
+//        Intent intent = new Intent(this, GetPatientActivity.class);
+//        startActivity(intent);
+    }
+
 
 }
 
-//
+//    old code for this activity before implementing date and time picker
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
@@ -106,87 +132,34 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 //        }
 //
 //
-//        // get the visit date
-//        datePicker = (EditText) findViewById(R.id.Birthdate);
-//        datePicker.setOnClickListener(new View.OnClickListener() {
+//        //Patient p = new Patient("Brendan");
+//        ArrayList<Project> patientProjects= currentPatient.getEnrolledProjects();
+//        int num_projects = patientProjects.size();
+//        ArrayList<String> checkBoxesText = new ArrayList<String>();
 //
-//            @Override
-//            public void onClick(View arg0) {
-//                DialogFragment picker = new DatePickerFragment();
-//                picker.show(getFragmentManager(), "datePicker");
-//            }
+//        // Retrieve list of projects of this patient
+//        for(int i = 0; i < num_projects; i++) {
+//            CheckBox checkBox = new CheckBox(getApplicationContext());
+//            String n = patientProjects.get(i).getName();
+//            checkBoxesText.add(n);
+//        }
 //
-//        });
+//        // sets layout_height for ListView based on number of treatments
+//        ListView treatmentView = (ListView)findViewById(R.id.active_treatments);
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * num_projects, getResources().getDisplayMetrics());
+//        treatmentView.getLayoutParams().height = height;
+//
+//        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
+//        ListView lv= (ListView)findViewById(R.id.active_treatments);
+//        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+//        lv.setAdapter(adapter);
+//        for (int i=0; i<checkBoxesText.size(); i++){
+//            lv.setItemChecked(i, true);
+//        }
+//        lv.setMinimumHeight(200);
+//
+//
 //    }
-////
-////        //Patient p = new Patient("Brendan");
-////        ArrayList<Project> patientProjects= currentPatient.getEnrolledProjects();
-////        int num_projects = patientProjects.size();
-////        ArrayList<String> checkBoxesText = new ArrayList<String>();
-////
-////        // Retrieve list of projects of this patient
-////        for(int i = 0; i < num_projects; i++) {
-////            CheckBox checkBox = new CheckBox(getApplicationContext());
-////            String n = patientProjects.get(i).getName();
-////            checkBoxesText.add(n);
-////        }
-////
-////        // sets layout_height for ListView based on number of treatments
-////        ListView treatmentView = (ListView)findViewById(R.id.active_treatments);
-////        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * num_projects, getResources().getDisplayMetrics());
-////        treatmentView.getLayoutParams().height = height;
-////
-////        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
-////        ListView lv= (ListView)findViewById(R.id.active_treatments);
-////        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-////        lv.setAdapter(adapter);
-////        for (int i=0; i<checkBoxesText.size(); i++){
-////            lv.setItemChecked(i, true);
-////        }
-////        lv.setMinimumHeight(200);
-////
-////
-////    }
-////
-//    // set the text field as the selected date
-//    @Override
-//    public void returnDate(String date) {
-//        datePicker.setText(date);
-//        date_string = date+" 00:00:00.0";
-//        Log.i("date_string", date_string);
-//    }
-////
-////    public void submitVisit()
-////    {
-////        Intent intent = new Intent(this, GetPatientActivity.class);
-////        startActivity(intent);
-////    }
-////
-////
-////
-////    @Override
-////    public boolean onCreateOptionsMenu(Menu menu) {
-////        // Inflate the menu; this adds items to the action bar if it is present.
-////        getMenuInflater().inflate(R.menu.menu_new_visit, menu);
-////
-////        return true;
-////    }
-////
-////    @Override
-////    public boolean onOptionsItemSelected(MenuItem item) {
-////        // Handle action bar item clicks here. The action bar will
-////        // automatically handle clicks on the Home/Up button, so long
-////        // as you specify a parent activity in AndroidManifest.xml.
-////        int id = item.getItemId();
-////
-////        //noinspection SimplifiableIfStatement
-////        if (id == R.id.action_settings) {
-////            return true;
-////        }
-////
-////        return super.onOptionsItemSelected(item);
-////    }
 //
-//
-//
+
 //}
