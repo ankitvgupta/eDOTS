@@ -10,8 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,12 +46,15 @@ public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
     private AsyncTask<String, String, Patient> patient;
+    private Spinner spnPatient;
     Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_patient);
+        spnPatient = (Spinner) findViewById(R.id.patient_spinner);
+        loadPatientSpinner();
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
             fillTable();
@@ -102,7 +107,7 @@ public class GetPatientActivity extends Activity {
         JSONArray object;
         try {
             // load list of patients from file patient_data
-            object = new JSONArray(StorageManager.getJSONFromLocal(this, "patient_data"));
+            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
             // look at all patients
             for (int i = 0; i < object.length(); i++){
                 JSONObject obj = object.getJSONObject(i);
@@ -221,6 +226,37 @@ public class GetPatientActivity extends Activity {
             InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    private void loadPatientSpinner(){
+        JSONArray object;
+        try {
+            // load list of patients from file patient_data
+            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+            String[] patients = new String[object.length()];
+            // look at all patients
+            for (int i = 0; i < object.length(); i++){
+                JSONObject obj = object.getJSONObject(i);
+                Patient p = new Patient(obj.toString());
+                try {
+                    patients[i] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
+                }
+                catch(NullPointerException e1){
+                    e1.printStackTrace();
+                }
+            }
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                    this, android.R.layout.simple_spinner_item, patients);
+            spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+            spnPatient.setAdapter(spinnerArrayAdapter);
+        }
+        catch(JSONException e1){
+            e1.printStackTrace();
+        }
+        catch(FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+
     }
 
 

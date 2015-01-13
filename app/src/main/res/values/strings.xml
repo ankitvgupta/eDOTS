@@ -82,5 +82,6 @@
     <string name="date_view_set">The Date is: </string>
     <string name="date_selected"></string>
     <string name="new_visit_date">New Visit Data</string>
+    <string name="patient_select_spinner">Select Patient</string>
 
 </resources>
