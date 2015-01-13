@@ -43,7 +43,13 @@ public class MainMenuActivity extends Activity {
                             Toast.LENGTH_SHORT).show();
             }
         });
+
+        OfflineStorageManager.UpdateLocalStorage(this);
+
+
     }
+
+
 
     //---sends an SMS message to another device---
     private void sendSMS(String phoneNumber, String message)
@@ -148,6 +154,11 @@ public class MainMenuActivity extends Activity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.commit();
+        boolean promoter_result = this.deleteFile("promoter_data");
+        boolean patient_result = this.deleteFile("patient_data");
+        if ((!promoter_result) || (!patient_result)){
+            Log.i("MainMenuActivity: Logout", "Promoter result "+ promoter_result + " patient result "+ patient_result );
+        }
         Intent intent = new Intent(this, PromoterLoginActivity.class);
         startActivity(intent);
     }

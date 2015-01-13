@@ -128,7 +128,6 @@ public class PromoterLoginActivity extends Activity {
         if (validLogin){
 
             Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, this);
-            int num_patients = new_promoter.getPatient_ids().size();
             OfflineStorageManager.SaveWebPatientData(new_promoter, this);
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
@@ -158,7 +157,7 @@ public class PromoterLoginActivity extends Activity {
         if(password != null && !password.isEmpty()) {
             String message =  AccountLogin.login(username,password,locale,this);
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
-                // Remote Server
+                OfflineStorageManager.SetLastLocalUpdateTime(this);
                 return true;
 
             }else{

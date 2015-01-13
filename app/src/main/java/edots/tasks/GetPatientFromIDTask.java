@@ -88,12 +88,8 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
             Project testProject2 = new Project();
             ArrayList<Project> enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
 
-            Log.e("patient data", patientID+name+fathersName+mothersName+nationalID);
-
             // instantiate a new patient object to be returned
             p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
-
-            Log.e("patient object:", p.toString());
 
         }
         catch (Exception e)
