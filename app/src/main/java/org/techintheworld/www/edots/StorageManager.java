@@ -128,11 +128,8 @@ public class StorageManager {
 
         // Queries web service for patients with the ids associated with this promoter
         for (int i = 0; i < num_patients; i++) {
-            Log.e("PROMOTER HERE IS", p.toString());
             Patient new_patient = GetWebPatientData(p.getPatient_ids().get(i));
-            Log.e("PATIENT IS", new_patient.toString());
             sb.append(new_patient.toString());
-
         }
 
         // Saves patients data of this promoter to a file named under patients_filename
@@ -172,11 +169,9 @@ public class StorageManager {
     public static Patient GetWebPatientData(String patient_id) {
         GetPatientFromIDTask newP = new GetPatientFromIDTask();
         AsyncTask get_patient = newP.execute("http://demo.sociosensalud.org.pe", patient_id);
-        Log.e("PATIENT ID", patient_id);
         Patient p;
         try{
             p = (Patient)get_patient.get();
-            Log.e("GETWEBPATIENTDATA patient gotten", p.toString());
             return p;
         }
         catch (Exception e){

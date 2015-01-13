@@ -56,8 +56,13 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
             String name = ic.getProperty(1).toString();
             String fathersName = ic.getProperty(2).toString();
             String mothersName = ic.getProperty(3).toString();
-
-            Long nationalID = Long.valueOf(ic.getProperty(5).toString());
+            Long nationalID;
+            try{
+                nationalID = Long.valueOf(ic.getProperty(5).toString());
+            }
+            catch (NumberFormatException e){
+                nationalID=null;
+            }
             Integer sexInt = Integer.parseInt(ic.getProperty(7).toString());
             Integer docType = Integer.parseInt(ic.getProperty(4).toString());
             String birthday = ic.getProperty(6).toString();

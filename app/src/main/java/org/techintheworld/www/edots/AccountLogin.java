@@ -30,6 +30,7 @@ public class AccountLogin {
         try {
             loginAsyncTask = runner.execute(username, password, locale, url);
 
+            // TODO: change to progress dialog
             Login login = loginAsyncTask.get();
             response = login.Message;
             ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);

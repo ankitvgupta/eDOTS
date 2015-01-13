@@ -2,13 +2,10 @@ package edots.models;
 
 import android.os.AsyncTask;
 
-import com.parse.Parse;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.techintheworld.www.edots.GetHistoryLoadTask;
-import org.techintheworld.www.edots.GetPatientLoadTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

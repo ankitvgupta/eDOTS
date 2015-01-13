@@ -98,6 +98,7 @@ public class PromoterLoginActivity extends Activity {
         EditText p= (EditText)findViewById(R.id.password);
         String username = u.getText().toString();
         String password = u.getText().toString();
+
         String locale_name = spnLocale.getItemAtPosition(spnLocale.getSelectedItemPosition()).toString();
         String locale_num = "1";
         Locale[] objLocale;
@@ -127,22 +128,23 @@ public class PromoterLoginActivity extends Activity {
             startActivity(intent);
         }
         else{
-            // Alert if username and password are not entered
-            AlertDialog.Builder loginError = new AlertDialog.Builder(this);
-            loginError.setTitle("Login Error");
-            loginError.setMessage("Your username or password was incorrect or invalid");
-            loginError.setPositiveButton(R.string.login_try_again, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    EditText us= (EditText)findViewById(R.id.username);
-                    EditText pw= (EditText)findViewById(R.id.password);
-                    us.clearComposingText();
-                    pw.clearComposingText();
-
-                }
-            });
-            loginError.show();
+           AlertError("Login Error","Your username or password was incorrect or invalid" );
         }
 
+    }
+
+    public void AlertError(String title, String message){
+        // Alert if username and password are not entered
+        AlertDialog.Builder loginError = new AlertDialog.Builder(this);
+        loginError.setTitle(title);
+        loginError.setMessage(message);
+        loginError.setPositiveButton(R.string.login_try_again, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+
+            }
+        });
+        loginError.show();
     }
 
     // Calls login web service and returns true if login is successful
