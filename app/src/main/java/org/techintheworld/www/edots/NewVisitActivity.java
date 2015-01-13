@@ -21,6 +21,15 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Project;
 
+/**
+ * @author lili
+ * @author ankit
+ * Controller for Adding a Visit
+ *     Associated View: activity_new_visit.xml
+ *     Associated Models: Visit
+ *
+ *  Adds a new visit to the db
+ */
 
 public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
 
@@ -145,9 +154,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return super.onOptionsItemSelected(item);
     }
 
-
     public void addToDatabase(){
-        return;
+        // TODO
     }
 
     // TODO: Add the actual submission to the server
