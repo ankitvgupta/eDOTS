@@ -15,8 +15,8 @@ public class Locale implements KvmSerializable {
     {
         id = 0;
         name = "";
-
     }
+
 
     public Locale(int id, String name)
     {
