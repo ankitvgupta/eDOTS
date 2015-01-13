@@ -232,13 +232,12 @@ public class GetPatientActivity extends Activity {
         JSONArray object;
         try {
             // load list of patients from file patient_data
-            object = new JSONArray(StorageManager.getJSONFromLocal(this, "patient_data"));
+            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
             String[] patients = new String[object.length()];
             // look at all patients
             for (int i = 0; i < object.length(); i++){
                 JSONObject obj = object.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
-                // this ensures that they have a NationalId
                 try {
                     patients[i] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
                 }
