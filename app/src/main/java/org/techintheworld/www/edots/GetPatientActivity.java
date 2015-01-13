@@ -16,9 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
+import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
 
 
@@ -88,7 +90,8 @@ public class GetPatientActivity extends Activity {
         // parse the result, and return itg
         try {
             currentPatient = (Patient) p.get();
-            currentPatient.getPatientHistory();
+            ArrayList<Visit> visits = currentPatient.getPatientHistory();
+            Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
             //Log.v("Patient that we got is", currentPatient.toString());
         } catch (InterruptedException e1) {
             e1.printStackTrace();
