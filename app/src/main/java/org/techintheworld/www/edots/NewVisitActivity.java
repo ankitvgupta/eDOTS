@@ -1,39 +1,72 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import edots.models.Patient;
 import edots.models.Project;
 
-/*
- * Written by Ankit
- *
- * Controller for Adding a Visit
- *      Associated View: activity_new_visit.xml
- *      Associated Models: Visit
- *
- * Adds a new visit to the db
- *
- */
-public class NewVisitActivity extends Activity {
+
+public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
 
     private Patient currentPatient;
+    private ArrayList<Project> treatmentList = new ArrayList<Project>();
+    EditText datePicker;
+    EditText timePicker;
+    DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat displayTimeFormat = new SimpleDateFormat("hh:mm");
+    DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    Date visitDate = new Date();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_visit);
+
+        // get the visit date
+        datePicker = (EditText) findViewById(R.id.visitDate);
+        Date currentTime = new Date();
+        // set the default date to today
+        datePicker.setText(displayDateFormat.format(currentTime));
+        // pop up date picker dialog when clicked
+        datePicker.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View arg0) {
+                DialogFragment picker = new DatePickerFragment();
+                picker.show(getFragmentManager(), "datePicker");
+            }
+        });
+
+
+        // get the visit time
+        timePicker = (EditText) findViewById(R.id.visitTime);
+        // set the default date to today
+        timePicker.setText(displayTimeFormat.format(currentTime));
+        // pop up time picker dialog when clicked
+        timePicker.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View arg0) {
+                DialogFragment picker = new TimePickerFragment();
+                picker.show(getFragmentManager(), "timePicker");
+            }
+        });
 
         // if a patient was passed in, pre-load that patient
         try {
@@ -75,23 +108,25 @@ public class NewVisitActivity extends Activity {
         }
         lv.setMinimumHeight(200);
 
+    }
+
+    // set the text field as the selected date
+    @Override
+    public void returnDate(Date date) {
+        // TODO: format display text in "dd/MM/yyyy"
+        datePicker.setText(displayDateFormat.format(date));
+        visitDate = date;
 
     }
 
-    // TODO: Add the actual submission to the server
-    // Submits the visit to the server and switches to GetPatientActivity
-    public void submitVisit()
-    {
-        Intent intent = new Intent(this, GetPatientActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+    public void returnTime(String time) {
+        timePicker.setText(time);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_visit, menu);
-
+        getMenuInflater().inflate(R.menu.menu_new_patient_data, menu);
         return true;
     }
 
@@ -110,6 +145,22 @@ public class NewVisitActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void addToDatabase(){
+        return;
+    }
+
+    // TODO: Add the actual submission to the server
+    // Submits the visit to the server and switches to GetPatientActivity
+    public void submitVisit(View view)
+    {
+        String date_string = dbDateFormat.format(visitDate);
+        String time_string = timePicker.getText().toString();
+        Log.i("new visit: time", date_string+" "+time_string+":00.0");
+        addToDatabase();
+//      Intent intent = new Intent(this, GetPatientActivity.class);
+//      startActivity(intent);
+    }
 
 
 }
