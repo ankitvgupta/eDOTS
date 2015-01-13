@@ -198,8 +198,5 @@ public class PromoterLoginActivity extends Activity {
         } catch (ExecutionException e1) {
             e1.printStackTrace();
         }
-
     }
-
-
 }
