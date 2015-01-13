@@ -7,35 +7,45 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by jfang on 1/6/15.
+ * @author JN Fang
+ * @author Ankit Gupta
+ * @since 2015-01-13
+ *
+ *
+ * Model for Promoters.
+ *
  */
-public class Promoter extends Object{
+public class Promoter extends Object {
     private String username;
-    private String name;
     private String locale;
-    private String password;
     private ArrayList<String> patient_ids;
 
     public Promoter(){
 
     }
 
-    public Promoter(String u, String n,String l, String p, ArrayList<String> pt){
+    /**
+     * Constructor for Promoter
+     *
+     * @param u username of promoter
+     * @param l locale of promoter
+     * @param p NOTUSED
+     * @param pt ids of the patient of that promoter
+     */
+    public Promoter(String u,String l, String p, ArrayList<String> pt){
         username = u;
-        name=n;
         locale = l;
-        password= p;
         patient_ids=pt;
-
     }
 
+    /**
+     * @param JSONString JSON encoding of the Promoter object
+     */
     public Promoter(String JSONString) {
         try {
             JSONObject n = new JSONObject(JSONString);
-            name = n.get("name").toString();
             username = n.get("username").toString();
             locale = n.get("locale").toString();
-            password = n.get("password").toString();
             patient_ids = new ArrayList<String>();
             JSONArray arry = new JSONArray(n.get("patient_ids").toString());
             for (int i = 0; i < arry.length(); i++) {
@@ -47,13 +57,15 @@ public class Promoter extends Object{
         }
     }
 
+    /**
+     *
+     * @return a JSON serialization of the Promoter object
+     */
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("name", getName());
             temp.put("username", getUsername());
             temp.put("locale", getLocale());
-            temp.put("password", getPassword());
             temp.put("patient_ids", new JSONArray(getPatient_ids()));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -69,18 +81,9 @@ public class Promoter extends Object{
         return username;
     }
 
-    public String getName(){
-        return name;
-    }
-
     public String getLocale(){
         return locale;
     }
-
-    public String getPassword(){
-        return password;
-    }
-
 
     public void setPatient_ids(ArrayList<String> p_ids){ patient_ids = p_ids;}
 
@@ -88,15 +91,9 @@ public class Promoter extends Object{
         username=u;
     }
 
-    public void setName(String n){
-        name=n;
-    }
 
     public void setLocale(String l){locale=l;
     }
 
-    public void setPassword(String p){
-        password = p;
-    }
 
 }

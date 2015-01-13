@@ -13,6 +13,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
+
             <!--date field-->
             <TextView android:text="@string/date"
                 android:layout_width="wrap_content"

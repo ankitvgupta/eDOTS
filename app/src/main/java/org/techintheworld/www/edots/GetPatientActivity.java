@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,11 +15,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
+import edots.models.Visit;
+import edots.tasks.GetPatientLoadTask;
 
+
+/*
+ * Written by Ankit
+ *
+ * Controller file
+ *      Associated View: activity_get_patient.xml
+ *      Accesses Models: Patient, Visit,
+ *
+ * Used to query the database for patients and visits, by parsing the national ID input.
+ * Also renders the queried patient data.
+ */
 
 public class GetPatientActivity extends Activity {
 
@@ -35,7 +55,7 @@ public class GetPatientActivity extends Activity {
             fillTable();
         }
         catch (Exception e){
-            //Log.v("There is no patient already", "There is no patient already");
+            Log.v("There is no patient already", "There is no patient already");
         }
 
         btnSearch = (Button) findViewById(R.id.btnSearch);
@@ -75,22 +95,50 @@ public class GetPatientActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public Patient lookupPatient(int nationalid) {
+    public Patient lookupPatient(int nationalid) throws JSONException{
 
         currentPatient = null;
+        // Check if Patient is already stored locally first
+        JSONArray object;
+        try {
+            // load list of patients from file patient_data
+            object = new JSONArray(StorageManager.getJSONFromLocal(this, "patient_data"));
+            // look at all patients
+            for (int i = 0; i < object.length(); i++){
+                JSONObject obj = object.getJSONObject(i);
+                Patient p = new Patient(obj.toString());
+                // this ensures that they have a NationalId
+                try {
+                    if (p.getNationalID() == nationalid) {
+                        currentPatient = p;
+                        Log.e("GetPatientActivity", "Patient Found is" + p.toString());
+                    }
+                }
+                catch(NullPointerException e1){
+                    e1.printStackTrace();
+                }
+            }
+        }
+        catch (FileNotFoundException e1){
+            e1.printStackTrace();
+        }
 
         // Instantiate a loader task and load the given patient via nationalid
-        GetPatientLoadTask newP = new GetPatientLoadTask();
-        AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
+        if (currentPatient == null) {
+            GetPatientLoadTask newP = new GetPatientLoadTask();
+            AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
 
-        // parse the result, and return it
-        try {
-            currentPatient = (Patient) p.get();
-            //Log.v("Patient that we got is", currentPatient.toString());
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
+            // parse the result, and return itg
+            try {
+                currentPatient = (Patient) p.get();
+                ArrayList<Visit> visits = currentPatient.getPatientHistory();
+                Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
+                //Log.v("Patient that we got is", currentPatient.toString());
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            } catch (ExecutionException e1) {
+                e1.printStackTrace();
+            }
         }
         return currentPatient;
 
@@ -125,8 +173,12 @@ public class GetPatientActivity extends Activity {
         editText.setText("", TextView.BufferType.EDITABLE);
 
         int pid = Integer.parseInt(message);
-
-        currentPatient = lookupPatient(pid);
+        try {
+            currentPatient = lookupPatient(pid);
+        }
+        catch(JSONException e1){
+            e1.printStackTrace();
+        }
         // pop up error message when the national id is not found
         if (currentPatient == null){
             Toast.makeText(getBaseContext(), R.string.patient_not_found,

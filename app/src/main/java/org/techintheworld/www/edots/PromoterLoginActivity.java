@@ -2,43 +2,46 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
-//import edots.models.Login;
-import edots.models.Promoter;
 import edots.models.Locale;
+import edots.models.Promoter;
+import edots.tasks.LocaleLoadTask;
+
+//import edots.models.Login;
 
 //TODO: remember session, auto login
-
+/*
+ * Written by Brendan
+ *
+ * This is the start screen for the app when it is logged out. Allows for Promoter to login.
+ *
+ * onSubmit Behavior: Switches to MainMenuActivity via Intent
+ *
+ */
 public class PromoterLoginActivity extends Activity {
     private Button loginButton;
     private EditText username;
     private EditText password;
     private Spinner spnLocale;
     private TextView tvwMensaje;
-//    private AsyncTask<String, String, Login> asyncTask;
     private AsyncTask<String, String, Locale[]> loadLocale;
 
 
@@ -54,52 +57,22 @@ public class PromoterLoginActivity extends Activity {
         String myurl = "http://demo.sociosensalud.org.pe";
         loadLocaleSpinner(myurl);
 
+        String username = checkAlreadyLoggedIn();
+        if (username != null){
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
 
-        // list of sites
-//        String[] sites = {"site1", "site2", "site3", "site4"};
+        }
+    }
 
-        // sets layout_height for ListView based on number of sites
-//        ListView siteView = (ListView)findViewById(R.id.sites);
-//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * sites.length, getResources().getDisplayMetrics());
-//        siteView.getLayoutParams().height = height;
 
-        // creating adapter for ListView
-//        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(sites));
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_checked, checkboxesText);
-
-        // creates ListView checkboxes
-//        ListView listview = (ListView) findViewById(R.id.sites);
-//        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        listview.setAdapter(adapter);
-
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String uname=username.getText().toString();
-//                String password=password.getText().toString();
-//
-//                }
-//            }
-//
-//        });
-//        // list of sites
-//        String[] sites = {"site1", "site2", "site3", "site4"};
-//
-//        // sets layout_height for ListView based on number of sites
-//        ListView siteView = (ListView)findViewById(R.id.sites);
-//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * sites.length, getResources().getDisplayMetrics());
-//        siteView.getLayoutParams().height = height;
-//
-//        // creating adapter for ListView
-//        ArrayList<String> checkboxesText = new ArrayList<String>(Arrays.asList(sites));
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_checked, checkboxesText);
-//
-//        // creates ListView checkboxes
-//        ListView listview = (ListView) findViewById(R.id.sites);
-//        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        listview.setAdapter(adapter);
+    private String checkAlreadyLoggedIn(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String username = prefs.getString((getString(R.string.login_username)), null);
+        if (username !=null){
+            return username;
+        }
+        return null;
     }
 
 
@@ -126,12 +99,13 @@ public class PromoterLoginActivity extends Activity {
     }
 
     // switch to PatientType activity
-    public void switchPatientType (View view) throws Exception{
+    public  void switchPatientType (View view) throws Exception{
 
         EditText u= (EditText)findViewById(R.id.username);
         EditText p= (EditText)findViewById(R.id.password);
         String username = u.getText().toString();
         String password = u.getText().toString();
+
         String locale_name = spnLocale.getItemAtPosition(spnLocale.getSelectedItemPosition()).toString();
         String locale_num = "1";
         Locale[] objLocale;
@@ -148,37 +122,41 @@ public class PromoterLoginActivity extends Activity {
         } catch (ExecutionException e1) {
             e1.printStackTrace();
         }
-        boolean validLogin = checkLogin(username, password, locale_num); // TODO: get locale
+
+
+        boolean validLogin = checkLogin(username, password, locale_num);
         if (validLogin){
+
+            Promoter new_promoter = StorageManager.GetWebPromoterData(username, this);
+            int num_patients = new_promoter.getPatient_ids().size();
+            StorageManager.SaveWebPatientData(new_promoter, this);
             Intent intent = new Intent(this, MainMenuActivity.class);
-            Log.e("LOGGED IN:", username.concat(password) );
-            // TODO: fix storage manager for login
-            //StorageManager.GetLocalData(username, username, this);
             startActivity(intent);
         }
         else{
-            // Alert if username and password are not entered
-            AlertDialog.Builder loginError = new AlertDialog.Builder(this);
-            loginError.setTitle("Login Error");
-            loginError.setMessage("Your username or password was incorrect or invalid");
-            loginError.setPositiveButton(R.string.login_try_again, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    EditText us= (EditText)findViewById(R.id.username);
-                    EditText pw= (EditText)findViewById(R.id.password);
-                    us.clearComposingText();
-                    pw.clearComposingText();
-
-                }
-            });
-            loginError.show();
+           AlertError("Login Error","Your username or password was incorrect or invalid" );
         }
 
     }
 
+    public void AlertError(String title, String message){
+        // Alert if username and password are not entered
+        AlertDialog.Builder loginError = new AlertDialog.Builder(this);
+        loginError.setTitle(title);
+        loginError.setMessage(message);
+        loginError.setPositiveButton(R.string.login_try_again, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+
+            }
+        });
+        loginError.show();
+    }
+
+    // Calls login web service and returns true if login is successful
     public boolean checkLogin(String username, String password, String locale) {
         if(password != null && !password.isEmpty()) {
             String message =  AccountLogin.login(username,password,locale,this);
-            //String saltedHash = ProcessPassword.getSaltedHash(password);
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
                 // Remote Server
                 return true;
@@ -222,9 +200,5 @@ public class PromoterLoginActivity extends Activity {
 
     }
 
-
-    public Promoter getPromoterInfo(String username){
-        return new Promoter("e","Name","Lima", "e", new ArrayList<String>(Arrays.asList("Med 1", "Med 2")));
-    }
 
 }
