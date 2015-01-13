@@ -28,7 +28,14 @@ import edots.tasks.LocaleLoadTask;
 //import edots.models.Login;
 
 //TODO: remember session, auto login
-
+/*
+ * Written by Brendan
+ *
+ * This is the start screen for the app when it is logged out. Allows for Promoter to login.
+ *
+ * onSubmit Behavior: Switches to MainMenuActivity via Intent
+ *
+ */
 public class PromoterLoginActivity extends Activity {
     private Button loginButton;
     private EditText username;

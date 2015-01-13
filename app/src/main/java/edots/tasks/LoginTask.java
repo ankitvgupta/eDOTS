@@ -12,10 +12,7 @@ import java.net.SocketException;
 
 import edots.models.Login;
 
-/**
- * @author jtomaylla
- *
- */
+
 public class LoginTask extends  AsyncTask<String,String,Login>{
 
     @Override

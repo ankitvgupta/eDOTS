@@ -18,6 +18,10 @@ import edots.models.Project;
 
 /**
  * Created by jfang on 1/12/15.
+ * Reviewed by Ankit on 1/13/15
+ *
+ * Given a PatientID, queries the server and returns a patient object corresponding to that ID
+ *
  */
 public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
 
@@ -58,6 +62,8 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
             // TODO: This does not account for multiple return values - this should not be a problem though b/c I don't think that's even possible for patient codes
             SoapObject ic = (SoapObject) resSoap.getProperty(0);
 
+
+            // parse all of the fields for that patient
             String patientID = ic.getProperty("CodigoPaciente").toString();
             String name = ic.getProperty("Nombres").toString();
             String fathersName = ic.getProperty("ApellidoPaterno").toString();
@@ -84,6 +90,7 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
 
             Log.e("patient data", patientID+name+fathersName+mothersName+nationalID);
 
+            // instantiate a new patient object to be returned
             p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
 
             Log.e("patient object:", p.toString());
