@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataInputStream;
@@ -26,41 +28,8 @@ import edots.tasks.LoadPatientFromPromoterTask;
  */
 public class StorageManager {
 
-    // Gets local storage file and deserializes into request object
-    public static String GetLocalData(String objectType, String promoterUsername, Context c) {
 
-        if (!(objectType.equals("Promoter") && !(objectType.equals("Patient")))) {
-            return null;
-        }
-        String fileName = null;
-        if (objectType.equals("Promoter")) {
-            fileName = promoterUsername.concat("_data");
-        } else if (objectType.equals("Patient")) {
-            fileName = "patient".concat("_data");
-
-        }
-        try {
-            if (!(fileName == null)) {
-                JSONObject jsonObject = getJSONFromLocal(c, fileName);
-                return jsonObject.toString();
-            }
-
-        } catch (FileNotFoundException e) {
-            Promoter promoter = GetWebPromoterData(objectType, c);
-            SaveWebPromoterData(promoter, c);
-            try {
-                JSONObject jsonObject = getJSONFromLocal(c, fileName);
-                return jsonObject.toString();
-            } catch (FileNotFoundException ex) {
-                Log.e("Saving patient file unsuccessful: ", fileName.toString().concat(" error"));
-                ex.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-
-    public static JSONObject getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
+    public static String getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
         try {
             // Opens file for reading
             FileInputStream fis = c.openFileInput(fileName);
@@ -77,13 +46,13 @@ public class StorageManager {
             fis.close();
 
             // Convert to JSON
-            return new JSONObject(fileContent);
+            return fileContent;
 
 
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("Patient file not found");
         } catch (IOException e) {
-            Log.e("IOException", "File error in finding patient files");
+            Log.e("StorageManager: IOException", "File error in finding patient files");
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,28 +86,31 @@ public class StorageManager {
         return p_result;
     }
 
-    public static void SaveWebPatientData(Promoter p, Context c){
+    public static void SaveWebPatientData(Promoter p, Context c) throws JSONException{
         // Save to local file for Patients
         String patients_filename = "patient_data";
 
         int num_patients = p.getPatient_ids().size();
-        StringBuilder sb = new StringBuilder();
+        //StringBuilder sb = new StringBuilder();
+        JSONArray ja = new JSONArray();
 
         // Queries web service for patients with the ids associated with this promoter
         for (int i = 0; i < num_patients; i++) {
             Patient new_patient = GetWebPatientData(p.getPatient_ids().get(i));
-            sb.append(new_patient.toString());
+            JSONObject obj = new JSONObject(new_patient.toString());
+            ja.put(obj);
         }
 
         // Saves patients data of this promoter to a file named under patients_filename
-        String patientData = sb.toString();
+        String patientData = ja.toString();
+
         FileOutputStream p_outputStream;
         try {
             p_outputStream = c.openFileOutput(patients_filename, Context.MODE_PRIVATE);
             p_outputStream.write(patientData.getBytes());
             p_outputStream.close();
         } catch (Exception e) {
-            Log.e("Saving Patient files error", "Cannot write to patient file");
+            Log.w("StorageManager: Saving Patient files error", "Cannot write to patient file");
             e.printStackTrace();
         }
     }
@@ -148,7 +120,7 @@ public class StorageManager {
         // TODO: add connection to web and retrieve all info of that promoter
 
         // Save to local file for Projects
-        String filename = "patient".concat("_data");
+        String filename = "promoter".concat("_data");
         String promoterData = p.toString();
         FileOutputStream outputStream;
 
@@ -157,7 +129,7 @@ public class StorageManager {
             outputStream.write(promoterData.getBytes());
             outputStream.close();
         } catch (Exception e) {
-            Log.e("Saving Patient files error", "Cannot write to patient file");
+            Log.e("StorageManager: Saving Promoter files error", "Cannot write to promoter file");
             e.printStackTrace();
         }
 

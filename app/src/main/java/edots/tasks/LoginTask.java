@@ -31,7 +31,6 @@ public class LoginTask extends  AsyncTask<String,String,Login>{
             request.addProperty("login", params[0]);
             request.addProperty("pass", params[1]);
             request.addProperty("codLocal", params[2]);
-//		request.addProperty("local", 2);
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
@@ -44,12 +43,10 @@ public class LoginTask extends  AsyncTask<String,String,Login>{
             try {
                 httptransport.call(SOAP_ACTION, envelope);
 
-//			SoapPrimitive resSoap =(SoapPrimitive)envelope.getResponse();
 
                 SoapObject resSoap =(SoapObject)envelope.getResponse();
                 SoapObject ic = (SoapObject)resSoap.getProperty(0);
 
-                //Login log = new Login();
 
                 log.UserID = Integer.parseInt(ic.getProperty(0).toString());;
                 log.Message = ic.getProperty(1).toString();

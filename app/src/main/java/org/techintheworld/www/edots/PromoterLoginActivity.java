@@ -122,7 +122,6 @@ public class PromoterLoginActivity extends Activity {
 
             Promoter new_promoter = StorageManager.GetWebPromoterData(username, this);
             int num_patients = new_promoter.getPatient_ids().size();
-            Log.e("Promoter info:", new_promoter.toString());
             StorageManager.SaveWebPatientData(new_promoter, this);
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);

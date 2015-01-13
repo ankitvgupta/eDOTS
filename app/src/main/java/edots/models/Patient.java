@@ -121,7 +121,7 @@ public class Patient extends Object{
 
     }
 
-    public void getPatientHistory (){
+    public ArrayList<Visit> getPatientHistory (){
         //String patientCode = pid; // for production
         String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
         GetHistoryLoadTask newP = new GetHistoryLoadTask();
@@ -129,6 +129,7 @@ public class Patient extends Object{
         try {
             ArrayList<Visit> visits = (ArrayList<Visit>) p.get();
             Log.v("Patient.java: The visits are", visits.toString());
+            return visits;
         }
         catch (InterruptedException e){
             e.printStackTrace();
@@ -136,6 +137,7 @@ public class Patient extends Object{
         catch (ExecutionException e) {
             e.printStackTrace();
         }
+        return null;
 
 
     }

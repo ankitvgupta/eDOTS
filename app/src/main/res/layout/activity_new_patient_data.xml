@@ -83,8 +83,8 @@
             <EditText
                 android:id="@+id/Birthdate"
                 android:layout_height="wrap_content"
-                android:inputType="date"
-                android:layout_width="fill_parent">
+                android:layout_width="fill_parent"
+                android:focusable="false">
             </EditText>
 
             <!--Sex field-->
