@@ -196,9 +196,9 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     // Submits the visit to the server and switches to GetPatientActivity
     public void submitVisit(View view)
     {
-        String date_string = dbDateFormat.format(visitDate);
-        String time_string = timePicker.getText().toString();
-        Log.i("new visit: time", date_string+" "+time_string+":00.0");
+        Integer CardigoLocale = Integer.getInteger(visitLocaleEditor.getText().toString());
+        String FechaVisita = dbDateFormat.format(visitDate);
+        String HoraCita = timePicker.getText().toString()+":00.0"; // what's the format needed??
         addToDatabase();
 //      Intent intent = new Intent(this, GetPatientActivity.class);
 //      startActivity(intent);
