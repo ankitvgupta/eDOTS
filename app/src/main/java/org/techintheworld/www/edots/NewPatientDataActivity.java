@@ -196,7 +196,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         }
 
         // switch to NewVisitActivity
-        Intent intent = new Intent(this, MedicalHistoryActivity.class);
+        Intent intent = new Intent(this, GetPatientActivity.class);
         intent.putExtra("Patient", currentPatient.toString());
         startActivity(intent);
 
