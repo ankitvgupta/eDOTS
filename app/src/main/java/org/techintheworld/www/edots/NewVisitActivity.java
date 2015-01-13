@@ -19,18 +19,22 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
+
+import edots.tasks.NewPatientUploadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.TimePickerFragment;
 
 /**
  * @author lili
  * @author ankit
+ *
  * Controller for Adding a Visit
  *     Associated View: activity_new_visit.xml
- *     Associated Models: Visit
+ *     Associated git Models: Visit
  *
  *  Adds a new visit to the db
  */
@@ -177,6 +181,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return super.onOptionsItemSelected(item);
     }
 
+
     /**
     * @author lili
     * get the locale of the promoter
@@ -190,6 +195,18 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     public void addToDatabase(){
         // TODO
+        NewVisitUploadTask uploader = new NewVisitUploadTask();
+        try {
+            String result = uploader.execute("http://demo.sociosensalud.org.pe", "2", "2", "1", "1g",
+                    "C74CCD37-8DE4-447C-946E-1300E9498577", "2014-05-20 00:00:00.0", "", "19").get();
+            Log.v("What we got was", result);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e){
+            e.printStackTrace();
+        }
     }
 
     // TODO: Add the actual submission to the server

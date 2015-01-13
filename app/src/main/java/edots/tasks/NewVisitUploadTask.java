@@ -24,7 +24,7 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "NuevoParticipanteSimple";
+        final String METHOD_NAME = "InsertarVisitas";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
@@ -60,6 +60,7 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
             e.printStackTrace();
         }
         request.addProperty("Sexo", params[7]);
+        */
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -68,23 +69,20 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
 
         HttpTransportSE transporte = new HttpTransportSE(URL);
         transporte.debug = true;
-        */
+
         String returnValue = "";
-        /*
+
         try
         {
             transporte.call(SOAP_ACTION, envelope);
-
             SoapPrimitive resSoap = (SoapPrimitive) envelope.getResponse();
-
             Log.v("The object we got is", resSoap.toString());
-            returnvalue = resSoap.toString();
+            returnValue = resSoap.toString();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-*/
 
         return returnValue;
     }
