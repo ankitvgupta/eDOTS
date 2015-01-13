@@ -13,7 +13,22 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
+
+            <!--date field-->
             <TextView android:text="@string/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/visitDate"
+                android:focusable="false" />
+
+            <!--time field-->
+            <TextView android:text="@string/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
@@ -21,8 +36,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:ems="10"
-                android:id="@+id/editText" />
+                android:id="@+id/visitTime"
+                android:focusable="false" />
 
+            <!--site field-->
             <TextView android:text="@string/new_visit_site"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

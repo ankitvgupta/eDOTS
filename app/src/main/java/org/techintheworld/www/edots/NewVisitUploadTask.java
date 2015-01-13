@@ -27,14 +27,29 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
         final String METHOD_NAME = "NuevoParticipanteSimple";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-        /*
-        request.addProperty("Nombres", params[1]);
-        request.addProperty("ApellidoP", params[2]);
-        request.addProperty("ApellidoM", params[3]);
-        request.addProperty("CodigoTipoDocumento", params[4]);
-        Log.i("national id", params[5]);
-        request.addProperty("DocumentoIdentidad", params[5]);
 
+        /*
+        int CodigoLocal;
+        int CodigoProyecto;
+        int CodigoGrupoVisita;
+        int CodigoVisita;
+        string CodigoPaciente;
+        string FechaVisita;
+        string HoraCita;
+        int CodigoUsuario;
+*/
+
+        request.addProperty("CodigoLocal", params[1]);
+        request.addProperty("CodigoProyecto", params[2]);
+        request.addProperty("CodigoGrupoVisita", params[3]);
+        request.addProperty("CodigoVisita", params[4]);
+        request.addProperty("CodigoPaciente", params[5]);
+        request.addProperty("FechaVisita", params[6]);
+        request.addProperty("HoraCita", params[7]);
+        request.addProperty("CodigoUsuario", params[8]);
+
+
+        /*
         SimpleDateFormat reverseParse = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sqlParse = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
 

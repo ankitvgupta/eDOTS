@@ -24,11 +24,19 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Locale;
 import edots.models.Promoter;
 import edots.tasks.LocaleLoadTask;
+import edots.utils.OfflineStorageManager;
 
 //import edots.models.Login;
 
 //TODO: remember session, auto login
-
+/*
+ * Written by Brendan
+ *
+ * This is the start screen for the app when it is logged out. Allows for Promoter to login.
+ *
+ * onSubmit Behavior: Switches to MainMenuActivity via Intent
+ *
+ */
 public class PromoterLoginActivity extends Activity {
     private Button loginButton;
     private EditText username;
@@ -120,9 +128,9 @@ public class PromoterLoginActivity extends Activity {
         boolean validLogin = checkLogin(username, password, locale_num);
         if (validLogin){
 
-            Promoter new_promoter = StorageManager.GetWebPromoterData(username, this);
+            Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, this);
             int num_patients = new_promoter.getPatient_ids().size();
-            StorageManager.SaveWebPatientData(new_promoter, this);
+            OfflineStorageManager.SaveWebPatientData(new_promoter, this);
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
         }

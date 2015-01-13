@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-
+@Deprecated
 public class PatientHomeActivity extends Activity {
 
     @Override

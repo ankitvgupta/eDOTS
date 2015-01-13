@@ -1,10 +1,15 @@
-package org.techintheworld.www.edots;
+package edots.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.techintheworld.www.edots.R;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -22,12 +27,10 @@ import edots.tasks.LoadPatientFromPromoterTask;
 /**
  * Created by jfang on 1/7/15.
  */
-public class StorageManager {
+public class OfflineStorageManager {
 
 
-    // Get JSON objects based on filename. Promoter file is the promoter_data
-    // and the patient file is named "patient_data"
-    private static String getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
+    public static String getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
         try {
             // Opens file for reading
             FileInputStream fis = c.openFileInput(fileName);
@@ -84,28 +87,32 @@ public class StorageManager {
         return p_result;
     }
 
-    public static void SaveWebPatientData(Promoter p, Context c){
+    public static void SaveWebPatientData(Promoter p, Context c) throws JSONException{
         // Save to local file for Patients
         String patients_filename = "patient_data";
 
         int num_patients = p.getPatient_ids().size();
-        StringBuilder sb = new StringBuilder();
+        //StringBuilder sb = new StringBuilder();
+        JSONArray ja = new JSONArray();
 
         // Queries web service for patients with the ids associated with this promoter
         for (int i = 0; i < num_patients; i++) {
             Patient new_patient = GetWebPatientData(p.getPatient_ids().get(i));
-            sb.append(new_patient.toString());
+            JSONObject obj = new JSONObject(new_patient.toString());
+            ja.put(obj);
         }
 
         // Saves patients data of this promoter to a file named under patients_filename
-        String patientData = sb.toString();
+
+        String patientData = ja.toString();
+
         FileOutputStream p_outputStream;
         try {
             p_outputStream = c.openFileOutput(patients_filename, Context.MODE_PRIVATE);
             p_outputStream.write(patientData.getBytes());
             p_outputStream.close();
         } catch (Exception e) {
-            Log.e("StorageManager: Saving Patient files error", "Cannot write to patient file");
+            Log.w("StorageManager: Saving Patient files error", "Cannot write to patient file");
             e.printStackTrace();
         }
     }
