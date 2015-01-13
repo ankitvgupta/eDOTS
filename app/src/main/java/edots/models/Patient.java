@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.techintheworld.www.edots.GetHistoryLoadTask;
+import edots.tasks.GetHistoryLoadTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
