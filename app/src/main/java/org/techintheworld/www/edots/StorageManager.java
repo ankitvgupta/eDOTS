@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.json.JSONObject;
-
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,7 +27,7 @@ public class StorageManager {
 
     // Get JSON objects based on filename. Promoter file is the promoter_data
     // and the patient file is named "patient_data"
-    private static JSONObject getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
+    private static String getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
         try {
             // Opens file for reading
             FileInputStream fis = c.openFileInput(fileName);
@@ -46,7 +44,7 @@ public class StorageManager {
             fis.close();
 
             // Convert to JSON
-            return new JSONObject(fileContent);
+            return fileContent;
 
 
         } catch (FileNotFoundException e) {
