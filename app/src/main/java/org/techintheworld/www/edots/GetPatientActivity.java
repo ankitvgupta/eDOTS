@@ -102,7 +102,7 @@ public class GetPatientActivity extends Activity {
         JSONArray object;
         try {
             // load list of patients from file patient_data
-            object = new JSONArray(StorageManager.getJSONFromLocal(this, "patient_data"));
+            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
             // look at all patients
             for (int i = 0; i < object.length(); i++){
                 JSONObject obj = object.getJSONObject(i);
