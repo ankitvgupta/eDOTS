@@ -9,7 +9,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 // https://stackoverflow.com/questions/2860943/how-can-i-hash-a-password-in-java
-
+@Deprecated
 public class ProcessPassword {
     // The higher the number of iterations the more
     // expensive computing the hash is for us and

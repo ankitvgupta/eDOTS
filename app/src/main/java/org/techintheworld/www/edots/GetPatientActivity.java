@@ -28,6 +28,18 @@ import edots.models.Patient;
 import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
 
+
+/*
+ * Written by Ankit
+ *
+ * Controller file
+ *      Associated View: activity_get_patient.xml
+ *      Accesses Models: Patient, Visit,
+ *
+ * Used to query the database for patients and visits, by parsing the national ID input.
+ * Also renders the queried patient data.
+ */
+
 public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
@@ -110,6 +122,7 @@ public class GetPatientActivity extends Activity {
         catch (FileNotFoundException e1){
             e1.printStackTrace();
         }
+
         // Instantiate a loader task and load the given patient via nationalid
         if (currentPatient == null) {
             GetPatientLoadTask newP = new GetPatientLoadTask();

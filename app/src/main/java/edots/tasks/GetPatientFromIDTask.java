@@ -18,12 +18,17 @@ import edots.models.Project;
 
 /**
  * Created by jfang on 1/12/15.
+ * Reviewed by Ankit on 1/13/15
+ *
+ * Given a PatientID, queries the server and returns a patient object corresponding to that ID
+ *
  */
 public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
 
     protected Patient doInBackground(String... params) {
-        Patient p= null;
+        Patient p = null;
 
+        // setup the server parameters
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
@@ -31,6 +36,7 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
+        // add the CodigoPaciente property to the requet
         request.addProperty("CodigoPaciente", params[1]);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -43,29 +49,35 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
         {
             transporte.call(SOAP_ACTION, envelope);
 
+            // get the response
             SoapObject resSoap =(SoapObject)envelope.getResponse();
+
+            // if nothing was returned, then this is not a valid person.
             if (resSoap.getPropertyCount() == 0){
                 Log.v("This is not a valid person", "This is not a valid person");
                 return null;
             }
 
-
+            // grab the first person with a matching PatientID
+            // TODO: This does not account for multiple return values - this should not be a problem though b/c I don't think that's even possible for patient codes
             SoapObject ic = (SoapObject) resSoap.getProperty(0);
 
-            String patientID = ic.getProperty(0).toString();
-            String name = ic.getProperty(1).toString();
-            String fathersName = ic.getProperty(2).toString();
-            String mothersName = ic.getProperty(3).toString();
+
+            // parse all of the fields for that patient
+            String patientID = ic.getProperty("CodigoPaciente").toString();
+            String name = ic.getProperty("Nombres").toString();
+            String fathersName = ic.getProperty("ApellidoPaterno").toString();
+            String mothersName = ic.getProperty("ApellidoMaterno").toString();
             Long nationalID;
             try{
-                nationalID = Long.valueOf(ic.getProperty(5).toString());
+                nationalID = Long.valueOf(ic.getProperty("DocumentoIdentidad").toString());
             }
             catch (NumberFormatException e){
                 nationalID=null;
             }
-            Integer sexInt = Integer.parseInt(ic.getProperty(7).toString());
-            Integer docType = Integer.parseInt(ic.getProperty(4).toString());
-            String birthday = ic.getProperty(6).toString();
+            Integer sexInt = Integer.parseInt(ic.getProperty("Sexo").toString());
+            Integer docType = Integer.parseInt(ic.getProperty("CodigoTipoDocumento").toString());
+            String birthday = ic.getProperty("FechaNacimiento").toString();
             SimpleDateFormat parser =new SimpleDateFormat("dd/MM/yyyy");
             Date birthDate = parser.parse(birthday);
 
@@ -78,6 +90,7 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
 
             Log.e("patient data", patientID+name+fathersName+mothersName+nationalID);
 
+            // instantiate a new patient object to be returned
             p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
 
             Log.e("patient object:", p.toString());
