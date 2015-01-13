@@ -1,4 +1,4 @@
-package org.techintheworld.www.edots;
+package edots.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +9,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.techintheworld.www.edots.R;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;

@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Patient;
 import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
+import edots.utils.OfflineStorageManager;
 
 
 /*

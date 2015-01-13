@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Locale;
 import edots.models.Promoter;
 import edots.tasks.LocaleLoadTask;
+import edots.utils.OfflineStorageManager;
 
 //import edots.models.Login;
 

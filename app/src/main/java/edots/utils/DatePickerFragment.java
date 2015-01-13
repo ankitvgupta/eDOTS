@@ -1,4 +1,4 @@
-package org.techintheworld.www.edots;
+package edots.utils;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
