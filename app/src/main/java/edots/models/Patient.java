@@ -17,8 +17,12 @@ import java.util.concurrent.ExecutionException;
 
 
 /**
- * Created by jfang on 1/6/15.
- * Modified by ankitvgupta since
+ * @author jfang
+ * @author ankitgupta
+ * @since 2015-01-06
+ *
+ * Model for Patients
+ *
  */
 public class Patient extends Object{
     private String pid;
@@ -36,6 +40,19 @@ public class Patient extends Object{
     }
 
     // For production
+
+    /**
+     *
+     * @param n name of Patient
+     * @param d Date of birth (as a date object)
+     * @param nid national id
+     * @param s sex
+     * @param projects ArrayList of projects enrolled in
+     * @param mother mothers's name
+     * @param father father's name
+     * @param patientID Patient ID
+     * @param doc document type
+     */
     public Patient (String n, Date d, Long nid, String s, ArrayList<Project> projects, String mother, String father, String patientID, int doc){
         name = n;
         birthDate = d;
@@ -74,7 +91,6 @@ public class Patient extends Object{
     /** Added to parse a string back into the JSON form.
      *
      *  @author ankitgupta
-     *
      *  @param JSONString A JSON Serialization of the Patient Obkect
      *
      */
@@ -108,7 +124,9 @@ public class Patient extends Object{
 
     @Override
     /**
+     * @author ankitgupta
      * @return the JSON Serialization of the Patient Object
+     *
      */
     public String toString() {
         JSONObject temp = new JSONObject();
@@ -119,8 +137,8 @@ public class Patient extends Object{
 
             SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
             String birthday = parser.format(getBirthDate());
-            temp.put("birthDate", birthday);
 
+            temp.put("birthDate", birthday);
             temp.put("nationalID", getNationalID());
             temp.put("sex", getSex());
             temp.put("enrolledProjects", getEnrolledProjects());
@@ -135,7 +153,7 @@ public class Patient extends Object{
     }
 
     /**
-     *
+     * @author ankitgupta
      * @return a list of this patient's visits, as an ArrayList of Visits
      */
     public ArrayList<Visit> getPatientHistory (){
