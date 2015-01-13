@@ -40,12 +40,15 @@
                 android:focusable="false" />
 
             <!--site field-->
-            <TextView android:text="@string/new_visit_site"
+            <TextView android:text="@string/locale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
+                android:id="@+id/visitLocale"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="fill_parent"
+                android:focusable="false" />
+
             <!--may want to make this a select from rather than edit direct-->
             <TextView android:text="@string/new_visit_treatment"
                 android:layout_width="wrap_content"

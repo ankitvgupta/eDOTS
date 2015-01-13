@@ -2,7 +2,9 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -21,7 +23,10 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
+
 import edots.tasks.NewPatientUploadTask;
+import edots.utils.DatePickerFragment;
+import edots.utils.TimePickerFragment;
 
 /**
  * @author lili
@@ -40,17 +45,34 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
     EditText datePicker;
     EditText timePicker;
+    EditText visitLocaleEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat displayTimeFormat = new SimpleDateFormat("hh:mm");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date visitDate = new Date();
 
     @Override
+    /**
+     * @author lili
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_visit);
 
-        // get the visit date
+        // if a patient was passed in, pre-load that patient
+        try {
+            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
+        }
+        catch (Exception e){
+            // TODO: Don't print the stack trace, give some sort of dialog box instead
+            e.printStackTrace();
+        }
+
+        // Get the current projects that the patient is signed up for
+        ArrayList<Project> patientProjects= currentPatient.getEnrolledProjects();
+        int num_projects = patientProjects.size();
+
+        // visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
         Date currentTime = new Date();
         // set the default date to today
@@ -65,8 +87,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             }
         });
 
-
-        // get the visit time
+        // visit time
         timePicker = (EditText) findViewById(R.id.visitTime);
         // set the default date to today
         timePicker.setText(displayTimeFormat.format(currentTime));
@@ -80,18 +101,12 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             }
         });
 
-        // if a patient was passed in, pre-load that patient
-        try {
-            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
-        }
-        catch (Exception e){
-            // TODO: Don't print the stack trace, give some sort of dialog box instead
-            e.printStackTrace();
-        }
-
-        // Get the current projects that the patient is signed up for
-        ArrayList<Project> patientProjects= currentPatient.getEnrolledProjects();
-        int num_projects = patientProjects.size();
+        // visit locale
+        visitLocaleEditor = (EditText) findViewById(R.id.visitLocale);
+        // set visit locale default to the promoter's locale
+        // TODO: should this be a dropdown menu of all locales?
+        Log.i("new visit activity: oncreate pulled locale", returnLocale());
+        visitLocaleEditor.setText(returnLocale());
 
         // instantiate arraylist that will be used for the checkboxes text
         ArrayList<String> checkBoxesText = new ArrayList<String>();
@@ -122,7 +137,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     }
 
-    // set the text field as the selected date
+    /**
+     * @author lili
+     * set the text field as the selected date
+     */
     @Override
     public void returnDate(Date date) {
         // TODO: format display text in "dd/MM/yyyy"
@@ -131,6 +149,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     }
 
+    /**
+     * @author lili
+     * set the text field as the selected time
+     */
     public void returnTime(String time) {
         timePicker.setText(time);
     }
@@ -159,7 +181,19 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return super.onOptionsItemSelected(item);
     }
 
-    public void addToDatabase() {
+
+    /**
+    * @author lili
+    * get the locale of the promoter
+    */
+    public String returnLocale(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String locale =  prefs.getString((getString(R.string.login_locale)), null);
+        Log.i("new visit activity: locale", locale);
+        return locale;
+    }
+
+    public void addToDatabase(){
         // TODO
         NewVisitUploadTask uploader = new NewVisitUploadTask();
         try {
