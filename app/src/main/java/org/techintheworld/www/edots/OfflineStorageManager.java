@@ -22,7 +22,7 @@ import edots.tasks.LoadPatientFromPromoterTask;
 /**
  * Created by jfang on 1/7/15.
  */
-public class StorageManager {
+public class OfflineStorageManager {
 
 
     // Get JSON objects based on filename. Promoter file is the promoter_data
@@ -99,6 +99,7 @@ public class StorageManager {
 
         // Saves patients data of this promoter to a file named under patients_filename
         String patientData = sb.toString();
+
         FileOutputStream p_outputStream;
         try {
             p_outputStream = c.openFileOutput(patients_filename, Context.MODE_PRIVATE);
