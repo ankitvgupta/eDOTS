@@ -51,7 +51,8 @@
     <string name="sex"> Sex</string>
     <string name="data_treatment"> Active Treatments</string>
     <string name="ID">ID</string>
-    <string name="new_visit_date">Date</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
     <string name="new_visit_site">Site</string>
     <string name="new_visit_treatment">Active Treatments</string>
     <string name="new_visit_done">Submit</string>
@@ -65,6 +66,7 @@
     <string name="txtLocal">Local</string>
     <string name="hello_world">Hello World</string>
     <string name="form_hint1">Hello World</string>
+    <string name="patient_data_filename">patient_data</string>
     <string name="login_username">username</string>
     <string name="login_password">password</string>
     <string name="key_userid">userid</string>

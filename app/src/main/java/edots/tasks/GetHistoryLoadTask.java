@@ -1,6 +1,6 @@
 
 
-package org.techintheworld.www.edots;
+package edots.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -11,10 +11,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 
 import edots.models.Patient;
 import edots.models.Project;

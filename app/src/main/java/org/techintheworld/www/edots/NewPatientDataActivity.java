@@ -14,14 +14,20 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import android.widget.RadioButton;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
+import edots.tasks.NewPatientUploadTask;
+import edots.tasks.GetPatientLoadTask;
 
 
 public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener{
@@ -75,13 +81,11 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         listview.setAdapter(adapter);
     }
 
-    // set the text field as
+    // set the text field as the selected date
     @Override
     public void returnDate(String date) {
-        // TODO Auto-generated method stub
         datePicker.setText(date);
-        date_string = date+" 00:00:00.0";
-        Log.i("date_string", date_string);
+        date_string = date;
     }
 
     @Override
@@ -136,6 +140,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     public void addPatientBtn (View view){
 
         // get the national id
+        // TODO: error message for invalid national ID
         EditText editor = (EditText) findViewById(R.id.National_ID);
         String nationalID = editor.getText().toString();
 
@@ -162,7 +167,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             sex = "1";
         }
 
-
         // determines which treatments are checked and stores them in ArrayList of Projects
         ArrayList<Project> enrolledProjects = new ArrayList<Project>();
         ListView treatmentListText = (ListView) findViewById(R.id.treatments);
@@ -174,7 +178,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             }
         }
 
-        Date date2 = new Date();
         // Submit the patient data to the server.
         addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, sex);
 
@@ -191,8 +194,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         catch (ExecutionException e){
             e.printStackTrace();
         }
-        //return;
-        //currentPatient = new Patient (name, date2, Long.valueOf(nationalID), sex, enrolledProjects, motherName, fatherName, "1923745", 1);
 
         // switch to NewVisitActivity
         Intent intent = new Intent(this, MedicalHistoryActivity.class);

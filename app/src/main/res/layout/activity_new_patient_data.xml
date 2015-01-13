@@ -27,7 +27,7 @@
             <EditText
                 android:id="@+id/National_ID"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="number"
                 android:layout_width="fill_parent">
             </EditText>
 
