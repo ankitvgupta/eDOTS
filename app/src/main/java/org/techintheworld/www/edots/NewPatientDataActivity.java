@@ -25,7 +25,18 @@ import edots.models.Project;
 import edots.tasks.NewPatientUploadTask;
 import edots.tasks.GetPatientLoadTask;
 
-
+/*
+ * Written by Nishant
+ * Reviewed by Ankit on 01/12/15
+ *
+ * Controller File
+ *      Associated Views: activity_new_patient_data.xml
+ *      Accesses Models: Patient
+ *
+ * Used to parse inputted data about a new patient, and submit that to the server.
+ *
+ * onSubmit behavior: adds Patient to db, pulls patient from db to get patientcode, and passes that Patient to GetPatientActivity via Intent
+ */
 public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener{
 
     private Patient currentPatient;

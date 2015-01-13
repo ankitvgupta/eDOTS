@@ -23,7 +23,16 @@ import edots.models.Patient;
 import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
 
-
+/*
+ * Written by Ankit
+ *
+ * Controller file
+ *      Associated View: activity_get_patient.xml
+ *      Accesses Models: Patient, Visit,
+ *
+ * Used to query the database for patients and visits, by parsing the national ID input.
+ * Also renders the queried patient data.
+ */
 public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
@@ -87,12 +96,11 @@ public class GetPatientActivity extends Activity {
         GetPatientLoadTask newP = new GetPatientLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
 
-        // parse the result, and return itg
+        // parse the result, and return it
         try {
             currentPatient = (Patient) p.get();
             ArrayList<Visit> visits = currentPatient.getPatientHistory();
             Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
-            //Log.v("Patient that we got is", currentPatient.toString());
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         } catch (ExecutionException e1) {
