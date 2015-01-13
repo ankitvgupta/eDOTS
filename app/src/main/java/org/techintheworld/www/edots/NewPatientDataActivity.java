@@ -41,6 +41,7 @@ import edots.utils.DatePickerFragment;
  *
  * onSubmit behavior: adds Patient to db, pulls patient from db to get patientcode, and passes that Patient to GetPatientActivity via Intent
  */
+
 public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener{
 
     private Patient currentPatient;

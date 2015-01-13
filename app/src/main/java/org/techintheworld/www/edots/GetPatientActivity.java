@@ -114,18 +114,16 @@ public class GetPatientActivity extends Activity {
                 JSONObject obj = object.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
                 // this ensures that they have a NationalId
-                try {
-                    if (p.getNationalID() == nationalid) {
-                        currentPatient = p;
-                        Log.e("GetPatientActivity", "Patient Found is" + p.toString());
-                    }
-                }
-                catch(NullPointerException e1){
-                    e1.printStackTrace();
+                if (p.getNationalID() == nationalid) {
+                    currentPatient = p;
+                    Log.e("GetPatientActivity", "Patient Found is" + p.toString());
                 }
             }
         }
         catch (FileNotFoundException e1){
+            e1.printStackTrace();
+        }
+        catch(NullPointerException e1){
             e1.printStackTrace();
         }
 
@@ -220,6 +218,9 @@ public class GetPatientActivity extends Activity {
         }
     }
 
+    /**
+     * @author lili
+     */
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();

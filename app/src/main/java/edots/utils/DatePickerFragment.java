@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author lilijiang
+ * @author lili
  * @since 1/13/15
  * Time picker dialog class
  */
