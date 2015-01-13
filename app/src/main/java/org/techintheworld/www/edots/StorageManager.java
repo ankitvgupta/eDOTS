@@ -56,13 +56,11 @@ public class StorageManager {
                 ex.printStackTrace();
             }
         }
-
         return null;
-
     }
 
 
-    private static JSONObject getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
+    public static JSONObject getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
         try {
             // Opens file for reading
             FileInputStream fis = c.openFileInput(fileName);

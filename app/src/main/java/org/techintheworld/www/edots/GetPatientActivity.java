@@ -15,12 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.tasks.GetPatientLoadTask;
-
 
 public class GetPatientActivity extends Activity {
 
@@ -80,7 +83,14 @@ public class GetPatientActivity extends Activity {
     public Patient lookupPatient(int nationalid) {
 
         currentPatient = null;
-
+        JSONArray object;
+        try {
+            object = (JSONArray) StorageManager.getJSONFromLocal(this, "patient._data");
+            for (int i = 0; i < object.size())
+        }
+        catch (FileNotFoundException e1){
+            e1.printStackTrace();
+        }
         // Instantiate a loader task and load the given patient via nationalid
         GetPatientLoadTask newP = new GetPatientLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
