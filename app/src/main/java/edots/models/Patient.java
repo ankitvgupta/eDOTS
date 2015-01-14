@@ -35,7 +35,7 @@ public class Patient extends Object{
     private Date birthDate;
     private Long nationalID;
     private String sex;
-    private ArrayList<Project> enrolledProjects = new ArrayList<Project>();
+    private Project enrolledProject;
 
     public Patient(){
 
@@ -49,18 +49,18 @@ public class Patient extends Object{
      * @param d Date of birth (as a date object)
      * @param nid national id
      * @param s sex
-     * @param projects ArrayList of projects enrolled in
+     * @param project ArrayList of projects enrolled in
      * @param mother mothers's name
      * @param father father's name
      * @param patientID Patient ID
      * @param doc document type
      */
-    public Patient (String n, Date d, Long nid, String s, ArrayList<Project> projects, String mother, String father, String patientID, int doc){
+    public Patient (String n, Date d, Long nid, String s, Project project, String mother, String father, String patientID, int doc){
         name = n;
         birthDate = d;
         nationalID = nid;
         sex = s;
-        enrolledProjects = projects;
+        enrolledProject = project;
         mothersName = mother;
         fathersName = father;
         pid = patientID;
@@ -84,9 +84,9 @@ public class Patient extends Object{
         sex ="Female";
         mothersName = "Mary";
         fathersName = "John";
-        Project testProject = new Project();
-        Project testProject2 = new Project();
-        enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
+        //Project testProject = new Project();
+        //Project testProject2 = new Project();
+        enrolledProject = new Project();
         doctype = 1;
     }
 
@@ -107,11 +107,11 @@ public class Patient extends Object{
             sex = n.get("sex").toString();
             pid = n.get("pid").toString();
             doctype = Integer.valueOf(n.get("doctype").toString());
-            enrolledProjects = new ArrayList<Project>();
-            JSONArray arry = new JSONArray(n.get("enrolledProjects").toString());
+            enrolledProject = new Project(n.get("enrolledProject").toString());
+            /*JSONArray arry = new JSONArray(n.get("enrolledProjects").toString());
             for (int i = 0; i < arry.length(); i++){
                 enrolledProjects.add(new Project(arry.getString(i)));
-            }
+            }*/
             nationalID = Long.valueOf(n.get("nationalID").toString());
         }
         catch (JSONException e) {
@@ -141,7 +141,7 @@ public class Patient extends Object{
             temp.put("birthDate", birthday);
             temp.put("nationalID", getNationalID());
             temp.put("sex", getSex());
-            temp.put("enrolledProjects", getEnrolledProjects());
+            temp.put("enrolledProject", getEnrolledProject());
             temp.put("pid", getPid());
             temp.put("doctype",  Integer.toString(getDoctype()));
         } catch (JSONException e) {
@@ -157,8 +157,8 @@ public class Patient extends Object{
      * @return a list of this patient's visits, as an ArrayList of Visits
      */
     public ArrayList<Visit> getPatientHistory (){
-        //String patientCode = pid; // for production
-        String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
+        String patientCode = pid; // for production
+        //String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
         GetHistoryLoadTask newP = new GetHistoryLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
         try {
@@ -170,6 +170,9 @@ public class Patient extends Object{
             e.printStackTrace();
         }
         catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
             e.printStackTrace();
         }
         return null;
@@ -209,8 +212,8 @@ public class Patient extends Object{
         return sex;
     }
 
-    public ArrayList<Project> getEnrolledProjects(){
-        return enrolledProjects;
+    public Project getEnrolledProject(){
+        return enrolledProject;
     }
 
     public void setName(String n){
@@ -241,5 +244,9 @@ public class Patient extends Object{
 
     public void setPid(String s){
         pid=s;
+    }
+
+    public void setEnrolledProject(Project p){
+        enrolledProject = p;
     }
 }

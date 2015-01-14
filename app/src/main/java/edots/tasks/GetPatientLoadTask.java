@@ -88,15 +88,15 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             else { sex = "Male"; }
 
             // create test projects to add
-            // TODO: Change these to real ones.
-            Project testProject = new Project();
-            Project testProject2 = new Project();
-            ArrayList<Project> enrolledProjects = new ArrayList<Project>(Arrays.asList(testProject, testProject2));
+            // TODO: Change this to real one.
+            //Project testProject = new Project();
+            //Project testProject2 = new Project();
+            Project enrolledProject = new Project();
 
             Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
 
             // instantiate a new patient to be returned
-            p = new Patient(name, birthDate, nationalID, sex, enrolledProjects, mothersName, fathersName, patientID, docType);
+            p = new Patient(name, birthDate, nationalID, sex, enrolledProject, mothersName, fathersName, patientID, docType);
 
             Log.v("patient object:", p.toString());
 

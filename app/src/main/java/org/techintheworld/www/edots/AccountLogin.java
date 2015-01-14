@@ -15,7 +15,9 @@ import edots.tasks.LoginTask;
 public class AccountLogin {
 
     // TODO: refactor dialog back into promoter login activity
-    public static String login(String username, String password, String locale, Context c) {
+
+    public static String login(String username, String password, String locale, String locale_name, Context c) {
+        // TODO: check internet connection
 
         LoginTask runner = new LoginTask();
         AsyncTask<String, String, Login> loginAsyncTask;
@@ -23,8 +25,8 @@ public class AccountLogin {
 
         // Get the server from the settings
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
-        String url = "http://demo.sociosensalud.org.pe";
         SharedPreferences.Editor editor = mPreferences.edit();
+        String url = "http://demo.sociosensalud.org.pe";
         Log.i("login", "OnClick_url:" + url);
 
         loginAsyncTask = runner.execute(username, password, locale, url);
@@ -35,6 +37,8 @@ public class AccountLogin {
             editor.putString(c.getString(R.string.login_username), username);
             editor.putString(c.getString(R.string.key_userid), String.valueOf(login.UserID));
             editor.putString(c.getString(R.string.login_locale), locale);
+            editor.putString(c.getApplicationContext().getString(R.string.login_locale_name), locale_name);
+
 
 
             Log.i("login", "OnClick_response:" + response);
