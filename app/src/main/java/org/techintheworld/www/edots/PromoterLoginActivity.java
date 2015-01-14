@@ -71,8 +71,6 @@ public class PromoterLoginActivity extends Activity {
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
         }
-        String myurl = "http://demo.sociosensalud.org.pe";
-        loadLocaleSpinner(myurl);
 
     }
 
@@ -205,12 +203,7 @@ public class PromoterLoginActivity extends Activity {
      */
     public boolean checkLogin(String username, String password, String locale, String locale_name) {
         if(password != null && !password.isEmpty()) {
-<<<<<<< HEAD
-
-            String message =  AccountLogin.login(username,password,locale,this);
-=======
             String message =  AccountLogin.login(username,password,locale, locale_name, this);
->>>>>>> 1936f5e80d7dbe17411f91f0bd4ee851e12b660f
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
                 OfflineStorageManager.SetLastLocalUpdateTime(this);
                 return true;
