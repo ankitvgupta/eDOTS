@@ -1,6 +1,7 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,7 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.telephony.gsm.SmsManager;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import edots.utils.OfflineStorageManager;
+import edots.utils.SMSAlarmReceiver;
 
 public class MainMenuActivity extends Activity {
     Button btnSendSMS;
@@ -36,8 +40,11 @@ public class MainMenuActivity extends Activity {
                 Log.i("sms", "as");
                 String phoneNo = "943229757";
                 String message = Integer.toString(R.string.message);
-                if (phoneNo.length()>0 && message.length()>0)
-                    sendSMS(phoneNo, message);
+                if (phoneNo.length()>0 && message.length()>0){
+                    // TODO: fix this
+                    //sendSMS(phoneNo, message);
+                    scheduleAlarm();
+                }
                 else
                     Toast.makeText(getBaseContext(),
                             "Please enter both phone number and message.",
@@ -51,6 +58,26 @@ public class MainMenuActivity extends Activity {
     }
 
 
+    private void scheduleAlarm(){
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+        Log.w("MainMenuActivity:scheduleAlarm  current time",calendar.toString());
+        calendar.add(Calendar.MINUTE, 1);
+
+        Intent intentAlarm = new Intent(this, SMSAlarmReceiver.class);
+        intentAlarm.setAction("org.techintheworld.www.edots.MainMenuActivity");
+
+        //TODO: what is 234324243
+        PendingIntent pIntent =  PendingIntent.getBroadcast(MainMenuActivity.this,
+                0,  intentAlarm, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
+        Log.w("MainMenuActivity:scheduleAlarm scheduled for",calendar.toString());
+
+    }
 
     //---sends an SMS message to another device---
     private void sendSMS(String phoneNumber, String message)
