@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
+import edots.models.Locale;
 import edots.models.Patient;
 import edots.models.Promoter;
 import edots.tasks.GetPatientFromIDTask;
@@ -120,6 +121,7 @@ public class OfflineStorageManager {
         }
     }
 
+
     // Gets Promoter info from web and saves as local file
     public static void SaveWebPromoterData(Promoter p, Context c) {
         // TODO: add connection to web and retrieve all info of that promoter
@@ -208,5 +210,38 @@ public class OfflineStorageManager {
         }
     }
 
+    /**
+     * @author Brendan
+     * @param l the array of locales that you wish to save locally
+     * @param c the context
+     * @throws JSONException an exception where JSON cannot be cast
+     */
+    public static void SaveLocaleData(Locale[] l, Context c) throws JSONException {
+        // Save to local file for Locale
+        String patients_filename = "locale_data";
+
+        int num_locales = l.length;
+        JSONArray ja = new JSONArray();
+
+        // Puts all Locales into JSON form and saves them to an a JSON array
+        for (int i = 0; i < num_locales; i++) {
+            JSONObject obj = new JSONObject(l[i].toString());
+            ja.put(obj);
+        }
+
+        // Saves patients data of this promoter to a file named under patients_filename
+
+        String localeData = ja.toString();
+
+        FileOutputStream l_outputStream;
+        try {
+            l_outputStream = c.openFileOutput(patients_filename, Context.MODE_PRIVATE);
+            l_outputStream.write(localeData.getBytes());
+            l_outputStream.close();
+        } catch (Exception e) {
+            Log.w("StorageManager: Saving Locale files error", "Cannot write to locale file");
+            e.printStackTrace();
+        }
+    }
 
 }
