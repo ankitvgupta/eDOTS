@@ -19,6 +19,7 @@ public class Promoter extends Object {
     private String username;
     private String locale;
     private ArrayList<String> patient_ids;
+    //TODO: add projects they are qualified to administer
 
     public Promoter(){
 

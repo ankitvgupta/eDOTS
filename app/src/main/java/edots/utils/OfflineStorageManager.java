@@ -163,7 +163,7 @@ public class OfflineStorageManager {
         SharedPreferences.Editor editor = mPreferences.edit();
         Date currentTime = new Date();
         long milli_currentTime = currentTime.getTime();
-        editor.putString(context.getString(R.string.last_local_update), String.valueOf(milli_currentTime));
+        editor.putString(context.getString(R.string.date), String.valueOf(milli_currentTime));
         Log.e("Offline StorageManager", String.valueOf(milli_currentTime));
 
         editor.commit();
@@ -184,23 +184,30 @@ public class OfflineStorageManager {
                 activeNetwork.isConnectedOrConnecting();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String last_update = prefs.getString((context.getString(R.string.last_local_update)), null);
-        long time_updated = Long.valueOf(last_update);
-        long diff = Math.abs(time_updated - new Date().getTime());
-        long threshold = 18000000; // 5 hours in milliseconds is 18000000
-        if (isConnected && diff > threshold) {
-            try {
-                SharedPreferences sprefs = PreferenceManager.getDefaultSharedPreferences(context);
-                String username = prefs.getString((context.getString(R.string.login_username)), null);
+        String last_update = prefs.getString((context.getString(R.string.date)), null);
+        try {
+            long time_updated = Long.valueOf(last_update);
 
-                Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, context);
-                OfflineStorageManager.SaveWebPatientData(new_promoter, context);
+            long diff = Math.abs(time_updated - new Date().getTime());
+            long threshold = 18000000; // 5 hours in milliseconds is 18000000
+            if (isConnected && diff > threshold) {
+                try {
+                    SharedPreferences sprefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    String username = prefs.getString((context.getString(R.string.login_username)), null);
 
-                OfflineStorageManager.SetLastLocalUpdateTime(context);
+                    Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, context);
+                    OfflineStorageManager.SaveWebPatientData(new_promoter, context);
 
-            } catch (JSONException e) {
-                Log.e("OfflineStorageManager: Update Local Storage", "Error save patient data");
+                    OfflineStorageManager.SetLastLocalUpdateTime(context);
+
+                } catch (JSONException e) {
+                    Log.e("OfflineStorageManager: Update Local Storage", "Error save patient data");
+                }
             }
+        }
+        catch (NumberFormatException e){
+            long time_updated = Long.valueOf("0");
+            Log.i("offline storage catch",e.toString());
         }
     }
 
