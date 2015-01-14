@@ -211,16 +211,18 @@ public class PromoterLoginActivity extends Activity {
 
     /**
      * @author Brendan
-     * @brief loads the spinner for all the locales by pulling down from server
      * @param url the url of the server
+     * Loads the spinner for all the locales first by pulling down from server
+     * And if that does not work, then by checking file locally
      */
     public void loadLocaleSpinner(String url){
         LocaleLoadTask localeTask = new LocaleLoadTask();
-
+        // load locale from server
         loadLocale = localeTask.execute(url);
         Locale[] objLocale;
         String[] locales;
         try {
+            // try server side first
             objLocale = loadLocale.get();
             locales = new String[objLocale.length];
 
@@ -239,16 +241,20 @@ public class PromoterLoginActivity extends Activity {
             Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception");
         } catch (JSONException e1){
             Log.e("PromoterLoginActivity: loadLocaleActivity"," JSON Exception");
+        } catch (NullPointerException e1){
+            Log.e("PromoterLoginActivity: loadLocaleActivity"," NullPointerException");
         }
+
         try {
-            if (loadLocale == null) {
-                JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+            if (loadLocale.get() == null) {
+                // locale_data load
+                JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
                 locales = new String[object.length()];
                 // look at all patients
                 for (int i = 0; i < object.length(); i++) {
                     JSONObject obj = object.getJSONObject(i);
-                    Patient p = new Patient(obj.toString());
-                    locales[i] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
+                    Locale l = new Locale(obj.toString());
+                    locales[i] = l.name;
                 }
                 ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                         this, android.R.layout.simple_spinner_item, locales);
@@ -258,6 +264,10 @@ public class PromoterLoginActivity extends Activity {
         }
         catch (FileNotFoundException e) {
             Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception");
+        } catch (ExecutionException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception");
+        } catch (InterruptedException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception");
         } catch (JSONException e1){
             Log.e("PromoterLoginActivity: loadLocaleActivity"," JSON Exception On Load");
         }

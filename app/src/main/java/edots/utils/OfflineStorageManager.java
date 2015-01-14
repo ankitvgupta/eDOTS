@@ -87,7 +87,6 @@ public class OfflineStorageManager {
             e.printStackTrace();
         }
 
-
         return p_result;
     }
 
@@ -218,7 +217,7 @@ public class OfflineStorageManager {
      */
     public static void SaveLocaleData(Locale[] l, Context c) throws JSONException {
         // Save to local file for Locale
-        String patients_filename = "locale_data";
+        String locale_filename = "locale_data";
 
         int num_locales = l.length;
         JSONArray ja = new JSONArray();
@@ -229,13 +228,13 @@ public class OfflineStorageManager {
             ja.put(obj);
         }
 
-        // Saves patients data of this promoter to a file named under patients_filename
+        // Saves locale data of this promoter to a file named under locale_filename
 
         String localeData = ja.toString();
 
         FileOutputStream l_outputStream;
         try {
-            l_outputStream = c.openFileOutput(patients_filename, Context.MODE_PRIVATE);
+            l_outputStream = c.openFileOutput(locale_filename, Context.MODE_PRIVATE);
             l_outputStream.write(localeData.getBytes());
             l_outputStream.close();
         } catch (Exception e) {

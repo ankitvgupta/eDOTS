@@ -1,8 +1,14 @@
 package edots.models;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.PropertyInfo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 
@@ -24,7 +30,23 @@ public class Locale implements KvmSerializable {
         this.name = name;
 
     }
+    /** Added to parse a string back into the JSON form.
+     *
+     *  @author Brendan Bozorgmir
+     *  @param JSONString A JSON Serialization of the Locale Object
+     *
+     */
+    public Locale(String JSONString) {
+        try {
+            JSONObject n = new JSONObject(JSONString);
+            this.name = n.get("name").toString();
+            this.id = (int) n.get("id");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+    }
     @Override
     public Object getProperty(int arg0) {
 
