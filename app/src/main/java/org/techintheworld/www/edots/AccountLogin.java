@@ -27,18 +27,9 @@ public class AccountLogin {
         SharedPreferences.Editor editor = mPreferences.edit();
         Log.i("login", "OnClick_url:" + url);
 
-        ProgressDialog p = ProgressDialog.show(c, "", "Login in progress", true);
         loginAsyncTask = runner.execute(username, password, locale, url);
 
         try {
-            ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
-
-            loginProgress.setTitle("Login in progress");
-            loginProgress.setMessage("Your username or password was incorrect or invalid");
-            loginProgress.show();
-
-
-            // TODO: change to progress dialog
             Login login = loginAsyncTask.get();
             response = login.Message;
             editor.putString(c.getString(R.string.login_username), username);
@@ -51,7 +42,13 @@ public class AccountLogin {
 
                 editor.commit();
             }
-            p.dismiss();
+            else{
+                ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
+
+                loginProgress.setTitle("Login Error");
+                loginProgress.setMessage("Your username or password was incorrect or invalid");
+                loginProgress.show();
+            }
 
 
         } catch (InterruptedException e1) {

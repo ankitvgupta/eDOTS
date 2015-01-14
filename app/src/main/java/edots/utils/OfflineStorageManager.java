@@ -163,7 +163,6 @@ public class OfflineStorageManager {
         Date currentTime = new Date();
         long milli_currentTime = currentTime.getTime();
         editor.putString(context.getString(R.string.last_local_update), String.valueOf(milli_currentTime));
-        Log.e("Offline StorageManager", String.valueOf(milli_currentTime));
 
         editor.commit();
     }
@@ -184,7 +183,7 @@ public class OfflineStorageManager {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         String last_update = prefs.getString((context.getString(R.string.last_local_update)), null);
-        // TODO: Delete this fucking try-catch
+        // TODO: Delete this try catch if possible
         try {
             long time_updated = Long.valueOf(last_update);
             long diff = Math.abs(time_updated - new Date().getTime());
