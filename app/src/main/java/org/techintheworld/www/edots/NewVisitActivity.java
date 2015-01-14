@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
+
 import edots.tasks.GetHistoryLoadTask;
 import edots.tasks.NewVisitUploadTask;
 import edots.utils.DatePickerFragment;
@@ -202,10 +203,11 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     */
     public String returnLocale(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String locale =  prefs.getString((getString(R.string.login_locale)), null);
+        String locale =  prefs.getString((getString(R.string.login_locale_name)), null);
         Log.i("new visit activity: locale", locale);
         return locale;
     }
+
 
     /**
      *
@@ -213,7 +215,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
      * @param timeString A string representatino of the visit's time of day
      */
     public void addToDatabase(String date, String timeString){
-        // TODO
         NewVisitUploadTask uploader = new NewVisitUploadTask();
         //Log.v("NewVisitActivity.java: The currentPatient is", currentPatient.toString());
         try {

@@ -52,6 +52,11 @@
             android:text="@string/locale"
         />
 
+        <ProgressBar android:indeterminate="true"
+            android:layout_width="50dp" android:layout_height="50dp"
+            android:id="@+id/marker_progress" style="?android:attr/progressBarStyle"
+            android:layout_gravity="center_vertical|center_horizontal" />
+
         <!--login button-->
         <Button
             android:id="@+id/loginButton"

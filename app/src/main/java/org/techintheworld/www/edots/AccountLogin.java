@@ -15,7 +15,8 @@ import edots.tasks.LoginTask;
 public class AccountLogin {
 
     // TODO: refactor dialog back into promoter login activity
-    public static String login(String username, String password, String locale, Context c) {
+
+    public static String login(String username, String password, String locale, String locale_name, Context c) {
         // TODO: check internet connection
 
         LoginTask runner = new LoginTask();
@@ -24,28 +25,20 @@ public class AccountLogin {
 
         // Get the server from the settings
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
-        String url = "http://demo.sociosensalud.org.pe";
         SharedPreferences.Editor editor = mPreferences.edit();
+        String url = "http://demo.sociosensalud.org.pe";
         Log.i("login", "OnClick_url:" + url);
 
-        ProgressDialog p = ProgressDialog.show(c, "", "Login in progress", true);
         loginAsyncTask = runner.execute(username, password, locale, url);
 
-
-
         try {
-            ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
-            loginProgress.setTitle("Login in progress");
-            loginProgress.setMessage("Your username or password was incorrect or invalid");
-            loginProgress.show();
-
-
-            // TODO: change to progress dialog
             Login login = loginAsyncTask.get();
             response = login.Message;
             editor.putString(c.getString(R.string.login_username), username);
             editor.putString(c.getString(R.string.key_userid), String.valueOf(login.UserID));
             editor.putString(c.getString(R.string.login_locale), locale);
+            editor.putString(c.getApplicationContext().getString(R.string.login_locale_name), locale_name);
+
 
 
             Log.i("login", "OnClick_response:" + response);
@@ -53,7 +46,13 @@ public class AccountLogin {
 
                 editor.commit();
             }
-            p.dismiss();
+            else{
+                ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
+
+                loginProgress.setTitle("Login Error");
+                loginProgress.setMessage("Your username or password was incorrect or invalid");
+                loginProgress.show();
+            }
 
 
         } catch (InterruptedException e1) {

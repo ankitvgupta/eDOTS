@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,13 +27,11 @@ import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Locale;
-import edots.models.Patient;
 import edots.models.Promoter;
 import edots.tasks.LocaleLoadTask;
 import edots.utils.OfflineStorageManager;
 
 
-//TODO: remember session, auto login
 /*
  * Written by Brendan
  *
@@ -62,12 +61,17 @@ public class PromoterLoginActivity extends Activity {
         String myurl = "http://demo.sociosensalud.org.pe";
         loadLocaleSpinner(myurl);
 
+        // Progress bar set to gone on page load
+        ProgressBar p_d = (ProgressBar)findViewById(R.id.marker_progress);
+        p_d.setVisibility(View.GONE);
+
+
         String username = checkAlreadyLoggedIn();
         if (username != null){
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
-
         }
+
     }
 
     /**
@@ -118,6 +122,14 @@ public class PromoterLoginActivity extends Activity {
      */
     public  void switchPatientType (View view){
 
+        // Progress Dialog starts
+        final ProgressBar p_d = (ProgressBar)findViewById(R.id.marker_progress);
+        p_d.getHandler().post(new Runnable() {
+            public void run() {
+                p_d.setVisibility(View.VISIBLE);
+            }
+        });
+
         EditText u= (EditText)findViewById(R.id.username);
         EditText p= (EditText)findViewById(R.id.password);
         String username = u.getText().toString();
@@ -127,6 +139,8 @@ public class PromoterLoginActivity extends Activity {
         String locale_num = "1";
         Locale[] objLocale;
         String[] wee;
+
+
         try {
             objLocale = loadLocale.get();
             for(int i = 0;i < objLocale.length; i++){
@@ -141,12 +155,13 @@ public class PromoterLoginActivity extends Activity {
         }
 
 
-        boolean validLogin = checkLogin(username, password, locale_num);
+        boolean validLogin = checkLogin(username, password, locale_num, locale_name);
         if (validLogin){
             try{
                 Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, this);
                 OfflineStorageManager.SaveWebPatientData(new_promoter, this);
                 Intent intent = new Intent(this, MainMenuActivity.class);
+                p_d.setVisibility(View.GONE);
                 startActivity(intent);
             }
             catch (JSONException e){
@@ -173,8 +188,6 @@ public class PromoterLoginActivity extends Activity {
         loginError.setMessage(message);
         loginError.setPositiveButton(R.string.login_try_again, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
-
             }
         });
         loginError.show();
@@ -188,9 +201,9 @@ public class PromoterLoginActivity extends Activity {
      * @param locale input promoter locale from Spinner
      * @return true if login successful from Service, false if not successful
      */
-    public boolean checkLogin(String username, String password, String locale) {
+    public boolean checkLogin(String username, String password, String locale, String locale_name) {
         if(password != null && !password.isEmpty()) {
-            String message =  AccountLogin.login(username,password,locale,this);
+            String message =  AccountLogin.login(username,password,locale, locale_name, this);
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
                 OfflineStorageManager.SetLastLocalUpdateTime(this);
                 return true;
@@ -203,6 +216,7 @@ public class PromoterLoginActivity extends Activity {
         else{
             return false;
         }
+
     }
 
     /**
@@ -265,7 +279,7 @@ public class PromoterLoginActivity extends Activity {
         } catch (InterruptedException e1) {
             Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");
         } catch (JSONException e1){
-            Log.e("PromoterLoginActivity: loadLocaleActivity"," JSON Exception On Load");
+            Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
         }
     }
 }

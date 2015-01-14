@@ -157,8 +157,8 @@ public class Patient extends Object{
      * @return a list of this patient's visits, as an ArrayList of Visits
      */
     public ArrayList<Visit> getPatientHistory (){
-        //String patientCode = pid; // for production
-        String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
+        String patientCode = pid; // for production
+        //String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
         GetHistoryLoadTask newP = new GetHistoryLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
         try {
@@ -170,6 +170,9 @@ public class Patient extends Object{
             e.printStackTrace();
         }
         catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
             e.printStackTrace();
         }
         return null;
