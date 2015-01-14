@@ -257,7 +257,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         if (!(validateEmpty())) {
             AlertError("Entry Error", "You have left one of the fields blank, please try again");
         } else if (!(validateNationalID())) {
-            AlertError("Entry Error", "The entered NationalID is not valid")
+            AlertError("Entry Error", "The entered NationalID is not valid");
         } else {
 
             // get the national id
