@@ -1,5 +1,6 @@
 package edots.tasks;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -9,7 +10,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import edots.models.Locale;
-
+import edots.utils.OfflineStorageManager;
 /*
  * Written by Brendan
  * Reviewed by Ankit
@@ -67,13 +68,8 @@ public class LocaleLoadTask extends AsyncTask<String,String,Locale[]> {
         }
         catch (Exception e)
         {
-            // to do hard code when not possible
-            lstLocales = new Locale[1];
-            lstLocales[0] = new Locale(1,"Brendan");
-            resul = lstLocales;
-            Log.e("error from local load task", e.toString());
+            return null;
         }
-
         return resul;
     }
 
