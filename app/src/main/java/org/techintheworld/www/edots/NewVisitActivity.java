@@ -4,17 +4,14 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,6 +21,8 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
+
+import edots.tasks.GetHistoryLoadTask;
 import edots.tasks.NewVisitUploadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.TimePickerFragment;
@@ -46,6 +45,9 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     EditText datePicker;
     EditText timePicker;
     EditText visitLocaleEditor;
+    EditText visitProjectEditor;
+    EditText visitGroupEditor;
+    EditText visitNoEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat displayTimeFormat = new SimpleDateFormat("hh:mm");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
@@ -67,6 +69,13 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             // TODO: Don't print the stack trace, give some sort of dialog box instead
             e.printStackTrace();
         }
+
+//        ProjectLoadTask newP = new ProjectLoadTask();
+//        AsyncTask p = newP.execute("2", "19");
+
+        GetHistoryLoadTask newV = new GetHistoryLoadTask();
+        AsyncTask v = newV.execute(currentPatient.getPid(), "2","5");
+        Log.i("new visit: asynctask", v.toString());
 
         // Get the current projects that the patient is signed up for
         Project patientProject = currentPatient.getEnrolledProject();
@@ -109,32 +118,37 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         Log.i("new visit activity: oncreate pulled locale", returnLocale());
         visitLocaleEditor.setText(returnLocale());
 
-        // instantiate arraylist that will be used for the checkboxes text
-        ArrayList<String> checkBoxesText = new ArrayList<String>();
+//
+//        // instantiate arraylist that will be used for the checkboxes text
+//        ArrayList<String> checkBoxesText = new ArrayList<String>();
+//
+//        // Retrieve list of projects of this patient
+//        for (int i = 0; i < 1; i++) {
+//            CheckBox checkBox = new CheckBox(getApplicationContext());
+//            String n = patientProject.getName();
+//            checkBoxesText.add(n);
+//        }
+//
+//        // sets layout_height for ListView based on number of treatments
+//        ListView treatmentView = (ListView)findViewById(R.id.active_treatments);
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * num_projects, getResources().getDisplayMetrics());
+//        treatmentView.getLayoutParams().height = height;
+//
+//        // set the dropdown to have the given text
+//        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
+//        ListView lv= (ListView)findViewById(R.id.active_treatments);
+//        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+//        lv.setAdapter(adapter);
+//
+//        // set all of them to true
+//        for (int i=0; i<checkBoxesText.size(); i++){
+//            lv.setItemChecked(i, true);
+//        }
+//        lv.setMinimumHeight(200);
 
-        // Retrieve list of projects of this patient
-        for (int i = 0; i < 1; i++) {
-            CheckBox checkBox = new CheckBox(getApplicationContext());
-            String n = patientProject.getName();
-            checkBoxesText.add(n);
-        }
-
-        // sets layout_height for ListView based on number of treatments
-        ListView treatmentView = (ListView)findViewById(R.id.active_treatments);
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * num_projects, getResources().getDisplayMetrics());
-        treatmentView.getLayoutParams().height = height;
-
-        // set the dropdown to have the given text
-        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
-        ListView lv= (ListView)findViewById(R.id.active_treatments);
-        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        lv.setAdapter(adapter);
-
-        // set all of them to true
-        for (int i=0; i<checkBoxesText.size(); i++){
-            lv.setItemChecked(i, true);
-        }
-        lv.setMinimumHeight(200);
+        // visit group
+        visitGroupEditor = (EditText) findViewById(R.id.visitGroup);
+//       visitLocaleEditor.setText(returnLocale());
 
     }
 

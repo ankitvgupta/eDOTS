@@ -14,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -24,25 +27,56 @@ import edots.models.Visit;
 
 
 public class MedicalHistoryActivity extends Activity {
-
+    CalendarView calendar;
     Patient currentPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
-        try {
-            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
 
-//        TextView test = (TextView) findViewById(R.id.medicalhistory1);
-//        test.setText(currentPatient.toString());
-//
-//        Log.v("MedicalHistoryActivity.java", "The ArrayList of visits are: " + currentPatient.getPatientHistory());
 
+        //initializes the calendarview
+        initializeCalendar();
+
+//        loadPastVisits();
+    }
+
+    public void initializeCalendar() {
+        calendar = (CalendarView) findViewById(R.id.calendar);
+
+        // sets whether to show the week number.
+        calendar.setShowWeekNumber(false);
+
+        // sets the first day of week according to Calendar.
+        // here we set Monday as the first day of the Calendar
+        calendar.setFirstDayOfWeek(2);
+
+        //The background color for the selected week.
+
+        calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
+
+        //sets the color for the dates of an unfocused month.
+
+        calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));
+
+        //sets the color for the separator line between weeks.
+        calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
+
+        //sets the color for the vertical bar shown at the beginning and at the end of the selected date.
+
+        calendar.setSelectedDateVerticalBar(R.color.darkgreen);
+        //sets the listener to be notified upon selected date change.
+        calendar.setOnDateChangeListener(new OnDateChangeListener() {
+                    //show the selected date as a toast
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void loadPastVisits() {
         // sets header to Past Visits for Patient Name
         String patientName = currentPatient.getName();
         TextView header = (TextView) findViewById(R.id.medical_history_for_patient);
@@ -147,7 +181,6 @@ public class MedicalHistoryActivity extends Activity {
             v.setBackgroundColor(Color.parseColor("#B3B3B3"));
             encloseScrollLayout.addView(v);
         }
-
     }
 
 
