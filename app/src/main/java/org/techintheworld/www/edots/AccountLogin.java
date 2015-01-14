@@ -24,8 +24,8 @@ public class AccountLogin {
 
         // Get the server from the settings
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
-        String url = "http://demo.sociosensalud.org.pe";
         SharedPreferences.Editor editor = mPreferences.edit();
+        String url = "http://demo.sociosensalud.org.pe";
         Log.i("login", "OnClick_url:" + url);
 
         ProgressDialog p = ProgressDialog.show(c, "", "Login in progress", true);

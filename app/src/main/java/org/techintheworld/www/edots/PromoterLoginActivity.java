@@ -63,7 +63,6 @@ public class PromoterLoginActivity extends Activity {
         if (username != null){
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
-
         }
         String myurl = "http://demo.sociosensalud.org.pe";
         loadLocaleSpinner(myurl);
@@ -146,6 +145,10 @@ public class PromoterLoginActivity extends Activity {
             try{
                 Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, this);
                 OfflineStorageManager.SaveWebPatientData(new_promoter, this);
+                SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putString(this.getString(R.string.login_locale_name), locale_name);
+
                 Intent intent = new Intent(this, MainMenuActivity.class);
                 startActivity(intent);
             }
