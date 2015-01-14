@@ -2,13 +2,8 @@ package org.techintheworld.www.edots;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -29,62 +27,53 @@ import edots.models.Visit;
 
 
 public class MedicalHistoryActivity extends Activity {
-
+    CalendarView calendar;
     Patient currentPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
-        try {
-            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
 
-        Context ctx = getApplicationContext();
-        createCalendar(ctx);
+
+        //initializes the calendarview
+        initializeCalendar();
 
 //        loadPastVisits();
     }
 
-    // creates the values the Calendar will have
-    private static ContentValues buildNewCalContentValues() {
-        final ContentValues cv = new ContentValues();
-        cv.put(CalendarContract.Calendars.ACCOUNT_NAME, "Nish");
-        cv.put(CalendarContract.Calendars.ACCOUNT_TYPE, CalendarContract.ACCOUNT_TYPE_LOCAL);
-        cv.put(CalendarContract.Calendars.NAME, "Nish's Calendar");
-        cv.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, "Nish's Calendar");
-        cv.put(CalendarContract.Calendars.CALENDAR_COLOR, 0xEA8561);
-        cv.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_READ);
-        cv.put(CalendarContract.Calendars.OWNER_ACCOUNT, "Nish");
-        cv.put(CalendarContract.Calendars.VISIBLE, 1);
-        cv.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
-        return cv;
-    }
+    public void initializeCalendar() {
+        calendar = (CalendarView) findViewById(R.id.calendar);
 
-    /**The main/basic URI for the android calendars table*/
-    private static final Uri Cal_URI = CalendarContract.Calendars.CONTENT_URI;
+        // sets whether to show the week number.
+        calendar.setShowWeekNumber(false);
 
-    /**Builds the Uri for your Calendar in android database (as a Sync Adapter)*/
-    private static Uri buildCalUri() {
-        return Cal_URI
-                .buildUpon()
-                .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, "Nish")
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE,
-                        CalendarContract.ACCOUNT_TYPE_LOCAL)
-                .build();
-    }
+        // sets the first day of week according to Calendar.
+        // here we set Monday as the first day of the Calendar
+        calendar.setFirstDayOfWeek(2);
 
-    // Create and insert new android calendar into database
-    public static void createCalendar(Context ctx) {
-        ContentResolver cr = ctx.getContentResolver();
-        final ContentValues cv = buildNewCalContentValues();
-        Uri calUri = buildCalUri();
-        //insert the calendar into the database
-        cr.insert(calUri, cv);
+        //The background color for the selected week.
+
+        calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
+
+        //sets the color for the dates of an unfocused month.
+
+        calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));
+
+        //sets the color for the separator line between weeks.
+        calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
+
+        //sets the color for the vertical bar shown at the beginning and at the end of the selected date.
+
+        calendar.setSelectedDateVerticalBar(R.color.darkgreen);
+        //sets the listener to be notified upon selected date change.
+        calendar.setOnDateChangeListener(new OnDateChangeListener() {
+                    //show the selected date as a toast
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void loadPastVisits() {
