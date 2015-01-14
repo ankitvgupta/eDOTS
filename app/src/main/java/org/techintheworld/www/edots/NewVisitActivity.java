@@ -202,7 +202,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     public void addToDatabase(String date, String timeString){
         // TODO
         NewVisitUploadTask uploader = new NewVisitUploadTask();
-        Log.v("NewVisitActivity.java: The currentPatient is", currentPatient.toString());
+        //Log.v("NewVisitActivity.java: The currentPatient is", currentPatient.toString());
         try {
             String result = uploader.execute("http://demo.sociosensalud.org.pe", "2", "2", "1", "1",
                     currentPatient.getPid(), date, timeString, "19").get();
