@@ -168,19 +168,23 @@
 
                     <Button
                         android:layout_width="0dip"
+                        android:id="@+id/history_button"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/patient_home_button_checkMedicalHistory"
                         android:onClick="switchMedicalHistoryActivity"
+                        android:enabled="false"
                         android:layout_gravity="center_horizontal" />
 
                     <Button
                         android:layout_width="0dip"
+                        android:id="@+id/new_visit_button"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/patient_home_button_logNewVisit"
                         android:onClick="switchNewVisitActivity"
                         android:layout_gravity="center_horizontal"
+                        android:enabled="false"
                         android:layout_column="11" />
 
                 </TableRow>
