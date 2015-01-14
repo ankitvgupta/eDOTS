@@ -2,7 +2,10 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -144,11 +148,16 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         }
         catch (InterruptedException e){
             e.printStackTrace();
+            saveLocally(name, father, mother, docType, nationalID, birthDate, sex);
         }
         catch (ExecutionException e){
             e.printStackTrace();
         }
         return;
+    }
+
+    private void saveLocally(String name, String father, String mother, String docType, String nationalID, String birthDate, String sex){
+        //Patient p = new Patient(name, birthDate, Long.valueOf(nationalID),sex, ArrayList<Project> projects,  mother,  father, patientID, Integer.valueOf(docType));
     }
 
     public void onRadioButtonClicked(View view){
@@ -206,6 +215,10 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             AsyncTask p = getP.execute("http://demo.sociosensalud.org.pe", nationalID);
             currentPatient = (Patient) p.get();
             Log.v("What we got was", currentPatient.toString());
+            // switch to NewVisitActivity
+            Intent intent = new Intent(this, GetPatientActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
         }
         catch (InterruptedException e){
             e.printStackTrace();
@@ -213,12 +226,28 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         catch (ExecutionException e){
             e.printStackTrace();
         }
+        catch(NullPointerException e){
+            if (!checkInternetConnection()){
+                Toast.makeText(getBaseContext(), R.string.no_internet_connection,
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                e.printStackTrace();
+            }
+        }
 
-        // switch to NewVisitActivity
-        Intent intent = new Intent(this, GetPatientActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
 
+
+    }
+
+    private boolean checkInternetConnection(){
+        ConnectivityManager cm =
+                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
     }
 
 }
