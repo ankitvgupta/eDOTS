@@ -1,7 +1,9 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -58,8 +60,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
         // get the birthdate
         datePicker = (EditText) findViewById(R.id.Birthdate);
-        datePicker.setOnClickListener(new View.OnClickListener()
-        {
+        datePicker.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -131,6 +132,19 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
     }
 
+    public void AlertError(String title, String message){
+        // Alert if username and password are not entered
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // here you can add functions
+            }
+        });
+        alertDialog.show();
+    }
+
     public void addToDatabase(String name, String father, String mother, String docType, String nationalID, String birthDate, String sex){
 
         NewPatientUploadTask uploader = new NewPatientUploadTask();
@@ -140,9 +154,11 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         }
         catch (InterruptedException e){
             e.printStackTrace();
+            AlertError("Entry Error", "The data you entered is of the wrong format, please try again");
         }
         catch (ExecutionException e){
             e.printStackTrace();
+            AlertError("Entry Error", "The data you entered is of the wrong format, please try again");
         }
         return;
     }
@@ -151,69 +167,97 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         return;
     }
 
-    // switch to PatientHome activity
-    public void addPatientBtn (View view){
-
-        // get the national id
-        // TODO: error message for invalid national ID
+    // validate that each field has some entry
+    public boolean validate() {
         EditText editor = (EditText) findViewById(R.id.National_ID);
         String nationalID = editor.getText().toString();
 
-        // get the name
         editor = (EditText) findViewById(R.id.Name);
         String name = editor.getText().toString();
 
-        // get the father's name
         editor = (EditText) findViewById(R.id.Fathers_name);
         String fatherName = editor.getText().toString();
 
-        // get the mother's name
         editor = (EditText) findViewById(R.id.Mothers_name);
         String motherName = editor.getText().toString();
 
-        // get the sex
-        String sex = "";
-        RadioButton buttn = (RadioButton) findViewById(R.id.radio_female);
-        if (buttn.isChecked()){
-            sex = "2";
-        }
-        buttn = (RadioButton) findViewById(R.id.radio_male);
-        if (buttn.isChecked()){
-            sex = "1";
+        RadioButton buttnMale = (RadioButton) findViewById(R.id.radio_female);
+        RadioButton buttnFemale = (RadioButton) findViewById(R.id.radio_male);
+
+        if (nationalID.equals("") || name.equals("") || fatherName.equals("") ||
+                motherName.equals("") || !(buttnMale.isChecked() || buttnFemale.isChecked())) {
+            return true;
         }
 
-        // determines which treatments are checked and stores them in ArrayList of Projects
-        ArrayList<Project> enrolledProjects = new ArrayList<Project>();
-        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
-        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
-        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
-            if (checkedItems.get(i)) {
-                //String treatment = treatmentListText.getAdapter().getItem(i).toString();
-                enrolledProjects.add(treatmentList.get(i));
+        return false;
+    }
+
+    // switch to PatientHome activity
+    public void addPatientBtn (View view){
+
+        if (validate()) {
+            AlertError("Entry Error", "You have left one of the fields blank, please try again");
+        } else {
+
+            // get the national id
+            // TODO: error message for invalid national ID
+            EditText editor = (EditText) findViewById(R.id.National_ID);
+            String nationalID = editor.getText().toString();
+
+            // get the name
+            editor = (EditText) findViewById(R.id.Name);
+            String name = editor.getText().toString();
+
+            // get the father's name
+            editor = (EditText) findViewById(R.id.Fathers_name);
+            String fatherName = editor.getText().toString();
+
+            // get the mother's name
+            editor = (EditText) findViewById(R.id.Mothers_name);
+            String motherName = editor.getText().toString();
+
+            // get the sex
+            String sex = "";
+            RadioButton buttn = (RadioButton) findViewById(R.id.radio_female);
+            if (buttn.isChecked()) {
+                sex = "2";
             }
-        }
+            buttn = (RadioButton) findViewById(R.id.radio_male);
+            if (buttn.isChecked()) {
+                sex = "1";
+            }
 
-        // Submit the patient data to the server.
-        addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, sex);
+            // determines which treatments are checked and stores them in ArrayList of Projects
+            ArrayList<Project> enrolledProjects = new ArrayList<Project>();
+            ListView treatmentListText = (ListView) findViewById(R.id.treatments);
+            SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
+            for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+                if (checkedItems.get(i)) {
+                    //String treatment = treatmentListText.getAdapter().getItem(i).toString();
+                    enrolledProjects.add(treatmentList.get(i));
+                }
+            }
 
-        // then query the database to get the patient, including the patient code generated by server
-        GetPatientLoadTask getP = new GetPatientLoadTask();
-        try {
-            AsyncTask p = getP.execute("http://demo.sociosensalud.org.pe", nationalID);
-            currentPatient = (Patient) p.get();
-            Log.v("What we got was", currentPatient.toString());
-        }
-        catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        catch (ExecutionException e){
-            e.printStackTrace();
-        }
+            // Submit the patient data to the server.
+            addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, sex);
 
-        // switch to NewVisitActivity
-        Intent intent = new Intent(this, GetPatientActivity.class);
-        intent.putExtra("Patient", currentPatient.toString());
-        startActivity(intent);
+            // then query the database to get the patient, including the patient code generated by server
+            GetPatientLoadTask getP = new GetPatientLoadTask();
+            try {
+                AsyncTask p = getP.execute("http://demo.sociosensalud.org.pe", nationalID);
+                currentPatient = (Patient) p.get();
+                Log.v("What we got was", currentPatient.toString());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            // switch to NewVisitActivity
+            Intent intent = new Intent(this, GetPatientActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
 
     }
 
