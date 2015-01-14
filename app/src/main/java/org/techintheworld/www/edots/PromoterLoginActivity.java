@@ -59,15 +59,15 @@ public class PromoterLoginActivity extends Activity {
         password = (EditText)findViewById(R.id.password);
         loginButton = (Button)findViewById(R.id.loginButton);
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
-        String myurl = "http://demo.sociosensalud.org.pe";
-        loadLocaleSpinner(myurl);
-
         String username = checkAlreadyLoggedIn();
         if (username != null){
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
 
         }
+        String myurl = "http://demo.sociosensalud.org.pe";
+        loadLocaleSpinner(myurl);
+
     }
 
     /**
