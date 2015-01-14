@@ -92,7 +92,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
         // creates ListView checkboxes
         ListView listview = (ListView) findViewById(R.id.treatments);
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listview.setAdapter(adapter);
     }
 
@@ -171,8 +171,34 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         return;
     }
 
+    public boolean validateNationalID() {
+
+        EditText editor = (EditText) findViewById(R.id.National_ID);
+        String nationalID = editor.getText().toString();
+
+        boolean allDigits = true;
+
+        for (char c : nationalID.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                allDigits =  false;
+            }
+        }
+
+        boolean properLength = true;
+
+        if (!(nationalID.length() == 8)) {
+            properLength = false;
+        }
+
+        if (properLength && allDigits) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // validate that each field has some entry
-    public boolean validate() {
+    public boolean validateEmpty() {
         EditText editor = (EditText) findViewById(R.id.National_ID);
         String nationalID = editor.getText().toString();
 
@@ -199,19 +225,21 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
         if (nationalID.equals("") || name.equals("") || fatherName.equals("") ||
                 motherName.equals("") || !(buttnMale.isChecked() || buttnFemale.isChecked())) {
-            return true;
+            return false;
         } else if (numTreatments == 0) {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     // switch to PatientHome activity
     public void addPatientBtn (View view){
 
-        if (validate()) {
+        if (!(validateEmpty())) {
             AlertError("Entry Error", "You have left one of the fields blank, please try again");
+        } else if (!(validateNationalID())) {
+            AlertError("Entry Error", "The entered NationalID is not valid")
         } else {
 
             // get the national id
