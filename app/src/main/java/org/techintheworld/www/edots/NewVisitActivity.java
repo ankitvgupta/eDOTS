@@ -198,8 +198,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // TODO
         NewVisitUploadTask uploader = new NewVisitUploadTask();
         try {
-            String result = uploader.execute("http://demo.sociosensalud.org.pe", "2", "2", "1", "1g",
-                    "C74CCD37-8DE4-447C-946E-1300E9498577", "2014-05-20 00:00:00.0", "", "19").get();
+            String result = uploader.execute("http://demo.sociosensalud.org.pe", "2", "2", "1", "1",
+                    "ED143430-F16B-4AA6-B580-E2D0DAE0613E", "2014-05-20 00:00:00.0", "", "19").get();
             Log.v("What we got was", result);
         }
         catch (InterruptedException e){

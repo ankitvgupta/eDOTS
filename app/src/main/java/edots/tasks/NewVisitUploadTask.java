@@ -45,7 +45,7 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
         request.addProperty("CodigoVisita", params[4]);
         request.addProperty("CodigoPaciente", params[5]);
         request.addProperty("FechaVisita", params[6]);
-        request.addProperty("HoraCita", params[7]);
+        request.addProperty("HoraCita", "08:52:00.0000000");
         request.addProperty("CodigoUsuario", params[8]);
 
 

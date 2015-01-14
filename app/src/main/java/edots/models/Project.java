@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by jfang on 1/6/15.
+ *
+ * @author JN
+ * @since 2015-01-06
+ *
+ *
  */
 public class Project {
 
@@ -19,7 +23,7 @@ public class Project {
 
 
     // For testing only
-    public Project(){
+    public Project() {
         try {
             Random r = new Random();
             int num = r.nextInt(100);
@@ -34,7 +38,10 @@ public class Project {
         }
     }
 
-
+    /**
+     *
+     * @param JSONString a JSON object represeting the project
+     */
     public Project (String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
@@ -44,14 +51,18 @@ public class Project {
             for (int i = 0; i < temp.length(); i++){
                 medications.add(temp.get(i).toString());
             }
-
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    
+    /**
+     *
+     * @param n name of the project
+     * @param meds arraylist of the medications
+     * @param t array list of the types
+     */
     public Project(String n, ArrayList<String> meds, ArrayList<String> t){
         medications = meds;
         name = n;
@@ -60,6 +71,10 @@ public class Project {
     }
 
     @Override
+    /**
+     * @return a JSON Serialization of the Project object
+     *
+     */
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
