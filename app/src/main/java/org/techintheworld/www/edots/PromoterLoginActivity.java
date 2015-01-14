@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -200,7 +199,6 @@ public class PromoterLoginActivity extends Activity {
 
             }else{
                 Log.i("login", "Datos incorrectos" );
-                Toast.makeText(getBaseContext(), message,Toast.LENGTH_SHORT).show();
             }
             return false;
         }
