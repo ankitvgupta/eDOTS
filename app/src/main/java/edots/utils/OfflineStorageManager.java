@@ -56,7 +56,7 @@ public class OfflineStorageManager {
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("Patient file not found");
         } catch (IOException e) {
-            Log.e("StorageManager: IOException", "File error in finding patient files");
+            Log.e("OfflineStorageManager: IOException", "File error in finding patient files");
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,6 +147,7 @@ public class OfflineStorageManager {
         Patient p;
         try {
             p = (Patient) get_patient.get();
+            Log.v("OfflineStorageManager.java: The patient that we pulled from the server is", p.toString());
             return p;
         } catch (Exception e) {
             e.printStackTrace();
