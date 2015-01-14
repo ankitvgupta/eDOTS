@@ -29,7 +29,6 @@ import edots.utils.OfflineStorageManager;
 
 //import edots.models.Login;
 
-//TODO: remember session, auto login
 /*
  * Written by Brendan
  *

@@ -16,7 +16,6 @@ public class AccountLogin {
 
     // TODO: refactor dialog back into promoter login activity
     public static String login(String username, String password, String locale, Context c) {
-        // TODO: check internet connection
 
         LoginTask runner = new LoginTask();
         AsyncTask<String, String, Login> loginAsyncTask;
@@ -31,10 +30,9 @@ public class AccountLogin {
         ProgressDialog p = ProgressDialog.show(c, "", "Login in progress", true);
         loginAsyncTask = runner.execute(username, password, locale, url);
 
-
-
         try {
             ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
+
             loginProgress.setTitle("Login in progress");
             loginProgress.setMessage("Your username or password was incorrect or invalid");
             loginProgress.show();

@@ -23,8 +23,6 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
-
-import edots.tasks.NewPatientUploadTask;
 import edots.tasks.NewVisitUploadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.TimePickerFragment;
@@ -195,7 +193,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     }
 
     public void addToDatabase(){
-        // TODO
         NewVisitUploadTask uploader = new NewVisitUploadTask();
         try {
             String result = uploader.execute("http://demo.sociosensalud.org.pe", "2", "2", "1", "1",
