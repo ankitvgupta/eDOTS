@@ -224,6 +224,13 @@ public class GetPatientActivity extends Activity {
         if (currentPatient.getSex() != null) {
             sex.setText(currentPatient.getSex());
         }
+
+        Button historyBtn = (Button) findViewById(R.id.history_button);
+        historyBtn.setEnabled(true);
+        Button newVisitBtn = (Button) findViewById(R.id.new_visit_button);
+        newVisitBtn.setEnabled(true);
+
+
     }
 
     public void parseAndFill(View view) {
