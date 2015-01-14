@@ -95,6 +95,11 @@ public class MedicalHistoryActivity extends Activity {
 
 
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        int numVisits = 0;
+        if (patientVisits != null){
+            numVisits = patientVisits.size();
+        }
+
 
         String siteCode;
         String visitDate;
@@ -106,7 +111,7 @@ public class MedicalHistoryActivity extends Activity {
 
         LinearLayout encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
 
-        for (int i = (patientVisits.size() - 1); i >= 0; i--) {
+        for (int i = (numVisits - 1); i >= 0; i--) {
             siteCode = patientVisits.get(i).getSiteCode();
             visitDate = patientVisits.get(i).getVisitDate();
             timeVal = patientVisits.get(i).getTimeVal();

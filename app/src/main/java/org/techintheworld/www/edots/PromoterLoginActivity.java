@@ -59,15 +59,14 @@ public class PromoterLoginActivity extends Activity {
         password = (EditText)findViewById(R.id.password);
         loginButton = (Button)findViewById(R.id.loginButton);
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
-        String myurl = "http://demo.sociosensalud.org.pe";
-        loadLocaleSpinner(myurl);
-
         String username = checkAlreadyLoggedIn();
         if (username != null){
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
-
         }
+        String myurl = "http://demo.sociosensalud.org.pe";
+        loadLocaleSpinner(myurl);
+
     }
 
     /**
@@ -141,7 +140,7 @@ public class PromoterLoginActivity extends Activity {
         }
 
 
-        boolean validLogin = checkLogin(username, password, locale_num);
+        boolean validLogin = checkLogin(username, password, locale_num, locale_name);
         if (validLogin){
             try{
                 Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, this);
@@ -188,9 +187,9 @@ public class PromoterLoginActivity extends Activity {
      * @param locale input promoter locale from Spinner
      * @return true if login successful from Service, false if not successful
      */
-    public boolean checkLogin(String username, String password, String locale) {
+    public boolean checkLogin(String username, String password, String locale, String locale_name) {
         if(password != null && !password.isEmpty()) {
-            String message =  AccountLogin.login(username,password,locale,this);
+            String message =  AccountLogin.login(username,password,locale, locale_name, this);
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
                 OfflineStorageManager.SetLastLocalUpdateTime(this);
                 return true;

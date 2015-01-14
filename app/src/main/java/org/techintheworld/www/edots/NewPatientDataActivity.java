@@ -169,7 +169,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     }
 
     private void saveLocally(String name, String father, String mother, String docType, String nationalID, String birthDate, String sex) {
-        //Patient p = new Patient(name, birthDate, Long.valueOf(nationalID),sex, ArrayList<Project> projects,  mother,  father, patientID, Integer.valueOf(docType));
+        //Patient p = new Patient(name, birthDate, Long.valueOf(nationalID),sex,  project,  mother,  father, patientID, Integer.valueOf(docType));
     }
 
     public void onRadioButtonClicked(View view) {

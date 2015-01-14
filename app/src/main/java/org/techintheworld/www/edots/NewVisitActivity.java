@@ -2,6 +2,7 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -70,8 +71,9 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         }
 
         // Get the current projects that the patient is signed up for
-        ArrayList<Project> patientProjects= currentPatient.getEnrolledProjects();
-        int num_projects = patientProjects.size();
+        Project patientProject = currentPatient.getEnrolledProject();
+        //Log.v("NewVisitActivity.java: The project the patient is in is", patientProject.toString());
+        int num_projects = 1;
 
         // visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
@@ -113,9 +115,9 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         ArrayList<String> checkBoxesText = new ArrayList<String>();
 
         // Retrieve list of projects of this patient
-        for (int i = 0; i < num_projects; i++) {
+        for (int i = 0; i < 1; i++) {
             CheckBox checkBox = new CheckBox(getApplicationContext());
-            String n = patientProjects.get(i).getName();
+            String n = patientProject.getName();
             checkBoxesText.add(n);
         }
 
@@ -189,7 +191,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     */
     public String returnLocale(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String locale =  prefs.getString((getString(R.string.login_locale)), null);
+        String locale =  prefs.getString((getString(R.string.login_locale_name)), null);
         Log.i("new visit activity: locale", locale);
         return locale;
     }
@@ -230,8 +232,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         time_string = time_string + ":00.0000000";
         Log.i("new visit: time", date_string+" "+time_string+":00.0");
         addToDatabase(date_string, time_string);
-//      Intent intent = new Intent(this, GetPatientActivity.class);
-//      startActivity(intent);
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
     }
 
 
