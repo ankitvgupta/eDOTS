@@ -104,7 +104,6 @@ public class Patient extends Object{
             mothersName = n.get("mothersName").toString();
             SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
             birthDate = parser.parse(n.get("birthDate").toString());
-
             sex = n.get("sex").toString();
             pid = n.get("pid").toString();
             doctype = Integer.valueOf(n.get("doctype").toString());
@@ -121,7 +120,6 @@ public class Patient extends Object{
         catch (ParseException e){
             e.printStackTrace();
         }
-
     }
 
     @Override
