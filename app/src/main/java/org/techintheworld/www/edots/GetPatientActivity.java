@@ -186,6 +186,8 @@ public class GetPatientActivity extends Activity {
                 e1.printStackTrace();
             } catch (ExecutionException e1) {
                 e1.printStackTrace();
+            } catch (NullPointerException e1){
+                Log.e("GetPatientActivity: LoadPatient", "NullPointerException");
             }
         }
         return currentPatient;
