@@ -34,8 +34,6 @@ public class AccountLogin {
 
 
         try {
-
-
             ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
             loginProgress.setTitle("Login in progress");
             loginProgress.setMessage("Your username or password was incorrect or invalid");
