@@ -49,7 +49,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     EditText visitLocaleEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat displayTimeFormat = new SimpleDateFormat("hh:mm");
-    DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
     Date visitDate = new Date();
 
     @Override
@@ -182,10 +182,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return super.onOptionsItemSelected(item);
     }
 
-
     /**
     * @author lili
-    * get the locale of the promoter
+    *
+    * @return the locale of the signed-in promoter
     */
     public String returnLocale(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -194,12 +194,18 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return locale;
     }
 
-    public void addToDatabase(){
+    /**
+     *
+     * @param date A string representation of the visit's date
+     * @param timeString A string representatino of the visit's time of day
+     */
+    public void addToDatabase(String date, String timeString){
         // TODO
         NewVisitUploadTask uploader = new NewVisitUploadTask();
+        //Log.v("NewVisitActivity.java: The currentPatient is", currentPatient.toString());
         try {
             String result = uploader.execute("http://demo.sociosensalud.org.pe", "2", "2", "1", "1",
-                    "ED143430-F16B-4AA6-B580-E2D0DAE0613E", "2014-05-20 00:00:00.0", "", "19").get();
+                    currentPatient.getPid(), date, timeString, "19").get();
             Log.v("What we got was", result);
         }
         catch (InterruptedException e){
@@ -212,12 +218,18 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     // TODO: Add the actual submission to the server
     // Submits the visit to the server and switches to GetPatientActivity
+
+    /**
+     *
+     * @param view The current view
+     */
     public void submitVisit(View view)
     {
         String date_string = dbDateFormat.format(visitDate);
         String time_string = timePicker.getText().toString();
+        time_string = time_string + ":00.0000000";
         Log.i("new visit: time", date_string+" "+time_string+":00.0");
-        addToDatabase();
+        addToDatabase(date_string, time_string);
 //      Intent intent = new Intent(this, GetPatientActivity.class);
 //      startActivity(intent);
     }

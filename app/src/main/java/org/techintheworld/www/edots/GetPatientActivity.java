@@ -76,6 +76,7 @@ public class GetPatientActivity extends Activity {
                 int index = arg0.getSelectedItemPosition();
                 try{
                     currentPatient = new Patient(object.getJSONObject(index).toString());
+                    Log.v("GetPatientActivity.java: The patient that we loaded is", currentPatient.toString());
                     fillTable();
                 }
                 catch (NullPointerException e1){
