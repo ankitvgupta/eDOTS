@@ -182,10 +182,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return super.onOptionsItemSelected(item);
     }
 
-
     /**
     * @author lili
-    * get the locale of the promoter
+    *
+    * @return the locale of the signed-in promoter
     */
     public String returnLocale(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -194,6 +194,11 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return locale;
     }
 
+    /**
+     *
+     * @param date A string representation of the visit's date
+     * @param timeString A string representatino of the visit's time of day
+     */
     public void addToDatabase(String date, String timeString){
         // TODO
         NewVisitUploadTask uploader = new NewVisitUploadTask();
@@ -213,6 +218,11 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     // TODO: Add the actual submission to the server
     // Submits the visit to the server and switches to GetPatientActivity
+
+    /**
+     *
+     * @param view The current view
+     */
     public void submitVisit(View view)
     {
         String date_string = dbDateFormat.format(visitDate);

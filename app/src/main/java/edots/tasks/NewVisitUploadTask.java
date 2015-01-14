@@ -15,12 +15,17 @@ import java.text.SimpleDateFormat;
 
 /**
  * Created by Ankit on 1/9/15.
+ * @author Ankit
+ * @since 2015-01-09
+ *
+ * The uploader task for new visits.
  */
 public class NewVisitUploadTask extends AsyncTask<String,String,String> {
 
     @Override
     protected String doInBackground(String... params) {
 
+        // Set up server parameters
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
@@ -28,6 +33,7 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
+        // Add visit attributes
         request.addProperty("CodigoLocal", params[1]);
         request.addProperty("CodigoProyecto", params[2]);
         request.addProperty("CodigoGrupoVisita", params[3]);
@@ -49,6 +55,7 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
 
         try
         {
+            // Receive response
             transporte.call(SOAP_ACTION, envelope);
             SoapPrimitive resSoap = (SoapPrimitive) envelope.getResponse();
             returnValue = resSoap.toString();
