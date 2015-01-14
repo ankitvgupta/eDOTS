@@ -2,6 +2,7 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,11 +19,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Locale;
+import edots.models.Patient;
 import edots.models.Promoter;
 import edots.tasks.LocaleLoadTask;
 import edots.utils.OfflineStorageManager;
@@ -203,17 +208,18 @@ public class PromoterLoginActivity extends Activity {
 
     /**
      * @author Brendan
-     * @brief loads the spinner for all the locales by pulling down from server
      * @param url the url of the server
+     * Loads the spinner for all the locales first by pulling down from server
+     * And if that does not work, then by checking file locally
      */
     public void loadLocaleSpinner(String url){
         LocaleLoadTask localeTask = new LocaleLoadTask();
-
+        // load locale from server
         loadLocale = localeTask.execute(url);
         Locale[] objLocale;
         String[] locales;
         try {
-
+            // try server side first
             objLocale = loadLocale.get();
             locales = new String[objLocale.length];
 
@@ -224,11 +230,43 @@ public class PromoterLoginActivity extends Activity {
                     this, android.R.layout.simple_spinner_item, locales);
             spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
             spnLocale.setAdapter(spinnerArrayAdapter);
+            OfflineStorageManager.SaveLocaleData(objLocale, this);
 
         } catch (InterruptedException e1) {
-            e1.printStackTrace();
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception");
         } catch (ExecutionException e1) {
-            e1.printStackTrace();
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception");
+        } catch (JSONException e1){
+            Log.e("PromoterLoginActivity: loadLocaleActivity"," JSON Exception");
+        } catch (NullPointerException e1){
+            Log.e("PromoterLoginActivity: loadLocaleActivity"," NullPointerException");
+        }
+
+        try {
+            if (loadLocale.get() == null) {
+                // locale_data load
+                JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
+                locales = new String[object.length()];
+                // look at all patients
+                for (int i = 0; i < object.length(); i++) {
+                    JSONObject obj = object.getJSONObject(i);
+                    Locale l = new Locale(obj.toString());
+                    locales[i] = l.name;
+                }
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                        this, android.R.layout.simple_spinner_item, locales);
+                spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+                spnLocale.setAdapter(spinnerArrayAdapter);
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception On Load");
+        } catch (ExecutionException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception On Load");
+        } catch (InterruptedException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");
+        } catch (JSONException e1){
+            Log.e("PromoterLoginActivity: loadLocaleActivity"," JSON Exception On Load");
         }
     }
 }
