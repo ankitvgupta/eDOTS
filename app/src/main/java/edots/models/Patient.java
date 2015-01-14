@@ -102,10 +102,8 @@ public class Patient extends Object{
             name = n.get("name").toString();
             fathersName = n.get("fathersName").toString();
             mothersName = n.get("mothersName").toString();
-
             SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
             birthDate = parser.parse(n.get("birthDate").toString());
-            nationalID = Long.valueOf(n.get("nationalID").toString());
             sex = n.get("sex").toString();
             pid = n.get("pid").toString();
             doctype = Integer.valueOf(n.get("doctype").toString());
@@ -114,6 +112,7 @@ public class Patient extends Object{
             for (int i = 0; i < arry.length(); i++){
                 enrolledProjects.add(new Project(arry.getString(i)));
             }
+            nationalID = Long.valueOf(n.get("nationalID").toString());
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -121,7 +120,6 @@ public class Patient extends Object{
         catch (ParseException e){
             e.printStackTrace();
         }
-
     }
 
     @Override
