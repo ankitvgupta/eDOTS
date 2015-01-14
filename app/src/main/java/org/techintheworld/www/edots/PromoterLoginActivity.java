@@ -31,7 +31,6 @@ import edots.models.Promoter;
 import edots.tasks.LocaleLoadTask;
 import edots.utils.OfflineStorageManager;
 
-//import edots.models.Login;
 
 /*
  * Written by Brendan

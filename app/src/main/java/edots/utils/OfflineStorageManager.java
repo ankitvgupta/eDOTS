@@ -201,7 +201,6 @@ public class OfflineStorageManager {
                 Log.e("OfflineStorageManager: Update Local Storage", "Error save patient data");
             }
         }
-        Log.e("OfflineStorageManager: Update Local Storage", "last_update is null");
     }
 
     /**
