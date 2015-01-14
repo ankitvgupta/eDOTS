@@ -69,6 +69,8 @@
     <string name="patient_data_filename">patient_data</string>
     <string name="login_username">username</string>
     <string name="login_password">password</string>
+    <string name="last_local_update">date</string>
+
     <string name="key_userid">userid</string>
     <string name="login_locale">local_id</string>
     <string name="session_init_key">Gracias por Iniciar Sesion</string>

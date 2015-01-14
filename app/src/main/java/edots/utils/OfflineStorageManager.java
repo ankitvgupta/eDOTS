@@ -2,6 +2,8 @@ package edots.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -17,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
@@ -46,7 +49,7 @@ public class OfflineStorageManager {
             dis.close();
             fis.close();
 
-            // Convert to JSON
+            // Convert to string
             return fileContent;
 
 
@@ -87,7 +90,7 @@ public class OfflineStorageManager {
         return p_result;
     }
 
-    public static void SaveWebPatientData(Promoter p, Context c) throws JSONException{
+    public static void SaveWebPatientData(Promoter p, Context c) throws JSONException {
         // Save to local file for Patients
         String patients_filename = "patient_data";
 
@@ -142,22 +145,67 @@ public class OfflineStorageManager {
         GetPatientFromIDTask newP = new GetPatientFromIDTask();
         AsyncTask get_patient = newP.execute("http://demo.sociosensalud.org.pe", patient_id);
         Patient p;
-        try{
-            p = (Patient)get_patient.get();
+        try {
+            p = (Patient) get_patient.get();
             return p;
-        }
-        catch (Exception e){
-         e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-       return null;
+        return null;
 
     }
 
-    // TODO: Allow client to send requests to change remote db for adding patients, edit Promoter info
-    // Send deltas rather than rewriting
-    public void SendUpdatesToWeb() {
+    public static void SetLastLocalUpdateTime(Context context) {
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences.Editor editor = mPreferences.edit();
+        Date currentTime = new Date();
+        long milli_currentTime = currentTime.getTime();
+        editor.putString(context.getString(R.string.last_local_update), String.valueOf(milli_currentTime));
+        Log.e("Offline StorageManager", String.valueOf(milli_currentTime));
 
+        editor.commit();
+    }
+
+    /**
+     * Loads when MainMenuActivity is created and checks if need to get new info from the service
+     * if last update was less than 5 hours ago, will make calls to update local files
+     *
+     * @param context Current context of the activity
+     */
+    public static void UpdateLocalStorage(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String last_update = prefs.getString((context.getString(R.string.last_local_update)), null);
+        // TODO: Delete this fucking try-catch
+        try {
+            long time_updated = Long.valueOf(last_update);
+            long diff = Math.abs(time_updated - new Date().getTime());
+            long threshold = 18000000; // 5 hours in milliseconds is 18000000
+            if (isConnected && diff > threshold) {
+                try {
+                    SharedPreferences sprefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    String username = prefs.getString((context.getString(R.string.login_username)), null);
+
+                    Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, context);
+                    OfflineStorageManager.SaveWebPatientData(new_promoter, context);
+
+                    OfflineStorageManager.SetLastLocalUpdateTime(context);
+
+                } catch (JSONException e) {
+                    Log.e("OfflineStorageManager: Update Local Storage", "Error save patient data");
+                }
+            }
+        }
+        catch(NumberFormatException e1){
+            Log.e("OfflineStorageManager: Update Local Storage", "last_update is null");
+        }
     }
 
 

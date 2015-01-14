@@ -136,6 +136,15 @@ public class GetPatientActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @author Brendan
+     * @param nationalid the DNI of the desired person who is being looked up
+     * @return the Patient object of the person with the specified DNI, if exists
+     * else it will be null
+     * @throws JSONException
+     * A function that looks up a DNI and checks if that DNI is found locally
+     * and if not, attempts to find a patient with that DNI on the webservice
+     */
     public Patient lookupPatient(int nationalid) throws JSONException{
 
         currentPatient = null;
@@ -246,6 +255,7 @@ public class GetPatientActivity extends Activity {
         }
     }
 
+
     public void switchMedicalHistoryActivity(View view) {
         if (currentPatient != null){
             Intent intent = new Intent(this, MedicalHistoryActivity.class);
@@ -275,6 +285,10 @@ public class GetPatientActivity extends Activity {
         }
     }
 
+    /**
+     * @author Brendan
+     * Loads the Patient Spinner by loading all patients from the JSON file patient_data
+     */
     private void loadPatientSpinner(){
         JSONArray object;
         try {
