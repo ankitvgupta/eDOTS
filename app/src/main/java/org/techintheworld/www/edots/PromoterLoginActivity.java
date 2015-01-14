@@ -261,11 +261,11 @@ public class PromoterLoginActivity extends Activity {
             }
         }
         catch (FileNotFoundException e) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception On Load");
         } catch (ExecutionException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception On Load");
         } catch (InterruptedException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");
         } catch (JSONException e1){
             Log.e("PromoterLoginActivity: loadLocaleActivity"," JSON Exception On Load");
         }
