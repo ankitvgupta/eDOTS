@@ -188,8 +188,19 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         RadioButton buttnMale = (RadioButton) findViewById(R.id.radio_female);
         RadioButton buttnFemale = (RadioButton) findViewById(R.id.radio_male);
 
+        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
+        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
+        int numTreatments = 0;
+        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+            if (checkedItems.get(i)) {
+                numTreatments++;
+            }
+        }
+
         if (nationalID.equals("") || name.equals("") || fatherName.equals("") ||
                 motherName.equals("") || !(buttnMale.isChecked() || buttnFemale.isChecked())) {
+            return true;
+        } else if (numTreatments == 0) {
             return true;
         }
 
