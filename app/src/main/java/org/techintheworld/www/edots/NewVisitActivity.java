@@ -191,7 +191,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     */
     public String returnLocale(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String locale =  prefs.getString((getString(R.string.login_locale)), null);
+        String locale =  prefs.getString((getString(R.string.login_locale_name)), null);
         Log.i("new visit activity: locale", locale);
         return locale;
     }
