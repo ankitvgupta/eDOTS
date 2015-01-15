@@ -1,8 +1,6 @@
 package org.techintheworld.www.edots;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,20 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.CalendarView;
-import android.widget.CalendarView.OnDateChangeListener;
-import android.widget.Toast;
 
 import com.roomorama.caldroid.CaldroidFragment;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import edots.models.Patient;
 import edots.models.Visit;
@@ -140,7 +131,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
             visitDate = patientVisits.get(i).getVisitDate();
             timeVal = patientVisits.get(i).getVisitTime();
             projectCode = patientVisits.get(i).getProjectCode();
-            userCode = patientVisits.get(i).getUserCode();
+            userCode = patientVisits.get(i).getPromoterId();
             visitCode = patientVisits.get(i).getVisitCode();
             visitGroupCode = patientVisits.get(i).getVisitGroupCode();
 
