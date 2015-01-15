@@ -1,7 +1,9 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -293,12 +295,47 @@ public class GetPatientActivity extends Activity {
         }
         // pop up error message when the national id is not found
         if (currentPatient == null){
-            Toast.makeText(getBaseContext(), R.string.patient_not_found,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getBaseContext(), R.string.patient_not_found,
+//                    Toast.LENGTH_SHORT).show();
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(this.getString(R.string.patient_not_found));
+            alertDialog.setMessage(this.getString(R.string.patient_not_found_new_patient));
+            alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            // TODO: pass in the DNI that they already entered
+            alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    switchNewPatientDataActivity();
+                }
+            });
+            alertDialog.show();
             return;
         }
-        fillTable();
+        else {
+            fillTable();
+
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(this.getString(R.string.patient_not_listed));
+            alertDialog.setMessage(this.getString(R.string.patient_not_listed_add_patient));
+            alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO: use UserPatientLoadTask
+                    dialog.cancel();
+                }
+            });
+            alertDialog.show();
+
+        }
     }
+
 
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
@@ -325,6 +362,11 @@ public class GetPatientActivity extends Activity {
             intent.putExtra("Patient", currentPatient.toString());
             startActivity(intent);
         }
+    }
+
+    public void switchNewPatientDataActivity() {
+            Intent intent = new Intent(this, NewPatientDataActivity.class);
+            startActivity(intent);
     }
 
     /**
