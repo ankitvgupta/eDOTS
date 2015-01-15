@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
@@ -18,8 +19,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
+import edots.models.Visit;
+import edots.tasks.GetHistoryLoadTask;
+import edots.tasks.LoadPatientFromPromoterTask;
 import edots.utils.OfflineStorageManager;
 import edots.utils.SMSAlarmReceiver;
 
@@ -37,6 +44,8 @@ public class MainMenuActivity extends Activity {
             public void onClick(View v) {
                 String phoneNo = "943229757";
                 String message = Integer.toString(R.string.message);
+                
+                
                 if (phoneNo.length() > 0 && message.length() > 0) {
                     // TODO: fix this to take in phone number and message
                     //sendSMS(phoneNo, message);
@@ -72,6 +81,61 @@ public class MainMenuActivity extends Activity {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
         Log.w("MainMenuActivity:scheduleAlarm scheduled for", calendar.toString());
+
+    }
+
+    /**
+     * 
+     * @param promoterID id of the promoter whose patients this will send sms to
+     * @return String with the aggregate summary to send to the promoter
+     * 
+     * This function sends the delay SMS to all of the patients of the given promoter, and returns an aggregate summary 
+     */
+    private String sendSMSForGivenPromoter(String promoterID){
+
+        LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
+        AsyncTask loadPatientsTask = loadPatients.execute("http://demo.sociosensalud.org.pe", promoterID);
+        
+        
+    }
+
+    /**
+     * @author Ankit
+     * 
+     * This function is a test one to lay out the logic for determining who to send the SMS to 
+     */
+    private void determineSMS(){
+        GetCoordinatorsLoadTask loadCoordinators = new GetCoordinatorsLoadTask(); // This task doesn't exist yet.
+        AsyncTask loadCoordinatorsTask = loadCoordinators.execute("http://demo.sociosensalud.org.pe");
+        try {
+            ArrayList<String> coordinators = (ArrayList<String>) loadCoordinatorsTask.get();
+            Log.v("Patient.java: The coordinators are", coordinators.toString());
+            
+            for (int i = 0; i < coordinators.size(); i++){ // for each coordinator get the promoters
+                GetPromotersLoadTask loadPromoters = new GetPromotersLoadTask();
+                AsyncTask loadPromotersTask = loadPromoters.execute("http://demo.sociosensalud.org.pe", coordinators.get(i));
+                ArrayList<String> promoters = (ArrayList<String>) loadPromotersTask.get();
+                
+                
+            }
+            
+            
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        
+        
+        return null;
+
+
+
 
     }
 

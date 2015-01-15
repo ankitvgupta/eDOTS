@@ -18,6 +18,8 @@ public class SMSAlarmReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (sms_action.equals(action)) {
+            
+            
             String phoneNumber = "943229757"; //my phone number usually entered here
             String message = "Hi you missed your appointment";
             sendSMS(phoneNumber, message);
