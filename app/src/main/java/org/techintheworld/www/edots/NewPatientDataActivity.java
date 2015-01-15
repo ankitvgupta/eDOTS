@@ -259,6 +259,11 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         return isConnected;
     }
 
+    /**
+     * @author Ankit
+     *
+     * Blocks all of the Buttons, EditTexts, and ListViews
+     */
     private void blockAllInput(){
         ScrollView layout = (ScrollView) findViewById(R.id.newpatient_scrollview);
         for(int i=0; i < layout.getChildCount(); i++) {
