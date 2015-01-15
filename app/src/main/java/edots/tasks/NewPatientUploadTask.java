@@ -21,6 +21,7 @@ public class NewPatientUploadTask extends AsyncTask<String,String,String> {
     protected String doInBackground(String... params) {
 
         // setup server parameters
+        // TODO: do not hard code in these parameters
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
