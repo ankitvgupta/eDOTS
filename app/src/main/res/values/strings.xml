@@ -70,7 +70,6 @@
     <string name="project">project</string>
     <string name="visit_group">visit group</string>
     <string name="visit">visit</string>
-
     <string name="key_userid">userid</string>
     <string name="login_locale">local_id</string>
     <string name="login_locale_name">local_name</string>
@@ -87,12 +86,12 @@
     <string name="new_visit_date">New Visit Data</string>
     <string name="patient_select_spinner">Select Patient</string>
     <string name="get_patient_select_patient">Select Your Patient:</string>
-
     <string name="no_internet_title">Connection Error</string>
     <string name="no_internet_connection">Error connecting to internet</string>
     <string name="patient_not_found_new_patient">Would you like to register a new patient?</string>
     <string name="add_patient">Add Patient</string>
     <string name="patient_not_listed">Patient Not Listed</string>
     <string name="patient_not_listed_add_patient">This Patient Is Not Listed As One of Your Patients. Would You Like To Add this Patient?</string>
+    <string name="title_activity_show_visit">ShowVisitActivity</string>
 
 </resources>
