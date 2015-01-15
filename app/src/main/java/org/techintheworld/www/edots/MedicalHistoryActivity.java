@@ -2,8 +2,10 @@ package org.techintheworld.www.edots;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -18,16 +20,20 @@ import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.Toast;
 
+import com.roomorama.caldroid.CaldroidFragment;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import edots.models.Patient;
 import edots.models.Visit;
 
 
-public class MedicalHistoryActivity extends Activity {
-    CalendarView calendar;
+public class MedicalHistoryActivity extends FragmentActivity {
     Patient currentPatient;
 
     @Override
@@ -35,45 +41,75 @@ public class MedicalHistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
 
+        // if a patient was passed in, pre-load that patient
+        try {
+            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
+        }
+        catch (Exception e){
+            // TODO: Don't print the stack trace, give some sort of dialog box instead
+            e.printStackTrace();
+        }
 
-        //initializes the calendarview
-        initializeCalendar();
+        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        Bundle args = new Bundle();
+        Calendar cal = Calendar.getInstance();
+        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
+        // args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, true);
+        caldroidFragment.setArguments(args);
+
+        updateColors(caldroidFragment, cal);
+
+        android.support.v4.app.FragmentTransaction t= getSupportFragmentManager().beginTransaction();
+        t.replace(R.id.calendar1, caldroidFragment);
+        t.commit();
 
 //        loadPastVisits();
     }
 
-    public void initializeCalendar() {
-        calendar = (CalendarView) findViewById(R.id.calendar);
+    // based on the visits for the currentPatient, go through each date up until the current date
+    // and set the background as Red or Green.
+    public void updateColors(CaldroidFragment caldroidFragment, Calendar cal) {
+        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        int numVisits = 0;
+        if (patientVisits != null) {
+            numVisits = patientVisits.size();
+        }
 
-        // sets whether to show the week number.
-        calendar.setShowWeekNumber(false);
+        String visitDate;
+        String visitDay;
+        String visitMonth;
+        String visitYear;
 
-        // sets the first day of week according to Calendar.
-        // here we set Monday as the first day of the Calendar
-        calendar.setFirstDayOfWeek(2);
+        for (int i = (numVisits - 1); i >= 0; i--) {
+            visitDate = patientVisits.get(i).getVisitDate(); // Fri 05/09/2014; day/month/year ID: 12345671
+            //Log.v("MedicalHistoryActivity: ", "Visit Date: " + visitDate);
 
-        //The background color for the selected week.
+            String str = "# STRING_VALUES #";
+            String result = str.substring(2,str.length()-2);
 
-        calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
+            visitDay = visitDate.substring(4,6);
+            Log.v("MedicalHistoryActivity: ", "Visit Day: " + visitDay);
+            int visitDayInt = Integer.parseInt(visitDay);
 
-        //sets the color for the dates of an unfocused month.
+            visitMonth = visitDate.substring(7,9);
+            Log.v("MedicalHistoryActivity: ", "Visit Month: " + visitMonth);
+            int visitMonthInt = Integer.parseInt(visitMonth);
+            visitMonthInt = visitMonthInt - 1;
 
-        calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));
+            visitYear = visitDate.substring(10,14);
+            Log.v("MedicalHistoryActivity: ", "Visit Year: " + visitYear);
+            int visitYearInt = Integer.parseInt(visitYear);
+            visitYearInt =  visitYearInt - 1900;
 
-        //sets the color for the separator line between weeks.
-        calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
+            Date greenDate = new Date(visitYearInt, visitMonthInt, visitDayInt); // January 16, 1963
+            caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, greenDate);
+        }
 
-        //sets the color for the vertical bar shown at the beginning and at the end of the selected date.
-
-        calendar.setSelectedDateVerticalBar(R.color.darkgreen);
-        //sets the listener to be notified upon selected date change.
-        calendar.setOnDateChangeListener(new OnDateChangeListener() {
-                    //show the selected date as a toast
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
-            }
-        });
+        Date blueDate = cal.getTime();
+        caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, blueDate);
+        caldroidFragment.refreshView();
     }
 
     public void loadPastVisits() {

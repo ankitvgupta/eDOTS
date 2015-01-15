@@ -79,6 +79,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         });
 
         // list of treatment study groups
+        // for testing
         treatmentList.add(new Project());
         treatmentList.add(new Project());
         treatmentList.add(new Project());

@@ -64,7 +64,6 @@
     <string name="txtLocal">Local</string>
     <string name="hello_world">Hello World</string>
     <string name="form_hint1">Hello World</string>
-    <string name="patient_data_filename">patient_data</string>
     <string name="login_username">username</string>
     <string name="login_password">password</string>
     <string name="project">project</string>
@@ -90,5 +89,12 @@
 
     <string name="no_internet_title">Connection Error</string>
     <string name="no_internet_connection">Error connecting to internet</string>
+    <string name="patient_data_filename">patient_data</string>
+    <string name="promoter_data_filename">promoter_data</string>
+
+    <string name="patient_not_found_new_patient">Would you like to register a new patient?</string>
+    <string name="add_patient">Add Patient</string>
+    <string name="patient_not_listed">Patient Not Listed</string>
+    <string name="patient_not_listed_add_patient">This Patient Is Not Listed As One of Your Patients. Would You Like To Add this Patient?</string>
 
 </resources>

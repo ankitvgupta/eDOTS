@@ -1,7 +1,9 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +25,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -63,9 +64,6 @@ public class GetPatientActivity extends Activity {
             object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
         }
         catch(JSONException e1){
-            e1.printStackTrace();
-        }
-        catch(FileNotFoundException e1){
             e1.printStackTrace();
         }
         spnPatient.setOnItemSelectedListener(new OnItemSelectedListener()
@@ -151,9 +149,6 @@ public class GetPatientActivity extends Activity {
     public Patient lookupPatient(int nationalid) throws JSONException{
 
         setButtons(false);
-        if (!validateInput()){
-            return null;
-        }
         currentPatient = null;
         // TODO: Check if Patient is already stored locally first
         JSONArray object;
@@ -170,9 +165,6 @@ public class GetPatientActivity extends Activity {
                     Log.e("GetPatientActivity", "Patient Found is" + p.toString());
                 }
             }
-        }
-        catch (FileNotFoundException e1){
-            e1.printStackTrace();
         }
         catch(NullPointerException e1){
             e1.printStackTrace();
@@ -212,6 +204,18 @@ public class GetPatientActivity extends Activity {
         historyBtn.setEnabled(val);
         Button newVisitBtn = (Button) findViewById(R.id.new_visit_button);
         newVisitBtn.setEnabled(val);
+        
+        if (!val){
+            TextView patientname = (TextView) findViewById(R.id.patientname);
+            TextView nationalid = (TextView) findViewById(R.id.nationalid);
+            TextView dob = (TextView) findViewById(R.id.dob);
+            TextView sex = (TextView) findViewById(R.id.sex);
+
+            patientname.setText("");
+            nationalid.setText("");
+            dob.setText("");
+            sex.setText("");
+        }
     }
 
 
@@ -259,11 +263,26 @@ public class GetPatientActivity extends Activity {
      * @return boolean representing whether the inputs are all valid.
      */
     public boolean validateInput() {
+        
+        //return true;
+        
         EditText editor = (EditText) findViewById(R.id.nationalid_input);
-        String nationalID = editor.getText().toString();
+        return editor.getText().toString().trim().length() != 0;
+        
+        /*String nationalID = editor.getText().toString();
+        
+        
 
-        boolean validated = !nationalID.equals("");
+        boolean validated = !nationalID.isEmpty();
+        if (validated){
+            Log.v("GetpatientActivity", "This patient is validated");
+        }
+        else{
+            Log.v("GetPatientActivity", "This patient is not validated");
+        }
         return validated;
+        */
+        
     }
 
     /**
@@ -279,11 +298,11 @@ public class GetPatientActivity extends Activity {
         setButtons(false);
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
         String message = editText.getText().toString();
-        editText.setText("", TextView.BufferType.EDITABLE);
 
         if (!validateInput()){
             return;
         }
+        editText.setText("", TextView.BufferType.EDITABLE);
         int pid = Integer.parseInt(message);
         try {
             currentPatient = lookupPatient(pid);
@@ -293,12 +312,47 @@ public class GetPatientActivity extends Activity {
         }
         // pop up error message when the national id is not found
         if (currentPatient == null){
-            Toast.makeText(getBaseContext(), R.string.patient_not_found,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getBaseContext(), R.string.patient_not_found,
+//                    Toast.LENGTH_SHORT).show();
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(this.getString(R.string.patient_not_found));
+            alertDialog.setMessage(this.getString(R.string.patient_not_found_new_patient));
+            alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            // TODO: pass in the DNI that they already entered
+            alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    switchNewPatientDataActivity();
+                }
+            });
+            alertDialog.show();
             return;
         }
-        fillTable();
+        else {
+            fillTable();
+
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(this.getString(R.string.patient_not_listed));
+            alertDialog.setMessage(this.getString(R.string.patient_not_listed_add_patient));
+            alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO: use UserPatientLoadTask
+                    dialog.cancel();
+                }
+            });
+            alertDialog.show();
+
+        }
     }
+
 
     // switch to CheckFingerPrintActivity
     public void switchCheckFingerPrint(View view) {
@@ -325,6 +379,11 @@ public class GetPatientActivity extends Activity {
             intent.putExtra("Patient", currentPatient.toString());
             startActivity(intent);
         }
+    }
+
+    public void switchNewPatientDataActivity() {
+            Intent intent = new Intent(this, NewPatientDataActivity.class);
+            startActivity(intent);
     }
 
     /**
@@ -362,9 +421,6 @@ public class GetPatientActivity extends Activity {
             spnPatient.setAdapter(spinnerArrayAdapter);
         }
         catch(JSONException e1){
-            e1.printStackTrace();
-        }
-        catch(FileNotFoundException e1) {
             e1.printStackTrace();
         }
         catch(NullPointerException e1){

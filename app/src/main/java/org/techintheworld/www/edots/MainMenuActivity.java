@@ -177,8 +177,8 @@ public class MainMenuActivity extends Activity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.commit();
-        boolean promoter_result = this.deleteFile("promoter_data");
-        boolean patient_result = this.deleteFile("patient_data");
+        boolean promoter_result = this.deleteFile(this.getString(R.string.promoter_data_filename));
+        boolean patient_result = this.deleteFile(this.getString(R.string.patient_data_filename));
         if ((!promoter_result) || (!patient_result)) {
             Log.i("MainMenuActivity: Logout", "Promoter result " + promoter_result + " patient result " + patient_result);
         }
