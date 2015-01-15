@@ -155,6 +155,7 @@ public class MainMenuActivity extends Activity {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
+                    //TODO: code the message in strings.xml
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), "SMS sent",
                                 Toast.LENGTH_SHORT).show();

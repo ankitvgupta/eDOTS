@@ -7,14 +7,11 @@ import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
 
-import edots.models.Patient;
-import edots.models.Project;
 import edots.models.Visit;
 
 /**
@@ -72,8 +69,9 @@ public class GetHistoryLoadTask extends AsyncTask<String,String,ArrayList<Visit>
                 String VisitDate = (String) resSoapTemp.getProperty("FechaVisita").toString();
                 String TimeVal = (String) resSoapTemp.getProperty("HoraCita").toString();
                 String UserCode = "NOUSERCODEYET";
-                Visit tmp = new Visit(SiteCode, ProjectCode, VisitGroupCode,
-                        VisitCode, PacientCode, VisitDate, TimeVal, UserCode);
+                // TODO: check whether the service returns NombreGroupoVisita and DescripcionVisita such as "Tamizaje" or "Enrolamiento"
+                Visit tmp = new Visit(SiteCode, ProjectCode, VisitGroupCode,"NombreGroupoVisita",
+                        VisitCode, "DescripcionVisita", PacientCode, VisitDate, TimeVal, UserCode);
                 results.add(tmp);
             }
 

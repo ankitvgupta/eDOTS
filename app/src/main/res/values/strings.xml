@@ -76,7 +76,7 @@
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
     <string name="view_all_patients">View all Patients</string>
-    <string name="namespace">http://demo.sociosensalud.org.pe</string>
+    <string name="namespace">http://demo.sociosensalud.org.pe/</string>
     <string name="serverurl">EdotsWS/Service1.asmx</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="date_label_set">Press the button to set the date</string>
