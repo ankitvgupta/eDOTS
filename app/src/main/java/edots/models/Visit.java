@@ -17,7 +17,7 @@ public class Visit {
     private String PacientCode;
     private String VisitDate;
     private String VisitTime;
-    private String UserCode;
+    private String PromoterId;
 
     // for testing only
     public Visit() {
@@ -28,7 +28,7 @@ public class Visit {
         PacientCode = "test5";
         VisitDate = "test6";
         VisitTime = "test7";
-        UserCode = "test8";
+        PromoterId = "test8";
         NombreGrupoVisita="test9";
         DescripcionVisita="test10";
     }
@@ -45,7 +45,7 @@ public class Visit {
         PacientCode = patient;
         VisitDate = date;
         VisitTime = time;
-        UserCode = promoter;
+        PromoterId = promoter;
     }
 
 
@@ -97,6 +97,8 @@ public class Visit {
 
     public void setVisitTime(String time) {VisitTime = time;}
 
-    public String getUserCode() {return UserCode;}
+    public String getPromoterId() {return PromoterId;}
+
+    public void setPromoterId(String promoterId) {PromoterId = promoterId;}
 
 }

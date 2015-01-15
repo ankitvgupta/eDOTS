@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,9 +107,6 @@ public class GetPatientActivity extends Activity {
                 parseAndFill(v);
             }
         });
-
-
-    //TODO: disable medical history and log new visit button if no patient is loaded
 
     }
 

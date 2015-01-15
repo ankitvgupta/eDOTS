@@ -34,7 +34,7 @@ public class AccountLogin {
         try {
             Login login = loginAsyncTask.get();
             response = login.Message;
-            editor.putString(c.getString(R.string.login_username), username);
+            editor.putString(c.getString(R.string.promoter_id), username);
             editor.putString(c.getString(R.string.key_userid), String.valueOf(login.UserID));
             editor.putString(c.getString(R.string.login_locale), locale);
             editor.putString(c.getApplicationContext().getString(R.string.login_locale_name), locale_name);

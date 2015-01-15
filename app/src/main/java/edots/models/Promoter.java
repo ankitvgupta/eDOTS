@@ -16,8 +16,8 @@ import java.util.ArrayList;
  *
  */
 public class Promoter extends Object {
-    private String username;
-    private String locale;
+    private String PromoterId;
+    private String Locale;
     private ArrayList<String> patient_ids;
     //TODO: add projects they are qualified to administer
 
@@ -28,14 +28,14 @@ public class Promoter extends Object {
     /**
      * Constructor for Promoter
      *
-     * @param u username of promoter
-     * @param l locale of promoter
+     * @param u PromoterId of promoter
+     * @param l Locale of promoter
      * @param p NOTUSED
      * @param pt ids of the patient of that promoter
      */
     public Promoter(String u,String l, String p, ArrayList<String> pt){
-        username = u;
-        locale = l;
+        PromoterId = u;
+        Locale = l;
         patient_ids=pt;
     }
 
@@ -45,8 +45,8 @@ public class Promoter extends Object {
     public Promoter(String JSONString) {
         try {
             JSONObject n = new JSONObject(JSONString);
-            username = n.get("username").toString();
-            locale = n.get("locale").toString();
+            PromoterId = n.get("PromoterId").toString();
+            Locale = n.get("Locale").toString();
             patient_ids = new ArrayList<String>();
             JSONArray arry = new JSONArray(n.get("patient_ids").toString());
             for (int i = 0; i < arry.length(); i++) {
@@ -65,9 +65,9 @@ public class Promoter extends Object {
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("username", getUsername());
-            temp.put("locale", getLocale());
-            temp.put("patient_ids", new JSONArray(getPatient_ids()));
+            temp.put("PromoterId", getPromoterId());
+            temp.put("Locale", getLocale());
+            temp.put("patient_ids", new JSONArray(getPatientIds()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -76,24 +76,25 @@ public class Promoter extends Object {
 
     }
 
-    public ArrayList<String> getPatient_ids(){return patient_ids;}
+    public ArrayList<String> getPatientIds(){return patient_ids;}
 
-    public String getUsername(){
-        return username;
+    public String getPromoterId(){
+        return PromoterId;
     }
 
     public String getLocale(){
-        return locale;
+        return Locale;
     }
 
-    public void setPatient_ids(ArrayList<String> p_ids){ patient_ids = p_ids;}
+    public void setPatientIds(ArrayList<String> p_ids){ patient_ids = p_ids;}
 
-    public void setUsername(String u){
-        username=u;
+    public void setPromoterId(String u){
+        PromoterId =u;
     }
 
 
-    public void setLocale(String l){locale=l;
+    public void setLocale(String l){
+        Locale =l;
     }
 
 

@@ -77,8 +77,8 @@ public class OfflineStorageManager {
         try {
             ArrayList<String> patient_ids = (ArrayList<String>) p.get();
             p_result.setLocale(locale);
-            p_result.setUsername(user_id);
-            p_result.setPatient_ids(patient_ids);
+            p_result.setPromoterId(user_id);
+            p_result.setPatientIds(patient_ids);
             SaveWebPromoterData(p_result, c);
             return p_result;
         } catch (InterruptedException e) {
@@ -98,12 +98,12 @@ public class OfflineStorageManager {
             Log.e("OfflineStorageManager: SaveWebPatientData", "Patient delete file failed");
         }
 
-        int num_patients = p.getPatient_ids().size();
+        int num_patients = p.getPatientIds().size();
         JSONArray ja = new JSONArray();
 
         // Queries web service for patients with the ids associated with this promoter
         for (int i = 0; i < num_patients; i++) {
-            Patient new_patient = GetWebPatientData(p.getPatient_ids().get(i));
+            Patient new_patient = GetWebPatientData(p.getPatientIds().get(i));
             JSONObject obj = new JSONObject(new_patient.toString());
             ja.put(obj);
         }
@@ -206,9 +206,9 @@ public class OfflineStorageManager {
             if (isConnected && diff > threshold) {
                 try {
                     SharedPreferences sprefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    String username = prefs.getString((context.getString(R.string.login_username)), null);
+                    String promoterId = prefs.getString((context.getString(R.string.promoter_id)), null);
 
-                    Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, context);
+                    Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(promoterId, context);
                     OfflineStorageManager.SaveWebPatientData(new_promoter, context);
 
                     OfflineStorageManager.SetLastLocalUpdateTime(context);
