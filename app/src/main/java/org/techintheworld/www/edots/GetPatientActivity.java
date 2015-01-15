@@ -151,6 +151,9 @@ public class GetPatientActivity extends Activity {
     public Patient lookupPatient(int nationalid) throws JSONException{
 
         setButtons(false);
+        if (!validateInput()){
+            return null;
+        }
         currentPatient = null;
         // TODO: Check if Patient is already stored locally first
         JSONArray object;
@@ -247,6 +250,18 @@ public class GetPatientActivity extends Activity {
 
     }
 
+    /**
+     * @author Ankit
+     * @return boolean representing whether the inputs are all valid.
+     */
+    public boolean validateInput() {
+        EditText editor = (EditText) findViewById(R.id.nationalid_input);
+        String nationalID = editor.getText().toString();
+
+        boolean validated = !nationalID.equals("");
+        return validated;
+    }
+
     public void parseAndFill(View view) {
 
         // clear the entered text and make new hint to search for new patient
@@ -264,7 +279,7 @@ public class GetPatientActivity extends Activity {
         }
         // pop up error message when the national id is not found
         if (currentPatient == null){
-            Toast.makeText(getBaseContext(), R.string.patient_not_found,
+            Toast.makeText(gi(), R.string.patient_not_found,
                     Toast.LENGTH_SHORT).show();
             return;
         }

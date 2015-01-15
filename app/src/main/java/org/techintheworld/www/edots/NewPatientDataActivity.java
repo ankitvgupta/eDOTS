@@ -251,6 +251,11 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
 
 
+    /**
+     * @author Ankit
+     *
+     * Blocks all of the Buttons, EditTexts, and ListViews
+     */
     private void blockAllInput(){
         LinearLayout layout = (LinearLayout) findViewById(R.id.newPatientLayout);
         for(int i=0; i < layout.getChildCount(); i++) {
