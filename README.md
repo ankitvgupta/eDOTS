@@ -7,10 +7,10 @@ eDOTS
   4. Schedule Table in SQL (not us)
 
 2. Get Patient (Brendan)
-  1. If they enter invalid DNI, there should be a dialogue that tells them this patient is invalid and asks if they want to register this Patient
-  2. If they enter a Valid DNI, ask if they want to add that patient as one of their promoters in the drop down, and add that to the table
-  3. If in drop_down, the document_type indicates that they should have an ID and they don't then it should prompt them to enter a valid one'
-  4. Adding to usuarios_pacientes generally
+  1. If they enter invalid DNI, there should be a dialogue that tells them this patient is invalid and asks if they want to register this Patient (done)
+  2. If they enter a Valid DNI, ask if they want to add that patient as one of their promoters in the drop down, and add that to the table (done)
+  3. If in drop_down, the document_type indicates that they should have an ID and they don't then it should prompt them to enter a valid one 
+  4. Adding to usuarios_pacientes generally (done)
 
 
 3. Register Patients
