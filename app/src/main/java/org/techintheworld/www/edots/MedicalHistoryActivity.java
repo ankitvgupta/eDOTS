@@ -89,7 +89,6 @@ public class MedicalHistoryActivity extends Activity {
             numVisits = patientVisits.size();
         }
 
-
         String siteCode;
         String visitDate;
         String timeVal;
