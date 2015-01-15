@@ -56,8 +56,6 @@
     <string name="new_visit_site">Site</string>
     <string name="new_visit_treatment">Active Treatments</string>
     <string name="new_visit_done">Submit</string>
-    <string name="promoter_login_username"> Username</string>
-    <string name="promoter_login_password"> Password</string>
     <string name="locale"> Locale</string>
     <string name="select_locale">Select a Local!!</string>
     <string name="login_try_again">Try Again</string>
@@ -69,7 +67,9 @@
     <string name="patient_data_filename">patient_data</string>
     <string name="login_username">username</string>
     <string name="login_password">password</string>
-    <string name="last_local_update">date</string>
+    <string name="project">project</string>
+    <string name="visit_group">visit group</string>
+    <string name="visit">visit</string>
 
     <string name="key_userid">userid</string>
     <string name="login_locale">local_id</string>
