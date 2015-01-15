@@ -88,6 +88,7 @@
     <string name="patient_select_spinner">Select Patient</string>
     <string name="get_patient_select_patient">Select Your Patient:</string>
 
+    <string name="no_internet_title">Connection Error</string>
     <string name="no_internet_connection">Error connecting to internet</string>
 
 </resources>
