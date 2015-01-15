@@ -51,9 +51,6 @@ public class PromoterLoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promoter_login);
-        EditText username1 = (EditText) findViewById(R.id.username);
-        EditText password = (EditText) findViewById(R.id.password);
-        Button loginButton = (Button) findViewById(R.id.loginButton);
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
         String username = checkAlreadyLoggedIn();
         if (username != null){

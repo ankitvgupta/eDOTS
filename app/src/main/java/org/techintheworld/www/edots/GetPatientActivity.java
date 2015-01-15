@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Patient;
 import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
+import edots.tasks.NewPromoterPatientUploadTask;
 import edots.utils.OfflineStorageManager;
 
 
@@ -53,6 +56,7 @@ public class GetPatientActivity extends Activity {
     private AsyncTask<String, String, Patient> patient;
     private Spinner spnPatient;
     private Button btnSearch;
+    private Context c = this;
     JSONArray object;
 
     @Override
@@ -339,12 +343,14 @@ public class GetPatientActivity extends Activity {
             });
             alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    // TODO: use UserPatientLoadTask
+                    SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
+
+                    NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask() ;
+                    AsyncTask p = npu.execute("http://demo.sociosensalud.org.pe/", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid),""),"1");
                     dialog.cancel();
                 }
             });
             alertDialog.show();
-
         }
     }
 
