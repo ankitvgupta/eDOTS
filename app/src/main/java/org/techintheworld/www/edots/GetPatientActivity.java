@@ -351,9 +351,8 @@ public class GetPatientActivity extends Activity {
                     SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
 
                     NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask() ;
-                    AsyncTask p = npu.execute("http://demo.sociosensalud.org.pe/", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid),""),"0");
                     try{
-                        Log.e("GetPatientActivity: parseAndFill", p.get());
+                        Log.e("GetPatientActivity: parseAndFill Line 355", npu.execute("http://demo.sociosensalud.org.pe/", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid),""),"0").get());
                     }
                     catch (Exception e1){
                         Log.e("GetPatientActivity: parseAndFill", "ExecutionException");

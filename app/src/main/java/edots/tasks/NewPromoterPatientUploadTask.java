@@ -41,12 +41,8 @@ public class NewPromoterPatientUploadTask extends AsyncTask<String,String,String
         try
         {
             transporte.call(SOAP_ACTION, envelope);
-
-            // receive response (as a string)
-            // TODO: Determine why it says that the patient already exists even though it doesn't (It says patient exists when it doesn't and then adds it anyways - seems like the response codes are flipped)
             SoapPrimitive resSoap = (SoapPrimitive) envelope.getResponse();
-
-            Log.v("The object we got is", resSoap.toString());
+            Log.e("The object we got is", resSoap.toString());
             returnvalue = resSoap.toString();
         }
         catch (Exception e)
