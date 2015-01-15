@@ -270,6 +270,9 @@ public class GetPatientActivity extends Activity {
         String message = editText.getText().toString();
         editText.setText("", TextView.BufferType.EDITABLE);
 
+        if (!validateInput()){
+            return;
+        }
         int pid = Integer.parseInt(message);
         try {
             currentPatient = lookupPatient(pid);
@@ -279,7 +282,7 @@ public class GetPatientActivity extends Activity {
         }
         // pop up error message when the national id is not found
         if (currentPatient == null){
-            Toast.makeText(gi(), R.string.patient_not_found,
+            Toast.makeText(getBaseContext(), R.string.patient_not_found,
                     Toast.LENGTH_SHORT).show();
             return;
         }
