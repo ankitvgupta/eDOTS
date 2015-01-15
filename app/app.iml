@@ -85,6 +85,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="hirondelle-date4j-1.5.1" level="project" />
     <orderEntry type="library" exported="" name="caldroid-1.1.7" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="Parse-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="ksoap2-android-assembly-3.3.0-jar-with-dependencies" level="project" />
     <orderEntry type="library" exported="" name="Parse-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />

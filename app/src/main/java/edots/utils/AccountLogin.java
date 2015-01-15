@@ -1,4 +1,4 @@
-package org.techintheworld.www.edots;
+package edots.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import org.techintheworld.www.edots.R;
 
 import java.util.concurrent.ExecutionException;
 
@@ -63,7 +65,6 @@ public class AccountLogin {
             response = e3.getMessage();
         }
         return response;
-
     }
 
 }

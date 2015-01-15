@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -28,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Locale;
 import edots.models.Promoter;
 import edots.tasks.LocaleLoadTask;
+import edots.utils.AccountLogin;
 import edots.utils.OfflineStorageManager;
 
 
@@ -50,9 +50,6 @@ public class PromoterLoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promoter_login);
-        EditText username1 = (EditText) findViewById(R.id.username);
-        EditText password = (EditText) findViewById(R.id.password);
-        Button loginButton = (Button) findViewById(R.id.loginButton);
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
         String username = checkAlreadyLoggedIn();
         if (username != null){
@@ -217,7 +214,7 @@ public class PromoterLoginActivity extends Activity {
      */
     public boolean checkLogin(String username, String password, String locale, String locale_name) {
         if(password != null && !password.isEmpty()) {
-            String message =  AccountLogin.login(username,password,locale, locale_name, this);
+            String message =  AccountLogin.login(username, password, locale, locale_name, this);
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
                 OfflineStorageManager.SetLastLocalUpdateTime(this);
                 return true;
