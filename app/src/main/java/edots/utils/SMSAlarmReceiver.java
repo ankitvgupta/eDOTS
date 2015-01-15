@@ -16,14 +16,11 @@ public class SMSAlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent)
     {
         String action = intent.getAction();
-
+        String phone_number = intent.getExtras().getString("phone_number");
+        String message = intent.getExtras().getString("message");
         if (sms_action.equals(action)) {
-            String phoneNumber = "943229757"; //my phone number usually entered here
-            String message = "Hi you missed your appointment";
-            sendSMS(phoneNumber, message);
+            sendSMS(phone_number, message);
         }
-
-
     }
 
     public void sendSMS(String phoneNumber, String message){

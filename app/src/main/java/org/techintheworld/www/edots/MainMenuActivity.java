@@ -35,12 +35,17 @@ public class MainMenuActivity extends Activity {
 
         btnSendSMS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //TODO: get from service instead of hard coding
+
                 String phoneNo = "943229757";
                 String message = Integer.toString(R.string.message);
                 if (phoneNo.length() > 0 && message.length() > 0) {
-                    // TODO: fix this to take in phone number and message
-                    //sendSMS(phoneNo, message);
-                    scheduleAlarm();
+                    Calendar calendar = Calendar.getInstance();
+                    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+                    int currentMinute = calendar.get(Calendar.MINUTE);
+                    Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
+                    calendar.add(Calendar.MINUTE, 1);
+                    scheduleSMSAlarm(phoneNo, message, calendar);
                 } else
                     Toast.makeText(getBaseContext(),
                             "Please enter both phone number and message.",
@@ -49,20 +54,14 @@ public class MainMenuActivity extends Activity {
         });
 
         OfflineStorageManager.UpdateLocalStorage(this);
-
-
     }
 
 
-    private void scheduleAlarm() {
-        Calendar calendar = Calendar.getInstance();
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = calendar.get(Calendar.MINUTE);
-        Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
-        calendar.add(Calendar.MINUTE, 1);
-
+    private void scheduleSMSAlarm(String phone, String msg, Calendar cal) {
         Intent intentAlarm = new Intent(this, SMSAlarmReceiver.class);
         intentAlarm.setAction("org.techintheworld.www.edots.MainMenuActivity");
+        intentAlarm.putExtra("phone_number", phone);
+        intentAlarm.putExtra("message", msg);
 
         //TODO: what is 234324243
         PendingIntent pIntent = PendingIntent.getBroadcast(MainMenuActivity.this,
@@ -70,8 +69,8 @@ public class MainMenuActivity extends Activity {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
-        Log.w("MainMenuActivity:scheduleAlarm scheduled for", calendar.toString());
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pIntent);
+        Log.w("MainMenuActivity:scheduleAlarm scheduled for", cal.toString());
 
     }
 
