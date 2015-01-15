@@ -74,11 +74,11 @@ public class ShowVisitActivity extends Activity {
         boolean dateMatchFound = false;
 
         for (int i = (numVisits - 1); i >=0; i--) {
-            siteCode = patientVisits.get(i).getSiteCode();
+            siteCode = patientVisits.get(i).getLocaleCode();
             visitDate = patientVisits.get(i).getVisitDate();
-            timeVal = patientVisits.get(i).getTimeVal();
+            timeVal = patientVisits.get(i).getVisitTime();
             projectCode = patientVisits.get(i).getProjectCode();
-            userCode = patientVisits.get(i).getUserCode();
+            userCode = patientVisits.get(i).getPromoterId();
             visitCode = patientVisits.get(i).getVisitCode();
             visitGroupCode = patientVisits.get(i).getVisitGroupCode();
 
@@ -205,11 +205,11 @@ public class ShowVisitActivity extends Activity {
         LinearLayout encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
 
         for (int i = (numVisits - 1); i >= 0; i--) {
-            siteCode = patientVisits.get(i).getSiteCode();
+            siteCode = patientVisits.get(i).getLocaleCode();
             visitDate = patientVisits.get(i).getVisitDate();
-            timeVal = patientVisits.get(i).getTimeVal();
+            timeVal = patientVisits.get(i).getVisitTime();
             projectCode = patientVisits.get(i).getProjectCode();
-            userCode = patientVisits.get(i).getUserCode();
+            userCode = patientVisits.get(i).getPromoterId();
             visitCode = patientVisits.get(i).getVisitCode();
             visitGroupCode = patientVisits.get(i).getVisitGroupCode();
 
