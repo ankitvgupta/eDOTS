@@ -26,13 +26,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import edots.models.Patient;
 import edots.models.Visit;
 
 
 public class MedicalHistoryActivity extends FragmentActivity {
-    CalendarView calendar;
     Patient currentPatient;
 
     @Override
@@ -40,14 +41,25 @@ public class MedicalHistoryActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
 
+        // if a patient was passed in, pre-load that patient
+        try {
+            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
+        }
+        catch (Exception e){
+            // TODO: Don't print the stack trace, give some sort of dialog box instead
+            e.printStackTrace();
+        }
+
         CaldroidFragment caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
-        args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, true);
+        // args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, true);
         caldroidFragment.setArguments(args);
+
+        updateColors(caldroidFragment, cal);
 
         android.support.v4.app.FragmentTransaction t= getSupportFragmentManager().beginTransaction();
         t.replace(R.id.calendar1, caldroidFragment);
@@ -56,6 +68,49 @@ public class MedicalHistoryActivity extends FragmentActivity {
 //        loadPastVisits();
     }
 
+    // based on the visits for the currentPatient, go through each date up until the current date
+    // and set the background as Red or Green.
+    public void updateColors(CaldroidFragment caldroidFragment, Calendar cal) {
+        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        int numVisits = 0;
+        if (patientVisits != null) {
+            numVisits = patientVisits.size();
+        }
+
+        String visitDate;
+        String visitDay;
+        String visitMonth;
+        String visitYear;
+
+        for (int i = (numVisits - 1); i >= 0; i--) {
+            visitDate = patientVisits.get(i).getVisitDate(); // Fri 05/09/2014; day/month/year ID: 12345671
+            //Log.v("MedicalHistoryActivity: ", "Visit Date: " + visitDate);
+
+            String str = "# STRING_VALUES #";
+            String result = str.substring(2,str.length()-2);
+
+            visitDay = visitDate.substring(4,6);
+            Log.v("MedicalHistoryActivity: ", "Visit Day: " + visitDay);
+            int visitDayInt = Integer.parseInt(visitDay);
+
+            visitMonth = visitDate.substring(7,9);
+            Log.v("MedicalHistoryActivity: ", "Visit Month: " + visitMonth);
+            int visitMonthInt = Integer.parseInt(visitMonth);
+            visitMonthInt = visitMonthInt - 1;
+
+            visitYear = visitDate.substring(10,14);
+            Log.v("MedicalHistoryActivity: ", "Visit Year: " + visitYear);
+            int visitYearInt = Integer.parseInt(visitYear);
+            visitYearInt =  visitYearInt - 1900;
+
+            Date greenDate = new Date(visitYearInt, visitMonthInt, visitDayInt); // January 16, 1963
+            caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, greenDate);
+        }
+
+        Date blueDate = cal.getTime();
+        caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, blueDate);
+        caldroidFragment.refreshView();
+    }
 
     public void loadPastVisits() {
         // sets header to Past Visits for Patient Name
