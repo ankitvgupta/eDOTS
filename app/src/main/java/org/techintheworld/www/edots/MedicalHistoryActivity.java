@@ -2,8 +2,10 @@ package org.techintheworld.www.edots;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -18,15 +20,18 @@ import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.Toast;
 
+import com.roomorama.caldroid.CaldroidFragment;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import edots.models.Patient;
 import edots.models.Visit;
 
 
-public class MedicalHistoryActivity extends Activity {
+public class MedicalHistoryActivity extends FragmentActivity {
     CalendarView calendar;
     Patient currentPatient;
 
@@ -35,46 +40,22 @@ public class MedicalHistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
 
+        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        Bundle args = new Bundle();
+        Calendar cal = Calendar.getInstance();
+        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
+        args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, true);
+        caldroidFragment.setArguments(args);
 
-        //initializes the calendarview
-        initializeCalendar();
+        android.support.v4.app.FragmentTransaction t= getSupportFragmentManager().beginTransaction();
+        t.replace(R.id.calendar1, caldroidFragment);
+        t.commit();
 
 //        loadPastVisits();
     }
 
-    public void initializeCalendar() {
-        calendar = (CalendarView) findViewById(R.id.calendar);
-
-        // sets whether to show the week number.
-        calendar.setShowWeekNumber(false);
-
-        // sets the first day of week according to Calendar.
-        // here we set Monday as the first day of the Calendar
-        calendar.setFirstDayOfWeek(2);
-
-        //The background color for the selected week.
-
-        calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
-
-        //sets the color for the dates of an unfocused month.
-
-        calendar.setUnfocusedMonthDateColor(getResources().getColor(R.color.transparent));
-
-        //sets the color for the separator line between weeks.
-        calendar.setWeekSeparatorLineColor(getResources().getColor(R.color.transparent));
-
-        //sets the color for the vertical bar shown at the beginning and at the end of the selected date.
-
-        calendar.setSelectedDateVerticalBar(R.color.darkgreen);
-        //sets the listener to be notified upon selected date change.
-        calendar.setOnDateChangeListener(new OnDateChangeListener() {
-                    //show the selected date as a toast
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
     public void loadPastVisits() {
         // sets header to Past Visits for Patient Name
