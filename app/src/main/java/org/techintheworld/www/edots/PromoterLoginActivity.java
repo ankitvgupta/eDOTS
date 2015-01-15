@@ -133,17 +133,36 @@ public class PromoterLoginActivity extends Activity {
 
         String locale_name = spnLocale.getItemAtPosition(spnLocale.getSelectedItemPosition()).toString();
         String locale_num = "1";
-        Locale[] objLocale;
+        Locale[] objLocale = new Locale[0];
         String[] wee;
 
 
         try {
-            objLocale = loadLocale.get();
-            for(int i = 0;i < objLocale.length; i++){
-                if (locale_name.equals(objLocale[i].name)) {
-                    locale_num = String.valueOf(objLocale[i].id);
-                };
+            if(loadLocale.get() == null){
+                objLocale = loadLocale.get();
             }
+            else{
+                try {
+                    JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
+                    objLocale = new Locale[object.length()];
+                    // look at all patients
+                    for (int i = 0; i < object.length(); i++) {
+                        JSONObject obj = object.getJSONObject(i);
+                        objLocale[i] = new Locale(obj.toString());
+                    }
+                }
+                catch(JSONException e1){
+                    Log.e("ProgramLoginActivity: switchPatientType","JSON exception on Load");
+                } catch(FileNotFoundException e1){
+                    Log.e("ProgramLoginActivity: switchPatientType","FileNotFound exception on Load");
+                }
+
+            }
+                for (int i = 0; i < objLocale.length; i++) {
+                    if (locale_name.equals(objLocale[i].name)) {
+                        locale_num = String.valueOf(objLocale[i].id);
+                    };
+                }
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         } catch (ExecutionException e1) {
@@ -242,40 +261,40 @@ public class PromoterLoginActivity extends Activity {
             OfflineStorageManager.SaveLocaleData(objLocale, this);
 
         } catch (InterruptedException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");
         } catch (ExecutionException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity1", "Execution Exception");
         } catch (JSONException e1){
-            Log.e("PromoterLoginActivity: loadLocaleActivity"," JSON Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity1"," JSON Exception");
         } catch (NullPointerException e1){
-            Log.e("PromoterLoginActivity: loadLocaleActivity"," NullPointerException");
+            Log.e("PromoterLoginActivity: loadLocaleActivity1"," NullPointerException");
         }
 
-//        try {
-//            if (loadLocale.get() == null) {
-//                // locale_data load
-//                JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
-//                locales = new String[object.length()];
-//                // look at all patients
-//                for (int i = 0; i < object.length(); i++) {
-//                    JSONObject obj = object.getJSONObject(i);
-//                    Locale l = new Locale(obj.toString());
-//                    locales[i] = l.name;
-//                }
-//                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-//                        this, android.R.layout.simple_spinner_item, locales);
-//                spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-//                spnLocale.setAdapter(spinnerArrayAdapter);
-//            }
-//        }
-//        catch (FileNotFoundException e) {
-//            Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception On Load");
-//        } catch (ExecutionException e1) {
-//            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception On Load");
-//        } catch (InterruptedException e1) {
-//            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");
-//        } catch (JSONException e1){
-//            Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
-//        }
+        try {
+            if (loadLocale.get() == null) {
+                // locale_data load
+                JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
+                locales = new String[object.length()];
+                // look at all patients
+                for (int i = 0; i < object.length(); i++) {
+                    JSONObject obj = object.getJSONObject(i);
+                    Locale l = new Locale(obj.toString());
+                    locales[i] = l.name;
+                }
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                        this, android.R.layout.simple_spinner_item, locales);
+                spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+                spnLocale.setAdapter(spinnerArrayAdapter);
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception On Load");
+        } catch (ExecutionException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception On Load");
+        } catch (InterruptedException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");
+        } catch (JSONException e1){
+            Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
+        }
     }
 }

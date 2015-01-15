@@ -41,7 +41,7 @@ public class Locale implements KvmSerializable {
         try {
             JSONObject n = new JSONObject(JSONString);
             this.name = n.get("name").toString();
-            this.id = (int) n.get("id");
+            this.id = Integer.parseInt(n.get("id").toString());
         }
         catch (JSONException e) {
             e.printStackTrace();
