@@ -152,8 +152,6 @@ public class PromoterLoginActivity extends Activity {
                 }
                 catch(JSONException e1){
                     Log.e("ProgramLoginActivity: switchPatientType","JSON exception on Load");
-                } catch(FileNotFoundException e1){
-                    Log.e("ProgramLoginActivity: switchPatientType","FileNotFound exception on Load");
                 }
 
             }
