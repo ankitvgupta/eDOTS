@@ -5,8 +5,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -177,9 +180,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         return;
     }
 
-    private void saveLocally(String name, String father, String mother, String docType, String nationalID, String birthDate, String sex) {
-        //Patient p = new Patient(name, birthDate, Long.valueOf(nationalID),sex,  project,  mother,  father, patientID, Integer.valueOf(docType));
-    }
 
     public void onRadioButtonClicked(View view) {
         return;
