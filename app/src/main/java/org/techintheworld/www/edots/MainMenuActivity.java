@@ -33,19 +33,15 @@ public class MainMenuActivity extends Activity {
 
         btnSendSMS = (Button) findViewById(R.id.btnSendSMS);
 
-        btnSendSMS.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                Log.i("sms", "as");
+        btnSendSMS.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 String phoneNo = "943229757";
                 String message = Integer.toString(R.string.message);
-                if (phoneNo.length()>0 && message.length()>0){
-                    // TODO: fix this
+                if (phoneNo.length() > 0 && message.length() > 0) {
+                    // TODO: fix this to take in phone number and message
                     //sendSMS(phoneNo, message);
                     scheduleAlarm();
-                }
-                else
+                } else
                     Toast.makeText(getBaseContext(),
                             "Please enter both phone number and message.",
                             Toast.LENGTH_SHORT).show();
@@ -58,30 +54,29 @@ public class MainMenuActivity extends Activity {
     }
 
 
-    private void scheduleAlarm(){
+    private void scheduleAlarm() {
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMinute = calendar.get(Calendar.MINUTE);
-        Log.w("MainMenuActivity:scheduleAlarm  current time",calendar.toString());
+        Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
         calendar.add(Calendar.MINUTE, 1);
 
         Intent intentAlarm = new Intent(this, SMSAlarmReceiver.class);
         intentAlarm.setAction("org.techintheworld.www.edots.MainMenuActivity");
 
         //TODO: what is 234324243
-        PendingIntent pIntent =  PendingIntent.getBroadcast(MainMenuActivity.this,
-                0,  intentAlarm, 0);
+        PendingIntent pIntent = PendingIntent.getBroadcast(MainMenuActivity.this,
+                0, intentAlarm, 0);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
-        Log.w("MainMenuActivity:scheduleAlarm scheduled for",calendar.toString());
+        Log.w("MainMenuActivity:scheduleAlarm scheduled for", calendar.toString());
 
     }
 
     //---sends an SMS message to another device---
-    private void sendSMS(String phoneNumber, String message)
-    {
+    private void sendSMS(String phoneNumber, String message) {
         String SENT = "SMS_SENT";
         String DELIVERED = "SMS_DELIVERED";
 
@@ -92,11 +87,10 @@ public class MainMenuActivity extends Activity {
                 new Intent(DELIVERED), 0);
 
         //---when the SMS has been sent---
-        registerReceiver(new BroadcastReceiver(){
+        registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode())
-                {
+                switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), "SMS sent",
                                 Toast.LENGTH_SHORT).show();
@@ -122,11 +116,10 @@ public class MainMenuActivity extends Activity {
         }, new IntentFilter(SENT));
 
         //---when the SMS has been delivered---
-        registerReceiver(new BroadcastReceiver(){
+        registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode())
-                {
+                switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         //TODO: define delivered in strings.xml instead of hardcoding
                         Toast.makeText(getBaseContext(), "SMS delivered",
@@ -170,6 +163,7 @@ public class MainMenuActivity extends Activity {
     public void newPatient(View view) {
         Intent intent = new Intent(this, NewPatientDataActivity.class);
         startActivity(intent);
+
     }
 
     public void oldPatient(View view) {
@@ -184,8 +178,8 @@ public class MainMenuActivity extends Activity {
         editor.commit();
         boolean promoter_result = this.deleteFile("promoter_data");
         boolean patient_result = this.deleteFile("patient_data");
-        if ((!promoter_result) || (!patient_result)){
-            Log.i("MainMenuActivity: Logout", "Promoter result "+ promoter_result + " patient result "+ patient_result );
+        if ((!promoter_result) || (!patient_result)) {
+            Log.i("MainMenuActivity: Logout", "Promoter result " + promoter_result + " patient result " + patient_result);
         }
         Intent intent = new Intent(this, PromoterLoginActivity.class);
         startActivity(intent);

@@ -7,6 +7,7 @@
     tools:context="org.techintheworld.www.edots.NewPatientDataActivity">
 
     <ScrollView
+        android:id="@+id/newpatient_scrollview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
@@ -16,6 +17,21 @@
             android:orientation="vertical"
             android:layout_height="fill_parent"
             android:weightSum="1">
+
+            <!--notification for no internet -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:layout_height="32sp"
+                android:textColor="@color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:background="@color/light_red"
+                android:visibility="gone"
+
+                android:id="@+id/internet_status"
+                android:text="@string/no_internet_connection"/>
 
             <!--national ID field-->
             <TextView

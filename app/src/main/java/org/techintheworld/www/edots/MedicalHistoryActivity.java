@@ -125,7 +125,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
             numVisits = patientVisits.size();
         }
 
-
         String siteCode;
         String visitDate;
         String timeVal;
