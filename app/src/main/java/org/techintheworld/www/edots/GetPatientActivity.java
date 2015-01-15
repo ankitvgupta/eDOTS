@@ -153,9 +153,6 @@ public class GetPatientActivity extends Activity {
     public Patient lookupPatient(int nationalid) throws JSONException{
 
         setButtons(false);
-        if (!validateInput()){
-            return null;
-        }
         currentPatient = null;
         // TODO: Check if Patient is already stored locally first
         JSONArray object;
@@ -262,10 +259,12 @@ public class GetPatientActivity extends Activity {
      */
     public boolean validateInput() {
         
-        return true;
-        /*
+        //return true;
+        
         EditText editor = (EditText) findViewById(R.id.nationalid_input);
-        String nationalID = editor.getText().toString();
+        return editor.getText().toString().trim().length() != 0;
+        
+        /*String nationalID = editor.getText().toString();
         
         
 
@@ -278,6 +277,7 @@ public class GetPatientActivity extends Activity {
         }
         return validated;
         */
+        
     }
 
     /**
@@ -293,14 +293,14 @@ public class GetPatientActivity extends Activity {
         setButtons(false);
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
         String message = editText.getText().toString();
-        editText.setText("", TextView.BufferType.EDITABLE);
 
         if (!validateInput()){
             return;
         }
+        editText.setText("", TextView.BufferType.EDITABLE);
         int pid = Integer.parseInt(message);
         try {
-            currentPatient = lookupPatient(pid);
+            currentPgiatient = lookupPatient(pid);
         }
         catch(JSONException e1){
             e1.printStackTrace();
