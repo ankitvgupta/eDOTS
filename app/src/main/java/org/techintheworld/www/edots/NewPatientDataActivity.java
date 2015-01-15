@@ -58,6 +58,10 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
+    /**
+     * Also checks if connected to internet
+     * @author JN
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
