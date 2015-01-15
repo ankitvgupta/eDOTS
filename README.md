@@ -25,3 +25,13 @@ eDOTS
   1. Knowing which patients to send texts too
   2. What should the content of the text be
 	3. Being able to find relationship between promoters and coordinators
+
+
+
+Overview of App Structure:
+
+java.edots.models: Contains the classes for the various data models that are used throughout the app
+java.edots.tasks: Contains the classes for server communicatoin
+java.edots.utils: Contains cross-activity utility functions, such as those related to internet connection, sending SMS, or dealing with time forms.
+
+java.org.techintheworld.www.edots: Contains the controller activities for each of the views.
