@@ -15,7 +15,7 @@ eDOTS
 
 3. Register Patients
   1. add phone numbers and communicate with Pacientes_contactos
-  2. If internet cuts out, then add some banner that alerts them JN and Ankit (with what is possible)
+  2. If internet cuts out, then add some banner that alerts them JN and Ankit (with what is possible) - DONE
 
 
 4. New Visit
