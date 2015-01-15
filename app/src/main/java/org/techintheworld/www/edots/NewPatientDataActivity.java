@@ -4,12 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,10 +17,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -104,11 +99,9 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         listview.setAdapter(adapter);
 
         if (!InternetConnection.checkConnection(this)){
-            //TODO: dialogue
-            ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(this);
-            loginProgress.setTitle("Login Error");
-            loginProgress.setMessage("Your username or password was incorrect or invalid");
-            loginProgress.show();
+            AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
+            blockAllInput();
+
         }
     }
 
@@ -248,17 +241,10 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
     }
 
-    private boolean checkInternetConnection() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        return isConnected;
-    }
+
 
     private void blockAllInput(){
-        ScrollView layout = (ScrollView) findViewById(R.id.newpatient_scrollview);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.newPatientLayout);
         for(int i=0; i < layout.getChildCount(); i++) {
             View v = layout.getChildAt(i);
             if (v instanceof Button) {
@@ -342,8 +328,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             } catch(NullPointerException e)
             {
                 if (!InternetConnection.checkConnection(this)) {
-                    Toast.makeText(getBaseContext(), R.string.no_internet_connection,
-                            Toast.LENGTH_SHORT).show();
+                    AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
                 } else {
                     e.printStackTrace();
                 }
