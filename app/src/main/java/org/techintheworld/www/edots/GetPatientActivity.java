@@ -349,10 +349,11 @@ public class GetPatientActivity extends Activity {
             alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
-
+                    Log.e("GetPatientActivity: parseAndFill", currentPatient.getPid());
                     NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask() ;
                     try{
-                        Log.e("GetPatientActivity: parseAndFill Line 355", npu.execute("http://demo.sociosensalud.org.pe/", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid),""),"0").get());
+                        npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid),""),"0").get();
+
                     }
                     catch (Exception e1){
                         Log.e("GetPatientActivity: parseAndFill", "ExecutionException");
