@@ -211,6 +211,18 @@ public class GetPatientActivity extends Activity {
         historyBtn.setEnabled(val);
         Button newVisitBtn = (Button) findViewById(R.id.new_visit_button);
         newVisitBtn.setEnabled(val);
+        
+        if (!val){
+            TextView patientname = (TextView) findViewById(R.id.patientname);
+            TextView nationalid = (TextView) findViewById(R.id.nationalid);
+            TextView dob = (TextView) findViewById(R.id.dob);
+            TextView sex = (TextView) findViewById(R.id.sex);
+
+            patientname.setText("");
+            nationalid.setText("");
+            dob.setText("");
+            sex.setText("");
+        }
     }
 
 
@@ -300,7 +312,7 @@ public class GetPatientActivity extends Activity {
         editText.setText("", TextView.BufferType.EDITABLE);
         int pid = Integer.parseInt(message);
         try {
-            currentPgiatient = lookupPatient(pid);
+            currentPatient = lookupPatient(pid);
         }
         catch(JSONException e1){
             e1.printStackTrace();
