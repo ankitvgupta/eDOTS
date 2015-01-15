@@ -16,7 +16,8 @@ import java.util.Random;
  *
  */
 public class Project {
-
+    // TODO: consistent capitalization of all class variables
+    private String ProjectId;
     private ArrayList<String> medications = new ArrayList<String>();
     private ArrayList<String> types = new ArrayList<String>();
     private String name;
@@ -27,6 +28,7 @@ public class Project {
         try {
             Random r = new Random();
             int num = r.nextInt(100);
+            ProjectId = "5";
             name = Integer.toString(num);
             medications = new ArrayList<String>();
             medications.add("Med 1");
@@ -45,6 +47,7 @@ public class Project {
     public Project (String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
+            ProjectId = n.get("projectId").toString();
             name = n.get("name").toString();
             JSONArray temp = new JSONArray(n.get("medications").toString());
             medications = new ArrayList<String>();
@@ -58,12 +61,13 @@ public class Project {
     }
 
     /**
-     *
+     * @param projectId
      * @param n name of the project
      * @param meds arraylist of the medications
      * @param t array list of the types
      */
-    public Project(String n, ArrayList<String> meds, ArrayList<String> t){
+    public Project(String projectId, String n, ArrayList<String> meds, ArrayList<String> t){
+        ProjectId = projectId;
         medications = meds;
         name = n;
         types = t;
@@ -78,6 +82,7 @@ public class Project {
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
+            temp.put("projectId", getProjectId());
             JSONArray version = new JSONArray(getMedications());
             temp.put("medications", version);
             JSONArray types = new JSONArray(getTypes());
@@ -88,6 +93,14 @@ public class Project {
             e.printStackTrace();
         }
         return temp.toString();
+    }
+
+    public String getProjectId(){
+        return ProjectId;
+    }
+
+    public void setProjectId(String projectId){
+        ProjectId = projectId;
     }
 
     public void setMedications(ArrayList<String> m){
@@ -107,6 +120,8 @@ public class Project {
     public String getName(){
         return name;
     }
+
+
 
 
 }

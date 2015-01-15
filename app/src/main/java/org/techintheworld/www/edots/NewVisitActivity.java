@@ -3,10 +3,8 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +14,10 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
-import edots.models.Project;
 import edots.models.Visit;
 import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
@@ -43,7 +39,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     private Patient currentPatient;
     private Visit currentVisit;
-    private ArrayList<Project> treatmentList = new ArrayList<Project>();
     EditText datePicker;
     EditText timePicker;
     EditText visitLocaleEditor;
@@ -65,6 +60,16 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_visit);
 
+        // get localeCode, localeName and promoterId from sharedPreferences
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+//        String localeName = prefs.getString((getString(R.string.login_locale_name)), null);
+//        String localeCode = prefs.getString((getString(R.string.login_locale)), null);
+//        String promoterId = prefs.getString((getString(R.string.promoter_id)), null);
+
+        String localeName = "SMP";
+        String localeCode = "2";
+        String promoterId = "19";
+
         // if a patient was passed in, pre-load that patient
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
@@ -77,12 +82,13 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // load the visit group number and visit number
         // TODO: do not hard code in localeID and project ID
         NewVisitLoadTask newV = new NewVisitLoadTask();
-        AsyncTask v = newV.execute(currentPatient.getPid(), "2","5");
-        // parse the result, and return itg
+        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, "5");
+        // parse the result, and return it
         try {
             currentVisit = (Visit) v.get();
             Log.v("NewVisitActivity.java: The patient visit that we got is", currentVisit.toString());
         } catch (InterruptedException e1) {
+            //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
             e1.printStackTrace();
         } catch (ExecutionException e1) {
             e1.printStackTrace();
@@ -90,6 +96,9 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             Log.e("NewVisit: get visit","");
         }
 
+        currentVisit.setLocaleCode(localeCode);
+        currentVisit.setPromoterId(promoterId);
+        Log.v("new visit: current visit after shared pref", currentVisit.toString());
 
         // visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
@@ -124,9 +133,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitLocaleEditor = (EditText) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
         // TODO: should this be a dropdown menu of all locales?
-        Log.i("new visit activity: oncreate pulled locale", returnLocale());
-        visitLocaleEditor.setText(returnLocale());
-        currentVisit.setLocaleCode(returnLocaleCode());
+        visitLocaleEditor.setText(localeName);
+
 
         // visit project
         visitProjectEditor = (EditText) findViewById(R.id.visitProject);
@@ -189,29 +197,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-    * @author lili
-    * @return the locale of the signed-in promoter
-    */
-    public String returnLocale(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String locale =  prefs.getString((getString(R.string.login_locale_name)), null);
-        return locale;
-    }
-
-    /**
-     * @author lili
-     * @return the locale Code of the signed-in promoter
-     */
-    public String returnLocaleCode(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String localeCode =  prefs.getString((getString(R.string.login_locale)), null);
-        return localeCode;
-    }
-
 
     /**
      * insert new visit into the database
+     * @return -1 for error, 1 or 2 for success
      */
     public String addToDatabase(){
         NewVisitUploadTask uploader = new NewVisitUploadTask();
@@ -226,7 +215,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
                                       currentPatient.getPid(),
                                       currentVisit.getVisitDate(),
                                       currentVisit.getVisitTime(),
-                                      "19").get(); // TODO: do not hardcode in promoterID
+                                      currentVisit.getPromoterId()).get(); // TODO: do not hardcode in promoterID
 
             Log.v("What we got was", result);
         }

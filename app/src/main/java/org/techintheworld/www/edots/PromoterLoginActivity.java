@@ -73,7 +73,7 @@ public class PromoterLoginActivity extends Activity {
      */
     private String checkAlreadyLoggedIn(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = prefs.getString((getString(R.string.login_username)), null);
+        String username = prefs.getString((getString(R.string.promoter_id)), null);
         if (username !=null){
             return username;
         }
@@ -174,12 +174,14 @@ public class PromoterLoginActivity extends Activity {
                 startActivity(intent);
             }
             catch (JSONException e){
+
                 e.printStackTrace();
             }
 
         }
         else{
            AlertError("Login Error","Your username or password was incorrect or invalid" );
+           p_d.setVisibility(View.GONE);
         }
 
     }
