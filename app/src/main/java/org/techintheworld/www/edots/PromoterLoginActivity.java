@@ -40,9 +40,6 @@ import edots.utils.OfflineStorageManager;
  *
  */
 public class PromoterLoginActivity extends Activity {
-    private Button loginButton;
-    private EditText username;
-    private EditText password;
     private Spinner spnLocale;
     private TextView tvwMensaje;
     private AsyncTask<String, String, Locale[]> loadLocale;
@@ -53,23 +50,22 @@ public class PromoterLoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promoter_login);
-        username = (EditText)findViewById(R.id.username);
-        password = (EditText)findViewById(R.id.password);
-        loginButton = (Button)findViewById(R.id.loginButton);
+        EditText username1 = (EditText) findViewById(R.id.username);
+        EditText password = (EditText) findViewById(R.id.password);
+        Button loginButton = (Button) findViewById(R.id.loginButton);
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
-        String myurl = "http://demo.sociosensalud.org.pe";
-        loadLocaleSpinner(myurl);
-
-        // Progress bar set to gone on page load
-        ProgressBar p_d = (ProgressBar)findViewById(R.id.marker_progress);
-        p_d.setVisibility(View.GONE);
-
-
         String username = checkAlreadyLoggedIn();
         if (username != null){
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
         }
+        else {
+            String myurl = "http://demo.sociosensalud.org.pe";
+            loadLocaleSpinner(myurl);
+        }
+        // Progress bar set to gone on page load
+        ProgressBar p_d = (ProgressBar)findViewById(R.id.marker_progress);
+        p_d.setVisibility(View.GONE);
 
     }
 
@@ -136,17 +132,36 @@ public class PromoterLoginActivity extends Activity {
 
         String locale_name = spnLocale.getItemAtPosition(spnLocale.getSelectedItemPosition()).toString();
         String locale_num = "1";
-        Locale[] objLocale;
+        Locale[] objLocale = new Locale[0];
         String[] wee;
 
 
         try {
-            objLocale = loadLocale.get();
-            for(int i = 0;i < objLocale.length; i++){
-                if (locale_name.equals(objLocale[i].name)) {
-                    locale_num = String.valueOf(objLocale[i].id);
-                };
+            if(loadLocale.get() == null){
+                objLocale = loadLocale.get();
             }
+            else{
+                try {
+                    JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
+                    objLocale = new Locale[object.length()];
+                    // look at all patients
+                    for (int i = 0; i < object.length(); i++) {
+                        JSONObject obj = object.getJSONObject(i);
+                        objLocale[i] = new Locale(obj.toString());
+                    }
+                }
+                catch(JSONException e1){
+                    Log.e("ProgramLoginActivity: switchPatientType","JSON exception on Load");
+                } catch(FileNotFoundException e1){
+                    Log.e("ProgramLoginActivity: switchPatientType","FileNotFound exception on Load");
+                }
+
+            }
+                for (int i = 0; i < objLocale.length; i++) {
+                    if (locale_name.equals(objLocale[i].name)) {
+                        locale_num = String.valueOf(objLocale[i].id);
+                    };
+                }
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         } catch (ExecutionException e1) {
@@ -245,13 +260,13 @@ public class PromoterLoginActivity extends Activity {
             OfflineStorageManager.SaveLocaleData(objLocale, this);
 
         } catch (InterruptedException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");
         } catch (ExecutionException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity1", "Execution Exception");
         } catch (JSONException e1){
-            Log.e("PromoterLoginActivity: loadLocaleActivity"," JSON Exception");
+            Log.e("PromoterLoginActivity: loadLocaleActivity1"," JSON Exception");
         } catch (NullPointerException e1){
-            Log.e("PromoterLoginActivity: loadLocaleActivity"," NullPointerException");
+            Log.e("PromoterLoginActivity: loadLocaleActivity1"," NullPointerException");
         }
 
         try {
