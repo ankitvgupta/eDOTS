@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
+import edots.models.Visit;
 import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
 import edots.utils.DatePickerFragment;
@@ -40,6 +41,7 @@ import edots.utils.TimePickerFragment;
 public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
 
     private Patient currentPatient;
+    private Visit currentVisit;
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
     EditText datePicker;
     EditText timePicker;
@@ -69,17 +71,22 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             e.printStackTrace();
         }
 
-//        ProjectLoadTask newP = new ProjectLoadTask();
-//        AsyncTask p = newP.execute("2", "19");
-
+        // load the visit group number and visit number
+        // TODO: do not hard code in localeID and project ID
         NewVisitLoadTask newV = new NewVisitLoadTask();
         AsyncTask v = newV.execute(currentPatient.getPid(), "2","5");
-        Log.i("new visit: asynctask", v.toString());
+        // parse the result, and return itg
+        try {
+            currentVisit = (Visit) v.get();
+            Log.v("NewVisitActivity.java: The patient visit that we got is", currentVisit.toString());
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("NewVisit: get visit","");
+        }
 
-        // Get the current projects that the patient is signed up for
-        Project patientProject = currentPatient.getEnrolledProject();
-        //Log.v("NewVisitActivity.java: The project the patient is in is", patientProject.toString());
-        int num_projects = 1;
 
         // visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
@@ -116,38 +123,15 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // TODO: should this be a dropdown menu of all locales?
         Log.i("new visit activity: oncreate pulled locale", returnLocale());
         visitLocaleEditor.setText(returnLocale());
-
-//
-//        // instantiate arraylist that will be used for the checkboxes text
-//        ArrayList<String> checkBoxesText = new ArrayList<String>();
-//
-//        // Retrieve list of projects of this patient
-//        for (int i = 0; i < 1; i++) {
-//            CheckBox checkBox = new CheckBox(getApplicationContext());
-//            String n = patientProject.getName();
-//            checkBoxesText.add(n);
-//        }
-//
-//        // sets layout_height for ListView based on number of treatments
-//        ListView treatmentView = (ListView)findViewById(R.id.active_treatments);
-//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * num_projects, getResources().getDisplayMetrics());
-//        treatmentView.getLayoutParams().height = height;
-//
-//        // set the dropdown to have the given text
-//        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, checkBoxesText);
-//        ListView lv= (ListView)findViewById(R.id.active_treatments);
-//        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-//        lv.setAdapter(adapter);
-//
-//        // set all of them to true
-//        for (int i=0; i<checkBoxesText.size(); i++){
-//            lv.setItemChecked(i, true);
-//        }
-//        lv.setMinimumHeight(200);
+        currentVisit.setLocaleCode(returnLocaleCode());
 
         // visit group
         visitGroupEditor = (EditText) findViewById(R.id.visitGroup);
-//       visitLocaleEditor.setText(returnLocale());
+        visitLocaleEditor.setText(currentVisit.getVisitGroupCode()+"-"+currentVisit.getNombreGroupoVisita());
+
+        // visit number
+        visitNoEditor = (EditText) findViewById(R.id.visitNo);
+        visitNoEditor.setText(currentVisit.getVisitCode()+"-"+currentVisit.getDescripcionVisita());
 
     }
 
@@ -160,7 +144,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // TODO: format display text in "dd/MM/yyyy"
         datePicker.setText(displayDateFormat.format(date));
         visitDate = date;
-
+        currentVisit.setVisitDate(displayDateFormat.format(date));
     }
 
     /**
@@ -169,6 +153,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
      */
     public void returnTime(String time) {
         timePicker.setText(time);
+        currentVisit.setVisitTime(time + ":00.0000000");
     }
 
     @Override
@@ -206,18 +191,28 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return locale;
     }
 
+    /**
+     * @author lili
+     * @return the locale Code of the signed-in promoter
+     */
+    public String returnLocaleCode(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String localeCode =  prefs.getString((getString(R.string.login_locale)), null);
+        Log.i("new visit activity: locale code", localeCode);
+        return localeCode;
+    }
+
 
     /**
-     *
-     * @param date A string representation of the visit's date
-     * @param timeString A string representatino of the visit's time of day
+     * insert
      */
-    public void addToDatabase(String date, String timeString){
+    public void addToDatabase(){
         NewVisitUploadTask uploader = new NewVisitUploadTask();
-        //Log.v("NewVisitActivity.java: The currentPatient is", currentPatient.toString());
         try {
-            String result = uploader.execute("http://demo.sociosensalud.org.pe", "2", "2", "1", "1",
-                    currentPatient.getPid(), date, timeString, "19").get();
+            String result = uploader.execute(currentVisit.getLocaleCode(), currentVisit.getProjectCode(),
+                    currentVisit.getVisitGroupCode(), currentVisit.getVisitCode(),
+                    currentVisit.getProjectCode(), currentVisit.getVisitDate(),
+                    currentVisit.getVisitTime(), "19").get(); // promoterID
             Log.v("What we got was", result);
         }
         catch (InterruptedException e){
@@ -237,11 +232,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
      */
     public void submitVisit(View view)
     {
-        String date_string = dbDateFormat.format(visitDate);
-        String time_string = timePicker.getText().toString();
-        time_string = time_string + ":00.0000000";
-        Log.i("new visit: time", date_string+" "+time_string+":00.0");
-        addToDatabase(date_string, time_string);
+        addToDatabase();
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
     }
