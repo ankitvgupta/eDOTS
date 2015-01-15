@@ -2,6 +2,7 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -150,7 +151,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton (Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // here you can add functions
             }
