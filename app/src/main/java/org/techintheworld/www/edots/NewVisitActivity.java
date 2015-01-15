@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,9 +51,11 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     EditText visitGroupEditor;
     EditText visitNoEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    DateFormat displayTimeFormat = new SimpleDateFormat("hh:mm");
+    DateFormat displayTimeFormat = new SimpleDateFormat("HH:mm");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
+    DateFormat dbTimeFormat = new SimpleDateFormat("HH:mm:00.0000000");
     Date visitDate = new Date();
+    Date visitTime = new Date();
 
     @Override
     /**
@@ -125,9 +128,14 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitLocaleEditor.setText(returnLocale());
         currentVisit.setLocaleCode(returnLocaleCode());
 
+        // visit project
+        visitProjectEditor = (EditText) findViewById(R.id.visitProject);
+        // TODO: display project name
+        visitProjectEditor.setText(currentVisit.getProjectCode());
+
         // visit group
         visitGroupEditor = (EditText) findViewById(R.id.visitGroup);
-        visitLocaleEditor.setText(currentVisit.getVisitGroupCode()+"-"+currentVisit.getNombreGroupoVisita());
+        visitGroupEditor.setText(currentVisit.getVisitGroupCode()+"-"+currentVisit.getNombreGrupoVisita());
 
         // visit number
         visitNoEditor = (EditText) findViewById(R.id.visitNo);
@@ -144,16 +152,17 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // TODO: format display text in "dd/MM/yyyy"
         datePicker.setText(displayDateFormat.format(date));
         visitDate = date;
-        currentVisit.setVisitDate(displayDateFormat.format(date));
+        currentVisit.setVisitDate(dbDateFormat.format(date));
     }
 
     /**
      * @author lili
      * set the text field as the selected time
      */
-    public void returnTime(String time) {
-        timePicker.setText(time);
-        currentVisit.setVisitTime(time + ":00.0000000");
+    public void returnTime(Date time) {
+        timePicker.setText(displayTimeFormat.format(time));
+        visitTime = time;
+        currentVisit.setVisitTime(dbTimeFormat.format(time));
     }
 
     @Override
@@ -187,7 +196,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     public String returnLocale(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String locale =  prefs.getString((getString(R.string.login_locale_name)), null);
-        Log.i("new visit activity: locale", locale);
         return locale;
     }
 
@@ -198,21 +206,28 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     public String returnLocaleCode(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String localeCode =  prefs.getString((getString(R.string.login_locale)), null);
-        Log.i("new visit activity: locale code", localeCode);
         return localeCode;
     }
 
 
     /**
-     * insert
+     * insert new visit into the database
      */
-    public void addToDatabase(){
+    public String addToDatabase(){
         NewVisitUploadTask uploader = new NewVisitUploadTask();
+        String result = "-1";
         try {
-            String result = uploader.execute(currentVisit.getLocaleCode(), currentVisit.getProjectCode(),
-                    currentVisit.getVisitGroupCode(), currentVisit.getVisitCode(),
-                    currentVisit.getProjectCode(), currentVisit.getVisitDate(),
-                    currentVisit.getVisitTime(), "19").get(); // promoterID
+            Log.v("new visit: currentVisit", currentVisit.toString());
+            result = uploader.execute("http://demo.sociosensalud.org.pe",
+                                      currentVisit.getLocaleCode(),
+                                      currentVisit.getProjectCode(),
+                                      currentVisit.getVisitGroupCode(),
+                                      currentVisit.getVisitCode(),
+                                      currentPatient.getPid(),
+                                      currentVisit.getVisitDate(),
+                                      currentVisit.getVisitTime(),
+                                      "19").get(); // TODO: do not hardcode in promoterID
+
             Log.v("What we got was", result);
         }
         catch (InterruptedException e){
@@ -221,20 +236,31 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         catch (ExecutionException e){
             e.printStackTrace();
         }
+        return result;
     }
 
     // TODO: Add the actual submission to the server
     // Submits the visit to the server and switches to GetPatientActivity
 
     /**
-     *
      * @param view The current view
      */
     public void submitVisit(View view)
     {
-        addToDatabase();
-        Intent intent = new Intent(this, MainMenuActivity.class);
-        startActivity(intent);
+        currentVisit.setVisitDate(dbDateFormat.format(visitDate));
+        currentVisit.setVisitTime(dbTimeFormat.format(visitTime));
+        String result = addToDatabase();
+
+        //TODO: code the message in strings.xml
+        if (result.equals("-1")){
+            Log.v("New Visit: result", result);
+            Toast.makeText(getBaseContext(),"Failed to submit. Please try again",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getBaseContext(), "Successfully submitted", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
+        }
     }
 
 

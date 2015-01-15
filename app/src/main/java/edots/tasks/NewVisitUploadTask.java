@@ -22,21 +22,22 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
     protected String doInBackground(String... params) {
 
         // Set up server parameters
-        final String NAMESPACE = "http://demo.sociosensalud.org.pe/";
+        String urlserver = params[0];
+        final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
         final String METHOD_NAME = "InsertarVisitas";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         // Add visit attributes
-        request.addProperty("CodigoLocal", params[0]);
-        request.addProperty("CodigoProyecto", params[1]);
-        request.addProperty("CodigoGrupoVisita", params[2]);
-        request.addProperty("CodigoVisita", params[3]);
-        request.addProperty("CodigoPaciente", params[4]);
-        request.addProperty("FechaVisita", params[5]);
-        request.addProperty("HoraCita", params[6]);
-        request.addProperty("CodigoUsuario", params[7]);
+        request.addProperty("CodigoLocal", params[1]);
+        request.addProperty("CodigoProyecto", params[2]);
+        request.addProperty("CodigoGrupoVisita", params[3]);
+        request.addProperty("CodigoVisita", params[4]);
+        request.addProperty("CodigoPaciente", params[5]);
+        request.addProperty("FechaVisita", params[6]);
+        request.addProperty("HoraCita", params[7]);
+        request.addProperty("CodigoUsuario", params[8]);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;

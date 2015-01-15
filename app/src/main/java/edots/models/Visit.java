@@ -1,5 +1,8 @@
 package edots.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Ankit on 1/12/15.
  */
@@ -45,6 +48,31 @@ public class Visit {
         UserCode = promoter;
     }
 
+
+    @Override
+    /**
+     * @author lili
+     * @return the JSON Serialization of the Visit Object
+     *
+     */
+    public String toString() {
+        JSONObject temp = new JSONObject();
+        try {
+            temp.put("LocaleCode", getLocaleCode());
+            temp.put("ProjectCode", getProjectCode());
+            temp.put("VisitGroupCode", getVisitGroupCode());
+            temp.put("VisitCode", getVisitCode());
+            temp.put("PacientCode", getPacientCode());
+            temp.put("VisitDate", getVisitDate());
+            temp.put("VisitTime", getVisitTime());
+            temp.put("NombreGrupoVisita", getNombreGrupoVisita());
+            temp.put("DescripcionVisita",  getDescripcionVisita());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return temp.toString();
+    }
+
     public String getLocaleCode() {return LocaleCode;}
 
     public void setLocaleCode(String localeCode) {LocaleCode = localeCode;}
@@ -53,7 +81,7 @@ public class Visit {
 
     public String getVisitGroupCode() {return VisitGroupCode;}
 
-    public String getNombreGroupoVisita() {return NombreGrupoVisita;}
+    public String getNombreGrupoVisita() {return NombreGrupoVisita;}
 
     public String getVisitCode() {return VisitCode;}
 
