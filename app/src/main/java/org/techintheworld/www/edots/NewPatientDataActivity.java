@@ -17,10 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -247,6 +249,19 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
+    }
+
+    private void blockAllInput(){
+        ScrollView layout = (ScrollView) findViewById(R.id.newpatient_scrollview);
+        for(int i=0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+            if (v instanceof Button) {
+                v.setVisibility(View.GONE); //Or View.INVISIBLE to keep its bounds
+            }else
+            if (v instanceof EditText) {
+                ((EditText)v).setEnabled(false);
+            }
+        }
     }
 
 
