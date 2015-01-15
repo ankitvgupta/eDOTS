@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
@@ -18,8 +19,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
+import edots.models.Visit;
+import edots.tasks.GetHistoryLoadTask;
+import edots.tasks.LoadPatientFromPromoterTask;
 import edots.utils.OfflineStorageManager;
 import edots.utils.SMSAlarmReceiver;
 
@@ -33,6 +40,7 @@ public class MainMenuActivity extends Activity {
 
         btnSendSMS = (Button) findViewById(R.id.btnSendSMS);
 
+        // Creates listener for SMS sending button
         btnSendSMS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO: get from service instead of hard coding
@@ -40,11 +48,10 @@ public class MainMenuActivity extends Activity {
                 String phoneNo = "943206118";
                 String message = getString(R.string.message);
                     Calendar calendar = Calendar.getInstance();
-                    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-                    int currentMinute = calendar.get(Calendar.MINUTE);
                     Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
                     calendar.add(Calendar.MINUTE, 1);
                     scheduleSMSAlarm(phoneNo, message, calendar);
+
             }
         });
 
@@ -52,6 +59,13 @@ public class MainMenuActivity extends Activity {
     }
 
 
+    /**
+     * Schedules an system alarm to send an SMS with input parameters
+     * @author JN
+     * @param phone phone number to send SMS to
+     * @param msg message content of the SMS
+     * @param cal Calendar object that is the time the SMS will be sent
+     */
     private void scheduleSMSAlarm(String phone, String msg, Calendar cal) {
         Intent intentAlarm = new Intent(this, SMSAlarmReceiver.class);
         intentAlarm.setAction("org.techintheworld.www.edots.MainMenuActivity");
@@ -70,10 +84,145 @@ public class MainMenuActivity extends Activity {
 
     }
 
+
+    /**
+     *  
+     * @param patientID the patient that the sms is being sent to
+     * @return bool indicating success
+     * 
+     * TODO: For now this just returns the patientID for everyone. 
+     */
+    private boolean sendSMSToPatient(String patientID){
+        return true;
+    }
+
+    /**
+     * Determines if the given patient has missed a pill, and returns the patient name if so 
+     * @param patientID
+     * @return boolean indicating whether patient missed pill
+     * 
+     * 
+     * TODO: For now this just returns true for everyone
+     */
+    private boolean missedPill (String patientID){
+        return true;
+    }
+
+    /**
+     * 
+     * @param promoterID id of the promoter whose patients this will send sms to
+     * @return String with the aggregate summary to send to the promoter
+     * 
+     * This function sends the delay SMS to all of the patients of the given promoter, and returns an aggregate summary 
+     */
+    private String sendSMSForGivenPromoter(String promoterID){
+
+        String aggregate = "";
+        LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
+        AsyncTask loadPatientsTask = loadPatients.execute("http://demo.sociosensalud.org.pe", promoterID);
+        try {
+            ArrayList<String> patients = (ArrayList<String>) loadPatientsTask.get();
+            Log.v("MainMenuActivity.java: The patients are", patients.toString());
+            
+            for (int i = 0; i < patients.size(); i++){
+                if (missedPill(patients.get(i))){
+                    sendSMSToPatient(patients.get(i));
+                    aggregate += (patients.get(i) + "\n");
+                }
+            }
+            
+            Log.v("MainMenuActivity.java: The following patients for this promoter did not come: ", aggregate);
+            return aggregate;
+
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        
+        return "";
+        
+    }
+
+    /**
+     * Sends an aggregate SMS to a given coordinator by calling the send function for each promoter and compiling the results
+     *
+     * @param coordinatorID
+     * @return true on success, false on failure
+     */
+    /*private boolean sendSMSForGivenCoordinator(String coordinatorID){
+        GetPromotersFromCoordinatorsLoadTask loadPromoters = new GetPromotersFromCoordinatorsLoadTask();
+        AsyncTask loadPromotersTask = loadPromoters.execute("http://demo.sociosensalud.org.pe", coordinatorID);
+        String aggregate = "";
+        try {
+            
+            ArrayList<String> promoters = (ArrayList<String>) loadPromotersTask.get();
+            for (int i = 0; i < promoters.size(); i++){
+                aggregate += sendSMSForGivenPromoter(promoters.get(i));
+            }
+            
+            // TODO: Actually send the SMS to the promoter
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        
+    }*/
+
+    /**
+     * @author Ankit
+     * 
+     * This function is a test one to lay out the logic for determining who to send the SMS to 
+     */
+    /*private void determineSMS(){
+        GetCoordinatorsLoadTask loadCoordinators = new GetCoordinatorsLoadTask(); // This task doesn't exist yet.
+        AsyncTask loadCoordinatorsTask = loadCoordinators.execute("http://demo.sociosensalud.org.pe");
+        try {
+            ArrayList<String> coordinators = (ArrayList<String>) loadCoordinatorsTask.get();
+            Log.v("MainMenuActivity.java: The coordinators are", coordinators.toString());
+            
+            for (int i = 0; i < coordinators.size(); i++){ // for each coordinator get the promoters
+                sendSMSForGivenCoordinator(coordinators.get(i));
+            }
+            
+            
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        
+        
+        return null;
+
+
+
+
+    }*/
+
+    /**
+     * Sets the Broadcast Receivers that listen to SMS delivery status
+     * @author JN
+     */
     public void setSMSDeliveryReceivers(){
         String SENT = getString(R.string.sms_sent);
         String DELIVERED = getString(R.string.sms_delivered);
-
         //---when the SMS has been sent---
         registerReceiver(new BroadcastReceiver() {
             @Override
@@ -155,6 +304,11 @@ public class MainMenuActivity extends Activity {
         startActivity(intent);
     }
 
+    /**
+     * Logs out promoter, clears Shared Preferences, and removes internal files
+     * @author JN
+     * @param view
+     */
     public void logOut(View view) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
