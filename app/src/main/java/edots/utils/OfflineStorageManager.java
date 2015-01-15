@@ -2,8 +2,6 @@ package edots.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -175,13 +173,9 @@ public class OfflineStorageManager {
      *
      * @param context Current context of the activity
      */
+    // TODO: some kind of manual fetch method
     public static void UpdateLocalStorage(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+        boolean isConnected = InternetConnection.checkConnection(context);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         String last_update = prefs.getString((context.getString(R.string.date)), null);

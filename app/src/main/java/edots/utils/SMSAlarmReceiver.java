@@ -18,13 +18,17 @@ public class SMSAlarmReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (sms_action.equals(action)) {
-            String phoneNumberReceiver = "943229757"; //my phone number usually entered here
+            String phoneNumber = "943229757"; //my phone number usually entered here
             String message = "Hi you missed your appointment";
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(phoneNumberReceiver, null, message, null, null);
-            Log.w("SMSAlarmReceiver: On Receive ", "SMS message sent");
+            sendSMS(phoneNumber, message);
         }
 
 
+    }
+
+    public void sendSMS(String phoneNumber, String message){
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, null, null);
+        Log.w("SMSAlarmReceiver: On Receive ", "SMS message sent");
     }
 }

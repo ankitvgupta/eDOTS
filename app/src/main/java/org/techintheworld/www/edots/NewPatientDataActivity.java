@@ -3,11 +3,9 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +17,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -31,9 +28,10 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
-import edots.tasks.NewPatientUploadTask;
 import edots.tasks.GetPatientLoadTask;
+import edots.tasks.NewPatientUploadTask;
 import edots.utils.DatePickerFragment;
+import edots.utils.InternetConnection;
 
 /*
  * Written by Nishant
@@ -98,6 +96,14 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         ListView listview = (ListView) findViewById(R.id.treatments);
         listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listview.setAdapter(adapter);
+
+        if (!InternetConnection.checkConnection(this)){
+            //TODO: dialogue
+            ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(this);
+            loginProgress.setTitle("Login Error");
+            loginProgress.setMessage("Your username or password was incorrect or invalid");
+            loginProgress.show();
+        }
     }
 
     /**
@@ -240,16 +246,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     }
 
 
-    private boolean checkInternetConnection() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        return isConnected;
-    }
-
-
 
     // switch to PatientHome activity
     public void addPatientBtn(View view) {
@@ -319,7 +315,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
                 e.printStackTrace();
             } catch(NullPointerException e)
             {
-                if (!checkInternetConnection()) {
+                if (!InternetConnection.checkConnection(this)) {
                     Toast.makeText(getBaseContext(), R.string.no_internet_connection,
                             Toast.LENGTH_SHORT).show();
                 } else {
