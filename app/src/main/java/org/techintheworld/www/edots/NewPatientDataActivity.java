@@ -248,11 +248,18 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         for(int i=0; i < layout.getChildCount(); i++) {
             View v = layout.getChildAt(i);
             if (v instanceof Button) {
-                v.setVisibility(View.GONE); //Or View.INVISIBLE to keep its bounds
-            }else
+                ((Button) v).setEnabled(false); //Or View.INVISIBLE to keep its bounds
+            }
             if (v instanceof EditText) {
                 ((EditText)v).setEnabled(false);
             }
+            if (v instanceof RadioButton){
+                ((RadioButton)v).setEnabled(false);
+            }
+            if (v instanceof ListView){
+                ((ListView)v).setEnabled(false);
+            }
+
         }
     }
 
