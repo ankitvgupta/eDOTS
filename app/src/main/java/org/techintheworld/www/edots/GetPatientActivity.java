@@ -259,11 +259,23 @@ public class GetPatientActivity extends Activity {
      * @return boolean representing whether the inputs are all valid.
      */
     public boolean validateInput() {
+        
+        return true;
+        /*
         EditText editor = (EditText) findViewById(R.id.nationalid_input);
         String nationalID = editor.getText().toString();
+        
+        
 
-        boolean validated = !nationalID.equals("");
+        boolean validated = !nationalID.isEmpty();
+        if (validated){
+            Log.v("GetpatientActivity", "This patient is validated");
+        }
+        else{
+            Log.v("GetPatientActivity", "This patient is not validated");
+        }
         return validated;
+        */
     }
 
     /**
