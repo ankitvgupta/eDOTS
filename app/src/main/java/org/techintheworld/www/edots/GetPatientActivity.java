@@ -215,6 +215,10 @@ public class GetPatientActivity extends Activity {
     }
 
 
+    /**
+     * @author Ankit
+     * This function fills the text fields with the attributes of currentPatient
+     */
     public void fillTable(){
         // TODO: clear existing patient data when searched again
         hideKeyboard();
@@ -262,6 +266,13 @@ public class GetPatientActivity extends Activity {
         return validated;
     }
 
+    /**
+     * @author Ankit
+     * @param view the current view passed in with the onClick
+     *
+     * Called by the onClick method on Search - this calls the functions that make the queries for that patient
+     *             and the function that fills the table.
+     */
     public void parseAndFill(View view) {
 
         // clear the entered text and make new hint to search for new patient
