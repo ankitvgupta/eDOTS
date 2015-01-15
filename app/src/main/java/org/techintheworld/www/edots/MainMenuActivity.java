@@ -85,6 +85,29 @@ public class MainMenuActivity extends Activity {
     }
 
     /**
+     *  
+     * @param patientID the patient that the sms is being sent to
+     * @return bool indicating success
+     * 
+     * TODO: For now this just returns the patientID for everyone. 
+     */
+    private boolean sendSMSToPatient(String patientID){
+        return true;
+    }
+
+    /**
+     * Determines if the given patient has missed a pill, and returns the patient name if so 
+     * @param patientID
+     * @return boolean indicating whether patient missed pill
+     * 
+     * 
+     * TODO: For now this just returns true for everyone
+     */
+    private boolean missedPill (String patientID){
+        return true;
+    }
+
+    /**
      * 
      * @param promoterID id of the promoter whose patients this will send sms to
      * @return String with the aggregate summary to send to the promoter
@@ -93,9 +116,66 @@ public class MainMenuActivity extends Activity {
      */
     private String sendSMSForGivenPromoter(String promoterID){
 
+        String aggregate = "";
         LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
         AsyncTask loadPatientsTask = loadPatients.execute("http://demo.sociosensalud.org.pe", promoterID);
+        try {
+            ArrayList<String> patients = (ArrayList<String>) loadPatientsTask.get();
+            Log.v("MainMenuActivity.java: The patients are", patients.toString());
+            
+            for (int i = 0; i < patients.size(); i++){
+                if (missedPill(patients.get(i))){
+                    sendSMSToPatient(patients.get(i));
+                    aggregate += (patients.get(i) + "\n");
+                }
+            }
+            
+            Log.v("MainMenuActivity.java: The following patients for this promoter did not come: ", aggregate);
+            return aggregate;
+
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
         
+        return "";
+        
+    }
+
+    /**
+     * Sends an aggregate SMS to a given coordinator by calling the send function for each promoter and compiling the results
+     *
+     * @param coordinatorID
+     * @return true on success, false on failure
+     */
+    private boolean sendSMSForGivenCoordinator(String coordinatorID){
+        GetPromotersFromCoordinatorsLoadTask loadPromoters = new GetPromotersFromCoordinatorsLoadTask();
+        AsyncTask loadPromotersTask = loadPromoters.execute("http://demo.sociosensalud.org.pe", coordinatorID);
+        String aggregate = "";
+        try {
+            
+            ArrayList<String> promoters = (ArrayList<String>) loadPromotersTask.get();
+            for (int i = 0; i < promoters.size(); i++){
+                aggregate += sendSMSForGivenPromoter(promoters.get(i));
+            }
+            
+            // TODO: Actually send the SMS to the promoter
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
         
     }
 
@@ -109,14 +189,10 @@ public class MainMenuActivity extends Activity {
         AsyncTask loadCoordinatorsTask = loadCoordinators.execute("http://demo.sociosensalud.org.pe");
         try {
             ArrayList<String> coordinators = (ArrayList<String>) loadCoordinatorsTask.get();
-            Log.v("Patient.java: The coordinators are", coordinators.toString());
+            Log.v("MainMenuActivity.java: The coordinators are", coordinators.toString());
             
             for (int i = 0; i < coordinators.size(); i++){ // for each coordinator get the promoters
-                GetPromotersLoadTask loadPromoters = new GetPromotersLoadTask();
-                AsyncTask loadPromotersTask = loadPromoters.execute("http://demo.sociosensalud.org.pe", coordinators.get(i));
-                ArrayList<String> promoters = (ArrayList<String>) loadPromotersTask.get();
-                
-                
+                sendSMSForGivenCoordinator(coordinators.get(i));
             }
             
             
