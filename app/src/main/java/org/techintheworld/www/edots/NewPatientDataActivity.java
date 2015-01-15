@@ -2,12 +2,10 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,11 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-
 import android.widget.RadioButton;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,9 +30,10 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
-import edots.tasks.NewPatientUploadTask;
 import edots.tasks.GetPatientLoadTask;
+import edots.tasks.NewPatientUploadTask;
 import edots.utils.DatePickerFragment;
+import edots.utils.InternetConnection;
 
 /*
  * Written by Nishant
@@ -58,6 +58,10 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
+    /**
+     * Also checks if connected to internet
+     * @author JN
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
@@ -98,6 +102,15 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         ListView listview = (ListView) findViewById(R.id.treatments);
         listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listview.setAdapter(adapter);
+
+        // check if not connected to internet, then disable everything and show dialog
+        if (!InternetConnection.checkConnection(this)){
+            AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
+            blockAllInput();
+            TextView tview = (TextView)findViewById(R.id.internet_status);
+            tview.setVisibility(View.VISIBLE);
+
+        }
     }
 
     /**
@@ -144,7 +157,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setButton(-1,"OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton (Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // here you can add functions
             }
@@ -168,9 +181,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         return;
     }
 
-    private void saveLocally(String name, String father, String mother, String docType, String nationalID, String birthDate, String sex) {
-        //Patient p = new Patient(name, birthDate, Long.valueOf(nationalID),sex,  project,  mother,  father, patientID, Integer.valueOf(docType));
-    }
 
     public void onRadioButtonClicked(View view) {
         return;
@@ -239,16 +249,30 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
     }
 
+    /**
+     * @author Ankit
+     *
+     * Blocks all of the Buttons, EditTexts, and ListViews
+     */
+    private void blockAllInput(){
+        LinearLayout layout = (LinearLayout) findViewById(R.id.newPatientLayout);
+        for(int i=0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+            if (v instanceof Button) {
+                ((Button) v).setEnabled(false); //Or View.INVISIBLE to keep its bounds
+            }
+            if (v instanceof EditText) {
+                ((EditText)v).setEnabled(false);
+            }
+            if (v instanceof RadioButton){
+                ((RadioButton)v).setEnabled(false);
+            }
+            if (v instanceof ListView){
+                ((ListView)v).setEnabled(false);
+            }
 
-    private boolean checkInternetConnection() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        return isConnected;
+        }
     }
-
 
 
     // switch to PatientHome activity
@@ -319,9 +343,8 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
                 e.printStackTrace();
             } catch(NullPointerException e)
             {
-                if (!checkInternetConnection()) {
-                    Toast.makeText(getBaseContext(), R.string.no_internet_connection,
-                            Toast.LENGTH_SHORT).show();
+                if (!InternetConnection.checkConnection(this)) {
+                    AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
                 } else {
                     e.printStackTrace();
                 }

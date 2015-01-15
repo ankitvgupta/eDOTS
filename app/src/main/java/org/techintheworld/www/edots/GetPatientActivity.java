@@ -75,6 +75,7 @@ public class GetPatientActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
+                setButtons(false);
                 int index = arg0.getSelectedItemPosition();
                 try{
                     currentPatient = new Patient(object.getJSONObject(index).toString());
@@ -94,6 +95,7 @@ public class GetPatientActivity extends Activity {
             }
         });
         try {
+            setButtons(false);
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
             fillTable();
         }
@@ -150,8 +152,12 @@ public class GetPatientActivity extends Activity {
      */
     public Patient lookupPatient(int nationalid) throws JSONException{
 
+        setButtons(false);
+        if (!validateInput()){
+            return null;
+        }
         currentPatient = null;
-        // Check if Patient is already stored locally first
+        // TODO: Check if Patient is already stored locally first
         JSONArray object;
         try {
             // load list of patients from file patient_data
@@ -197,10 +203,24 @@ public class GetPatientActivity extends Activity {
 
     }
 
+    /**
+     * @author Ankit
+     * @param val bool to indicate whether buttons being turned off or on
+     *
+     * Turns on or off the buttons on the page to disallow accidental clicks when no patient is loaded.
+     */
+    public void setButtons(boolean val){
+        Button historyBtn = (Button) findViewById(R.id.history_button);
+        historyBtn.setEnabled(val);
+        Button newVisitBtn = (Button) findViewById(R.id.new_visit_button);
+        newVisitBtn.setEnabled(val);
+    }
+
 
     public void fillTable(){
         // TODO: clear existing patient data when searched again
         hideKeyboard();
+        setButtons(false);
         if (currentPatient == null){
             return;
         }
@@ -227,21 +247,34 @@ public class GetPatientActivity extends Activity {
             sex.setText(currentPatient.getSex());
         }
 
-        Button historyBtn = (Button) findViewById(R.id.history_button);
-        historyBtn.setEnabled(true);
-        Button newVisitBtn = (Button) findViewById(R.id.new_visit_button);
-        newVisitBtn.setEnabled(true);
+        setButtons(true);
 
 
+    }
+
+    /**
+     * @author Ankit
+     * @return boolean representing whether the inputs are all valid.
+     */
+    public boolean validateInput() {
+        EditText editor = (EditText) findViewById(R.id.nationalid_input);
+        String nationalID = editor.getText().toString();
+
+        boolean validated = !nationalID.equals("");
+        return validated;
     }
 
     public void parseAndFill(View view) {
 
         // clear the entered text and make new hint to search for new patient
+        setButtons(false);
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
         String message = editText.getText().toString();
         editText.setText("", TextView.BufferType.EDITABLE);
 
+        if (!validateInput()){
+            return;
+        }
         int pid = Integer.parseInt(message);
         try {
             currentPatient = lookupPatient(pid);
