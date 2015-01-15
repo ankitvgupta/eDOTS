@@ -36,20 +36,15 @@ public class MainMenuActivity extends Activity {
         btnSendSMS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO: get from service instead of hard coding
-
-                String phoneNo = "943229757";
-                String message = Integer.toString(R.string.message);
-                if (phoneNo.length() > 0 && message.length() > 0) {
+                //String phoneNo = "943229757";
+                String phoneNo = "943206118";
+                String message = getString(R.string.message);
                     Calendar calendar = Calendar.getInstance();
                     int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
                     int currentMinute = calendar.get(Calendar.MINUTE);
                     Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
                     calendar.add(Calendar.MINUTE, 1);
                     scheduleSMSAlarm(phoneNo, message, calendar);
-                } else
-                    Toast.makeText(getBaseContext(),
-                            "Please enter both phone number and message.",
-                            Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -62,11 +57,12 @@ public class MainMenuActivity extends Activity {
         intentAlarm.setAction("org.techintheworld.www.edots.MainMenuActivity");
         intentAlarm.putExtra("phone_number", phone);
         intentAlarm.putExtra("message", msg);
+        Log.w("MainMenuActivity: intent message to send", msg);
 
-        //TODO: what is 234324243
         PendingIntent pIntent = PendingIntent.getBroadcast(MainMenuActivity.this,
                 0, intentAlarm, 0);
 
+        setSMSDeliveryReceivers();
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pIntent);
@@ -74,16 +70,9 @@ public class MainMenuActivity extends Activity {
 
     }
 
-    //---sends an SMS message to another device---
-    private void sendSMS(String phoneNumber, String message) {
-        String SENT = "SMS_SENT";
-        String DELIVERED = "SMS_DELIVERED";
-
-        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0,
-                new Intent(SENT), 0);
-
-        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0,
-                new Intent(DELIVERED), 0);
+    public void setSMSDeliveryReceivers(){
+        String SENT = getString(R.string.sms_sent);
+        String DELIVERED = getString(R.string.sms_delivered);
 
         //---when the SMS has been sent---
         registerReceiver(new BroadcastReceiver() {
@@ -121,7 +110,6 @@ public class MainMenuActivity extends Activity {
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        //TODO: define delivered in strings.xml instead of hardcoding
                         Toast.makeText(getBaseContext(), "SMS delivered",
                                 Toast.LENGTH_SHORT).show();
                         break;
@@ -132,11 +120,7 @@ public class MainMenuActivity extends Activity {
                 }
             }
         }, new IntentFilter(DELIVERED));
-
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

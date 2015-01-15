@@ -1,10 +1,13 @@
 package edots.utils;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsManager;
 import android.util.Log;
+
+import org.techintheworld.www.edots.R;
 
 /**
  * Created by jfang on 1/14/15.
@@ -18,14 +21,24 @@ public class SMSAlarmReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         String phone_number = intent.getExtras().getString("phone_number");
         String message = intent.getExtras().getString("message");
+        Log.w("SMSAlarmReceiver: intent extras get message", message);
+
         if (sms_action.equals(action)) {
-            sendSMS(phone_number, message);
+            sendSMS(phone_number, message, context);
         }
     }
 
-    public void sendSMS(String phoneNumber, String message){
+    public void sendSMS(String phoneNumber, String message, final Context c){
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, null, null);
+        String SENT = c.getString(R.string.sms_sent);
+        String DELIVERED = c.getString(R.string.sms_delivered);
+        PendingIntent sentPI = PendingIntent.getBroadcast(c, 0,
+                new Intent(SENT), 0);
+
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(c, 0,
+                new Intent(DELIVERED), 0);
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+
         Log.w("SMSAlarmReceiver: On Receive ", "SMS message sent");
     }
 }

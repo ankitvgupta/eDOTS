@@ -177,12 +177,14 @@ public class PromoterLoginActivity extends Activity {
                 startActivity(intent);
             }
             catch (JSONException e){
+
                 e.printStackTrace();
             }
 
         }
         else{
            AlertError("Login Error","Your username or password was incorrect or invalid" );
+           p_d.setVisibility(View.GONE);
         }
 
     }
