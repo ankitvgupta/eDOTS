@@ -8,7 +8,9 @@ public class Visit {
     private String SiteCode;
     private String ProjectCode;
     private String VisitGroupCode;
+    private String NombreGroupoVisita; // for example, "Tamizaje" or "Enrolamiento"
     private String VisitCode;
+    private String DescripcionVisita; // for example, "Tamizaje" or "Enrolamiento"
     private String PacientCode;
     private String VisitDate;
     private String TimeVal;
@@ -24,15 +26,19 @@ public class Visit {
         VisitDate = "test6";
         TimeVal = "test7";
         UserCode = "test8";
+        NombreGroupoVisita="test9";
+        DescripcionVisita="test10";
     }
 
     // for production
-    public Visit(String site, String project, String visitGroup,
-                 String vis, String patient, String date, String time, String promoter){
+    public Visit(String site, String project, String visitGroup,String nombreGroupoVisita,
+                 String vis, String descripcionVisita, String patient, String date, String time, String promoter){
         SiteCode=site;
         ProjectCode=project;
         VisitGroupCode = visitGroup;
+        NombreGroupoVisita = nombreGroupoVisita;
         VisitCode = vis;
+        DescripcionVisita = descripcionVisita;
         PacientCode = patient;
         VisitDate = date;
         TimeVal = time;
@@ -45,7 +51,11 @@ public class Visit {
 
     public String getVisitGroupCode() {return VisitGroupCode;}
 
+    public String getNombreGroupoVisita() {return NombreGroupoVisita;}
+
     public String getVisitCode() {return VisitCode;}
+
+    public String getDescripcionVisita() {return DescripcionVisita;}
 
     public String getPacientCode() {return PacientCode;}
 

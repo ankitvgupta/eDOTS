@@ -21,8 +21,7 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
-
-import edots.tasks.GetHistoryLoadTask;
+import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.TimePickerFragment;
@@ -73,7 +72,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 //        ProjectLoadTask newP = new ProjectLoadTask();
 //        AsyncTask p = newP.execute("2", "19");
 
-        GetHistoryLoadTask newV = new GetHistoryLoadTask();
+        NewVisitLoadTask newV = new NewVisitLoadTask();
         AsyncTask v = newV.execute(currentPatient.getPid(), "2","5");
         Log.i("new visit: asynctask", v.toString());
 
@@ -198,7 +197,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     /**
     * @author lili
-    *
     * @return the locale of the signed-in promoter
     */
     public String returnLocale(){
