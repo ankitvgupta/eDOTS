@@ -314,55 +314,69 @@ public class GetPatientActivity extends Activity {
         catch(JSONException e1){
             e1.printStackTrace();
         }
-        // pop up error message when the national id is not found
+        // alert to register patient if not found
         if (currentPatient == null){
-//            Toast.makeText(getBaseContext(), R.string.patient_not_found,
-//                    Toast.LENGTH_SHORT).show();
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle(this.getString(R.string.patient_not_found));
-            alertDialog.setMessage(this.getString(R.string.patient_not_found_new_patient));
-            alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            // TODO: pass in the DNI that they already entered
-            alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    switchNewPatientDataActivity();
-                }
-            });
-            alertDialog.show();
-            return;
+            patientNotFoundAlert();
         }
+        // alert ot add a patient to the list of patients for the promoter if found
         else {
             fillTable();
-
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle(this.getString(R.string.patient_not_listed));
-            alertDialog.setMessage(this.getString(R.string.patient_not_listed_add_patient));
-            alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
-                    Log.e("GetPatientActivity: parseAndFill", currentPatient.getPid());
-                    NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask() ;
-                    try{
-                        npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid),""),"0").get();
-
-                    }
-                    catch (Exception e1){
-                        Log.e("GetPatientActivity: parseAndFill", "ExecutionException");
-                    }
-                    dialog.cancel();
-                }
-            });
-            alertDialog.show();
+            patientNotListedAlert();
         }
+    }
+
+    /**
+     * @author Brendan
+     * Alert for when patient not found on server
+     * Prompts user to register patient if they click add patient
+     */
+    private void patientNotFoundAlert(){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(this.getString(R.string.patient_not_found));
+        alertDialog.setMessage(this.getString(R.string.patient_not_found_new_patient));
+        alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        // TODO: pass in the DNI that they already entered
+        alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switchNewPatientDataActivity();
+            }
+        });
+        alertDialog.show();
+    }
+
+    /**
+     * @author Brendan
+     * Alert for when patient is not listed as one of the patients for a promoter
+     * If user presses add patient button, then adds to list of patients for logged-in promoter
+     */
+    private void patientNotListedAlert() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(this.getString(R.string.patient_not_listed));
+        alertDialog.setMessage(this.getString(R.string.patient_not_listed_add_patient));
+        alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
+                Log.e("GetPatientActivity: parseAndFill", currentPatient.getPid());
+                NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
+                try {
+                    npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
+
+                } catch (Exception e1) {
+                    Log.e("GetPatientActivity: parseAndFill", "ExecutionException");
+                }
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
     }
 
 
