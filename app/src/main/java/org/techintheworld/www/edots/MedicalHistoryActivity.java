@@ -136,9 +136,9 @@ public class MedicalHistoryActivity extends FragmentActivity {
         LinearLayout encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
 
         for (int i = (numVisits - 1); i >= 0; i--) {
-            siteCode = patientVisits.get(i).getSiteCode();
+            siteCode = patientVisits.get(i).getLocaleCode();
             visitDate = patientVisits.get(i).getVisitDate();
-            timeVal = patientVisits.get(i).getTimeVal();
+            timeVal = patientVisits.get(i).getVisitTime();
             projectCode = patientVisits.get(i).getProjectCode();
             userCode = patientVisits.get(i).getUserCode();
             visitCode = patientVisits.get(i).getVisitCode();

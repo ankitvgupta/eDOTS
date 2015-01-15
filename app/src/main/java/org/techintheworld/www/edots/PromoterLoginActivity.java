@@ -23,7 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Locale;
@@ -150,8 +149,6 @@ public class PromoterLoginActivity extends Activity {
                 }
                 catch(JSONException e1){
                     Log.e("ProgramLoginActivity: switchPatientType","JSON exception on Load");
-                } catch(FileNotFoundException e1){
-                    Log.e("ProgramLoginActivity: switchPatientType","FileNotFound exception on Load");
                 }
 
             }
@@ -284,9 +281,7 @@ public class PromoterLoginActivity extends Activity {
                 spnLocale.setAdapter(spinnerArrayAdapter);
             }
         }
-        catch (FileNotFoundException e) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception On Load");
-        } catch (ExecutionException e1) {
+         catch (ExecutionException e1) {
             Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception On Load");
         } catch (InterruptedException e1) {
             Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");

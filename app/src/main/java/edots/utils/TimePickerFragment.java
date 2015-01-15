@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author lilijiang
@@ -20,7 +21,7 @@ public class TimePickerFragment extends DialogFragment
     TheListener listener;
 
     public interface TheListener{
-        public void returnTime(String time);
+        public void returnTime(Date time);
     }
 
     @Override
@@ -39,7 +40,13 @@ public class TimePickerFragment extends DialogFragment
     public void onTimeSet(TimePicker view, int hour, int minute) {
         if (listener != null)
         {
-            listener.returnTime(String.format("%02d", hour)+":"+String.format("%02d", minute));
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY,hour);
+            cal.set(Calendar.MINUTE,minute);
+            cal.set(Calendar.SECOND,0);
+            cal.set(Calendar.MILLISECOND,0);
+            Date d = cal.getTime();
+            listener.returnTime(d);
         }
     }
 }
