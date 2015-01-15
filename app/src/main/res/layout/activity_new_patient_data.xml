@@ -7,6 +7,7 @@
     tools:context="org.techintheworld.www.edots.NewPatientDataActivity">
 
     <ScrollView
+        android:id="@+id/newpatient_scrollview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
