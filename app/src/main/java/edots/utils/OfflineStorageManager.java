@@ -32,7 +32,7 @@ import edots.tasks.LoadPatientFromPromoterTask;
 public class OfflineStorageManager {
 
 
-    public static String getJSONFromLocal(Context c, String fileName) throws FileNotFoundException {
+    public static String getJSONFromLocal(Context c, String fileName){
         try {
             // Opens file for reading
             FileInputStream fis = c.openFileInput(fileName);
@@ -53,7 +53,9 @@ public class OfflineStorageManager {
 
 
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("Patient file not found");
+            Log.e("OfflineStorageManager: FileNotFoundException", "Cannot find file");
+            e.printStackTrace();
+
         } catch (IOException e) {
             Log.e("OfflineStorageManager: IOException", "File error in finding patient files");
             e.printStackTrace();
@@ -90,10 +92,13 @@ public class OfflineStorageManager {
 
     public static void SaveWebPatientData(Promoter p, Context c) throws JSONException {
         // Save to local file for Patients
-        String patients_filename = "patient_data";
+        String patients_filename = c.getString(R.string.patient_data_filename);
+        boolean patient_result = c.deleteFile(c.getString(R.string.patient_data_filename));
+        if (!patient_result)  {
+            Log.e("OfflineStorageManager: SaveWebPatientData", "Patient delete file failed");
+        }
 
         int num_patients = p.getPatient_ids().size();
-        //StringBuilder sb = new StringBuilder();
         JSONArray ja = new JSONArray();
 
         // Queries web service for patients with the ids associated with this promoter
@@ -116,6 +121,10 @@ public class OfflineStorageManager {
             Log.w("StorageManager: Saving Patient files error", "Cannot write to patient file");
             e.printStackTrace();
         }
+
+        // Testing only: read from file to see that data is not appended
+        String str = getJSONFromLocal(c, c.getString(R.string.patient_data_filename));
+        Log.e("OfflineStorageManager: SaveWebPatientData", str);
     }
 
 
@@ -124,7 +133,11 @@ public class OfflineStorageManager {
         // TODO: add connection to web and retrieve all info of that promoter
 
         // Save to local file for Projects
-        String filename = "promoter".concat("_data");
+        String filename = c.getString(R.string.promoter_data_filename);
+        boolean promoter_result = c.deleteFile(c.getString(R.string.promoter_data_filename));
+        if (!promoter_result)  {
+            Log.e("OfflineStorageManager: SaveWebPromoterData", "Promoter delete file failed");
+        }
         String promoterData = p.toString();
         FileOutputStream outputStream;
 
@@ -133,9 +146,14 @@ public class OfflineStorageManager {
             outputStream.write(promoterData.getBytes());
             outputStream.close();
         } catch (Exception e) {
-            Log.e("StorageManager: Saving Promoter files error", "Cannot write to promoter file");
+            Log.e("OfflineStorageManager: Saving Promoter files error", "Cannot write to promoter file");
             e.printStackTrace();
         }
+
+        // Testing only: read from file to see that data is not appended
+        String s = getJSONFromLocal(c, c.getString(R.string.promoter_data_filename));
+        Log.e("OfflineStorageManager: SaveWebPromoterData", s);
+
 
     }
 
@@ -184,6 +202,7 @@ public class OfflineStorageManager {
 
             long diff = Math.abs(time_updated - new Date().getTime());
             long threshold = 18000000; // 5 hours in milliseconds is 18000000
+            Log.w("OfflineStorageManager: UpdateLocalStorage", String.valueOf(diff));
             if (isConnected && diff > threshold) {
                 try {
                     SharedPreferences sprefs = PreferenceManager.getDefaultSharedPreferences(context);

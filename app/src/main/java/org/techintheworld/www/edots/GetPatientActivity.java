@@ -10,8 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -63,9 +62,6 @@ public class GetPatientActivity extends Activity {
             object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
         }
         catch(JSONException e1){
-            e1.printStackTrace();
-        }
-        catch(FileNotFoundException e1){
             e1.printStackTrace();
         }
         spnPatient.setOnItemSelectedListener(new OnItemSelectedListener()
@@ -170,9 +166,6 @@ public class GetPatientActivity extends Activity {
                     Log.e("GetPatientActivity", "Patient Found is" + p.toString());
                 }
             }
-        }
-        catch (FileNotFoundException e1){
-            e1.printStackTrace();
         }
         catch(NullPointerException e1){
             e1.printStackTrace();
@@ -351,9 +344,6 @@ public class GetPatientActivity extends Activity {
             spnPatient.setAdapter(spinnerArrayAdapter);
         }
         catch(JSONException e1){
-            e1.printStackTrace();
-        }
-        catch(FileNotFoundException e1) {
             e1.printStackTrace();
         }
         catch(NullPointerException e1){
