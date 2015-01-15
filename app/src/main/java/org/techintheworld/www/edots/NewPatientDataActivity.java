@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -98,9 +99,12 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listview.setAdapter(adapter);
 
+        // check if not connected to internet, then disable everything and show dialog
         if (!InternetConnection.checkConnection(this)){
             AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
             blockAllInput();
+            TextView tview = (TextView)findViewById(R.id.internet_status);
+            tview.setVisibility(View.VISIBLE);
 
         }
     }
