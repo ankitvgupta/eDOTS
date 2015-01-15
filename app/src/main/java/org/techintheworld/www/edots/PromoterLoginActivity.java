@@ -41,9 +41,6 @@ import edots.utils.OfflineStorageManager;
  *
  */
 public class PromoterLoginActivity extends Activity {
-    private Button loginButton;
-    private EditText username;
-    private EditText password;
     private Spinner spnLocale;
     private TextView tvwMensaje;
     private AsyncTask<String, String, Locale[]> loadLocale;
@@ -54,23 +51,22 @@ public class PromoterLoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promoter_login);
-        username = (EditText)findViewById(R.id.username);
-        password = (EditText)findViewById(R.id.password);
-        loginButton = (Button)findViewById(R.id.loginButton);
+        EditText username1 = (EditText) findViewById(R.id.username);
+        EditText password = (EditText) findViewById(R.id.password);
+        Button loginButton = (Button) findViewById(R.id.loginButton);
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
-        String myurl = "http://demo.sociosensalud.org.pe";
-        loadLocaleSpinner(myurl);
-
-        // Progress bar set to gone on page load
-        ProgressBar p_d = (ProgressBar)findViewById(R.id.marker_progress);
-        p_d.setVisibility(View.GONE);
-
-
         String username = checkAlreadyLoggedIn();
         if (username != null){
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
         }
+        else {
+            String myurl = "http://demo.sociosensalud.org.pe";
+            loadLocaleSpinner(myurl);
+        }
+        // Progress bar set to gone on page load
+        ProgressBar p_d = (ProgressBar)findViewById(R.id.marker_progress);
+        p_d.setVisibility(View.GONE);
 
     }
 
@@ -255,31 +251,31 @@ public class PromoterLoginActivity extends Activity {
             Log.e("PromoterLoginActivity: loadLocaleActivity"," NullPointerException");
         }
 
-        try {
-            if (loadLocale.get() == null) {
-                // locale_data load
-                JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
-                locales = new String[object.length()];
-                // look at all patients
-                for (int i = 0; i < object.length(); i++) {
-                    JSONObject obj = object.getJSONObject(i);
-                    Locale l = new Locale(obj.toString());
-                    locales[i] = l.name;
-                }
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                        this, android.R.layout.simple_spinner_item, locales);
-                spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-                spnLocale.setAdapter(spinnerArrayAdapter);
-            }
-        }
-        catch (FileNotFoundException e) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception On Load");
-        } catch (ExecutionException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception On Load");
-        } catch (InterruptedException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");
-        } catch (JSONException e1){
-            Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
-        }
+//        try {
+//            if (loadLocale.get() == null) {
+//                // locale_data load
+//                JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
+//                locales = new String[object.length()];
+//                // look at all patients
+//                for (int i = 0; i < object.length(); i++) {
+//                    JSONObject obj = object.getJSONObject(i);
+//                    Locale l = new Locale(obj.toString());
+//                    locales[i] = l.name;
+//                }
+//                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+//                        this, android.R.layout.simple_spinner_item, locales);
+//                spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+//                spnLocale.setAdapter(spinnerArrayAdapter);
+//            }
+//        }
+//        catch (FileNotFoundException e) {
+//            Log.e("PromoterLoginActivity: loadLocaleActivity"," FileNotFound Exception On Load");
+//        } catch (ExecutionException e1) {
+//            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception On Load");
+//        } catch (InterruptedException e1) {
+//            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");
+//        } catch (JSONException e1){
+//            Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
+//        }
     }
 }

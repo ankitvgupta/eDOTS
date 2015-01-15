@@ -30,6 +30,7 @@ public class Locale implements KvmSerializable {
         this.name = name;
 
     }
+
     /** Added to parse a string back into the JSON form.
      *
      *  @author Brendan Bozorgmir
@@ -82,6 +83,17 @@ public class Locale implements KvmSerializable {
                 break;
             default:break;
         }
+    }
+    @Override
+    public String toString() {
+        JSONObject temp = new JSONObject();
+        try {
+            temp.put("name", this.name);
+            temp.put("id",  Integer.toString(this.id));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return temp.toString();
     }
 
     @Override
