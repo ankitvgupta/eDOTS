@@ -51,9 +51,8 @@ public class NewPromoterPatientUploadTask extends AsyncTask<String,String,String
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Log.e("NewPromoterPatientUploadTask: Execute", "It could be like so many different exceptions");
         }
-
 
         return returnvalue;
     }
