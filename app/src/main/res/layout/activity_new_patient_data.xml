@@ -113,7 +113,8 @@
                 android:id="@+id/PhoneNumber"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"/>
+                android:inputType="phone"
+                android:digits="1234567890"/>
 
             <!--Sex field-->
             <TextView
