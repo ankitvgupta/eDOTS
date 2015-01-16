@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,28 +22,38 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Visit;
 
-
+/*
+ * Written by Nishant
+ * Displays medical history of patient - either the full medical history or just on a particular date
+ */
 public class ShowVisitActivity extends Activity {
     Patient currentPatient;
     Date selectedDate;
+
+    String siteCode;
+    String visitDate;
+    String timeVal;
+    String projectCode;
+    String userCode;
+    String visitCode;
+    String visitGroupCode;
+
+    String visitDay;
+    String visitMonth;
+    String visitYear;
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    DateFormat dateFormatter = DateFormat.getDateInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_visit);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-        String date;
-
-        Log.v("ShowVisitActivity", "Reached ShowVisitActivity");
-
-        // if a patient was passed in, pre-load that patient
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
-            date = (getIntent().getExtras().getString("Visit Date"));
-            Log.v("ShowVisitActivity", "patient: " + currentPatient);
-            Log.v("ShowVisitActivity", "Date string: " + date);
+            String date = (getIntent().getExtras().getString("Visit Date"));
             if (date.equals("")) {
                 loadPastVisits();
             } else {
@@ -57,25 +68,20 @@ public class ShowVisitActivity extends Activity {
 
     }
 
+    /*
+     * Written by Nishant
+     */
     public void loadOneVisit (Date selectedDate) {
+        // sets header to Past Visits for Patient Name
+        String patientName = currentPatient.getName();
+        TextView header = (TextView) findViewById(R.id.medical_history_for_patient);
+        header.setText("Past Visits for " + patientName + " on " + dateFormatter.format(selectedDate));
+
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
         int numVisits = 0;
         if (patientVisits != null) {
             numVisits = patientVisits.size();
         }
-
-
-        String siteCode;
-        String visitDate;
-        String timeVal;
-        String projectCode;
-        String userCode;
-        String visitCode;
-        String visitGroupCode;
-
-        String visitDay;
-        String visitMonth;
-        String visitYear;
 
         LinearLayout encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
 
@@ -104,7 +110,6 @@ public class ShowVisitActivity extends Activity {
             Date greenDate = new Date(visitYearInt, visitMonthInt, visitDayInt);
             if (greenDate.compareTo(selectedDate) == 0) {
                 dateMatchFound = true;
-                Log.v("ShowVisitActivity: ", "Date match found!");
                 // add a new Relative Layout with all this data and append it in the Linear Layout
                 RelativeLayout newVisit = new RelativeLayout(this);
                 RelativeLayout.LayoutParams labelLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -127,7 +132,6 @@ public class ShowVisitActivity extends Activity {
 
                 // assign text to each TextView
                 visitHeader.setText(siteCode + " - " + visitDate + " - " + timeVal);
-
                 project.setText(Html.fromHtml("<b>" + "Project: " + "</b>" + projectCode));
                 promoter.setText(Html.fromHtml("<b>" + "Promoter: " + "</b>" + userCode));
                 visit.setText(Html.fromHtml("<b>" + "Visit: " + "</b>" + visitCode));
@@ -180,22 +184,21 @@ public class ShowVisitActivity extends Activity {
         }
 
         if (!dateMatchFound) {
-            Log.v("ShowVisitActivity: ", "Date match not found :(");
             TextView visitHeader = new TextView(this);
-            visitHeader.setText("No Visits Found for the Selected Date");
+            visitHeader.setText("No Visits Logged");
             visitHeader.setTextSize(20);
             encloseScrollLayout.addView(visitHeader);
         }
-
     }
 
+    /*
+     * Written by Nishant
+     */
     public void loadPastVisits() {
-        Log.v("ShowVisitActivity", "Enters loadPastVisits");
-
         // sets header to Past Visits for Patient Name
         String patientName = currentPatient.getName();
         TextView header = (TextView) findViewById(R.id.medical_history_for_patient);
-        header.setText("Past Visits for " + patientName);
+        header.setText("All Past Visits for " + patientName);
 
 
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
@@ -203,14 +206,6 @@ public class ShowVisitActivity extends Activity {
         if (patientVisits != null){
             numVisits = patientVisits.size();
         }
-
-        String siteCode;
-        String visitDate;
-        String timeVal;
-        String projectCode;
-        String userCode;
-        String visitCode;
-        String visitGroupCode;
 
         LinearLayout encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
 

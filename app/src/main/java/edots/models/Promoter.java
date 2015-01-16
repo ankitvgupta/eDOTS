@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 public class Promoter extends Object {
-    private String PromoterId;
+    private String Id;
     private String Locale;
     private ArrayList<String> patient_ids;
     //TODO: add projects they are qualified to administer
@@ -28,13 +28,13 @@ public class Promoter extends Object {
     /**
      * Constructor for Promoter
      *
-     * @param u PromoterId of promoter
+     * @param u Id of promoter
      * @param l Locale of promoter
      * @param p NOTUSED
      * @param pt ids of the patient of that promoter
      */
     public Promoter(String u,String l, String p, ArrayList<String> pt){
-        PromoterId = u;
+        Id = u;
         Locale = l;
         patient_ids=pt;
     }
@@ -45,7 +45,7 @@ public class Promoter extends Object {
     public Promoter(String JSONString) {
         try {
             JSONObject n = new JSONObject(JSONString);
-            PromoterId = n.get("PromoterId").toString();
+            Id = n.get("Id").toString();
             Locale = n.get("Locale").toString();
             patient_ids = new ArrayList<String>();
             JSONArray arry = new JSONArray(n.get("patient_ids").toString());
@@ -65,7 +65,7 @@ public class Promoter extends Object {
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("PromoterId", getPromoterId());
+            temp.put("Id", getId());
             temp.put("Locale", getLocale());
             temp.put("patient_ids", new JSONArray(getPatientIds()));
         } catch (JSONException e) {
@@ -78,8 +78,8 @@ public class Promoter extends Object {
 
     public ArrayList<String> getPatientIds(){return patient_ids;}
 
-    public String getPromoterId(){
-        return PromoterId;
+    public String getId(){
+        return Id;
     }
 
     public String getLocale(){
@@ -88,8 +88,8 @@ public class Promoter extends Object {
 
     public void setPatientIds(ArrayList<String> p_ids){ patient_ids = p_ids;}
 
-    public void setPromoterId(String u){
-        PromoterId =u;
+    public void setId(String u){
+        Id =u;
     }
 
 

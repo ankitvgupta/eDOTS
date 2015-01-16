@@ -23,7 +23,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/medical_history_for_patient"
-                android:textSize="32sp"/>
+                android:textSize="32sp"
+                android:layout_marginBottom="4dp"/>
 
         </LinearLayout>
 
