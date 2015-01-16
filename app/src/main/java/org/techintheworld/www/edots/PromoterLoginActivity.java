@@ -139,7 +139,7 @@ public class PromoterLoginActivity extends Activity {
             }
             else{
                 try {
-                    JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
+                    JSONArray object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "locale_data"));
                     objLocale = new Locale[object.length()];
                     // look at all patients
                     for (int i = 0; i < object.length(); i++) {
@@ -269,7 +269,7 @@ public class PromoterLoginActivity extends Activity {
         try {
             if (loadLocale.get() == null) {
                 // locale_data load
-                JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
+                JSONArray object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "locale_data"));
                 locales = new String[object.length()];
                 // look at all patients
                 for (int i = 0; i < object.length(); i++) {

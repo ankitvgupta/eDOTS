@@ -64,7 +64,7 @@ public class GetPatientActivity extends Activity {
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();
         try {
-            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
         }
         catch(JSONException e1){
             e1.printStackTrace();
@@ -154,7 +154,7 @@ public class GetPatientActivity extends Activity {
         JSONArray object;
         try {
             // load list of patients from file patient_data
-            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
             // look at all patients
             for (int i = 0; i < object.length(); i++){
                 JSONObject obj = object.getJSONObject(i);
@@ -414,7 +414,7 @@ public class GetPatientActivity extends Activity {
         JSONArray object;
         try {
             // load list of patients from file patient_data
-            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
             String[] patients = new String[object.length()];
             // look at all patients
             for (int i = 0; i < object.length(); i++){

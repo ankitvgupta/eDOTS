@@ -32,7 +32,13 @@ import edots.tasks.LoadPatientFromPromoterTask;
 public class OfflineStorageManager {
 
 
-    public static String getJSONFromLocal(Context c, String fileName){
+    /**
+     * 
+     * @param c
+     * @param fileName
+     * @return
+     */
+    public static String getStringFromLocal(Context c, String fileName){
         try {
             // Opens file for reading
             FileInputStream fis = c.openFileInput(fileName);
@@ -123,7 +129,7 @@ public class OfflineStorageManager {
         }
 
         // Testing only: read from file to see that data is not appended
-        String str = getJSONFromLocal(c, c.getString(R.string.patient_data_filename));
+        String str = getStringFromLocal(c, c.getString(R.string.patient_data_filename));
         Log.e("OfflineStorageManager: SaveWebPatientData", str);
     }
 
@@ -151,7 +157,7 @@ public class OfflineStorageManager {
         }
 
         // Testing only: read from file to see that data is not appended
-        String s = getJSONFromLocal(c, c.getString(R.string.promoter_data_filename));
+        String s = getStringFromLocal(c, c.getString(R.string.promoter_data_filename));
         Log.e("OfflineStorageManager: SaveWebPromoterData", s);
 
 
