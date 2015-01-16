@@ -17,7 +17,8 @@
             <!--date field-->
             <TextView android:text="@string/date"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -30,7 +31,8 @@
             <!--time field-->
             <TextView android:text="@string/time"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +44,9 @@
             <!--site field-->
             <TextView android:text="@string/locale"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
             <EditText
                 android:id="@+id/visitLocale"
                 android:layout_width="fill_parent"
@@ -52,7 +56,9 @@
             <!--project field-->
             <TextView android:text="@string/project"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
             <EditText
                 android:id="@+id/visitProject"
                 android:layout_width="fill_parent"
@@ -62,7 +68,9 @@
             <!--visit group field-->
             <TextView android:text="@string/visit_group"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
             <EditText
                 android:id="@+id/visitGroup"
                 android:layout_width="fill_parent"
@@ -72,7 +80,9 @@
             <!--visit field-->
             <TextView android:text="@string/visit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
             <EditText
                 android:id="@+id/visitNo"
                 android:layout_width="fill_parent"
