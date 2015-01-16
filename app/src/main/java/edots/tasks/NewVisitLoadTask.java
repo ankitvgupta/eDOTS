@@ -30,7 +30,6 @@ public class NewVisitLoadTask extends AsyncTask<String,String,Visit> {
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
-        // add DocIdentidad to the request
         request.addProperty("CodigoPaciente", params[0]);
         request.addProperty("CodigoLocal", params[1]);
         request.addProperty("CodigoProyecto", params[2]);
@@ -63,7 +62,7 @@ public class NewVisitLoadTask extends AsyncTask<String,String,Visit> {
 
 
 
-            // instantiate a new patient to be returned
+            // instantiate a new visit to be returned
             v = new Visit(params[1],params[2],CodigoGrupoVisita,NombreGrupoVisita,CodigoVisita,DescripcionVisita,
                     params[0],"date","time","promoter");
 
