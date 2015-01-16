@@ -27,13 +27,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
 import edots.models.Promoter;
-import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
 import edots.tasks.PatientProjectLoadTask;
@@ -150,10 +148,7 @@ public class GetPatientActivity extends Activity {
     public void btnSearchClicked(View view) {
         hideKeyboard();
         // TODO: need loadPatient() function
-        parseAndFill(view);
-        // TODO: move this to elsewhere for default patient
-        // TODO: put the patient project in local storage
-        loadPatientProject();
+        loadPatient(view);
         Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
     }
 
@@ -171,7 +166,6 @@ public class GetPatientActivity extends Activity {
 
         setButtons(false);
         currentPatient = null;
-        // TODO: Check if Patient is already stored locally first
         JSONArray object;
         try {
             // load list of patients from file patient_data
@@ -335,7 +329,8 @@ public class GetPatientActivity extends Activity {
      * Called by the onClick method on Search - this calls the functions that make the queries for that patient
      *             and the function that fills the table.
      */
-    public void parseAndFill(View view) {
+    // TODO: consider factorizing into subfunctions; consider rewriting the function comment above
+    public void loadPatient(View view) {
 
         // clear the entered text and make new hint to search for new patient
         setButtons(false);
@@ -349,6 +344,7 @@ public class GetPatientActivity extends Activity {
         String pid = message;
         try {
             currentPatient = lookupPatient(pid);
+            loadPatientProject();
         }
         catch(JSONException e1){
             e1.printStackTrace();
@@ -360,6 +356,7 @@ public class GetPatientActivity extends Activity {
         // alert ot add a patient to the list of patients for the promoter if found
         else {
             fillTable();
+            // TODO: needs comments!
             try {
                 object = new JSONArray(OfflineStorageManager.getJSONFromLocal(c, "patient_data"));
                 // look at all patients
@@ -370,14 +367,13 @@ public class GetPatientActivity extends Activity {
                     if (currentPatient.getNationalID().equals(p.getNationalID())){
                         already_found = true;
                     }
-
                 }
                 if (!already_found) {
                     patientNotListedAlert();
                 }
             }
             catch(Exception e){
-                Log.e("GetPatientActivity: parseAndFill", "unable to load patient_data");
+                Log.e("GetPatientActivity: loadPatient", "unable to load patient_data");
             }
         }
     }
@@ -421,7 +417,7 @@ public class GetPatientActivity extends Activity {
         });
         alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Log.e("GetPatientActivity: parseAndFill", currentPatient.getPid());
+                Log.e("GetPatientActivity: loadPatient", currentPatient.getPid());
                 NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
 
                 try {
@@ -429,7 +425,7 @@ public class GetPatientActivity extends Activity {
                     Promoter promoter = new Promoter(OfflineStorageManager.getJSONFromLocal(c, "promoter_data"));
                     OfflineStorageManager.SaveWebPatientData(promoter, c);
                 } catch (Exception e1) {
-                    Log.e("GetPatientActivity: parseAndFill", "ExecutionException Probably");
+                    Log.e("GetPatientActivity: loadPatient", "ExecutionException Probably");
                 }
             }
         });
@@ -482,7 +478,7 @@ public class GetPatientActivity extends Activity {
     /**
      * @author lili
      */
-    // TODO: factorize to util
+    // TODO: move to util
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();

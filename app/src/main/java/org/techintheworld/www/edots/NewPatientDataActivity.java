@@ -187,7 +187,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
             NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
             String npuMessage = npu.execute("http://demo.sociosensalud.org.pe", p.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
-            Log.v("GetPatientActivity: parseAndFill: PromoterPatientUploadTask", npuMessage);
+            Log.v("GetPatientActivity: loadPatient: PromoterPatientUploadTask", npuMessage);
         } catch (InterruptedException e) {
             e.printStackTrace();
             AlertError("Entry Error", "The data you entered is of the wrong format, please try again");
