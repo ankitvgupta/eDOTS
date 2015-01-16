@@ -387,12 +387,10 @@ public class GetPatientActivity extends Activity {
                         npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
                         Promoter promoter = new Promoter(OfflineStorageManager.getJSONFromLocal(c, "promoter_data"));
                         OfflineStorageManager.SaveWebPatientData(promoter, c);
-                        loadPatientSpinner();
 
                 } catch (Exception e1) {
                     Log.e("GetPatientActivity: parseAndFill", "ExecutionException Probably");
                 }
-                dialog.cancel();
             }
         });
         alertDialog.show();
