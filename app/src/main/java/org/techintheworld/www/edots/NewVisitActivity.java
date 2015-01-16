@@ -70,7 +70,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         String localeName = prefs.getString((getString(R.string.login_locale_name)), null);
         String localeCode = prefs.getString((getString(R.string.login_locale)), null);
         String promoterId = prefs.getString((getString(R.string.key_userid)), null);
-        String projectId = "5"; // TODO: do not hardcode in projectID
 
         // if a patient was passed in, pre-load that patient
         try {
@@ -101,7 +100,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // load the visit group number and visit number
         // TODO: put this into a function
         NewVisitLoadTask newV = new NewVisitLoadTask();
-        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, projectId);
+        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, currentProject.getId());
         // parse the result, and return it
         try {
             currentVisit = (Visit) v.get();
