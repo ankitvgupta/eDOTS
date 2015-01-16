@@ -233,6 +233,10 @@ public class OfflineStorageManager {
     public static void SaveLocaleData(Locale[] l, Context c) throws JSONException {
         // Save to local file for Locale
         String locale_filename = "locale_data";
+        boolean locale_result = c.deleteFile("locale_data");
+        if (!locale_result)  {
+            Log.e("OfflineStorageManager: SaveWebPromoterData", "Locale delete file failed");
+        }
 
         int num_locales = l.length;
         JSONArray ja = new JSONArray();

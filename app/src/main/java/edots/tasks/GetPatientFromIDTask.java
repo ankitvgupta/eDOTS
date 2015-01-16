@@ -68,9 +68,9 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
             String name = ic.getProperty("Nombres").toString();
             String fathersName = ic.getProperty("ApellidoPaterno").toString();
             String mothersName = ic.getProperty("ApellidoMaterno").toString();
-            Long nationalID;
+            String nationalID;
             try{
-                nationalID = Long.valueOf(ic.getProperty("DocumentoIdentidad").toString());
+                nationalID = ic.getProperty("DocumentoIdentidad").toString();
             }
             catch (NumberFormatException e){
                 nationalID=null;

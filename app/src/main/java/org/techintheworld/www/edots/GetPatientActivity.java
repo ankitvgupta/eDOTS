@@ -146,7 +146,7 @@ public class GetPatientActivity extends Activity {
      * A function that looks up a DNI and checks if that DNI is found locally
      * and if not, attempts to find a patient with that DNI on the webservice
      */
-    public Patient lookupPatient(int nationalid) throws JSONException{
+    public Patient lookupPatient(String nationalid) throws JSONException{
 
         setButtons(false);
         currentPatient = null;
@@ -173,7 +173,7 @@ public class GetPatientActivity extends Activity {
         // Instantiate a loader task and load the given patient via nationalid
         if (currentPatient == null) {
             GetPatientLoadTask newP = new GetPatientLoadTask();
-            AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
+            AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", nationalid);
 
             // parse the result, and return itg
             try {
@@ -303,7 +303,7 @@ public class GetPatientActivity extends Activity {
             return;
         }
         editText.setText("", TextView.BufferType.EDITABLE);
-        int pid = Integer.parseInt(message);
+        String pid = message;
         try {
             currentPatient = lookupPatient(pid);
         }
