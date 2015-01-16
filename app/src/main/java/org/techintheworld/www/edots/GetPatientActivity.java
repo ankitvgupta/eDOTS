@@ -56,7 +56,6 @@ public class GetPatientActivity extends Activity {
     private String promoterId;
     private AsyncTask<String, String, Patient> patient;
     private Spinner spnPatient;
-    private Button btnSearch;
     private Context c = this;
     JSONArray object;
 
@@ -110,22 +109,6 @@ public class GetPatientActivity extends Activity {
         catch (Exception e){
             Log.v("There is no patient already", "There is no patient already");
         }
-
-        // TODO: change the button action into a handle
-        btnSearch = (Button) findViewById(R.id.btnSearch);
-        btnSearch.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                hideKeyboard();
-                // TODO: need loadPatient() function
-                parseAndFill(v);
-                // TODO: move this to elsewhere for default patient
-                loadPatientProject();
-                Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
-            }
-        });
-
     }
 
 
@@ -150,6 +133,21 @@ public class GetPatientActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * @author lili
+     * @param view
+     * when the search button is pressed
+     */
+    public void btnSearchClicked(View view) {
+        hideKeyboard();
+        // TODO: need loadPatient() function
+        parseAndFill(view);
+        // TODO: move this to elsewhere for default patient
+        loadPatientProject();
+        Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
+    }
+
 
     /**
      * @author Brendan
