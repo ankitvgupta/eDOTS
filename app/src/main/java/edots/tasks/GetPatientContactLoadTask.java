@@ -32,7 +32,7 @@ public class GetPatientContactLoadTask extends AsyncTask<String,String,String> {
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "ListadoPacientesContactos"; // TODO: Change this to whatever the new one is
+        final String METHOD_NAME = "ListadoPacientesContactos";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 

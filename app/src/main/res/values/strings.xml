@@ -16,6 +16,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="phone_number">Phone Number</string>
+    <string name="treatment_days">Treatment Days</string>
+    <string name="treatment_start_day">Project Start Day</string>
+    <string name="treatmnet_end_day">Project End Day</string>
     <string name="generate_visit"> Generate Visit</string>
     <string name="get_patient_national_id">National ID</string>
     <string name="get_patient_search_national_id">National ID #</string>
@@ -50,12 +53,12 @@
     <string name="mothers_name"> Mother\`s Name</string>
     <string name="birthdate"> Birthdate</string>
     <string name="sex"> Sex</string>
-    <string name="data_treatment"> Active Treatments</string>
+    <string name="data_treatment"> Active Project</string>
     <string name="ID">ID</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="new_visit_site">Site</string>
-    <string name="new_visit_treatment">Active Treatments</string>
+    <string name="new_visit_treatment">Active Project</string>
     <string name="new_visit_done">Submit</string>
     <string name="locale"> Locale</string>
     <string name="select_locale">Select a Local!!</string>

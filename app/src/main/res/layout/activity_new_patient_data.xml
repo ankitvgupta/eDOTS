@@ -162,6 +162,54 @@
                 android:paddingLeft="2dp" >
             </ListView>
 
+            <!--Treatment Start Day field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/treatment_start_day"/>
+
+            <EditText
+                android:id="@+id/treatment_start_day"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
+            <!--Treatment Days field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/treatment_days"/>
+
+            <ListView
+                android:id="@+id/treatment_days"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:paddingLeft="2dp" />
+
+
+            <!--Treatment End Day field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/treatmnet_end_day"/>
+
+            <EditText
+                android:id="@+id/treatment_end_day"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
             <!--fingerprint button-->
             <Button
                 android:layout_width="wrap_content"
