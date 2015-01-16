@@ -31,6 +31,11 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Visit;
 
+/*
+ * Written by Nishant
+ * The Calendar
+ */
+
 public class MedicalHistoryActivity extends FragmentActivity {
     Patient currentPatient;
     Context c = this;
@@ -54,7 +59,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
-        // args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, true);
         caldroidFragment.setArguments(args);
 
         updateCalendar(caldroidFragment, cal);
@@ -65,7 +69,10 @@ public class MedicalHistoryActivity extends FragmentActivity {
     }
 
 
-    // adds colors and listeners
+    /*
+    * Written by Nishant
+    * Adds colors and listeners to calendar
+    */
     public void updateCalendar(CaldroidFragment caldroidFragment, Calendar cal) {
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
         int numVisits = 0;
@@ -113,6 +120,10 @@ public class MedicalHistoryActivity extends FragmentActivity {
         caldroidFragment.setCaldroidListener(listener);
     }
 
+    /*
+     * Written by Nishant
+     * Loads full medical history of patient
+     */
     public void loadFullHistory (View view) {
         Intent intent = new Intent(this, ShowVisitActivity.class);
         intent.putExtra("Patient", currentPatient.toString());

@@ -22,7 +22,10 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Visit;
 
-
+/*
+ * Written by Nishant
+ * Displays medical history of patient - either the full medical history or just on a particular date
+ */
 public class ShowVisitActivity extends Activity {
     Patient currentPatient;
     Date selectedDate;
@@ -65,6 +68,9 @@ public class ShowVisitActivity extends Activity {
 
     }
 
+    /*
+     * Written by Nishant
+     */
     public void loadOneVisit (Date selectedDate) {
         // sets header to Past Visits for Patient Name
         String patientName = currentPatient.getName();
@@ -185,6 +191,9 @@ public class ShowVisitActivity extends Activity {
         }
     }
 
+    /*
+     * Written by Nishant
+     */
     public void loadPastVisits() {
         // sets header to Past Visits for Patient Name
         String patientName = currentPatient.getName();
