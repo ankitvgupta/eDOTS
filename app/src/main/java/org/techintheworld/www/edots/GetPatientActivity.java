@@ -35,6 +35,7 @@ import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
 import edots.utils.OfflineStorageManager;
+import edots.tasks.GetPatientContactLoadTask;
 
 
 /*
@@ -63,6 +64,7 @@ public class GetPatientActivity extends Activity {
         setContentView(R.layout.activity_get_patient);
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();
+        testFunction();
         try {
             object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
         }
@@ -114,6 +116,11 @@ public class GetPatientActivity extends Activity {
 
     }
 
+    // nishant's test function
+    public void testFunction() {
+        GetPatientContactLoadTask result = new GetPatientContactLoadTask();
+        result.execute("http://demo.sociosensalud.org.pe", "30C85C6A-D30E-48D2-949B-0004965E626F");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
