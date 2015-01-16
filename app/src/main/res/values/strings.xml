@@ -15,6 +15,7 @@
     <string name="done"> Done</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="phone_number">Phone Number</string>
     <string name="generate_visit"> Generate Visit</string>
     <string name="get_patient_national_id">National ID</string>
     <string name="get_patient_search_national_id">National ID #</string>
@@ -97,5 +98,6 @@
     <string name="patient_not_listed">Patient Not Listed</string>
     <string name="patient_not_listed_add_patient">This Patient Is Not Listed As One of Your Patients. Would You Like To Add this Patient?</string>
     <string name="title_activity_show_visit">ShowVisitActivity</string>
+    <string name="medical_history_see_full_history">See Full Patient History</string>
 
 </resources>

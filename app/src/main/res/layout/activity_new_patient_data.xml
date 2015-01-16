@@ -103,6 +103,19 @@
                 android:focusable="false">
             </EditText>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/phone_number"/>
+
+            <EditText
+                android:id="@+id/PhoneNumber"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:digits="1234567890"/>
+
             <!--Sex field-->
             <TextView
                 android:layout_width="wrap_content"
