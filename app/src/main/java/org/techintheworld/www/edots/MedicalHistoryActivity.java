@@ -40,7 +40,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
 
-        // if a patient was passed in, pre-load that patient
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
         } catch (Exception e) {
@@ -51,16 +50,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
         CaldroidFragment caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
-
-//        cal.add(Calendar.DATE, -21);
-//        Date threeWeeksPrior = cal.getTime();
-//
-//        cal.add(Calendar.DATE, 28);
-//        Date oneWeekAhead = cal.getTime();
-//
-//        cal.add(Calendar.DATE, -7); // reset time
-//
-//        caldroidFragment.setSelectedDates(threeWeeksPrior, oneWeekAhead);
 
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
@@ -89,11 +78,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
         String visitMonth;
         String visitYear;
 
-//        Date greenDate = new Date();
-
         for (int i = (numVisits - 1); i >= 0; i--) {
-            visitDate = patientVisits.get(i).getVisitDate(); // Fri 05/09/2014; day/month/year ID: 12345671
-            Log.v("MedicalHistoryActivity: ", "Visit Date: " + visitDate);
+            visitDate = patientVisits.get(i).getVisitDate();
 
             visitDay = visitDate.substring(4,6);
             int visitDayInt = Integer.parseInt(visitDay);
@@ -109,14 +95,9 @@ public class MedicalHistoryActivity extends FragmentActivity {
             Date greenDate = new Date(visitYearInt, visitMonthInt, visitDayInt); // January 16, 1963
             caldroidFragment.setBackgroundResourceForDate(R.color.green, greenDate);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-            Log.v("MedicalHistoryActivity: ", "greenDate: " + formatter.format(greenDate));
-
-
         }
 
         CaldroidListener listener = new CaldroidListener() {
-
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 

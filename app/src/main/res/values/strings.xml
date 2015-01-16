@@ -97,5 +97,6 @@
     <string name="patient_not_listed">Patient Not Listed</string>
     <string name="patient_not_listed_add_patient">This Patient Is Not Listed As One of Your Patients. Would You Like To Add this Patient?</string>
     <string name="title_activity_show_visit">ShowVisitActivity</string>
+    <string name="medical_history_see_full_history">See Full Patient History</string>
 
 </resources>
