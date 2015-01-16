@@ -69,7 +69,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String localeName = prefs.getString((getString(R.string.login_locale_name)), null);
         String localeCode = prefs.getString((getString(R.string.login_locale)), null);
-        String promoterId = prefs.getString((getString(R.string.promoter_id)), null);
+        String promoterId = prefs.getString((getString(R.string.key_userid)), null);
         String projectId = "5"; // TODO: do not hardcode in projectID
 
         // if a patient was passed in, pre-load that patient
