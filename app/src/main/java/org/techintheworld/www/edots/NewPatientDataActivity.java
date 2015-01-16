@@ -6,8 +6,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -32,6 +34,7 @@ import edots.models.Patient;
 import edots.models.Project;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPatientUploadTask;
+import edots.tasks.NewPromoterPatientUploadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.InternetConnection;
 
@@ -176,8 +179,15 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         // TODO: UPLOAD PHONE NUMBER
         NewPatientUploadTask uploader = new NewPatientUploadTask();
         try {
-            String result = uploader.execute("http://demo.sociosensalud.org.pe", name, father, mother, docType, nationalID, birthDate, sex).get();
+            String url = "http://demo.sociosensalud.org.pe";
+            String result = uploader.execute(url, name, father, mother, docType, nationalID, birthDate, sex).get();
             Log.v("New patient: what we got was", result);
+            GetPatientLoadTask gpl = new GetPatientLoadTask();
+            Patient p = gpl.execute(url, nationalID).get();
+            SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+            NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
+            String npuMessage = npu.execute("http://demo.sociosensalud.org.pe", p.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
+            Log.v("GetPatientActivity: parseAndFill: PromoterPatientUploadTask", npuMessage);
         } catch (InterruptedException e) {
             e.printStackTrace();
             AlertError("Entry Error", "The data you entered is of the wrong format, please try again");
