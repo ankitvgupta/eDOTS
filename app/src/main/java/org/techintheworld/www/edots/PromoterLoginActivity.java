@@ -138,18 +138,14 @@ public class PromoterLoginActivity extends Activity {
                 objLocale = loadLocale.get();
             }
             else{
-                try {
-                    JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
+                      JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
                     objLocale = new Locale[object.length()];
                     // look at all patients
                     for (int i = 0; i < object.length(); i++) {
                         JSONObject obj = object.getJSONObject(i);
                         objLocale[i] = new Locale(obj.toString());
                     }
-                }
-                catch(JSONException e1){
-                    Log.e("ProgramLoginActivity: switchPatientType","JSON exception on Load");
-                }
+
 
             }
                 for (int i = 0; i < objLocale.length; i++) {
@@ -157,10 +153,16 @@ public class PromoterLoginActivity extends Activity {
                         locale_num = String.valueOf(objLocale[i].id);
                     };
                 }
-        } catch (InterruptedException e1) {
+        }
+        catch(JSONException e1){
+            Log.e("ProgramLoginActivity: switchPatientType","JSON exception on Load");
+        }
+        catch (InterruptedException e1) {
             e1.printStackTrace();
         } catch (ExecutionException e1) {
             e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("ProgramLoginActivity: switchPatientType","NullPointerException on Load");
         }
 
 

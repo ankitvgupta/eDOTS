@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Project;
+import edots.models.Promoter;
 import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
@@ -144,6 +145,7 @@ public class GetPatientActivity extends Activity {
         // TODO: need loadPatient() function
         parseAndFill(view);
         // TODO: move this to elsewhere for default patient
+        // TODO: put the patient project in local storage
         loadPatientProject();
         Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
     }
@@ -158,7 +160,7 @@ public class GetPatientActivity extends Activity {
      * A function that looks up a DNI and checks if that DNI is found locally
      * and if not, attempts to find a patient with that DNI on the webservice
      */
-    public Patient lookupPatient(int nationalid) throws JSONException{
+    public Patient lookupPatient(String nationalid) throws JSONException{
 
         setButtons(false);
         currentPatient = null;
@@ -185,14 +187,11 @@ public class GetPatientActivity extends Activity {
         // Instantiate a loader task and load the given patient via nationalid
         if (currentPatient == null) {
             GetPatientLoadTask newP = new GetPatientLoadTask();
-            AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
+            AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", nationalid);
 
             // parse the result, and return itg
             try {
                 currentPatient = (Patient) p.get();
-                ArrayList<Visit> visits = currentPatient.getPatientHistory();
-                Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
-                //Log.v("Patient that we got is", currentPatient.toString());
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             } catch (ExecutionException e1) {
@@ -340,7 +339,7 @@ public class GetPatientActivity extends Activity {
             return;
         }
         editText.setText("", TextView.BufferType.EDITABLE);
-        int pid = Integer.parseInt(message);
+        String pid = message;
         try {
             currentPatient = lookupPatient(pid);
         }
@@ -354,7 +353,25 @@ public class GetPatientActivity extends Activity {
         // alert ot add a patient to the list of patients for the promoter if found
         else {
             fillTable();
-            patientNotListedAlert();
+            try {
+                object = new JSONArray(OfflineStorageManager.getJSONFromLocal(c, "patient_data"));
+                // look at all patients
+                boolean already_found = false;
+                for (int i = 0; i < object.length(); i++) {
+                    JSONObject obj = object.getJSONObject(i);
+                    Patient p = new Patient(obj.toString());
+                    if (currentPatient.getNationalID().equals(p.getNationalID())){
+                        already_found = true;
+                    }
+
+                }
+                if (!already_found) {
+                    patientNotListedAlert();
+                }
+            }
+            catch(Exception e){
+                Log.e("GetPatientActivity: parseAndFill", "unable to load patient_data");
+            }
         }
     }
 
@@ -399,13 +416,14 @@ public class GetPatientActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 Log.e("GetPatientActivity: parseAndFill", currentPatient.getPid());
                 NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
+
                 try {
                     npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), promoterId, "0").get();
-
+                    Promoter promoter = new Promoter(OfflineStorageManager.getJSONFromLocal(c, "promoter_data"));
+                    OfflineStorageManager.SaveWebPatientData(promoter, c);
                 } catch (Exception e1) {
-                    Log.e("GetPatientActivity: parseAndFill", "ExecutionException");
+                    Log.e("GetPatientActivity: parseAndFill", "ExecutionException Probably");
                 }
-                dialog.cancel();
             }
         });
         alertDialog.show();

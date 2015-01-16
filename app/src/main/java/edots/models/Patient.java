@@ -3,17 +3,16 @@ package edots.models;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import edots.tasks.GetHistoryLoadTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+
+import edots.tasks.GetHistoryLoadTask;
 
 
 /**
@@ -33,7 +32,7 @@ public class Patient extends Object{
     private String fathersName;
     private String mothersName;
     private Date birthDate;
-    private Long nationalID;
+    private String nationalID;
     private String sex;
     private Project enrolledProject;
 
@@ -55,7 +54,7 @@ public class Patient extends Object{
      * @param patientID Patient ID
      * @param doc document type
      */
-    public Patient (String n, Date d, Long nid, String s, Project project, String mother, String father, String patientID, int doc){
+    public Patient (String n, Date d, String nid, String s, Project project, String mother, String father, String patientID, int doc){
         name = n;
         birthDate = d;
         nationalID = nid;
@@ -76,7 +75,7 @@ public class Patient extends Object{
      * @param n the national id
      *
      */
-    public Patient(Long n){
+    public Patient(String n, String type){
         name ="Brendan";
         pid = "01723-X72312-7123";
         birthDate = new Date();
@@ -112,7 +111,7 @@ public class Patient extends Object{
             for (int i = 0; i < arry.length(); i++){
                 enrolledProjects.add(new Project(arry.getString(i)));
             }*/
-            nationalID = Long.valueOf(n.get("nationalID").toString());
+            nationalID = n.get("nationalID").toString();
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -204,7 +203,7 @@ public class Patient extends Object{
         return birthDate;
     }
 
-    public Long getNationalID(){
+    public String getNationalID(){
         return nationalID;
     }
 
@@ -234,7 +233,7 @@ public class Patient extends Object{
         birthDate = d;
     }
 
-    public void setNationalID(long i){
+    public void setNationalID(String i){
         nationalID=i;
     }
 
