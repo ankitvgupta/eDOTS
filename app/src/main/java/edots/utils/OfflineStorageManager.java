@@ -77,7 +77,7 @@ public class OfflineStorageManager {
         try {
             ArrayList<String> patient_ids = (ArrayList<String>) p.get();
             p_result.setLocale(locale);
-            p_result.setPromoterId(user_id);
+            p_result.setId(user_id);
             p_result.setPatientIds(patient_ids);
             SaveWebPromoterData(p_result, c);
             return p_result;
