@@ -33,20 +33,28 @@ public class ShowVisitActivity extends Activity {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
+        String date;
+
+        Log.v("ShowVisitActivity", "Reached ShowVisitActivity");
+
         // if a patient was passed in, pre-load that patient
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
-            String date = (getIntent().getExtras().getString("Visit Date"));
-            selectedDate = formatter.parse(date);
+            date = (getIntent().getExtras().getString("Visit Date"));
+            Log.v("ShowVisitActivity", "patient: " + currentPatient);
+            Log.v("ShowVisitActivity", "Date string: " + date);
+            if (date.equals("")) {
+                loadPastVisits();
+            } else {
+                selectedDate = formatter.parse(date);
+                loadOneVisit(selectedDate);
+            }
         }
         catch (Exception e){
             // TODO: Don't print the stack trace, give some sort of dialog box instead
             e.printStackTrace();
         }
 
-        loadOneVisit(selectedDate);
-
-//        loadPastVisits();
     }
 
     public void loadOneVisit (Date selectedDate) {
@@ -182,6 +190,8 @@ public class ShowVisitActivity extends Activity {
     }
 
     public void loadPastVisits() {
+        Log.v("ShowVisitActivity", "Enters loadPastVisits");
+
         // sets header to Past Visits for Patient Name
         String patientName = currentPatient.getName();
         TextView header = (TextView) findViewById(R.id.medical_history_for_patient);

@@ -132,6 +132,13 @@ public class MedicalHistoryActivity extends FragmentActivity {
         caldroidFragment.setCaldroidListener(listener);
     }
 
+    public void loadFullHistory (View view) {
+        Intent intent = new Intent(this, ShowVisitActivity.class);
+        intent.putExtra("Patient", currentPatient.toString());
+        intent.putExtra("Visit Date", "");
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
