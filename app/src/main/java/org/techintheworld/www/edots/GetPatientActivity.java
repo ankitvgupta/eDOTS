@@ -31,9 +31,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
+import edots.models.Project;
 import edots.models.Visit;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
+import edots.tasks.PatientProjectLoadTask;
 import edots.utils.OfflineStorageManager;
 
 
@@ -51,6 +53,7 @@ import edots.utils.OfflineStorageManager;
 public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
+    private String promoterId;
     private AsyncTask<String, String, Patient> patient;
     private Spinner spnPatient;
     private Button btnSearch;
@@ -58,9 +61,15 @@ public class GetPatientActivity extends Activity {
     JSONArray object;
 
     @Override
+    // TODO: needs comments!!
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_patient);
+
+        // fetch promoterID
+        SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
+        promoterId = sPrefs.getString(getString(R.string.key_userid), "");
+
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();
         try {
@@ -102,13 +111,18 @@ public class GetPatientActivity extends Activity {
             Log.v("There is no patient already", "There is no patient already");
         }
 
+        // TODO: change the button action into a handle
         btnSearch = (Button) findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
                 hideKeyboard();
+                // TODO: need loadPatient() function
                 parseAndFill(v);
+                // TODO: move this to elsewhere for default patient
+                loadPatientProject();
+                Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
             }
         });
 
@@ -194,6 +208,30 @@ public class GetPatientActivity extends Activity {
     }
 
     /**
+     * @author lili
+     * load the project a patient is currently enrolled in into the patient object
+     */
+    public void loadPatientProject(){
+        Project currentProject;
+        PatientProjectLoadTask loadTask = new PatientProjectLoadTask();
+        Log.v("GetPatientActivity: pid and userid", currentPatient.getPid()+ promoterId);
+        AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
+
+        try {
+            currentProject = (Project) task.get();
+            currentPatient.setEnrolledProject(currentProject);
+            Log.v("GetPatientActivity.java: The project", currentProject.toString());
+        } catch (InterruptedException e1) {
+            //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("null pointer exception","");
+        }
+    }
+
+    /**
      * @author Ankit
      * @param val bool to indicate whether buttons being turned off or on
      *
@@ -262,6 +300,7 @@ public class GetPatientActivity extends Activity {
      * @author Ankit
      * @return boolean representing whether the inputs are all valid.
      */
+    // TODO: needs cleanup
     public boolean validateInput() {
         
         //return true;
@@ -360,11 +399,10 @@ public class GetPatientActivity extends Activity {
         });
         alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
                 Log.e("GetPatientActivity: parseAndFill", currentPatient.getPid());
                 NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
                 try {
-                    npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
+                    npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), promoterId, "0").get();
 
                 } catch (Exception e1) {
                     Log.e("GetPatientActivity: parseAndFill", "ExecutionException");
@@ -376,7 +414,9 @@ public class GetPatientActivity extends Activity {
     }
 
 
-    // switch to CheckFingerPrintActivity
+    /**
+     * switch to CheckFingerPrintActivity
+     */
     public void switchCheckFingerPrint(View view) {
         if (currentPatient != null){
             Intent intent = new Intent(this, CheckFingerPrintActivity.class);
@@ -385,7 +425,9 @@ public class GetPatientActivity extends Activity {
         }
     }
 
-
+    /**
+     * switch to MedicalHistoryActivity
+     */
     public void switchMedicalHistoryActivity(View view) {
         if (currentPatient != null){
             Intent intent = new Intent(this, MedicalHistoryActivity.class);
@@ -395,6 +437,9 @@ public class GetPatientActivity extends Activity {
 
     }
 
+    /**
+     * switch to NewVisitActivity
+     */
     public void switchNewVisitActivity(View view) {
         if (currentPatient != null) {
             Intent intent = new Intent(this, NewVisitActivity.class);
@@ -403,6 +448,9 @@ public class GetPatientActivity extends Activity {
         }
     }
 
+    /**
+     * switch to NewPatientActivity
+     */
     public void switchNewPatientDataActivity() {
             Intent intent = new Intent(this, NewPatientDataActivity.class);
             startActivity(intent);
@@ -411,6 +459,7 @@ public class GetPatientActivity extends Activity {
     /**
      * @author lili
      */
+    // TODO: factorize to util
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();

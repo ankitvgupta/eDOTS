@@ -23,7 +23,7 @@ public class PatientProjectLoadTask extends AsyncTask<String,String,Project> {
         Project p = null;
 
         // setup server parameters
-        // TODO: do not hard code in these parameters
+        // TODO: do not hard code in the url
         final String NAMESPACE = "http://demo.sociosensalud.org.pe/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
         final String METHOD_NAME = "ListadoIds";
@@ -51,7 +51,6 @@ public class PatientProjectLoadTask extends AsyncTask<String,String,Project> {
             SoapObject resSoap = (SoapObject) envelope.getResponse();
             Log.v("PatientProjectLoadTask.java: resSoap", resSoap.toString());
 
-            // TODO: deal with multiple projects
             // Get the first row
             SoapObject ic = (SoapObject) resSoap.getProperty(0);
 

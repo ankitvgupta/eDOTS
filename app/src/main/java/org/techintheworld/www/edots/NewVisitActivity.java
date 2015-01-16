@@ -20,11 +20,9 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
-import edots.models.Project;
 import edots.models.Visit;
 import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
-import edots.tasks.PatientProjectLoadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.TimePickerFragment;
 
@@ -43,7 +41,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     private Patient currentPatient;
     private Visit currentVisit;
-    private Project currentProject;
     EditText datePicker;
     EditText timePicker;
     EditText visitLocaleEditor;
@@ -81,26 +78,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         }
         Log.v("NewVisit: currentpatient", currentPatient.toString());
 
-        // load the projects the patient is on
-        // TODO: put this into a function
-        PatientProjectLoadTask newP = new PatientProjectLoadTask();
-        AsyncTask p = newP.execute(currentPatient.getPid(), promoterId);
-        try {
-            currentProject = (Project) p.get();
-            Log.v("NewVisitActivity.java: The project", currentProject.toString());
-        } catch (InterruptedException e1) {
-            //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
-        } catch (NullPointerException e1){
-            Log.e("null pointer exception","");
-        }
-
         // load the visit group number and visit number
         // TODO: put this into a function
         NewVisitLoadTask newV = new NewVisitLoadTask();
-        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, currentProject.getId());
+        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, currentPatient.getEnrolledProject().getId());
         // parse the result, and return it
         try {
             currentVisit = (Visit) v.get();
@@ -156,7 +137,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // visit project
         visitProjectEditor = (EditText) findViewById(R.id.visitProject);
         // TODO: display project name
-        visitProjectEditor.setText(currentProject.getId()+"-"+currentProject.getName());
+        visitProjectEditor.setText(currentPatient.getEnrolledProject().getId()+"-"+
+                                   currentPatient.getEnrolledProject().getName());
 
         // visit group
         visitGroupEditor = (EditText) findViewById(R.id.visitGroup);
