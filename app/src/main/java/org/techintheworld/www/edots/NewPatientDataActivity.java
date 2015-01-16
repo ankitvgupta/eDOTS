@@ -48,7 +48,7 @@ import edots.utils.InternetConnection;
  *
  * Used to parse inputted data about a new patient, and submit that to the server.
  *
- * onSubmit behavior: adds Patient to db, pulls patient from db to get patientcode, and passes that Patient to GetPatientActivity via Intent
+ * onSubmit behavior: adds Patient to db, pulls patient from db to get patientId, and passes that Patient to GetPatientActivity via Intent
  */
 
 public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener {
@@ -105,8 +105,8 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
             @Override
             public void onClick(View arg0) {
-                DialogFragment picker = new DatePickerFragment();
-                picker.show(getFragmentManager(), "datePicker");
+            DialogFragment picker = new DatePickerFragment();
+            picker.show(getFragmentManager(), "datePicker");
             }
 
         });
@@ -165,8 +165,9 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         listview.setAdapter(adapter);
     }
 
-    /* Written by Nishant
-     * Loads Treatment Day Checkboxes
+    /**
+     * @author lili
+     * @param date set the text field as the selected date
      */
     public void loadTreatmentDayCheckboxes() {
         ListView treatmentView = (ListView) findViewById(R.id.treatment_days);
