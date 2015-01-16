@@ -73,7 +73,7 @@ public class PromoterLoginActivity extends Activity {
      */
     private String checkAlreadyLoggedIn(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = prefs.getString((getString(R.string.promoter_id)), null);
+        String username = prefs.getString((getString(R.string.username)), null);
         if (username !=null){
             return username;
         }

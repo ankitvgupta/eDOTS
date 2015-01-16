@@ -68,7 +68,7 @@
     <string name="txtLocal">Local</string>
     <string name="hello_world">Hello World</string>
     <string name="form_hint1">Hello World</string>
-    <string name="promoter_id">username</string>
+    <string name="username">username</string>
     <string name="login_password">password</string>
     <string name="project">project</string>
     <string name="visit_group">visit group</string>

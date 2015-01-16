@@ -206,7 +206,7 @@ public class OfflineStorageManager {
             if (isConnected && diff > threshold) {
                 try {
                     SharedPreferences sprefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    String promoterId = prefs.getString((context.getString(R.string.promoter_id)), null);
+                    String promoterId = prefs.getString((context.getString(R.string.username)), null);
 
                     Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(promoterId, context);
                     OfflineStorageManager.SaveWebPatientData(new_promoter, context);

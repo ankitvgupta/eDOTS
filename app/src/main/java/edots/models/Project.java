@@ -33,7 +33,6 @@ public class Project {
             medications = new ArrayList<String>();
             medications.add("Med 1");
             medications.add("Med 2");
-            //JSONArray medications2 = new JSONArray(medications);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -77,7 +76,7 @@ public class Project {
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("Id", getId());
+            temp.put("projectId", getId());
             JSONArray version = new JSONArray(getMedications());
             temp.put("medications", version);
             JSONArray types = new JSONArray(getTypes());
