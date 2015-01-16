@@ -54,22 +54,17 @@ public class NewVisitLoadTask extends AsyncTask<String,String,Visit> {
 
             Log.v("NewVisitLoadTask.java: The visit that we got was", ic.toString());
 
-            // Pull the Visit properties from the object
-            String CodigoGrupoVisita = ic.getProperty("CodigoGrupoVisita").toString();
-            String NombreGrupoVisita = ic.getProperty("NombreGrupoVisita").toString();
-            String CodigoVisita = ic.getProperty("CodigoVisita").toString();
-            String DescripcionVisita = ic.getProperty("DescripcionVisita").toString();
-
-
-
             // instantiate a new visit to be returned
-            v = new Visit(params[1],params[2],CodigoGrupoVisita,NombreGrupoVisita,CodigoVisita,DescripcionVisita,
-                    params[0],"date","time","promoter");
+            v = new Visit(params[1],
+                          params[2],
+                          ic.getProperty("CodigoGrupoVisita").toString(),
+                          ic.getProperty("NombreGrupoVisita").toString(),
+                          ic.getProperty("CodigoVisita").toString(),
+                          ic.getProperty("DescripcionVisita").toString(),
+                          params[0],
+                          "date","time","promoter");
 
             Log.v("NewVisitLoadTask: visit:", v.toString());
-            Log.v("NewVisitLoadTask: CodigoGrupoVisita:", CodigoGrupoVisita.toString());
-            Log.v("NewVisitLoadTask: NombreGrupoVisita:", NombreGrupoVisita.toString());
-
         }
         catch (Exception e)
         {
