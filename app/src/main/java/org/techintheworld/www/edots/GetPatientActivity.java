@@ -503,7 +503,6 @@ public class GetPatientActivity extends Activity {
                 JSONObject obj = object.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
                     patients[i] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
-
             }
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, patients);
@@ -516,7 +515,6 @@ public class GetPatientActivity extends Activity {
         catch(NullPointerException e1){
             e1.printStackTrace();
         }
-
 
     }
 
