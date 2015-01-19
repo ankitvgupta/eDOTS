@@ -21,20 +21,21 @@ public class Visit extends Saveable {
 
     // for testing only
     public Visit() {
-        LocaleCode="test1";
-        ProjectCode="test2";
-        VisitGroupCode = "test3";
-        VisitCode = "test4";
-        PacientCode = "test5";
-        VisitDate = "test6";
-        VisitTime = "test7";
+        LocaleCode="1";
+        ProjectCode="2";
+        VisitGroupCode = "3";
+        VisitCode = "4";
+        PacientCode = "30C85C6A-D30E-48D2-949B-0004965E626F";
+        VisitDate = "2015-01-19 00:00:00.0";
+        VisitTime = "15:46:00.0000000";
         NombreGrupoVisita="test9";
         DescripcionVisita="test10";
+        PromoterId = "11";
     }
 
     // for production
     public Visit(String site, String project, String visitGroup,String nombreGroupoVisita,
-                 String vis, String descripcionVisita, String patient, String date, String time, String promoter){
+                 String vis, String descripcionVisita, String patient, String date, String time, String promoterId){
         LocaleCode=site;
         ProjectCode=project;
         VisitGroupCode = visitGroup;
@@ -44,7 +45,7 @@ public class Visit extends Saveable {
         PacientCode = patient;
         VisitDate = date;
         VisitTime = time;
-        PromoterId = promoter;
+        PromoterId = promoterId;
     }
 
     /**
@@ -58,12 +59,13 @@ public class Visit extends Saveable {
             LocaleCode = n.get("LocaleCode").toString();
             ProjectCode = n.get("VisitGroupCode").toString();
             VisitGroupCode = n.get("VisitGroupCode").toString();
+            VisitCode = n.get("VisitCode").toString();
             PacientCode = n.get("PacientCode").toString();
             VisitDate = n.get("VisitDate").toString();
             VisitTime = n.get("VisitTime").toString();
             NombreGrupoVisita = n.get("NombreGrupoVisita").toString();
             DescripcionVisita = n.get("DescripcionVisita").toString();
-
+            PromoterId = n.get("PromoterId").toString();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -89,6 +91,7 @@ public class Visit extends Saveable {
             temp.put("VisitTime", getVisitTime());
             temp.put("NombreGrupoVisita", getNombreGrupoVisita());
             temp.put("DescripcionVisita",  getDescripcionVisita());
+            temp.put("PromoterId", getPromoterId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -119,8 +122,8 @@ public class Visit extends Saveable {
 
     public void setVisitTime(String time) {VisitTime = time;}
 
-    public String getPromoterId() {return PromoterId;}
+    public void setPromoterId(String promoterId) { PromoterId = promoterId;}
 
-    public void setPromoterId(String promoterId) {PromoterId= promoterId;}
+    public String getPromoterId(){return PromoterId;}
 
 }

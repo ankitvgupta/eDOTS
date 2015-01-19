@@ -24,8 +24,10 @@ import edots.models.Locale;
 import edots.models.Patient;
 import edots.models.Promoter;
 import edots.models.Saveable;
+import edots.models.Visit;
 import edots.tasks.GetPatientFromIDTask;
 import edots.tasks.LoadPatientFromPromoterTask;
+import edots.tasks.NewVisitUploadTask;
 
 /**
  * Created by jfang on 1/7/15.
@@ -174,11 +176,11 @@ public class OfflineStorageManager {
     }
 
 
-    public static void SaveObjectToLocal(Object o, String filename, Context c){
+    public static boolean SaveSaveableToLocal(Saveable o, String filename, Context c){
         // Save to local file for the object passed in
         boolean file_deleting_result = c.deleteFile(filename);
         if (!file_deleting_result)  {
-            Log.e("OfflineStorageManager: SaveObjectToLocal", "Delete file failed");
+            Log.e("OfflineStorageManager: SaveSaveableToLocal", "Delete file failed");
         }
         String data_to_write = o.toString();
         FileOutputStream outputStream;
@@ -188,13 +190,18 @@ public class OfflineStorageManager {
             outputStream.write(data_to_write.getBytes());
             outputStream.close();
         } catch (Exception e) {
-            Log.e("OfflineStorageManager: SaveObjectToLocal", "Cannot write to file");
+            Log.e("OfflineStorageManager: SaveSaveableToLocal", "Cannot write to file");
             e.printStackTrace();
+            return false;
         }
+
 
         // Testing only: read from file to see that data is not appended
         String s = getStringFromLocal(c, filename);
-        Log.e("OfflineStorageManager: SaveObjectToLocal", s);
+        Log.i("OfflineStorageManager: SaveSaveableToLocal", s);
+
+
+        return true;
     }
 
 
@@ -202,7 +209,7 @@ public class OfflineStorageManager {
     public static void SaveWebPromoterData(Promoter p, Context c) {
 
         // TODO: add connection to web and retrieve all info of that promoter
-        SaveObjectToLocal(p,c.getString(R.string.promoter_data_filename), c );
+        SaveSaveableToLocal(p, c.getString(R.string.promoter_data_filename), c);
 
         /*
         // Save to local file for Projects
@@ -261,6 +268,52 @@ public class OfflineStorageManager {
     }
 
     /**
+     * Called when internet is connected and there is a visit to upload
+     * @author JN
+     * @param context
+     * @return
+     */
+    private static boolean uploadLocalVisit(Context context){
+        String new_visit_file = context.getString(R.string.new_visit_filename);
+        String new_visit = getStringFromLocal(context, new_visit_file);
+        Log.e("OfflineStorageManager: uploadLocal", new_visit);
+        Visit currentVisit = new Visit(new_visit);
+        Log.e("OfflineStorageManager: uploadLocal new current visit",currentVisit.toString());
+        NewVisitUploadTask upload_visit = new NewVisitUploadTask(context);
+
+        try{
+            String result = upload_visit.execute(context.getString(R.string.namespace),
+                    currentVisit.getLocaleCode(),
+                    currentVisit.getProjectCode(),
+                    currentVisit.getVisitGroupCode(),
+                    currentVisit.getVisitCode(),
+                    currentVisit.getPacientCode(),
+                    currentVisit.getVisitDate(),
+                    currentVisit.getVisitTime(),
+                    currentVisit.getPromoterId()).get();
+            Log.e("OfflineStorageManager: uploadLocalVisit result", result);
+            boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
+            SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.remove(context.getString(R.string.new_visit_filename));
+            editor.commit();
+            Log.e("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
+            return true;
+        }
+        catch (ExecutionException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+            return false;
+        }
+
+
+
+    }
+
+    /**
      * Loads when MainMenuActivity is created and checks if need to get new info from the service
      * if last update was less than 5 hours ago, will make calls to update local files
      *
@@ -271,6 +324,15 @@ public class OfflineStorageManager {
         boolean isConnected = InternetConnection.checkConnection(context);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+
+        if (isConnected){
+            String result = prefs.getString(context.getString(R.string.new_visit_filename), null);
+            if (result != null){
+                Log.e("OfflineStorageManager: UpdateLocalStorage", "going to upload local visit");
+                boolean visit_upload = uploadLocalVisit(context);
+            }
+        }
+
         String last_update = prefs.getString((context.getString(R.string.date)), null);
         try {
             long time_updated = Long.valueOf(last_update);

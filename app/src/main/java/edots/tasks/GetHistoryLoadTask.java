@@ -106,10 +106,10 @@ public class GetHistoryLoadTask extends AsyncTask<String,String,ArrayList<Visit>
                     String PacientCode = params[1];
                     String VisitDate = (String) resSoapTemp.getProperty("FechaVisita").toString();
                     String TimeVal = (String) resSoapTemp.getProperty("HoraCita").toString();
-                    String UserCode ="NOUSERCODEYET";
+                    String PromoterId = null; // TODO: get promoter thing
                     // TODO: check whether the service returns NombreGroupoVisita and DescripcionVisita such as "Tamizaje" or "Enrolamiento"
                     Visit tmp = new Visit(SiteCode, ProjectCode, VisitGroupCode, "NombreGroupoVisita",
-                            VisitCode, "DescripcionVisita", PacientCode, VisitDate, TimeVal, UserCode);
+                            VisitCode, "DescripcionVisita", PacientCode, VisitDate, TimeVal, PromoterId);
                     results.add(tmp);
                 }
 

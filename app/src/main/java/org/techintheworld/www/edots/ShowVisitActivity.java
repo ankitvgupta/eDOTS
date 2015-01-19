@@ -92,7 +92,6 @@ public class ShowVisitActivity extends Activity {
             visitDate = patientVisits.get(i).getVisitDate();
             timeVal = patientVisits.get(i).getVisitTime();
             projectCode = patientVisits.get(i).getProjectCode();
-            userCode = patientVisits.get(i).getPromoterId();
             visitCode = patientVisits.get(i).getVisitCode();
             visitGroupCode = patientVisits.get(i).getVisitGroupCode();
 
@@ -214,7 +213,6 @@ public class ShowVisitActivity extends Activity {
             visitDate = patientVisits.get(i).getVisitDate();
             timeVal = patientVisits.get(i).getVisitTime();
             projectCode = patientVisits.get(i).getProjectCode();
-            userCode = patientVisits.get(i).getPromoterId();
             visitCode = patientVisits.get(i).getVisitCode();
             visitGroupCode = patientVisits.get(i).getVisitGroupCode();
 

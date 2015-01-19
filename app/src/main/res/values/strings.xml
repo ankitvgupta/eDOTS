@@ -79,7 +79,7 @@
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
     <string name="view_all_patients">View all Patients</string>
-    <string name="namespace">http://demo.sociosensalud.org.pe/</string>
+    <string name="namespace">http://demo.sociosensalud.org.pe</string>
     <string name="serverurl">EdotsWS/Service1.asmx</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="date_label_set">Press the button to set the date</string>
@@ -93,6 +93,8 @@
     <string name="no_internet_connection">Error connecting to internet</string>
     <string name="patient_data_filename">patient_data</string>
     <string name="promoter_data_filename">promoter_data</string>
+    <string name="new_visit_filename">new_visit_data</string>
+
     <string name="sms_sent">SMS_SENT</string>
     <string name="sms_delivered">SMS_DELIVERED</string>
 

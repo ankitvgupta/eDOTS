@@ -170,8 +170,6 @@ public class PromoterLoginActivity extends Activity {
             Log.e("ProgramLoginActivity: switchPatientType","NullPointerException on Load");
         }
 
-        Log.e("PromoterLoginActivity: switchPatientType", username +" " + password);
-
         boolean validLogin = checkLogin(username, password, locale_num, locale_name);
         if (validLogin){
             try{
@@ -185,8 +183,9 @@ public class PromoterLoginActivity extends Activity {
                 ArrayList<Patient> patients_list = new ArrayList<Patient>();
                 patients_list.add(new Patient("123434", "something"));
                 patients_list.add(new Patient("123434", "something"));
+                //TODO: rewrite this to get the list of patients
 
-                sm.SaveArrayListToLocal(patients_list, getString(R.string.patient_data_filename), this);
+                sm.SaveArrayListToLocal(patients_list, "some other patient data file", this);
 
                 startActivity(intent);
             }
