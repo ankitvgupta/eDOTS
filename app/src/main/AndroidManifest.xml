@@ -52,7 +52,8 @@
         </activity>
         <activity
             android:name=".NewVisitActivity"
-            android:label="@string/title_activity_new_visit" >
+            android:label="@string/title_activity_new_visit"
+            android:parentActivityName=".MedicalHistoryActivity" >
         </activity>
         <activity
             android:name=".PromoterLoginActivity"
@@ -71,7 +72,6 @@
         <receiver android:name="edots.utils.SMSAlarmReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.DATA_SMS_RECEIVED" />
-
                 <data android:scheme="sms" />
                 <data android:port="8901" />
             </intent-filter>
