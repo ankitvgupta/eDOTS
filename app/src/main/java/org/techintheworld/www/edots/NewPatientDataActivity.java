@@ -2,6 +2,7 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -52,17 +55,24 @@ import edots.utils.InternetConnection;
  * onSubmit behavior: adds Patient to db, pulls patient from db to get patientId, and passes that Patient to GetPatientActivity via Intent
  */
 
-public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener {
+public class NewPatientDataActivity extends Activity {
 
     private Patient currentPatient;
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
     private ArrayList<String> treatmentDays = new ArrayList<String>();
-    EditText birthDatePicker;
-    EditText treatmentStartDatePicker;
-    EditText treatmentEndDatePicker;
-    private String date_string;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private Calendar birthDate;
+    private Calendar startDate;
+    private Calendar endDate;
+    private EditText activeDateDisplay;
+    private Calendar activeDate;
+    private EditText birthDateDisplay;
+    private EditText startDateDisplay;
+    private EditText endDateDisplay;
+
+    static final int DATE_DIALOG_ID = 0;
 
     @Override
     /**
@@ -91,49 +101,96 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
      * Loads the datePickers for birthdate, treatment start day and treatment end day
      */
     public void loadDatePickers() {
-        birthDatePicker = (EditText) findViewById(R.id.Birthdate);
-        birthDatePicker.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                DialogFragment picker = new DatePickerFragment();
-                picker.show(getFragmentManager(), "datePicker");
+        birthDateDisplay = (EditText) findViewById(R.id.Birthdate);
+        startDateDisplay = (EditText) findViewById(R.id.treatment_start_day);
+        endDateDisplay = (EditText) findViewById(R.id.treatment_end_day);
+
+        /* get the current date */
+        birthDate = Calendar.getInstance();
+
+        birthDateDisplay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDateDialog(birthDateDisplay, birthDate);
             }
-
         });
 
-        treatmentStartDatePicker = (EditText) findViewById(R.id.treatment_start_day);
-        treatmentStartDatePicker.setOnClickListener(new View.OnClickListener() {
+        startDate = Calendar.getInstance();
 
-            @Override
-            public void onClick(View arg0) {
-            DialogFragment picker = new DatePickerFragment();
-            picker.show(getFragmentManager(), "datePicker");
+        startDateDisplay.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                showDateDialog(startDateDisplay, startDate);
             }
-
         });
 
-        treatmentEndDatePicker = (EditText) findViewById(R.id.treatment_end_day);
-        treatmentEndDatePicker.setOnClickListener(new View.OnClickListener() {
+        endDate = Calendar.getInstance();
 
-            @Override
-            public void onClick(View arg0) {
-                DialogFragment picker = new DatePickerFragment();
-                picker.show(getFragmentManager(), "datePicker");
+        endDateDisplay.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                showDateDialog(endDateDisplay, endDate);
             }
-
         });
+
+        updateDisplay(birthDateDisplay, birthDate);
+        updateDisplay(startDateDisplay, startDate);
+        updateDisplay(endDateDisplay, endDate);
     }
 
-    /**
-     * @param date set the text field as the selected date
-     * @author lili
-     */
+    // written by Nishant
+    private void updateDisplay(EditText dateDisplay, Calendar date) {
+        dateDisplay.setText(
+                new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(date.get(Calendar.MONTH) + 1).append("-")
+                        .append(date.get(Calendar.DAY_OF_MONTH)).append("-")
+                        .append(date.get(Calendar.YEAR)).append(" "));
+
+    }
+
+    // written by Nishant
+    public void showDateDialog(EditText dateDisplay, Calendar date) {
+        activeDateDisplay = dateDisplay;
+        activeDate = date;
+        showDialog(DATE_DIALOG_ID);
+    }
+
+    // written by Nishant
+    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            activeDate.set(Calendar.YEAR, year);
+            activeDate.set(Calendar.MONTH, monthOfYear);
+            activeDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDisplay(activeDateDisplay, activeDate);
+            unregisterDateDisplay();
+        }
+    };
+
+    // written by Nishant
+    private void unregisterDateDisplay() {
+        activeDateDisplay = null;
+        activeDate = null;
+    }
+
+    // written by Nishant
     @Override
-    public void returnDate(Date date) {
-        birthDatePicker.setText(displayDateFormat.format(date));
-        date_string = dbDateFormat.format(date) + " 00:00:00.0";
-        Log.i("date_string", date_string);
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this, dateSetListener, activeDate.get(Calendar.YEAR), activeDate.get(Calendar.MONTH), activeDate.get(Calendar.DAY_OF_MONTH));
+        }
+        return null;
+    }
+
+    // written by Nishant
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        super.onPrepareDialog(id, dialog);
+        switch (id) {
+            case DATE_DIALOG_ID:
+                ((DatePickerDialog) dialog).updateDate(activeDate.get(Calendar.YEAR), activeDate.get(Calendar.MONTH), activeDate.get(Calendar.DAY_OF_MONTH));
+                break;
+        }
     }
 
     /* Written by Nishant
@@ -455,7 +512,11 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             
 
             // Submit the patient data to the server.
+<<<<<<< HEAD
+//            addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, phone_number, sex);
+=======
             addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, phone_number, sex, visitDays);
+>>>>>>> 6bff051c6a2b04640bacceafe8c446af0c245cfd
 
             // then query the database to get the patient, including the patient code generated by server
             GetPatientLoadTask getP = new GetPatientLoadTask();
