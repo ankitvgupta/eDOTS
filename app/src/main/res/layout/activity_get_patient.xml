@@ -17,12 +17,12 @@
             android:id="@+id/linearLayout">
 
             <!--patient select text-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/get_patient_select_patient"
-                android:id="@+id/patientSelectTextView" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                <!--android:text="@string/get_patient_select_patient"-->
+                <!--android:id="@+id/patientSelectTextView" />-->
 
             <!--patient select spinner-->
             <Spinner
