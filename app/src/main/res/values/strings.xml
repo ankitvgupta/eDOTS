@@ -102,5 +102,7 @@
     <string name="title_activity_show_visit">ShowVisitActivity</string>
     <string name="medical_history_see_full_history">See Full Patient History</string>
     <string name="title_activity_multi_date_picker">MultiDatePickerActivity</string>
+    <string name="server_url">http://demo.sociosensalud.org.pe</string>
+    
 
 </resources>
