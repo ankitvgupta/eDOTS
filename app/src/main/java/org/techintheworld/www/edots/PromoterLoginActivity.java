@@ -2,6 +2,7 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,12 +12,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +43,6 @@ import edots.utils.OfflineStorageManager;
  */
 public class PromoterLoginActivity extends Activity {
     private Spinner spnLocale;
-    private TextView tvwMensaje;
     private AsyncTask<String, String, Locale[]> loadLocale;
 
 
@@ -64,6 +65,14 @@ public class PromoterLoginActivity extends Activity {
         ProgressBar p_d = (ProgressBar)findViewById(R.id.marker_progress);
         p_d.setVisibility(View.GONE);
 
+        spnLocale.setOnTouchListener(new View.OnTouchListener() {
+           @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
+        }) ;
     }
 
     /**
