@@ -183,6 +183,7 @@ public class PromoterLoginActivity extends Activity {
                 ArrayList<Patient> patients_list = new ArrayList<Patient>();
                 patients_list.add(new Patient("123434", "something"));
                 patients_list.add(new Patient("123434", "something"));
+
                 //TODO: rewrite this to get the list of patients
 
                 sm.SaveArrayListToLocal(patients_list, "some other patient data file", this);

@@ -30,7 +30,7 @@ public class Visit extends Saveable {
         VisitTime = "15:46:00.0000000";
         NombreGrupoVisita="test9";
         DescripcionVisita="test10";
-        PromoterId = "11";
+        PromoterId = "19";
     }
 
     // for production

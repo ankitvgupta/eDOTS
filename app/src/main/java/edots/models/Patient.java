@@ -165,7 +165,7 @@ public class Patient extends Saveable{
         try {
             ArrayList<Visit> visits = (ArrayList<Visit>) p.get();
             Log.v("Patient.java: The visits are", visits.toString());
-            Log.e("PATIENT JAVA NUMBER VISITS GETPATIENTHISTORY", String.valueOf(visits.size()));
+            Log.e("Patientjava getPatientHistory number of visits", String.valueOf(visits.size()));
             return visits;
         }
         catch (InterruptedException e){
