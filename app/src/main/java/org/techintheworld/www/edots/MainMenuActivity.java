@@ -19,16 +19,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
-import edots.models.Visit;
-import edots.tasks.GetHistoryLoadTask;
 import edots.tasks.GetPatientFromIDTask;
-import edots.tasks.GetPatientLoadTask;
 import edots.tasks.LoadPatientFromPromoterTask;
 import edots.utils.OfflineStorageManager;
 import edots.utils.SMSAlarmReceiver;
@@ -229,12 +225,12 @@ public class MainMenuActivity extends Activity {
     }*/
 
     /**
-     * Sets the Broadcast Receivers that listen to SMS delivery status
      * @author JN
+     * Sets the Broadcast Receivers that listen to SMS delivery status
      */
     public void setSMSDeliveryReceivers(){
-        String SENT = getString(R.string.sms_sent);
-        String DELIVERED = getString(R.string.sms_delivered);
+        final String SENT = getString(R.string.sms_sent);
+        final String DELIVERED = getString(R.string.sms_delivered);
         //---when the SMS has been sent---
         registerReceiver(new BroadcastReceiver() {
             @Override
@@ -242,7 +238,7 @@ public class MainMenuActivity extends Activity {
                 switch (getResultCode()) {
                     //TODO: code the message in strings.xml
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS sent",
+                        Toast.makeText(getBaseContext(), SENT,
                                 Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
@@ -271,7 +267,7 @@ public class MainMenuActivity extends Activity {
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS delivered",
+                        Toast.makeText(getBaseContext(), DELIVERED,
                                 Toast.LENGTH_SHORT).show();
                         break;
                     case Activity.RESULT_CANCELED:

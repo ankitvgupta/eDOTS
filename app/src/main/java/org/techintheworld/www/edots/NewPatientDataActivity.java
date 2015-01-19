@@ -97,7 +97,7 @@ public class NewPatientDataActivity extends Activity {
         }
     }
 
-    /* Written by Nishant
+    /* @author Nishant
      * Loads the datePickers for birthdate, treatment start day and treatment end day
      */
     public void loadDatePickers() {

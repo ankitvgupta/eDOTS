@@ -28,7 +28,7 @@ public class Project {
         try {
             Random r = new Random();
             int num = r.nextInt(100);
-            Id = "5";
+            Id = "6";
             name = Integer.toString(num);
             medications = new ArrayList<String>();
             medications.add("Med 1");
