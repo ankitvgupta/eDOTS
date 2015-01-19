@@ -36,7 +36,7 @@ import edots.utils.TimePickerFragment;
  *
  * Controller for Adding a Visit
  *     Associated View: activity_new_visit.xml
- *     Associated git Models: Visit
+ *     Associated Models: Visit
  *
  *  Adds a new visit to the db
  */
@@ -213,7 +213,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         boolean connected = InternetConnection.checkConnection(this);
         if (connected){
             try {
-                result = uploader.execute("http://demo.sociosensalud.org.pe",
+                result = uploader.execute(getString(R.string.server_url),
                         currentVisit.getLocaleCode(),
                         currentVisit.getProjectCode(),
                         currentVisit.getVisitGroupCode(),

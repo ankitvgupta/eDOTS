@@ -1,5 +1,3 @@
-
-
 package edots.tasks;
 
 import android.content.Context;

@@ -67,10 +67,11 @@ public class GetPatientActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_patient);
 
-        // fetch promoterID
+        // fetch promoterID from SharedPreferences
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
         promoterId = sPrefs.getString(getString(R.string.key_userid), "");
 
+        
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();
         testFunction();
@@ -117,7 +118,7 @@ public class GetPatientActivity extends Activity {
     // nishant's test function
     public void testFunction() {
         GetPatientContactLoadTask result = new GetPatientContactLoadTask();
-        result.execute("http://demo.sociosensalud.org.pe", "30C85C6A-D30E-48D2-949B-0004965E626F");
+        result.execute(getString(R.string.server_url), "30C85C6A-D30E-48D2-949B-0004965E626F");
     }
 
     @Override
@@ -149,7 +150,6 @@ public class GetPatientActivity extends Activity {
      */
     public void btnSearchClicked(View view) {
         hideKeyboard();
-        // TODO: need loadPatient() function
         loadPatient(view);
         Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
     }
@@ -192,8 +192,9 @@ public class GetPatientActivity extends Activity {
         // Instantiate a loader task and load the given patient via nationalid
         if (currentPatient == null) {
             GetPatientLoadTask newP = new GetPatientLoadTask();
-            AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", nationalid);
+            AsyncTask p = newP.execute(getString(R.string.server_url), nationalid);
 
+            
             // parse the result, and return itg
             try {
                 currentPatient = (Patient) p.get();
@@ -342,14 +343,21 @@ public class GetPatientActivity extends Activity {
 
         // clear the entered text and make new hint to search for new patient
         setButtons(false);
+        
+        
+        // get the nationalID that was entered
         EditText editText = (EditText) findViewById(R.id.nationalid_input);
-        String message = editText.getText().toString();
+        String pid = editText.getText().toString();
 
+        // make sure that the input is validated before continuing
         if (!validateInput()){
             return;
         }
+        
+        // blank out out the nationalid field
         editText.setText("", TextView.BufferType.EDITABLE);
-        String pid = message;
+        
+        // lookup the given patient;
         try {
             currentPatient = lookupPatient(pid);
             loadPatientProject();
@@ -357,10 +365,12 @@ public class GetPatientActivity extends Activity {
         catch(JSONException e1){
             e1.printStackTrace();
         }
+        
         // alert to register patient if not found
         if (currentPatient == null){
             patientNotFoundAlert();
         }
+        
         // alert ot add a patient to the list of patients for the promoter if found
         else {
             fillTable();
@@ -429,7 +439,7 @@ public class GetPatientActivity extends Activity {
                 NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
 
                 try {
-                    npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), promoterId, "0").get();
+                    npu.execute(getString(R.string.server_url), currentPatient.getPid(), promoterId, "0").get();
                     Promoter promoter = new Promoter(OfflineStorageManager.getStringFromLocal(c, "promoter_data"));
                     OfflineStorageManager.SaveWebPatientData(promoter, c);
                 } catch (Exception e1) {
@@ -485,8 +495,8 @@ public class GetPatientActivity extends Activity {
 
     /**
      * @author lili
+     * hide keyboard
      */
-    // TODO: move to util
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();
@@ -511,7 +521,6 @@ public class GetPatientActivity extends Activity {
                 JSONObject obj = object.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
                     patients[i] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
-
             }
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, patients);
@@ -524,7 +533,6 @@ public class GetPatientActivity extends Activity {
         catch(NullPointerException e1){
             e1.printStackTrace();
         }
-
 
     }
 

@@ -40,30 +40,28 @@
                 android:text="@string/get_patient_or"
                 android:layout_gravity="center_horizontal" />
 
-            <!--national id text-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/get_patient_national_id"
-                android:id="@+id/textView" />
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_height="wrap_content" android:orientation="horizontal"
+                android:layout_width="fill_parent">
+                <!--national id field-->
+                <EditText
+                    android:id="@+id/nationalid_input"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="@string/national_ID"
+                    android:layout_weight="1"
+                    android:layout_width="fill_parent">
+                </EditText>
+                <!-- button for continuing using national id -->
+                <Button
+                    android:id="@+id/btnSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/get_patient_button_use_national_id"
+                    android:onClick="btnSearchClicked"/>
+            </LinearLayout>
 
-            <!--national id field-->
-            <EditText
-                android:id="@+id/nationalid_input"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:inputType="number"
-                android:hint="@string/get_patient_national_id">
-            </EditText>
 
-            <!-- button for continuing using national id -->
-            <Button
-                android:id="@+id/btnSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/get_patient_button_use_national_id"
-                android:onClick="btnSearchClicked"/>
             <!--the text "or"-->
             <TextView
                 android:layout_width="wrap_content"
