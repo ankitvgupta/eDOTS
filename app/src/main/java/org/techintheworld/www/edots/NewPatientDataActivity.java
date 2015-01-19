@@ -306,7 +306,7 @@ public class NewPatientDataActivity extends Activity {
         try {
             String url = "http://demo.sociosensalud.org.pe";
             String result = uploader.execute(url, name, father, mother, docType, nationalID, birthDate, sex).get();
-            Log.v("New patient: what we got was", result);
+            Log.v("NewPatientDataActivity: what we got was", result);
             GetPatientLoadTask gpl = new GetPatientLoadTask();
             Patient p = gpl.execute(url, nationalID).get();
             String result2 = scheduleUploader.execute(
