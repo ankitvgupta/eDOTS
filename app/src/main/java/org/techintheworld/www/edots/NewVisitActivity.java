@@ -32,7 +32,7 @@ import edots.utils.TimePickerFragment;
  *
  * Controller for Adding a Visit
  *     Associated View: activity_new_visit.xml
- *     Associated git Models: Visit
+ *     Associated Models: Visit
  *
  *  Adds a new visit to the db
  */
