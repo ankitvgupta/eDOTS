@@ -23,10 +23,13 @@ import com.roomorama.caldroid.CaldroidListener;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import edots.models.Patient;
 import edots.models.Schedule;
@@ -40,6 +43,11 @@ import edots.models.Visit;
 public class MedicalHistoryActivity extends FragmentActivity {
     Patient currentPatient;
     Context c = this;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat dayOfTheWeekFormatter = new SimpleDateFormat("EEEE");
+    SimpleDateFormat visitDateFormatter = new SimpleDateFormat("EEE dd/MM/yyyy");
+    Date currentDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
         CaldroidFragment caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
+        currentDate = cal.getTime();
 
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
@@ -76,6 +85,95 @@ public class MedicalHistoryActivity extends FragmentActivity {
     */
     public void updateCalendar(CaldroidFragment caldroidFragment, Calendar cal) {
         Schedule patientSchedule = currentPatient.getPatientSchedule();
+
+        String startDate = patientSchedule.getStartDate(); // day/month/year
+        String endDate = patientSchedule.getEndDate(); // day/month/year
+        Boolean Monday = false;
+        Boolean Tuesday = false;
+        Boolean Wednesday = false;
+        Boolean Thursday = false;
+        Boolean Friday = false;
+        Boolean Saturday = false;
+        Boolean Sunday = false;
+
+        if (patientSchedule.getLunes().equals("1")) {
+            Monday = true;
+        }
+        if (patientSchedule.getMartes().equals("1")) {
+            Tuesday = true;
+        }
+        if (patientSchedule.getMiercoles().equals("1")) {
+            Wednesday = true;
+        }
+        if (patientSchedule.getJueves().equals("1")) {
+            Thursday = true;
+        }
+        if (patientSchedule.getViernes().equals("1")) {
+            Friday = true;
+        }
+        if (patientSchedule.getSabado().equals("1")) {
+            Saturday = true;
+        }
+        if (patientSchedule.getDomingo().equals("1")) {
+            Sunday = true;
+        }
+
+        Date startDateObj = new Date();
+        Date endDateObj = new Date();
+        String startDayOfTheWeek = "";
+        String endDayOfTheWeek = "";
+
+        try {
+            startDateObj = dateFormatter.parse(startDate);
+            startDayOfTheWeek = dayOfTheWeekFormatter.format(startDateObj);
+
+            endDateObj = dateFormatter.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        int startDayOfTheWeekInt = 0;
+
+        if (startDayOfTheWeek.equals("Monday")) {
+            startDayOfTheWeekInt = 0;
+        } else if (startDayOfTheWeek.equals("Tuesday")) {
+            startDayOfTheWeekInt = 1;
+        } else if (startDayOfTheWeek.equals("Wednesday")) {
+            startDayOfTheWeekInt = 2;
+        } else if (startDayOfTheWeek.equals("Thursday")) {
+            startDayOfTheWeekInt = 3;
+        } else if (startDayOfTheWeek.equals("Friday")) {
+            startDayOfTheWeekInt = 4;
+        } else if (startDayOfTheWeek.equals("Saturday")) {
+            startDayOfTheWeekInt = 5;
+        } else if (startDayOfTheWeek.equals("Sunday")) {
+            startDayOfTheWeekInt = 6;
+        }
+
+        int difference;
+        boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+
+        for (int j = 0; j < weekdays.length; j++) {
+            if (weekdays[j]) {
+                difference = j - startDayOfTheWeekInt;
+
+                Calendar c = Calendar.getInstance();
+                c.setTime(startDateObj);
+                c.add(Calendar.DATE, difference);  // number of days to add
+                Date newDate = c.getTime();
+
+                do {
+                    if (newDate.before(currentDate)) {
+                        caldroidFragment.setBackgroundResourceForDate(R.color.light_red, newDate);
+                    } else if (newDate.after(currentDate)) {
+                        caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, newDate);
+                    }
+                    c.add(Calendar.DATE, 7);
+                    newDate = c.getTime();
+                } while (newDate.before(endDateObj));
+            }
+        }
+
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
         int numVisits = 0;
         if (patientVisits != null) {
@@ -83,26 +181,17 @@ public class MedicalHistoryActivity extends FragmentActivity {
         }
 
         String visitDate;
-        String visitDay;
-        String visitMonth;
-        String visitYear;
+        Date visitDateObj = new Date();
 
         for (int i = (numVisits - 1); i >= 0; i--) {
-            visitDate = patientVisits.get(i).getVisitDate();
+            try {
+                visitDate = patientVisits.get(i).getVisitDate(); // day of the week day/month/year
+                visitDateObj = visitDateFormatter.parse(visitDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-            visitDay = visitDate.substring(4,6);
-            int visitDayInt = Integer.parseInt(visitDay);
-
-            visitMonth = visitDate.substring(7,9);
-            int visitMonthInt = Integer.parseInt(visitMonth);
-            visitMonthInt = visitMonthInt - 1;
-
-            visitYear = visitDate.substring(10,14);
-            int visitYearInt = Integer.parseInt(visitYear);
-            visitYearInt =  visitYearInt - 1900;
-
-            Date greenDate = new Date(visitYearInt, visitMonthInt, visitDayInt); // January 16, 1963
-            caldroidFragment.setBackgroundResourceForDate(R.color.green, greenDate);
+            caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDateObj);
         }
 
         CaldroidListener listener = new CaldroidListener() {

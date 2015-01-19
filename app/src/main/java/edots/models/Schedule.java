@@ -22,13 +22,13 @@ public class Schedule {
         codigoPaciente = "1";
         this.lunes = "1";
         this.martes = "1";
-        this.miercoles = "1";
-        this.jueves = "1";
+        this.miercoles = "0";
+        this.jueves = "0";
         this.viernes = "1";
-        this.sabado = "1";
-        this.domingo = "1";
-        this.startDate = "11/11/2013";
-        this.endDate = "11/11/2015";
+        this.sabado = "0";
+        this.domingo = "0";
+        this.startDate = "01/12/2014";
+        this.endDate = "15/02/2015";
         
     };
     
