@@ -3,8 +3,10 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,14 +63,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         setContentView(R.layout.activity_new_visit);
 
         // get localeCode, localeName and promoterId from sharedPreferences
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//        String localeName = prefs.getString((getString(R.string.login_locale_name)), null);
-//        String localeCode = prefs.getString((getString(R.string.login_locale)), null);
-//        String promoterId = prefs.getString((getString(R.string.promoter_id)), null);
-
-        String localeName = "SMP";
-        String localeCode = "2";
-        String promoterId = "19";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String localeName = prefs.getString((getString(R.string.login_locale_name)), null);
+        String localeCode = prefs.getString((getString(R.string.login_locale)), null);
+        String promoterId = prefs.getString((getString(R.string.key_userid)), null);
 
         // if a patient was passed in, pre-load that patient
         try {
@@ -78,11 +76,12 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             // TODO: Don't print the stack trace, give some sort of dialog box instead
             e.printStackTrace();
         }
+        Log.v("NewVisit: currentpatient", currentPatient.toString());
 
         // load the visit group number and visit number
-        // TODO: do not hard code in localeID and project ID
+        // TODO: put this into a function
         NewVisitLoadTask newV = new NewVisitLoadTask();
-        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, "5");
+        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, currentPatient.getEnrolledProject().getId());
         // parse the result, and return it
         try {
             currentVisit = (Visit) v.get();
@@ -98,7 +97,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
         currentVisit.setLocaleCode(localeCode);
         currentVisit.setPromoterId(promoterId);
-        Log.v("new visit: current visit after shared pref", currentVisit.toString());
 
         // visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
@@ -139,7 +137,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // visit project
         visitProjectEditor = (EditText) findViewById(R.id.visitProject);
         // TODO: display project name
-        visitProjectEditor.setText(currentVisit.getProjectCode());
+        visitProjectEditor.setText(currentPatient.getEnrolledProject().getId()+"-"+
+                                   currentPatient.getEnrolledProject().getName());
 
         // visit group
         visitGroupEditor = (EditText) findViewById(R.id.visitGroup);
@@ -157,7 +156,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
      */
     @Override
     public void returnDate(Date date) {
-        // TODO: format display text in "dd/MM/yyyy"
         datePicker.setText(displayDateFormat.format(date));
         visitDate = date;
         currentVisit.setVisitDate(dbDateFormat.format(date));
@@ -215,7 +213,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
                                       currentPatient.getPid(),
                                       currentVisit.getVisitDate(),
                                       currentVisit.getVisitTime(),
-                                      currentVisit.getPromoterId()).get(); // TODO: do not hardcode in promoterID
+                                      currentVisit.getPromoterId()).get();
 
             Log.v("What we got was", result);
         }
@@ -228,7 +226,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return result;
     }
 
-    // TODO: Add the actual submission to the server
     // Submits the visit to the server and switches to GetPatientActivity
 
     /**

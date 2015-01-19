@@ -75,7 +75,7 @@ public class PromoterLoginActivity extends Activity {
      */
     private String checkAlreadyLoggedIn(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = prefs.getString((getString(R.string.promoter_id)), null);
+        String username = prefs.getString((getString(R.string.username)), null);
         if (username !=null){
             return username;
         }
@@ -141,6 +141,7 @@ public class PromoterLoginActivity extends Activity {
             else{
                 try {
                     JSONArray object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "locale_data"));
+
                     objLocale = new Locale[object.length()];
                     // look at all patients
                     for (int i = 0; i < object.length(); i++) {
@@ -152,16 +153,21 @@ public class PromoterLoginActivity extends Activity {
                     Log.e("ProgramLoginActivity: switchPatientType","JSON exception on Load");
                 }
 
+
             }
                 for (int i = 0; i < objLocale.length; i++) {
                     if (locale_name.equals(objLocale[i].name)) {
                         locale_num = String.valueOf(objLocale[i].id);
                     };
                 }
-        } catch (InterruptedException e1) {
+        }
+
+        catch (InterruptedException e1) {
             e1.printStackTrace();
         } catch (ExecutionException e1) {
             e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("ProgramLoginActivity: switchPatientType","NullPointerException on Load");
         }
 
         Log.e("PromoterLoginActivity: switchPatientType", username +" " + password);
@@ -177,8 +183,8 @@ public class PromoterLoginActivity extends Activity {
                 //TESTING ONLY:
                 OfflineStorageManager sm = new OfflineStorageManager();
                 ArrayList<Patient> patients_list = new ArrayList<Patient>();
-                patients_list.add(new Patient(Long.valueOf("12323234")));
-                patients_list.add(new Patient(Long.valueOf("23434345")));
+                patients_list.add(new Patient("123434", "something"));
+                patients_list.add(new Patient("123434", "something"));
 
                 sm.SaveArrayListToLocal(patients_list, getString(R.string.patient_data_filename), this);
 

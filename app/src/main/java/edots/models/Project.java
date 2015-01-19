@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public class Project extends Saveable{
     // TODO: consistent capitalization of all class variables
-    private String ProjectId;
+    private String Id;
     private ArrayList<String> medications = new ArrayList<String>();
     private ArrayList<String> types = new ArrayList<String>();
     private String name;
@@ -28,12 +28,11 @@ public class Project extends Saveable{
         try {
             Random r = new Random();
             int num = r.nextInt(100);
-            ProjectId = "5";
+            Id = "5";
             name = Integer.toString(num);
             medications = new ArrayList<String>();
             medications.add("Med 1");
             medications.add("Med 2");
-            //JSONArray medications2 = new JSONArray(medications);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -47,7 +46,7 @@ public class Project extends Saveable{
     public Project (String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
-            ProjectId = n.get("projectId").toString();
+            Id = n.get("projectId").toString();
             name = n.get("name").toString();
             JSONArray temp = new JSONArray(n.get("medications").toString());
             medications = new ArrayList<String>();
@@ -61,17 +60,12 @@ public class Project extends Saveable{
     }
 
     /**
-     * @param projectId
+     * @param i project id
      * @param n name of the project
-     * @param meds arraylist of the medications
-     * @param t array list of the types
      */
-    public Project(String projectId, String n, ArrayList<String> meds, ArrayList<String> t){
-        ProjectId = projectId;
-        medications = meds;
+    public Project(String i, String n){
+        Id = i;
         name = n;
-        types = t;
-
     }
 
     @Override
@@ -82,7 +76,7 @@ public class Project extends Saveable{
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("projectId", getProjectId());
+            temp.put("projectId", getId());
             JSONArray version = new JSONArray(getMedications());
             temp.put("medications", version);
             JSONArray types = new JSONArray(getTypes());
@@ -95,12 +89,12 @@ public class Project extends Saveable{
         return temp.toString();
     }
 
-    public String getProjectId(){
-        return ProjectId;
+    public String getId(){
+        return Id;
     }
 
-    public void setProjectId(String projectId){
-        ProjectId = projectId;
+    public void setId(String id){
+        Id = id;
     }
 
     public void setMedications(ArrayList<String> m){

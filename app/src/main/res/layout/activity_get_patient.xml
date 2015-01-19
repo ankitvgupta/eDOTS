@@ -62,7 +62,8 @@
                 android:id="@+id/btnSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/get_patient_button_use_national_id" />
+                android:text="@string/get_patient_button_use_national_id"
+                android:onClick="btnSearchClicked"/>
             <!--the text "or"-->
             <TextView
                 android:layout_width="wrap_content"

@@ -9,8 +9,6 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import edots.models.Patient;
@@ -68,9 +66,9 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
             String name = ic.getProperty("Nombres").toString();
             String fathersName = ic.getProperty("ApellidoPaterno").toString();
             String mothersName = ic.getProperty("ApellidoMaterno").toString();
-            Long nationalID;
+            String nationalID;
             try{
-                nationalID = Long.valueOf(ic.getProperty("DocumentoIdentidad").toString());
+                nationalID = ic.getProperty("DocumentoIdentidad").toString();
             }
             catch (NumberFormatException e){
                 nationalID=null;

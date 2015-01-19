@@ -27,13 +27,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
 
 import edots.models.Patient;
+import edots.models.Project;
+import edots.models.Promoter;
 import edots.models.Visit;
+import edots.tasks.GetPatientContactLoadTask;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
+import edots.tasks.PatientProjectLoadTask;
 import edots.utils.OfflineStorageManager;
 
 
@@ -51,18 +55,25 @@ import edots.utils.OfflineStorageManager;
 public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
+    private String promoterId;
     private AsyncTask<String, String, Patient> patient;
     private Spinner spnPatient;
-    private Button btnSearch;
     private Context c = this;
     JSONArray object;
 
     @Override
+    // TODO: needs comments!!
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_patient);
+
+        // fetch promoterID
+        SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
+        promoterId = sPrefs.getString(getString(R.string.key_userid), "");
+
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();
+        testFunction();
         try {
             object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
         }
@@ -101,19 +112,13 @@ public class GetPatientActivity extends Activity {
         catch (Exception e){
             Log.v("There is no patient already", "There is no patient already");
         }
-
-        btnSearch = (Button) findViewById(R.id.btnSearch);
-        btnSearch.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                hideKeyboard();
-                parseAndFill(v);
-            }
-        });
-
     }
 
+    // nishant's test function
+    public void testFunction() {
+        GetPatientContactLoadTask result = new GetPatientContactLoadTask();
+        result.execute("http://demo.sociosensalud.org.pe", "30C85C6A-D30E-48D2-949B-0004965E626F");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,6 +143,19 @@ public class GetPatientActivity extends Activity {
     }
 
     /**
+     * @author lili
+     * @param view
+     * when the search button is pressed
+     */
+    public void btnSearchClicked(View view) {
+        hideKeyboard();
+        // TODO: need loadPatient() function
+        loadPatient(view);
+        Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
+    }
+
+
+    /**
      * @author Brendan
      * @param nationalid the DNI of the desired person who is being looked up
      * @return the Patient object of the person with the specified DNI, if exists
@@ -146,10 +164,11 @@ public class GetPatientActivity extends Activity {
      * A function that looks up a DNI and checks if that DNI is found locally
      * and if not, attempts to find a patient with that DNI on the webservice
      */
-    public Patient lookupPatient(int nationalid) throws JSONException{
+    public Patient lookupPatient(String nationalid) throws JSONException{
 
         setButtons(false);
         currentPatient = null;
+
         // TODO: Check if Patient is already stored locally first
         JSONArray arr;
         try {
@@ -173,7 +192,7 @@ public class GetPatientActivity extends Activity {
         // Instantiate a loader task and load the given patient via nationalid
         if (currentPatient == null) {
             GetPatientLoadTask newP = new GetPatientLoadTask();
-            AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", Integer.toString(nationalid));
+            AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", nationalid);
 
             // parse the result, and return itg
             try {
@@ -181,6 +200,7 @@ public class GetPatientActivity extends Activity {
                 ArrayList<Visit> visits = currentPatient.getPatientHistory(this);
                 Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
                 //Log.v("Patient that we got is", currentPatient.toString());
+
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             } catch (ExecutionException e1) {
@@ -191,6 +211,30 @@ public class GetPatientActivity extends Activity {
         }
         return currentPatient;
 
+    }
+
+    /**
+     * @author lili
+     * load the project a patient is currently enrolled in into the patient object
+     */
+    public void loadPatientProject(){
+        Project currentProject;
+        PatientProjectLoadTask loadTask = new PatientProjectLoadTask();
+        Log.v("GetPatientActivity: pid and userid", currentPatient.getPid()+ promoterId);
+        AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
+
+        try {
+            currentProject = (Project) task.get();
+            currentPatient.setEnrolledProject(currentProject);
+            Log.v("GetPatientActivity.java: The project", currentProject.toString());
+        } catch (InterruptedException e1) {
+            //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("null pointer exception","");
+        }
     }
 
     /**
@@ -262,6 +306,7 @@ public class GetPatientActivity extends Activity {
      * @author Ankit
      * @return boolean representing whether the inputs are all valid.
      */
+    // TODO: needs cleanup
     public boolean validateInput() {
         
         //return true;
@@ -292,7 +337,8 @@ public class GetPatientActivity extends Activity {
      * Called by the onClick method on Search - this calls the functions that make the queries for that patient
      *             and the function that fills the table.
      */
-    public void parseAndFill(View view) {
+    // TODO: consider factorizing into subfunctions; consider rewriting the function comment above
+    public void loadPatient(View view) {
 
         // clear the entered text and make new hint to search for new patient
         setButtons(false);
@@ -303,66 +349,101 @@ public class GetPatientActivity extends Activity {
             return;
         }
         editText.setText("", TextView.BufferType.EDITABLE);
-        int pid = Integer.parseInt(message);
+        String pid = message;
         try {
             currentPatient = lookupPatient(pid);
+            loadPatientProject();
         }
         catch(JSONException e1){
             e1.printStackTrace();
         }
-        // pop up error message when the national id is not found
+        // alert to register patient if not found
         if (currentPatient == null){
-//            Toast.makeText(getBaseContext(), R.string.patient_not_found,
-//                    Toast.LENGTH_SHORT).show();
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle(this.getString(R.string.patient_not_found));
-            alertDialog.setMessage(this.getString(R.string.patient_not_found_new_patient));
-            alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            // TODO: pass in the DNI that they already entered
-            alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    switchNewPatientDataActivity();
-                }
-            });
-            alertDialog.show();
-            return;
+            patientNotFoundAlert();
         }
+        // alert ot add a patient to the list of patients for the promoter if found
         else {
             fillTable();
-
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle(this.getString(R.string.patient_not_listed));
-            alertDialog.setMessage(this.getString(R.string.patient_not_listed_add_patient));
-            alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
-                    Log.e("GetPatientActivity: parseAndFill", currentPatient.getPid());
-                    NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask() ;
-                    try{
-                        npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), mPreferences.getString(getString(R.string.key_userid),""),"0").get();
-
+            // TODO: needs comments!
+            try {
+                object = new JSONArray(OfflineStorageManager.getStringFromLocal(c, "patient_data"));
+                // look at all patients
+                boolean already_found = false;
+                for (int i = 0; i < object.length(); i++) {
+                    JSONObject obj = object.getJSONObject(i);
+                    Patient p = new Patient(obj.toString());
+                    if (currentPatient.getNationalID().equals(p.getNationalID())){
+                        already_found = true;
                     }
-                    catch (Exception e1){
-                        Log.e("GetPatientActivity: parseAndFill", "ExecutionException");
-                    }
-                    dialog.cancel();
                 }
-            });
-            alertDialog.show();
+                if (!already_found) {
+                    patientNotListedAlert();
+                }
+            }
+            catch(Exception e){
+                Log.e("GetPatientActivity: loadPatient", "unable to load patient_data");
+            }
         }
     }
 
+    /**
+     * @author Brendan
+     * Alert for when patient not found on server
+     * Prompts user to register patient if they click add patient
+     */
+    private void patientNotFoundAlert(){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(this.getString(R.string.patient_not_found));
+        alertDialog.setMessage(this.getString(R.string.patient_not_found_new_patient));
+        alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        // TODO: pass in the DNI that they already entered
+        alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switchNewPatientDataActivity();
+            }
+        });
+        alertDialog.show();
+    }
 
-    // switch to CheckFingerPrintActivity
+    /**
+     * @author Brendan
+     * Alert for when patient is not listed as one of the patients for a promoter
+     * If user presses add patient button, then adds to list of patients for logged-in promoter
+     */
+    private void patientNotListedAlert() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(this.getString(R.string.patient_not_listed));
+        alertDialog.setMessage(this.getString(R.string.patient_not_listed_add_patient));
+        alertDialog.setButton(-3, this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.setButton(-1, this.getString(R.string.add_patient), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Log.e("GetPatientActivity: loadPatient", currentPatient.getPid());
+                NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
+
+                try {
+                    npu.execute("http://demo.sociosensalud.org.pe", currentPatient.getPid(), promoterId, "0").get();
+                    Promoter promoter = new Promoter(OfflineStorageManager.getStringFromLocal(c, "promoter_data"));
+                    OfflineStorageManager.SaveWebPatientData(promoter, c);
+                } catch (Exception e1) {
+                    Log.e("GetPatientActivity: loadPatient", "ExecutionException Probably");
+                }
+            }
+        });
+        alertDialog.show();
+    }
+
+
+    /**
+     * switch to CheckFingerPrintActivity
+     */
     public void switchCheckFingerPrint(View view) {
         if (currentPatient != null){
             Intent intent = new Intent(this, CheckFingerPrintActivity.class);
@@ -371,7 +452,9 @@ public class GetPatientActivity extends Activity {
         }
     }
 
-
+    /**
+     * switch to MedicalHistoryActivity
+     */
     public void switchMedicalHistoryActivity(View view) {
         if (currentPatient != null){
             Intent intent = new Intent(this, MedicalHistoryActivity.class);
@@ -381,6 +464,9 @@ public class GetPatientActivity extends Activity {
 
     }
 
+    /**
+     * switch to NewVisitActivity
+     */
     public void switchNewVisitActivity(View view) {
         if (currentPatient != null) {
             Intent intent = new Intent(this, NewVisitActivity.class);
@@ -389,6 +475,9 @@ public class GetPatientActivity extends Activity {
         }
     }
 
+    /**
+     * switch to NewPatientActivity
+     */
     public void switchNewPatientDataActivity() {
             Intent intent = new Intent(this, NewPatientDataActivity.class);
             startActivity(intent);
@@ -397,6 +486,7 @@ public class GetPatientActivity extends Activity {
     /**
      * @author lili
      */
+    // TODO: move to util
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();

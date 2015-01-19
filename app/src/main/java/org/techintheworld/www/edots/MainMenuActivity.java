@@ -23,6 +23,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
+import edots.models.Patient;
+import edots.models.Visit;
+import edots.tasks.GetHistoryLoadTask;
+import edots.tasks.GetPatientFromIDTask;
+import edots.tasks.GetPatientLoadTask;
 import edots.tasks.LoadPatientFromPromoterTask;
 import edots.utils.OfflineStorageManager;
 import edots.utils.SMSAlarmReceiver;
@@ -36,19 +41,22 @@ public class MainMenuActivity extends Activity {
         setContentView(R.layout.activity_main_menu);
 
         btnSendSMS = (Button) findViewById(R.id.btnSendSMS);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Creates listener for SMS sending button
         btnSendSMS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO: get from service instead of hard coding
+                String userid = prefs.getString("userid", null);
+                
+                String message = sendSMSForGivenPromoter(userid);
                 //String phoneNo = "943229757";
                 String phoneNo = "943206118";
-                String message = getString(R.string.message);
-                    Calendar calendar = Calendar.getInstance();
-                    Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
-                    calendar.add(Calendar.MINUTE, 1);
-                    scheduleSMSAlarm(phoneNo, message, calendar);
-
+                //String message = getString(R.string.message);
+                Calendar calendar = Calendar.getInstance();
+                Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
+                calendar.add(Calendar.MINUTE, 1);
+                scheduleSMSAlarm(phoneNo, message, calendar);
             }
         });
 
@@ -129,7 +137,13 @@ public class MainMenuActivity extends Activity {
             for (int i = 0; i < patients.size(); i++){
                 if (missedPill(patients.get(i))){
                     sendSMSToPatient(patients.get(i));
-                    aggregate += (patients.get(i) + "\n");
+                    GetPatientFromIDTask pTask = new GetPatientFromIDTask();
+                    AsyncTask p = pTask.execute("http://demo.sociosensalud.org.pe", patients.get(i));
+
+                    Patient pat =  (Patient) p.get();
+                    String message = pat.getName();
+                    
+                    aggregate += (message + "\n");
                 }
             }
             

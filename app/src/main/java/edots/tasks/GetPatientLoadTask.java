@@ -73,7 +73,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             String name = ic.getProperty("Nombres").toString();
             String fathersName = ic.getProperty("ApellidoPaterno").toString();
             String mothersName = ic.getProperty("ApellidoMaterno").toString();
-            Long nationalID = Long.valueOf(ic.getProperty("DocumentoIdentidad").toString());
+            String nationalID = ic.getProperty("DocumentoIdentidad").toString();
             Integer sexInt = Integer.parseInt(ic.getProperty("Sexo").toString());
             Integer docType = Integer.parseInt(ic.getProperty("CodigoTipoDocumento").toString());
 

@@ -6,8 +6,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -32,6 +34,7 @@ import edots.models.Patient;
 import edots.models.Project;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPatientUploadTask;
+import edots.tasks.NewPromoterPatientUploadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.InternetConnection;
 
@@ -52,7 +55,9 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
     private Patient currentPatient;
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
-    EditText datePicker;
+    EditText birthDatePicker;
+    EditText treatmentStartDatePicker;
+    EditText treatmentEndDatePicker;
     private String date_string;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -66,9 +71,26 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
 
-        // get the birthdate
-        datePicker = (EditText) findViewById(R.id.Birthdate);
-        datePicker.setOnClickListener(new View.OnClickListener() {
+        loadDatePickers();
+        loadTreatmentCheckboxes();
+        loadTreatmentDayCheckboxes();
+
+        // check if not connected to internet, then disable everything and show dialog
+        if (!InternetConnection.checkConnection(this)){
+            AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
+            blockAllInput();
+            TextView tview = (TextView)findViewById(R.id.internet_status);
+            tview.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    /* Written by Nishant
+     * Loads the datePickers for birthdate, treatment start day and treatment end day
+     */
+    public void loadDatePickers() {
+        birthDatePicker = (EditText) findViewById(R.id.Birthdate);
+        birthDatePicker.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -78,6 +100,44 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
 
         });
 
+        treatmentStartDatePicker = (EditText) findViewById(R.id.treatment_start_day);
+        treatmentStartDatePicker.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                DialogFragment picker = new DatePickerFragment();
+                picker.show(getFragmentManager(), "datePicker");
+            }
+
+        });
+
+        treatmentEndDatePicker = (EditText) findViewById(R.id.treatment_end_day);
+        treatmentEndDatePicker.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                DialogFragment picker = new DatePickerFragment();
+                picker.show(getFragmentManager(), "datePicker");
+            }
+
+        });
+    }
+
+    /**
+     * @param date set the text field as the selected date
+     * @author lili
+     */
+    @Override
+    public void returnDate(Date date) {
+        birthDatePicker.setText(displayDateFormat.format(date));
+        date_string = dbDateFormat.format(date) + " 00:00:00.0";
+        Log.i("date_string", date_string);
+    }
+
+    /* Written by Nishant
+     * Loads Checkboxes Dynamically for Treatment Projects
+     */
+    public void loadTreatmentCheckboxes() {
         // list of treatment study groups
         // for testing
         treatmentList.add(new Project());
@@ -103,27 +163,35 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         ListView listview = (ListView) findViewById(R.id.treatments);
         listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listview.setAdapter(adapter);
-
-        // check if not connected to internet, then disable everything and show dialog
-        if (!InternetConnection.checkConnection(this)){
-            AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
-            blockAllInput();
-            TextView tview = (TextView)findViewById(R.id.internet_status);
-            tview.setVisibility(View.VISIBLE);
-
-        }
     }
 
-    /**
-     * @param date set the text field as the selected date
-     * @author lili
+    /* Written by Nishant
+     * Loads Treatment Day Checkboxes
      */
-    @Override
-    public void returnDate(Date date) {
-        datePicker.setText(displayDateFormat.format(date));
-        date_string = dbDateFormat.format(date) + " 00:00:00.0";
-        Log.i("date_string", date_string);
+    public void loadTreatmentDayCheckboxes() {
+        ListView treatmentView = (ListView) findViewById(R.id.treatment_days);
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
+        treatmentView.getLayoutParams().height = height;
+
+        ArrayList<String> treatmentDays = new ArrayList<String>();
+        treatmentDays.add("Monday");
+        treatmentDays.add("Tuesday");
+        treatmentDays.add("Wednesday");
+        treatmentDays.add("Thursday");
+        treatmentDays.add("Friday");
+        treatmentDays.add("Saturday");
+        treatmentDays.add("Sunday");
+
+        // creating adapter for ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_checked, treatmentDays);
+
+        // creates ListView checkboxes
+        ListView listview = (ListView) findViewById(R.id.treatment_days);
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listview.setAdapter(adapter);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,6 +221,11 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         Intent intent = new Intent(this, CheckFingerPrintActivity.class);
     }
 
+    /*
+     * Written by Nishant
+     * Alert Dialog in case of User Error
+     * For example, if the user does not enter proper data into the fields
+     */
     public void AlertError(String title, String message) {
         // Alert if username and password are not entered
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -166,12 +239,20 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         alertDialog.show();
     }
 
-    public void addToDatabase(String name, String father, String mother, String docType, String nationalID, String birthDate, String sex) {
+    public void addToDatabase(String name, String father, String mother, String docType, String nationalID, String birthDate, String phoneNumber, String sex) {
 
+        // TODO: UPLOAD PHONE NUMBER
         NewPatientUploadTask uploader = new NewPatientUploadTask();
         try {
-            String result = uploader.execute("http://demo.sociosensalud.org.pe", name, father, mother, docType, nationalID, birthDate, sex).get();
+            String url = "http://demo.sociosensalud.org.pe";
+            String result = uploader.execute(url, name, father, mother, docType, nationalID, birthDate, sex).get();
             Log.v("New patient: what we got was", result);
+            GetPatientLoadTask gpl = new GetPatientLoadTask();
+            Patient p = gpl.execute(url, nationalID).get();
+            SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+            NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
+            String npuMessage = npu.execute("http://demo.sociosensalud.org.pe", p.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
+            Log.v("GetPatientActivity: loadPatient: PromoterPatientUploadTask", npuMessage);
         } catch (InterruptedException e) {
             e.printStackTrace();
             AlertError("Entry Error", "The data you entered is of the wrong format, please try again");
@@ -187,6 +268,10 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         return;
     }
 
+    /*
+     * Written by Nishant
+     * Ensures the entered national ID is of proper format and length
+     */
     public boolean validateNationalID() {
 
         EditText editor = (EditText) findViewById(R.id.National_ID);
@@ -213,7 +298,10 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         }
     }
 
-    // validate that each field has some entry
+    /*
+     * Written by Nishant
+     * Ensures none of the entered fields are empty
+     */
     public boolean validateEmpty() {
         EditText editor = (EditText) findViewById(R.id.National_ID);
         String nationalID = editor.getText().toString();
@@ -227,6 +315,9 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         editor = (EditText) findViewById(R.id.Mothers_name);
         String motherName = editor.getText().toString();
 
+        editor = (EditText) findViewById(R.id.PhoneNumber);
+        String phoneNumber = editor.getText().toString();
+
         RadioButton buttnMale = (RadioButton) findViewById(R.id.radio_female);
         RadioButton buttnFemale = (RadioButton) findViewById(R.id.radio_male);
 
@@ -239,9 +330,9 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             }
         }
 
-
         if (nationalID.equals("") || name.equals("") || fatherName.equals("") ||
-                motherName.equals("") || !(buttnMale.isChecked() || buttnFemale.isChecked())) {
+                motherName.equals("") || phoneNumber.equals("") || !(buttnMale.isChecked() ||
+                buttnFemale.isChecked())) {
             return false;
         } else if (numTreatments == 0) {
             return false;
@@ -276,7 +367,10 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
     }
 
 
-    // switch to PatientHome activity
+    /*
+     * Written by Nishant
+     * Takes all the user-entered data and creates new patient object
+     */
     public void addPatientBtn(View view) {
 
         if (!(validateEmpty())) {
@@ -286,7 +380,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         } else {
 
             // get the national id
-            // TODO: error message for invalid national ID
             EditText editor = (EditText) findViewById(R.id.National_ID);
             String nationalID = editor.getText().toString();
 
@@ -301,6 +394,10 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             // get the mother's name
             editor = (EditText) findViewById(R.id.Mothers_name);
             String motherName = editor.getText().toString();
+
+            // get the phone_number
+            editor = (EditText) findViewById(R.id.PhoneNumber);
+            String phone_number = editor.getText().toString();
 
             // get the sex
             String sex = "";
@@ -325,7 +422,7 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             }
 
             // Submit the patient data to the server.
-            addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, sex);
+            addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, phone_number, sex);
 
             // then query the database to get the patient, including the patient code generated by server
             GetPatientLoadTask getP = new GetPatientLoadTask();
@@ -350,11 +447,6 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
                     e.printStackTrace();
                 }
             }
-
-
         }
-
-
     }
-
 }

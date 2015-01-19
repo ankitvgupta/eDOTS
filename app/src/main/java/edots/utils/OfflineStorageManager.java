@@ -85,7 +85,7 @@ public class OfflineStorageManager {
         try {
             ArrayList<String> patient_ids = (ArrayList<String>) p.get();
             p_result.setLocale(locale);
-            p_result.setPromoterId(user_id);
+            p_result.setId(user_id);
             p_result.setPatientIds(patient_ids);
             SaveWebPromoterData(p_result, c);
             return p_result;
@@ -281,7 +281,7 @@ public class OfflineStorageManager {
             if (isConnected && diff > threshold) {
                 try {
                     SharedPreferences sprefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    String promoterId = prefs.getString((context.getString(R.string.promoter_id)), null);
+                    String promoterId = prefs.getString((context.getString(R.string.username)), null);
 
                     Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(promoterId, context);
 
@@ -309,6 +309,10 @@ public class OfflineStorageManager {
     public static void SaveLocaleData(Locale[] l, Context c) throws JSONException {
         // Save to local file for Locale
         String locale_filename = "locale_data";
+        boolean locale_result = c.deleteFile("locale_data");
+        if (!locale_result)  {
+            Log.e("OfflineStorageManager: SaveWebPromoterData", "Locale delete file failed");
+        }
 
         int num_locales = l.length;
         JSONArray ja = new JSONArray();

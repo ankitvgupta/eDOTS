@@ -9,6 +9,8 @@ import android.util.Log;
 
 import org.techintheworld.www.edots.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by jfang on 1/14/15.
  */
@@ -39,13 +41,21 @@ public class SMSAlarmReceiver extends BroadcastReceiver {
         SmsManager sms = SmsManager.getDefault();
         String SENT = c.getString(R.string.sms_sent);
         String DELIVERED = c.getString(R.string.sms_delivered);
-        PendingIntent sentPI = PendingIntent.getBroadcast(c, 0,
-                new Intent(SENT), 0);
 
-        PendingIntent deliveredPI = PendingIntent.getBroadcast(c, 0,
-                new Intent(DELIVERED), 0);
-        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+        ArrayList<String> parts = sms.divideMessage(message);
+        ArrayList<PendingIntent> sentPIs = new ArrayList<PendingIntent>();
+        ArrayList<PendingIntent> deliveredPIs = new ArrayList<PendingIntent>();
+        for (int i = 0; i < parts.size(); i++){
+            sentPIs.add(PendingIntent.getBroadcast(c, 0,
+                    new Intent(SENT), 0));
+
+            deliveredPIs.add(PendingIntent.getBroadcast(c, 0,
+                    new Intent(DELIVERED), 0));
+        }
+
+        sms.sendMultipartTextMessage(phoneNumber, null, parts, sentPIs, deliveredPIs);
 
         Log.w("SMSAlarmReceiver: On Receive ", "SMS message sent");
+        Log.v("SMSAlarmReceiver: The message being sent is", message);
     }
 }

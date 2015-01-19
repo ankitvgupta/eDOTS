@@ -5,15 +5,8 @@
     android:layout_height="fill_parent" android:orientation="vertical"
     android:layout_gravity="center_vertical"
     tools:context="org.techintheworld.www.edots.MedicalHistoryActivity"
-    android:weightSum="1"
-    android:id="@+id/medicalhistory_linearlayout">
+    android:weightSum="1">
 
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/medicalhistory1"-->
-        <!--android:layout_gravity="center_horizontal" />-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,25 +14,11 @@
         android:id="@+id/calendar1">
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/medicalhistory_scrollview">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/medicalhistory_encloseScroll"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/medical_history_for_patient"
-                android:textSize="32sp"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/medical_history_see_full_history"
+        android:onClick="loadFullHistory"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

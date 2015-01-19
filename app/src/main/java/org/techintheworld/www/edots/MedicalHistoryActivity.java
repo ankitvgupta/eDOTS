@@ -1,6 +1,10 @@
 package org.techintheworld.www.edots;
 
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -15,7 +19,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,20 +31,23 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Visit;
 
+/*
+ * Written by Nishant
+ * The Calendar
+ */
 
 public class MedicalHistoryActivity extends FragmentActivity {
     Patient currentPatient;
+    Context c = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
 
-        // if a patient was passed in, pre-load that patient
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             // TODO: Don't print the stack trace, give some sort of dialog box instead
             e.printStackTrace();
         }
@@ -44,24 +55,25 @@ public class MedicalHistoryActivity extends FragmentActivity {
         CaldroidFragment caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
+
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
-        // args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, true);
         caldroidFragment.setArguments(args);
 
-        updateColors(caldroidFragment, cal);
+        updateCalendar(caldroidFragment, cal);
 
-        android.support.v4.app.FragmentTransaction t= getSupportFragmentManager().beginTransaction();
+        android.support.v4.app.FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.calendar1, caldroidFragment);
         t.commit();
-
-//        loadPastVisits();
     }
 
-    // based on the visits for the currentPatient, go through each date up until the current date
-    // and set the background as Red or Green.
-    public void updateColors(CaldroidFragment caldroidFragment, Calendar cal) {
+
+    /*
+    * Written by Nishant
+    * Adds colors and listeners to calendar
+    */
+    public void updateCalendar(CaldroidFragment caldroidFragment, Calendar cal) {
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
         if (patientVisits != null) {
@@ -74,142 +86,50 @@ public class MedicalHistoryActivity extends FragmentActivity {
         String visitYear;
 
         for (int i = (numVisits - 1); i >= 0; i--) {
-            visitDate = patientVisits.get(i).getVisitDate(); // Fri 05/09/2014; day/month/year ID: 12345671
-            //Log.v("MedicalHistoryActivity: ", "Visit Date: " + visitDate);
-
-            String str = "# STRING_VALUES #";
-            String result = str.substring(2,str.length()-2);
+            visitDate = patientVisits.get(i).getVisitDate();
 
             visitDay = visitDate.substring(4,6);
-            Log.v("MedicalHistoryActivity: ", "Visit Day: " + visitDay);
             int visitDayInt = Integer.parseInt(visitDay);
 
             visitMonth = visitDate.substring(7,9);
-            Log.v("MedicalHistoryActivity: ", "Visit Month: " + visitMonth);
             int visitMonthInt = Integer.parseInt(visitMonth);
             visitMonthInt = visitMonthInt - 1;
 
             visitYear = visitDate.substring(10,14);
-            Log.v("MedicalHistoryActivity: ", "Visit Year: " + visitYear);
             int visitYearInt = Integer.parseInt(visitYear);
             visitYearInt =  visitYearInt - 1900;
 
             Date greenDate = new Date(visitYearInt, visitMonthInt, visitDayInt); // January 16, 1963
-            caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, greenDate);
+            caldroidFragment.setBackgroundResourceForDate(R.color.green, greenDate);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         }
 
-        Date blueDate = cal.getTime();
-        caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, blueDate);
-        caldroidFragment.refreshView();
+        CaldroidListener listener = new CaldroidListener() {
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+            @Override
+            public void onSelectDate(Date date, View view) {
+                Intent intent = new Intent(c, ShowVisitActivity.class);
+                intent.putExtra("Patient", currentPatient.toString());
+                intent.putExtra("Visit Date", formatter.format(date));
+                startActivity(intent);
+            }
+        };
+
+        caldroidFragment.setCaldroidListener(listener);
     }
 
-    public void loadPastVisits() {
-        // sets header to Past Visits for Patient Name
-        String patientName = currentPatient.getName();
-        TextView header = (TextView) findViewById(R.id.medical_history_for_patient);
-        header.setText("Past Visits for " + patientName);
-
-
-        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
-        int numVisits = 0;
-        if (patientVisits != null){
-            numVisits = patientVisits.size();
-        }
-
-        String siteCode;
-        String visitDate;
-        String timeVal;
-        String projectCode;
-        String userCode;
-        String visitCode;
-        String visitGroupCode;
-
-        LinearLayout encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
-
-        for (int i = (numVisits - 1); i >= 0; i--) {
-            siteCode = patientVisits.get(i).getLocaleCode();
-            visitDate = patientVisits.get(i).getVisitDate();
-            timeVal = patientVisits.get(i).getVisitTime();
-            projectCode = patientVisits.get(i).getProjectCode();
-            userCode = patientVisits.get(i).getPromoterId();
-            visitCode = patientVisits.get(i).getVisitCode();
-            visitGroupCode = patientVisits.get(i).getVisitGroupCode();
-
-            // add a new Relative Layout with all this data and append it in the Linear Layout
-            RelativeLayout newVisit = new RelativeLayout(this);
-            RelativeLayout.LayoutParams labelLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            newVisit.setLayoutParams(labelLayoutParams);
-
-            // instantiating TextViews
-            TextView visitHeader = new TextView(this);
-            TextView project = new TextView(this);
-            TextView promoter = new TextView(this);
-            TextView visit = new TextView(this);
-            TextView visitGroup = new TextView(this);
-
-            // assign ID to each TextView
-            visitHeader.setId(1);
-            project.setId(2);
-            promoter.setId(3);
-            visit.setId(4);
-            visitGroup.setId(5);
-
-            // assign text to each TextView
-            visitHeader.setText(siteCode + " - " + visitDate + " - " + timeVal);
-
-            project.setText(Html.fromHtml("<b>" + "Project: " + "</b>" + projectCode));
-            promoter.setText(Html.fromHtml("<b>" + "Promoter: " + "</b>" + userCode));
-            visit.setText(Html.fromHtml("<b>" + "Visit: " + "</b>" + visitCode));
-            visitGroup.setText(Html.fromHtml("<b>" + "Visit Group: " + "</b>" + visitGroupCode));
-
-            // sets text size for each TextView
-            visitHeader.setTextSize(20);
-            project.setTextSize(20);
-            promoter.setTextSize(20);
-            visit.setTextSize(20);
-            visitGroup.setTextSize(20);
-
-            // set position of each TextView within RelativeLayout
-            RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp1.addRule(RelativeLayout.BELOW, visitHeader.getId());
-
-            RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp2.addRule(RelativeLayout.BELOW, project.getId());
-
-            RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp3.addRule(RelativeLayout.BELOW, promoter.getId());
-
-            RelativeLayout.LayoutParams lp4 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp4.addRule(RelativeLayout.BELOW, visit.getId());
-
-
-            // append all of the above TextView elements to the Relative Layout
-            newVisit.addView(visitHeader);
-            newVisit.addView(project, lp1);
-            newVisit.addView(promoter, lp2);
-            newVisit.addView(visit, lp3);
-            newVisit.addView(visitGroup, lp4);
-
-            // add RelativeLayout to LinearLayout
-            encloseScrollLayout.addView(newVisit);
-
-            // adds horizontal divider
-            View v = new View(this);
-            v.setLayoutParams(new LinearLayout.LayoutParams(
-                    ActionBar.LayoutParams.MATCH_PARENT,
-                    5
-            ));
-            v.setBackgroundColor(Color.parseColor("#B3B3B3"));
-            encloseScrollLayout.addView(v);
-        }
+    /*
+     * Written by Nishant
+     * Loads full medical history of patient
+     */
+    public void loadFullHistory (View view) {
+        Intent intent = new Intent(this, ShowVisitActivity.class);
+        intent.putExtra("Patient", currentPatient.toString());
+        intent.putExtra("Visit Date", "");
+        startActivity(intent);
     }
-
-
 
 
     @Override

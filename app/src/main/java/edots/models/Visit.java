@@ -17,6 +17,7 @@ public class Visit extends Saveable {
     private String PacientCode;
     private String VisitDate;
     private String VisitTime;
+    private String PromoterId;
 
     // for testing only
     public Visit() {
@@ -33,7 +34,7 @@ public class Visit extends Saveable {
 
     // for production
     public Visit(String site, String project, String visitGroup,String nombreGroupoVisita,
-                 String vis, String descripcionVisita, String patient, String date, String time){
+                 String vis, String descripcionVisita, String patient, String date, String time, String promoter){
         LocaleCode=site;
         ProjectCode=project;
         VisitGroupCode = visitGroup;
@@ -43,6 +44,7 @@ public class Visit extends Saveable {
         PacientCode = patient;
         VisitDate = date;
         VisitTime = time;
+        PromoterId = promoter;
     }
 
     /**
@@ -116,5 +118,9 @@ public class Visit extends Saveable {
     public String getVisitTime() {return VisitTime;}
 
     public void setVisitTime(String time) {VisitTime = time;}
+
+    public String getPromoterId() {return PromoterId;}
+
+    public void setPromoterId(String promoterId) {PromoterId= promoterId;}
 
 }
