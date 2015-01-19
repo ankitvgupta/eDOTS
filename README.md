@@ -7,7 +7,6 @@ eDOTS
 
 2. Get Patient (Brendan)
   1. If in drop_down, the document_type indicates that they should have an ID and they don't then it should prompt them to enter a valid one (fairly non-essential, not really a promoter use case)
-	
 
 3. Register Patients
   1. add phone numbers and communicate with Pacientes_contactos
