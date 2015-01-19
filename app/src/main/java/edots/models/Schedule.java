@@ -113,4 +113,28 @@ public class Schedule {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
+    
+    
+    public Boolean scheduledLunes(){
+        return this.lunes == "1";
+    }
+    public Boolean scheduledMartes(){
+        return this.martes == "1";
+    }
+    public Boolean scheduledMiercoles(){
+        return this.miercoles == "1";
+    }
+    public Boolean scheduledJueves(){
+        return this.jueves == "1";
+    }
+    public Boolean scheduledViernes(){
+        return this.viernes == "1";
+    }
+    public Boolean scheduledSabado(){
+        return this.sabado == "1";
+    }
+    public Boolean scheduledDomingo(){
+        return this.domingo == "1";
+    }
+
 }
