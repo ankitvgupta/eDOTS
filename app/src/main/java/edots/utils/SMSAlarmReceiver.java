@@ -30,6 +30,7 @@ public class SMSAlarmReceiver extends BroadcastReceiver {
 
     /**
      * Uses SMSManager to send sms with the phone number and message
+     * @author JN
      * @param phoneNumber to send text to
      * @param message content of text to send
      * @param c context of the application

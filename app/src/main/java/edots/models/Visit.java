@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /**
  * Created by Ankit on 1/12/15.
  */
-public class Visit {
+public class Visit extends Saveable {
 
     private String LocaleCode;
     private String ProjectCode;
@@ -17,7 +17,6 @@ public class Visit {
     private String PacientCode;
     private String VisitDate;
     private String VisitTime;
-    private String PromoterId;
 
     // for testing only
     public Visit() {
@@ -28,14 +27,13 @@ public class Visit {
         PacientCode = "test5";
         VisitDate = "test6";
         VisitTime = "test7";
-        PromoterId = "test8";
         NombreGrupoVisita="test9";
         DescripcionVisita="test10";
     }
 
     // for production
     public Visit(String site, String project, String visitGroup,String nombreGroupoVisita,
-                 String vis, String descripcionVisita, String patient, String date, String time, String promoter){
+                 String vis, String descripcionVisita, String patient, String date, String time){
         LocaleCode=site;
         ProjectCode=project;
         VisitGroupCode = visitGroup;
@@ -45,7 +43,29 @@ public class Visit {
         PacientCode = patient;
         VisitDate = date;
         VisitTime = time;
-        PromoterId = promoter;
+    }
+
+    /**
+     *
+     * @author JN
+     * @param JSONobj
+     */
+    public Visit(String JSONobj){
+        try {
+            JSONObject n = new JSONObject(JSONobj);
+            LocaleCode = n.get("LocaleCode").toString();
+            ProjectCode = n.get("VisitGroupCode").toString();
+            VisitGroupCode = n.get("VisitGroupCode").toString();
+            PacientCode = n.get("PacientCode").toString();
+            VisitDate = n.get("VisitDate").toString();
+            VisitTime = n.get("VisitTime").toString();
+            NombreGrupoVisita = n.get("NombreGrupoVisita").toString();
+            DescripcionVisita = n.get("DescripcionVisita").toString();
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -96,9 +116,5 @@ public class Visit {
     public String getVisitTime() {return VisitTime;}
 
     public void setVisitTime(String time) {VisitTime = time;}
-
-    public String getPromoterId() {return PromoterId;}
-
-    public void setPromoterId(String promoterId) {PromoterId = promoterId;}
 
 }

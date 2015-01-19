@@ -151,13 +151,13 @@ public class GetPatientActivity extends Activity {
         setButtons(false);
         currentPatient = null;
         // TODO: Check if Patient is already stored locally first
-        JSONArray object;
+        JSONArray arr;
         try {
             // load list of patients from file patient_data
-            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
+            arr = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
             // look at all patients
-            for (int i = 0; i < object.length(); i++){
-                JSONObject obj = object.getJSONObject(i);
+            for (int i = 0; i < arr.length(); i++){
+                JSONObject obj = arr.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
                 // this ensures that they have a NationalId
                 if (p.getNationalID() == nationalid) {
@@ -178,7 +178,7 @@ public class GetPatientActivity extends Activity {
             // parse the result, and return itg
             try {
                 currentPatient = (Patient) p.get();
-                ArrayList<Visit> visits = currentPatient.getPatientHistory();
+                ArrayList<Visit> visits = currentPatient.getPatientHistory(this);
                 Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
                 //Log.v("Patient that we got is", currentPatient.toString());
             } catch (InterruptedException e1) {

@@ -62,7 +62,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     // based on the visits for the currentPatient, go through each date up until the current date
     // and set the background as Red or Green.
     public void updateColors(CaldroidFragment caldroidFragment, Calendar cal) {
-        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
         if (patientVisits != null) {
             numVisits = patientVisits.size();
@@ -110,7 +110,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
         header.setText("Past Visits for " + patientName);
 
 
-        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
         if (patientVisits != null){
             numVisits = patientVisits.size();

@@ -44,4 +44,14 @@
         android:layout_weight="0.12"
         android:layout_gravity="center_horizontal" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/refresh"
+        android:onClick="updateLocalManual"
+        android:drawableTop="@drawable/ic_action_refresh"
+        android:id="@+id/imageButton"
+        android:layout_weight="0" />
+
 </LinearLayout>

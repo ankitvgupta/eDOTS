@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Model for Promoters.
  *
  */
-public class Promoter extends Object {
+public class Promoter extends Saveable {
     private String PromoterId;
     private String Locale;
     private ArrayList<String> patient_ids;

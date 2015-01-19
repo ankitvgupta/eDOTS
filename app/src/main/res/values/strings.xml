@@ -98,5 +98,7 @@
     <string name="add_patient">Add Patient</string>
     <string name="patient_not_listed">Patient Not Listed</string>
     <string name="patient_not_listed_add_patient">This Patient Is Not Listed As One of Your Patients. Would You Like To Add this Patient?</string>
+    <string name="refresh">Refresh</string>
+    <string name="visits_data_filename">visits_data</string>
 
 </resources>

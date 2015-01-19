@@ -19,13 +19,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
-import edots.models.Visit;
-import edots.tasks.GetHistoryLoadTask;
 import edots.tasks.LoadPatientFromPromoterTask;
 import edots.utils.OfflineStorageManager;
 import edots.utils.SMSAlarmReceiver;
@@ -81,6 +78,11 @@ public class MainMenuActivity extends Activity {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pIntent);
         Log.w("MainMenuActivity:scheduleAlarm scheduled for", cal.toString());
+
+    }
+
+    //TODO: need to update all stuff locally
+    private void updateLocalManual(View view){
 
     }
 

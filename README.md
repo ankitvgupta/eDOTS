@@ -26,6 +26,8 @@ eDOTS
   2. What should the content of the text be
 	3. Being able to find relationship between promoters and coordinators
 
+6. Offline Storage refactoring and saving visits - JN
+    1. save project the patients are enrolled
 
 
 Overview of App Structure:

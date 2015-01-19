@@ -22,9 +22,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Locale;
+import edots.models.Patient;
 import edots.models.Promoter;
 import edots.tasks.LocaleLoadTask;
 import edots.utils.AccountLogin;
@@ -125,13 +127,12 @@ public class PromoterLoginActivity extends Activity {
         EditText u= (EditText)findViewById(R.id.username);
         EditText p= (EditText)findViewById(R.id.password);
         String username = u.getText().toString();
-        String password = u.getText().toString();
+        String password = p.getText().toString();
 
         String locale_name = spnLocale.getItemAtPosition(spnLocale.getSelectedItemPosition()).toString();
         String locale_num = "1";
         Locale[] objLocale = new Locale[0];
         String[] wee;
-
 
         try {
             if(loadLocale.get() == null){
@@ -163,6 +164,7 @@ public class PromoterLoginActivity extends Activity {
             e1.printStackTrace();
         }
 
+        Log.e("PromoterLoginActivity: switchPatientType", username +" " + password);
 
         boolean validLogin = checkLogin(username, password, locale_num, locale_name);
         if (validLogin){
@@ -171,6 +173,15 @@ public class PromoterLoginActivity extends Activity {
                 OfflineStorageManager.SaveWebPatientData(new_promoter, this);
                 Intent intent = new Intent(this, MainMenuActivity.class);
                 p_d.setVisibility(View.GONE);
+
+                //TESTING ONLY:
+                OfflineStorageManager sm = new OfflineStorageManager();
+                ArrayList<Patient> patients_list = new ArrayList<Patient>();
+                patients_list.add(new Patient(Long.valueOf("12323234")));
+                patients_list.add(new Patient(Long.valueOf("23434345")));
+
+                sm.SaveArrayListToLocal(patients_list, getString(R.string.patient_data_filename), this);
+
                 startActivity(intent);
             }
             catch (JSONException e){
@@ -214,7 +225,9 @@ public class PromoterLoginActivity extends Activity {
      */
     public boolean checkLogin(String username, String password, String locale, String locale_name) {
         if(password != null && !password.isEmpty()) {
+
             String message =  AccountLogin.login(username, password, locale, locale_name, this);
+
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
                 OfflineStorageManager.SetLastLocalUpdateTime(this);
                 return true;

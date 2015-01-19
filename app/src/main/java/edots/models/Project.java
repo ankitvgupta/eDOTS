@@ -15,7 +15,7 @@ import java.util.Random;
  *
  *
  */
-public class Project {
+public class Project extends Saveable{
     // TODO: consistent capitalization of all class variables
     private String ProjectId;
     private ArrayList<String> medications = new ArrayList<String>();
