@@ -46,10 +46,6 @@
             android:label="@string/title_activity_confirm_patient" >
         </activity>
         <activity
-            android:name=".PatientHomeActivity"
-            android:label="@string/title_activity_patient_home" >
-        </activity>
-        <activity
             android:name=".MedicalHistoryActivity"
             android:label="@string/title_activity_medical_history" >
         </activity>
@@ -62,7 +58,6 @@
             android:label="@string/title_activity_promoter_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
