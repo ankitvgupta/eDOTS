@@ -7,9 +7,7 @@ eDOTS
 	4. Schedule Table in SQL (not us)
 
 2. Get Patient (Brendan)
-  1. If they enter a Valid DNI, ask if they want to add that patient as one of their promoters in the drop down, and add that to the table (need to reload patient list for dropdown)
-	2. If patient already listed don't allow to add patient
-  3. If in drop_down, the document_type indicates that they should have an ID and they don't then it should prompt them to enter a valid one (fairly non-essential, not really a promoter use case)
+  1. If in drop_down, the document_type indicates that they should have an ID and they don't then it should prompt them to enter a valid one (fairly non-essential, not really a promoter use case)
 	
 
 
@@ -29,7 +27,17 @@ eDOTS
 	3. Being able to find relationship between promoters and coordinators
 
 6. General
-  1. Refactor LoadTasks so that offline and online happen in the same class
+  1. Refactor LoadTasks so that offline and online happen in the same class (workin on it for visits)
+	
+	
+Things to Communicate with Juan
+============
+1. General layout of code, which activities lead to which, what packages mean
+2. SMS 
+3. Shared Preferences
+4. Offline functionality
+5. Fingerprint Reader 
+
 
 
 Overview of App Structure:
