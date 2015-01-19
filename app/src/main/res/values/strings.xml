@@ -19,9 +19,7 @@
     <string name="treatment_days">Treatment Days</string>
     <string name="treatment_start_day">Project Start Day</string>
     <string name="treatmnet_end_day">Project End Day</string>
-    <string name="generate_visit"> Generate Visit</string>
-    <string name="get_patient_national_id">National ID</string>
-    <string name="get_patient_search_national_id">National ID #</string>
+    <string name="existing_patient"> Existing Patient</string>
     <string name="get_patient_button_use_national_id">Search</string>
     <string name="get_patient_search_new_patient">Search for new patient</string>
     <string name="get_patient_button_checkFingerPrint">Scan Fingerprint</string>
@@ -79,8 +77,6 @@
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
     <string name="view_all_patients">View all Patients</string>
-    <string name="namespace">http://demo.sociosensalud.org.pe/</string>
-    <string name="serverurl">EdotsWS/Service1.asmx</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="date_label_set">Press the button to set the date</string>
     <string name="date_button_set">Set Date</string>
@@ -102,5 +98,7 @@
     <string name="title_activity_show_visit">ShowVisitActivity</string>
     <string name="medical_history_see_full_history">See Full Patient History</string>
     <string name="title_activity_multi_date_picker">MultiDatePickerActivity</string>
-
+    <string name="login_error_message"> Your username or password was incorrect or invalid</string>
+    <string name="server_url">http://demo.sociosensalud.org.pe</string>
+    <string name="serverurl">/EdotsWS/Service1.asmx</string>
 </resources>

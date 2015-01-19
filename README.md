@@ -1,5 +1,4 @@
 eDOTS
-=====
 1. Calendar - @Nishant
 	1. Clean up code base and comment
  	2. Tabs to go between medical history and calendar
@@ -10,7 +9,6 @@ eDOTS
   1. If in drop_down, the document_type indicates that they should have an ID and they don't then it should prompt them to enter a valid one (fairly non-essential, not really a promoter use case)
 	
 
-
 3. Register Patients
   1. add phone numbers and communicate with Pacientes_contactos
   2. If internet cuts out, then add some banner that alerts them @JN and @Ankit (with what is possible) - DONE
@@ -20,7 +18,7 @@ eDOTS
 4. New Visit
   1. Make sure visit group, visit_id, and projects are real numbers (right now they are dummy values) (@Lili) - DONE
   2. Making logging a new visit uninternetable
-  3. fix enrolled project name @lili
+  3. fix enrolled project name - DONE
  
 5. SMS - @JN and @Ankit (with what is possible)
   1. Knowing which patients to send texts to
@@ -28,11 +26,13 @@ eDOTS
 	3. Being able to find relationship between promoters and coordinators
 
 6. General
-  1. Refactor LoadTasks so that offline and online happen in the same class (workin on it for visits)
-	
-	
+  1. Refactor LoadTasks so that offline and online happen in the same class (working on it for visits)
+  2. do not hardcode in server name for all load tasks
+
+7. Promoter Login
+  1. sometimes need to press log in button twice to log in
+
 Things to Communicate with Juan
-============
 1. General layout of code, which activities lead to which, what packages mean
 2. SMS 
 3. Shared Preferences

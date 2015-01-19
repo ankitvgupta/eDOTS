@@ -16,8 +16,7 @@ import java.util.Random;
  *
  */
 public class Project {
-    // TODO: consistent capitalization of all class variables
-    private String Id;
+    private String id;
     private ArrayList<String> medications = new ArrayList<String>();
     private ArrayList<String> types = new ArrayList<String>();
     private String name;
@@ -28,7 +27,7 @@ public class Project {
         try {
             Random r = new Random();
             int num = r.nextInt(100);
-            Id = "5";
+            id = "6";
             name = Integer.toString(num);
             medications = new ArrayList<String>();
             medications.add("Med 1");
@@ -46,7 +45,7 @@ public class Project {
     public Project (String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
-            Id = n.get("projectId").toString();
+            id = n.get("projectId").toString();
             name = n.get("name").toString();
             JSONArray temp = new JSONArray(n.get("medications").toString());
             medications = new ArrayList<String>();
@@ -64,7 +63,7 @@ public class Project {
      * @param n name of the project
      */
     public Project(String i, String n){
-        Id = i;
+        id = i;
         name = n;
     }
 
@@ -90,11 +89,11 @@ public class Project {
     }
 
     public String getId(){
-        return Id;
+        return id;
     }
 
     public void setId(String id){
-        Id = id;
+        this.id = id;
     }
 
     public void setMedications(ArrayList<String> m){

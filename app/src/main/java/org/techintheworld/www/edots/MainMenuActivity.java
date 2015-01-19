@@ -19,22 +19,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
-import edots.models.Visit;
-import edots.tasks.GetHistoryLoadTask;
 import edots.tasks.GetPatientFromIDTask;
-import edots.tasks.GetPatientLoadTask;
 import edots.tasks.LoadPatientFromPromoterTask;
 import edots.utils.OfflineStorageManager;
 import edots.utils.SMSAlarmReceiver;
 
 public class MainMenuActivity extends Activity {
     Button btnSendSMS;
+    ArrayList<String> patients = new ArrayList<String>(); // an arraylist of the patients that need to be messaged today
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +44,17 @@ public class MainMenuActivity extends Activity {
         // Creates listener for SMS sending button
         btnSendSMS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO: get from service instead of hard coding
-                String userid = prefs.getString("userid", null);
-                
-                String message = sendSMSForGivenPromoter(userid);
-                //String phoneNo = "943229757";
-                String phoneNo = "943206118";
-                //String message = getString(R.string.message);
-                Calendar calendar = Calendar.getInstance();
-                Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
-                calendar.add(Calendar.MINUTE, 1);
-                scheduleSMSAlarm(phoneNo, message, calendar);
+            //TODO: get from service instead of hard coding
+            String userid = prefs.getString("userid", null);
+
+            String message = sendSMSForGivenPromoter(userid);
+            String phoneNo = "943229757";
+            //String phoneNo = "943206118";
+            //String message = getString(R.string.message);
+            Calendar calendar = Calendar.getInstance();
+            Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
+            calendar.add(Calendar.MINUTE, 1);
+            scheduleSMSAlarm(phoneNo, message, calendar);
             }
         });
 
@@ -90,9 +87,42 @@ public class MainMenuActivity extends Activity {
 
     }
 
+    /**
+     * 
+     * @author Ankit 
+     * Queries the server to find all of the patients that missed their appointment today 
+     * 
+     * TODO: For now this just pulls all of the patients of the given promoter
+     * TODO: Change this to load the true missed patients 
+     */
+    private void loadMissedPatients(){
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String promoterID = prefs.getString("userid", null);
+
+  
+        LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
+        AsyncTask loadPatientsTask = loadPatients.execute(getString(R.string.server_url), promoterID);
+        try {
+            patients = (ArrayList<String>) loadPatientsTask.get();
+            Log.v("MainMenuActivity.java: The patients in the second load are", patients.toString());
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        
+        
+    }
+
 
     /**
      *  
+     * @author Ankit  
      * @param patientID the patient that the sms is being sent to
      * @return bool indicating success
      * 
@@ -103,6 +133,8 @@ public class MainMenuActivity extends Activity {
     }
 
     /**
+     * 
+     * @author 
      * Determines if the given patient has missed a pill, and returns the patient name if so 
      * @param patientID
      * @return boolean indicating whether patient missed pill
@@ -111,11 +143,12 @@ public class MainMenuActivity extends Activity {
      * TODO: For now this just returns true for everyone
      */
     private boolean missedPill (String patientID){
-        return true;
+        return patients.contains(patientID);
     }
 
     /**
-     * 
+     *
+     * @author
      * @param promoterID id of the promoter whose patients this will send sms to
      * @return String with the aggregate summary to send to the promoter
      * 
@@ -125,21 +158,26 @@ public class MainMenuActivity extends Activity {
 
         String aggregate = "";
         LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
-        AsyncTask loadPatientsTask = loadPatients.execute("http://demo.sociosensalud.org.pe", promoterID);
+        AsyncTask loadPatientsTask = loadPatients.execute(getString(R.string.server_url), promoterID);
         try {
             ArrayList<String> patients = (ArrayList<String>) loadPatientsTask.get();
             Log.v("MainMenuActivity.java: The patients are", patients.toString());
+            loadMissedPatients();
             
             for (int i = 0; i < patients.size(); i++){
                 if (missedPill(patients.get(i))){
+                    Log.v("MainMenuActivity.java: This patient missed a visit", patients.get(i));
                     sendSMSToPatient(patients.get(i));
                     GetPatientFromIDTask pTask = new GetPatientFromIDTask();
-                    AsyncTask p = pTask.execute("http://demo.sociosensalud.org.pe", patients.get(i));
+                    AsyncTask p = pTask.execute(getString(R.string.server_url), patients.get(i));
 
                     Patient pat =  (Patient) p.get();
                     String message = pat.getName();
                     
                     aggregate += (message + "\n");
+                }
+                else{
+                    Log.v("MainMenuActivity.java: This patient did not miss a visit: ", patients.get(i));
                 }
             }
             
@@ -169,7 +207,7 @@ public class MainMenuActivity extends Activity {
      */
     /*private boolean sendSMSForGivenCoordinator(String coordinatorID){
         GetPromotersFromCoordinatorsLoadTask loadPromoters = new GetPromotersFromCoordinatorsLoadTask();
-        AsyncTask loadPromotersTask = loadPromoters.execute("http://demo.sociosensalud.org.pe", coordinatorID);
+        AsyncTask loadPromotersTask = loadPromoters.execute(getString(R.string.server_url), coordinatorID);
         String aggregate = "";
         try {
             
@@ -199,7 +237,7 @@ public class MainMenuActivity extends Activity {
      */
     /*private void determineSMS(){
         GetCoordinatorsLoadTask loadCoordinators = new GetCoordinatorsLoadTask(); // This task doesn't exist yet.
-        AsyncTask loadCoordinatorsTask = loadCoordinators.execute("http://demo.sociosensalud.org.pe");
+        AsyncTask loadCoordinatorsTask = loadCoordinators.execute(getString(R.string.server_url));
         try {
             ArrayList<String> coordinators = (ArrayList<String>) loadCoordinatorsTask.get();
             Log.v("MainMenuActivity.java: The coordinators are", coordinators.toString());
@@ -229,12 +267,12 @@ public class MainMenuActivity extends Activity {
     }*/
 
     /**
-     * Sets the Broadcast Receivers that listen to SMS delivery status
      * @author JN
+     * Sets the Broadcast Receivers that listen to SMS delivery status
      */
     public void setSMSDeliveryReceivers(){
-        String SENT = getString(R.string.sms_sent);
-        String DELIVERED = getString(R.string.sms_delivered);
+        final String SENT = getString(R.string.sms_sent);
+        final String DELIVERED = getString(R.string.sms_delivered);
         //---when the SMS has been sent---
         registerReceiver(new BroadcastReceiver() {
             @Override
@@ -242,7 +280,7 @@ public class MainMenuActivity extends Activity {
                 switch (getResultCode()) {
                     //TODO: code the message in strings.xml
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS sent",
+                        Toast.makeText(getBaseContext(), SENT,
                                 Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
@@ -271,7 +309,7 @@ public class MainMenuActivity extends Activity {
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS delivered",
+                        Toast.makeText(getBaseContext(), DELIVERED,
                                 Toast.LENGTH_SHORT).show();
                         break;
                     case Activity.RESULT_CANCELED:

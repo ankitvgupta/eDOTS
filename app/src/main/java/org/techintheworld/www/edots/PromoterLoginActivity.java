@@ -58,7 +58,7 @@ public class PromoterLoginActivity extends Activity {
             startActivity(intent);
         }
         else {
-            String myurl = "http://demo.sociosensalud.org.pe";
+            String myurl = getString(R.string.server_url);
             loadLocaleSpinner(myurl);
         }
         // Progress bar set to gone on page load

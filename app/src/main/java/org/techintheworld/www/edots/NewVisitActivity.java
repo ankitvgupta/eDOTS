@@ -205,7 +205,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         String result = "-1";
         try {
             Log.v("new visit: currentVisit", currentVisit.toString());
-            result = uploader.execute("http://demo.sociosensalud.org.pe",
+            result = uploader.execute(getString(R.string.server_url),
                                       currentVisit.getLocaleCode(),
                                       currentVisit.getProjectCode(),
                                       currentVisit.getVisitGroupCode(),
