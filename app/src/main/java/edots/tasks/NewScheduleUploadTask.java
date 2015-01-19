@@ -25,7 +25,7 @@ public class NewScheduleUploadTask extends AsyncTask<String,String,String> {
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "InsertarParticipanteSchedule";// TODO: Change this to a new method
+        final String METHOD_NAME = "InsertarParticipanteSchedule";// TODO: Change this to a new method for schedule uploads
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 

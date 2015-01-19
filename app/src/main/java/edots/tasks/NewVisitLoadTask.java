@@ -24,6 +24,7 @@ public class NewVisitLoadTask extends AsyncTask<String,String,Visit> {
 
         // setup server parameters
         // TODO: do not hard code in these parameters
+        
         final String NAMESPACE = "http://demo.sociosensalud.org.pe/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
         final String METHOD_NAME = "ListadoGrupoVisitas";
