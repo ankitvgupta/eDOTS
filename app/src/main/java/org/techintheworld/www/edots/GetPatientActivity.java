@@ -190,6 +190,7 @@ public class GetPatientActivity extends Activity {
             GetPatientLoadTask newP = new GetPatientLoadTask();
             AsyncTask p = newP.execute(getString(R.string.server_url), nationalid);
 
+            
             // parse the result, and return itg
             try {
                 currentPatient = (Patient) p.get();

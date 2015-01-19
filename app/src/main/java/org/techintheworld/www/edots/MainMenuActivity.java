@@ -105,7 +105,7 @@ public class MainMenuActivity extends Activity {
 
   
         LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
-        AsyncTask loadPatientsTask = loadPatients.execute("http://demo.sociosensalud.org.pe", promoterID);
+        AsyncTask loadPatientsTask = loadPatients.execute(getString(R.string.server_url), promoterID);
         try {
             patients = (ArrayList<String>) loadPatientsTask.get();
             Log.v("MainMenuActivity.java: The patients in the second load are", patients.toString());
@@ -162,7 +162,7 @@ public class MainMenuActivity extends Activity {
 
         String aggregate = "";
         LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
-        AsyncTask loadPatientsTask = loadPatients.execute("http://demo.sociosensalud.org.pe", promoterID);
+        AsyncTask loadPatientsTask = loadPatients.execute(getString(R.string.server_url), promoterID);
         try {
             ArrayList<String> patients = (ArrayList<String>) loadPatientsTask.get();
             Log.v("MainMenuActivity.java: The patients are", patients.toString());
@@ -173,7 +173,7 @@ public class MainMenuActivity extends Activity {
                     Log.v("MainMenuActivity.java: This patient missed a visit", patients.get(i));
                     sendSMSToPatient(patients.get(i));
                     GetPatientFromIDTask pTask = new GetPatientFromIDTask();
-                    AsyncTask p = pTask.execute("http://demo.sociosensalud.org.pe", patients.get(i));
+                    AsyncTask p = pTask.execute(getString(R.string.server_url), patients.get(i));
 
                     Patient pat =  (Patient) p.get();
                     String message = pat.getName();
@@ -211,7 +211,7 @@ public class MainMenuActivity extends Activity {
      */
     /*private boolean sendSMSForGivenCoordinator(String coordinatorID){
         GetPromotersFromCoordinatorsLoadTask loadPromoters = new GetPromotersFromCoordinatorsLoadTask();
-        AsyncTask loadPromotersTask = loadPromoters.execute("http://demo.sociosensalud.org.pe", coordinatorID);
+        AsyncTask loadPromotersTask = loadPromoters.execute(getString(R.string.server_url), coordinatorID);
         String aggregate = "";
         try {
             
@@ -241,7 +241,7 @@ public class MainMenuActivity extends Activity {
      */
     /*private void determineSMS(){
         GetCoordinatorsLoadTask loadCoordinators = new GetCoordinatorsLoadTask(); // This task doesn't exist yet.
-        AsyncTask loadCoordinatorsTask = loadCoordinators.execute("http://demo.sociosensalud.org.pe");
+        AsyncTask loadCoordinatorsTask = loadCoordinators.execute(getString(R.string.server_url));
         try {
             ArrayList<String> coordinators = (ArrayList<String>) loadCoordinatorsTask.get();
             Log.v("MainMenuActivity.java: The coordinators are", coordinators.toString());
