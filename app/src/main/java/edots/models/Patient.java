@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.tasks.GetHistoryLoadTask;
+import edots.tasks.GetPatientScheduleLoadTask;
 
 
 /**
@@ -149,6 +150,33 @@ public class Patient extends Object{
 
         return temp.toString();
 
+    }
+
+    /**
+     * @author Ankit
+     * @return this patient's schedule
+     */
+    public Schedule getPatientSchedule(){
+        String patientCode = pid; // for production
+        //String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
+        GetPatientScheduleLoadTask newP = new GetPatientScheduleLoadTask();
+        AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
+        try {
+            Schedule s = (Schedule) p.get();
+            Log.v("Patient.java: The schedule is", s.toString());
+            return s;
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        return null;
+        
     }
 
     /**
