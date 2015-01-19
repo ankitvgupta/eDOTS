@@ -35,6 +35,7 @@ import edots.utils.SMSAlarmReceiver;
 
 public class MainMenuActivity extends Activity {
     Button btnSendSMS;
+    ArrayList<String> patients = new ArrayList<String>(); // an arraylist of the patients that need to be messaged today
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +48,17 @@ public class MainMenuActivity extends Activity {
         // Creates listener for SMS sending button
         btnSendSMS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO: get from service instead of hard coding
-                String userid = prefs.getString("userid", null);
-                
-                String message = sendSMSForGivenPromoter(userid);
-                //String phoneNo = "943229757";
-                String phoneNo = "943206118";
-                //String message = getString(R.string.message);
-                Calendar calendar = Calendar.getInstance();
-                Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
-                calendar.add(Calendar.MINUTE, 1);
-                scheduleSMSAlarm(phoneNo, message, calendar);
+            //TODO: get from service instead of hard coding
+            String userid = prefs.getString("userid", null);
+
+            String message = sendSMSForGivenPromoter(userid);
+            String phoneNo = "943229757";
+            //String phoneNo = "943206118";
+            //String message = getString(R.string.message);
+            Calendar calendar = Calendar.getInstance();
+            Log.w("MainMenuActivity:scheduleAlarm  current time", calendar.toString());
+            calendar.add(Calendar.MINUTE, 1);
+            scheduleSMSAlarm(phoneNo, message, calendar);
             }
         });
 
@@ -90,9 +91,42 @@ public class MainMenuActivity extends Activity {
 
     }
 
+    /**
+     * 
+     * @author Ankit 
+     * Queries the server to find all of the patients that missed their appointment today 
+     * 
+     * TODO: For now this just pulls all of the patients of the given promoter
+     * TODO: Change this to load the true missed patients 
+     */
+    private void loadMissedPatients(){
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String promoterID = prefs.getString("userid", null);
+
+  
+        LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
+        AsyncTask loadPatientsTask = loadPatients.execute("http://demo.sociosensalud.org.pe", promoterID);
+        try {
+            patients = (ArrayList<String>) loadPatientsTask.get();
+            Log.v("MainMenuActivity.java: The patients in the second load are", patients.toString());
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        
+        
+    }
+
 
     /**
      *  
+     * @author Ankit  
      * @param patientID the patient that the sms is being sent to
      * @return bool indicating success
      * 
@@ -103,6 +137,8 @@ public class MainMenuActivity extends Activity {
     }
 
     /**
+     * 
+     * @author 
      * Determines if the given patient has missed a pill, and returns the patient name if so 
      * @param patientID
      * @return boolean indicating whether patient missed pill
@@ -111,11 +147,12 @@ public class MainMenuActivity extends Activity {
      * TODO: For now this just returns true for everyone
      */
     private boolean missedPill (String patientID){
-        return true;
+        return patients.contains(patientID);
     }
 
     /**
-     * 
+     *
+     * @author
      * @param promoterID id of the promoter whose patients this will send sms to
      * @return String with the aggregate summary to send to the promoter
      * 
@@ -129,9 +166,11 @@ public class MainMenuActivity extends Activity {
         try {
             ArrayList<String> patients = (ArrayList<String>) loadPatientsTask.get();
             Log.v("MainMenuActivity.java: The patients are", patients.toString());
+            loadMissedPatients();
             
             for (int i = 0; i < patients.size(); i++){
                 if (missedPill(patients.get(i))){
+                    Log.v("MainMenuActivity.java: This patient missed a visit", patients.get(i));
                     sendSMSToPatient(patients.get(i));
                     GetPatientFromIDTask pTask = new GetPatientFromIDTask();
                     AsyncTask p = pTask.execute("http://demo.sociosensalud.org.pe", patients.get(i));
@@ -140,6 +179,9 @@ public class MainMenuActivity extends Activity {
                     String message = pat.getName();
                     
                     aggregate += (message + "\n");
+                }
+                else{
+                    Log.v("MainMenuActivity.java: This patient did not miss a visit: ", patients.get(i));
                 }
             }
             
