@@ -46,10 +46,6 @@
             android:label="@string/title_activity_confirm_patient" >
         </activity>
         <activity
-            android:name=".PatientHomeActivity"
-            android:label="@string/title_activity_patient_home" >
-        </activity>
-        <activity
             android:name=".MedicalHistoryActivity"
             android:label="@string/title_activity_medical_history" >
         </activity>
