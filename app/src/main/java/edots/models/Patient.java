@@ -158,7 +158,7 @@ public class Patient extends Object{
         GetPatientScheduleLoadTask newP = new GetPatientScheduleLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
         try {
-            Schedule s = (ArrayList<Visit>) p.get();
+            Schedule s = (Schedule) p.get();
             Log.v("Patient.java: The schedule is", s.toString());
             return s;
         }
