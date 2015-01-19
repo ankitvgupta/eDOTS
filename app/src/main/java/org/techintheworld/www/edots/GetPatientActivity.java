@@ -147,7 +147,6 @@ public class GetPatientActivity extends Activity {
      */
     public void btnSearchClicked(View view) {
         hideKeyboard();
-        // TODO: need loadPatient() function
         loadPatient(view);
         Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
     }
@@ -477,8 +476,8 @@ public class GetPatientActivity extends Activity {
 
     /**
      * @author lili
+     * hide keyboard
      */
-    // TODO: move to util
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();
