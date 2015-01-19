@@ -164,7 +164,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
                 do {
                     if (newDate.before(currentDate)) {
-                        caldroidFragment.setBackgroundResourceForDate(R.color.light_red, newDate);
+                        caldroidFragment.setBackgroundResourceForDate(R.color.red, newDate);
                     } else if (newDate.after(currentDate)) {
                         caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, newDate);
                     }

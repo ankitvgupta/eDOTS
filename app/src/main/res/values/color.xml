@@ -2,6 +2,7 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
     <color name="blue_pressed">@android:color/holo_blue_dark</color>
     <color name="blue_normal">@android:color/holo_blue_light</color>
     <item name="transparent" type="color">#00FFFFFF</item>
