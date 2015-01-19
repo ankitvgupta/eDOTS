@@ -18,7 +18,19 @@ public class Schedule {
     private String startDate;
     private String endDate;
     
-    public Schedule(){};
+    public Schedule(){
+        codigoPaciente = "1";
+        this.lunes = "1";
+        this.martes = "1";
+        this.miercoles = "1";
+        this.jueves = "1";
+        this.viernes = "1";
+        this.sabado = "1";
+        this.domingo = "1";
+        this.startDate = "11/11/2013";
+        this.endDate = "11/11/2015";
+        
+    };
     
     public Schedule (String code, String l, String ma, String mi, String j, String v, String s, String d, String start, String end){
         this.codigoPaciente = code;

@@ -157,6 +157,11 @@ public class Patient extends Object{
      * @return this patient's schedule
      */
     public Schedule getPatientSchedule(){
+        
+        return new Schedule(); // TODO: This line is just for testing, for production do the below.
+        
+        //TODO: The below is the real code
+        /*
         String patientCode = pid; // for production
         //String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
         GetPatientScheduleLoadTask newP = new GetPatientScheduleLoadTask();
@@ -176,6 +181,7 @@ public class Patient extends Object{
             e.printStackTrace();
         }
         return null;
+        */
         
     }
 
