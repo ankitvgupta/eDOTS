@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/get_patient_national_id"
+                android:text="@string/national_ID"
                 android:id="@+id/textView" />
 
             <!--national id field-->
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:inputType="number"
-                android:hint="@string/get_patient_national_id">
+                android:hint="@string/national_ID">
             </EditText>
 
             <!-- button for continuing using national id -->

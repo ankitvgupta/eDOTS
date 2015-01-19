@@ -47,7 +47,8 @@
         </activity>
         <activity
             android:name=".MedicalHistoryActivity"
-            android:label="@string/title_activity_medical_history" >
+            android:label="@string/title_activity_medical_history"
+            android:parentActivityName=".GetPatientActivity" >
         </activity>
         <activity
             android:name=".NewVisitActivity"
@@ -64,8 +65,7 @@
         </activity>
         <activity
             android:name=".MainMenuActivity"
-            android:label="MainMenuActivity"
-            android:parentActivityName=".PromoterLoginActivity" >
+            android:label="MainMenuActivity" >
         </activity>
 
         <receiver android:name="edots.utils.SMSAlarmReceiver" >
@@ -79,7 +79,8 @@
 
         <activity
             android:name=".ShowVisitActivity"
-            android:label="@string/title_activity_show_visit" >
+            android:label="@string/title_activity_show_visit"
+            android:parentActivityName=".GetPatientActivity">
         </activity>
     </application>
 

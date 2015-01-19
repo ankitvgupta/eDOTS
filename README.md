@@ -28,7 +28,10 @@ eDOTS
 6. General
   1. Refactor LoadTasks so that offline and online happen in the same class (working on it for visits)
   2. do not hardcode in server name for all load tasks
-	
+
+7. Promoter Login
+  1. sometimes need to press log in button twice to log in
+
 Things to Communicate with Juan
 1. General layout of code, which activities lead to which, what packages mean
 2. SMS 
