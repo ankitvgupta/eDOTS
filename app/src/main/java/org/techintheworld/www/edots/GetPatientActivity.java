@@ -150,7 +150,6 @@ public class GetPatientActivity extends Activity {
     public void btnSearchClicked(View view) {
         hideKeyboard();
         loadPatient(view);
-        Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
     }
 
 
@@ -192,7 +191,7 @@ public class GetPatientActivity extends Activity {
             AsyncTask p = newP.execute(getString(R.string.server_url), nationalid);
 
             
-            // parse the result, and return itg
+            // parse the result, and return it
             try {
                 currentPatient = (Patient) p.get();
             } catch (InterruptedException e1) {
@@ -214,10 +213,9 @@ public class GetPatientActivity extends Activity {
     public void loadPatientProject(){
         Project currentProject;
         PatientProjectLoadTask loadTask = new PatientProjectLoadTask();
-        Log.v("GetPatientActivity: pid and userid", currentPatient.getPid()+ promoterId);
-        AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
 
         try {
+            AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
             currentProject = (Project) task.get();
             currentPatient.setEnrolledProject(currentProject);
             Log.v("GetPatientActivity.java: The project", currentProject.toString());
