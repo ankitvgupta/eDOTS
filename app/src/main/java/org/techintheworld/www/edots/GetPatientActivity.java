@@ -147,7 +147,6 @@ public class GetPatientActivity extends Activity {
      */
     public void btnSearchClicked(View view) {
         hideKeyboard();
-        // TODO: need loadPatient() function
         loadPatient(view);
         Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
     }
@@ -477,8 +476,8 @@ public class GetPatientActivity extends Activity {
 
     /**
      * @author lili
+     * hide keyboard
      */
-    // TODO: move to util
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();
@@ -503,7 +502,6 @@ public class GetPatientActivity extends Activity {
                 JSONObject obj = object.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
                     patients[i] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
-
             }
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, patients);
@@ -516,7 +514,6 @@ public class GetPatientActivity extends Activity {
         catch(NullPointerException e1){
             e1.printStackTrace();
         }
-
 
     }
 

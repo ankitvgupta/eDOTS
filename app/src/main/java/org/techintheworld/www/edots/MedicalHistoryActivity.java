@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import edots.models.Patient;
+import edots.models.Schedule;
 import edots.models.Visit;
 
 /*
@@ -74,6 +75,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     * Adds colors and listeners to calendar
     */
     public void updateCalendar(CaldroidFragment caldroidFragment, Calendar cal) {
+        Schedule patientSchedule = currentPatient.getPatientSchedule();
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
         int numVisits = 0;
         if (patientVisits != null) {
@@ -101,7 +103,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
             Date greenDate = new Date(visitYearInt, visitMonthInt, visitDayInt); // January 16, 1963
             caldroidFragment.setBackgroundResourceForDate(R.color.green, greenDate);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         }
 
         CaldroidListener listener = new CaldroidListener() {

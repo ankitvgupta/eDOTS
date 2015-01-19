@@ -16,8 +16,7 @@ import java.util.Random;
  *
  */
 public class Project {
-    // TODO: consistent capitalization of all class variables
-    private String Id;
+    private String id;
     private String name;
 
 
@@ -26,7 +25,7 @@ public class Project {
         try {
             Random r = new Random();
             int num = r.nextInt(100);
-            Id = "5";
+            id = "5";
             name = Integer.toString(num);
         }
         catch (Exception e){
@@ -41,7 +40,7 @@ public class Project {
     public Project (String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
-            Id = n.get("projectId").toString();
+            id = n.get("projectId").toString();
             name = n.get("name").toString();
         }
         catch (JSONException e) {
@@ -54,7 +53,7 @@ public class Project {
      * @param n name of the project
      */
     public Project(String i, String n){
-        Id = i;
+        id = i;
         name = n;
     }
 
@@ -76,11 +75,11 @@ public class Project {
     }
 
     public String getId(){
-        return Id;
+        return id;
     }
 
     public void setId(String id){
-        Id = id;
+        this.id = id;
     }
 
     public void setName(String s){

@@ -14,12 +14,13 @@ eDOTS
 3. Register Patients
   1. add phone numbers and communicate with Pacientes_contactos
   2. If internet cuts out, then add some banner that alerts them @JN and @Ankit (with what is possible) - DONE
-	3. Add to usuarios_pacients on registration @Brendan
-
+  3. Add to usuarios_pacients on registration @Brendan
+  4. change list of active treatment from dummy values to real values
 
 4. New Visit
-  1. Make sure visit group, visit_id, and projects are real numbers (right now they are dummy values) 
-	2. Making logging a new visit uninternetable 
+  1. Make sure visit group, visit_id, and projects are real numbers (right now they are dummy values) (@Lili) - DONE
+  2. Making logging a new visit uninternetable
+  3. fix enrolled project name @lili
  
 5. SMS - @JN and @Ankit (with what is possible)
   1. Knowing which patients to send texts to

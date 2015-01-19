@@ -2,6 +2,7 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -35,6 +38,7 @@ import edots.models.Project;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPatientUploadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
+import edots.tasks.NewScheduleUploadTask;
 import edots.utils.DatePickerFragment;
 import edots.utils.InternetConnection;
 
@@ -48,19 +52,27 @@ import edots.utils.InternetConnection;
  *
  * Used to parse inputted data about a new patient, and submit that to the server.
  *
- * onSubmit behavior: adds Patient to db, pulls patient from db to get patientcode, and passes that Patient to GetPatientActivity via Intent
+ * onSubmit behavior: adds Patient to db, pulls patient from db to get patientId, and passes that Patient to GetPatientActivity via Intent
  */
 
-public class NewPatientDataActivity extends Activity implements DatePickerFragment.TheListener {
+public class NewPatientDataActivity extends Activity {
 
     private Patient currentPatient;
     private ArrayList<Project> treatmentList = new ArrayList<Project>();
-    EditText birthDatePicker;
-    EditText treatmentStartDatePicker;
-    EditText treatmentEndDatePicker;
-    private String date_string;
+    private ArrayList<String> treatmentDays = new ArrayList<String>();
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private Calendar birthDate;
+    private Calendar startDate;
+    private Calendar endDate;
+    private EditText activeDateDisplay;
+    private Calendar activeDate;
+    private EditText birthDateDisplay;
+    private EditText startDateDisplay;
+    private EditText endDateDisplay;
+
+    static final int DATE_DIALOG_ID = 0;
 
     @Override
     /**
@@ -89,49 +101,96 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
      * Loads the datePickers for birthdate, treatment start day and treatment end day
      */
     public void loadDatePickers() {
-        birthDatePicker = (EditText) findViewById(R.id.Birthdate);
-        birthDatePicker.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                DialogFragment picker = new DatePickerFragment();
-                picker.show(getFragmentManager(), "datePicker");
+        birthDateDisplay = (EditText) findViewById(R.id.Birthdate);
+        startDateDisplay = (EditText) findViewById(R.id.treatment_start_day);
+        endDateDisplay = (EditText) findViewById(R.id.treatment_end_day);
+
+        /* get the current date */
+        birthDate = Calendar.getInstance();
+
+        birthDateDisplay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDateDialog(birthDateDisplay, birthDate);
             }
-
         });
 
-        treatmentStartDatePicker = (EditText) findViewById(R.id.treatment_start_day);
-        treatmentStartDatePicker.setOnClickListener(new View.OnClickListener() {
+        startDate = Calendar.getInstance();
 
-            @Override
-            public void onClick(View arg0) {
-                DialogFragment picker = new DatePickerFragment();
-                picker.show(getFragmentManager(), "datePicker");
+        startDateDisplay.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                showDateDialog(startDateDisplay, startDate);
             }
-
         });
 
-        treatmentEndDatePicker = (EditText) findViewById(R.id.treatment_end_day);
-        treatmentEndDatePicker.setOnClickListener(new View.OnClickListener() {
+        endDate = Calendar.getInstance();
 
-            @Override
-            public void onClick(View arg0) {
-                DialogFragment picker = new DatePickerFragment();
-                picker.show(getFragmentManager(), "datePicker");
+        endDateDisplay.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                showDateDialog(endDateDisplay, endDate);
             }
-
         });
+
+        updateDisplay(birthDateDisplay, birthDate);
+        updateDisplay(startDateDisplay, startDate);
+        updateDisplay(endDateDisplay, endDate);
     }
 
-    /**
-     * @param date set the text field as the selected date
-     * @author lili
-     */
+    // written by Nishant
+    private void updateDisplay(EditText dateDisplay, Calendar date) {
+        dateDisplay.setText(
+                new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(date.get(Calendar.MONTH) + 1).append("-")
+                        .append(date.get(Calendar.DAY_OF_MONTH)).append("-")
+                        .append(date.get(Calendar.YEAR)).append(" "));
+
+    }
+
+    // written by Nishant
+    public void showDateDialog(EditText dateDisplay, Calendar date) {
+        activeDateDisplay = dateDisplay;
+        activeDate = date;
+        showDialog(DATE_DIALOG_ID);
+    }
+
+    // written by Nishant
+    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            activeDate.set(Calendar.YEAR, year);
+            activeDate.set(Calendar.MONTH, monthOfYear);
+            activeDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDisplay(activeDateDisplay, activeDate);
+            unregisterDateDisplay();
+        }
+    };
+
+    // written by Nishant
+    private void unregisterDateDisplay() {
+        activeDateDisplay = null;
+        activeDate = null;
+    }
+
+    // written by Nishant
     @Override
-    public void returnDate(Date date) {
-        birthDatePicker.setText(displayDateFormat.format(date));
-        date_string = dbDateFormat.format(date) + " 00:00:00.0";
-        Log.i("date_string", date_string);
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this, dateSetListener, activeDate.get(Calendar.YEAR), activeDate.get(Calendar.MONTH), activeDate.get(Calendar.DAY_OF_MONTH));
+        }
+        return null;
+    }
+
+    // written by Nishant
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        super.onPrepareDialog(id, dialog);
+        switch (id) {
+            case DATE_DIALOG_ID:
+                ((DatePickerDialog) dialog).updateDate(activeDate.get(Calendar.YEAR), activeDate.get(Calendar.MONTH), activeDate.get(Calendar.DAY_OF_MONTH));
+                break;
+        }
     }
 
     /* Written by Nishant
@@ -165,15 +224,15 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         listview.setAdapter(adapter);
     }
 
-    /* Written by Nishant
-     * Loads Treatment Day Checkboxes
+    /**
+     * @author lili
      */
     public void loadTreatmentDayCheckboxes() {
         ListView treatmentView = (ListView) findViewById(R.id.treatment_days);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
         treatmentView.getLayoutParams().height = height;
 
-        ArrayList<String> treatmentDays = new ArrayList<String>();
+        //ArrayList<String> treatmentDays = new ArrayList<String>();
         treatmentDays.add("Monday");
         treatmentDays.add("Tuesday");
         treatmentDays.add("Wednesday");
@@ -239,16 +298,33 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         alertDialog.show();
     }
 
-    public void addToDatabase(String name, String father, String mother, String docType, String nationalID, String birthDate, String phoneNumber, String sex) {
+    public void addToDatabase(String name, String father, String mother, String docType,
+                              String nationalID, String birthDate, String phoneNumber, String sex,
+                              ArrayList<String> visitDays, String treatmentStartDate,
+                              String treatmentEndDate) {
 
         // TODO: UPLOAD PHONE NUMBER
         NewPatientUploadTask uploader = new NewPatientUploadTask();
+        NewScheduleUploadTask scheduleUploader = new NewScheduleUploadTask();
         try {
             String url = "http://demo.sociosensalud.org.pe";
             String result = uploader.execute(url, name, father, mother, docType, nationalID, birthDate, sex).get();
-            Log.v("New patient: what we got was", result);
+            Log.v("NewPatientDataActivity: what we got was", result);
             GetPatientLoadTask gpl = new GetPatientLoadTask();
             Patient p = gpl.execute(url, nationalID).get();
+            String result2 = scheduleUploader.execute(
+                                    url,
+                                    p.getPid(),
+                                    visitDays.get(0),
+                                    visitDays.get(1),
+                                    visitDays.get(2),
+                                    visitDays.get(3),
+                                    visitDays.get(4),
+                                    visitDays.get(5),
+                                    visitDays.get(6),
+                                    treatmentStartDate,
+                                    treatmentEndDate,
+                                    "1").get();
             SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
             NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
             String npuMessage = npu.execute("http://demo.sociosensalud.org.pe", p.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
@@ -315,8 +391,17 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         editor = (EditText) findViewById(R.id.Mothers_name);
         String motherName = editor.getText().toString();
 
+        editor = (EditText) findViewById(R.id.Birthdate);
+        String birthDate = editor.getText().toString();
+
         editor = (EditText) findViewById(R.id.PhoneNumber);
         String phoneNumber = editor.getText().toString();
+
+        editor = (EditText) findViewById(R.id.treatment_start_day);
+        String treatment_startDate = editor.getText().toString();
+
+        editor = (EditText) findViewById(R.id.treatment_end_day);
+        String treatment_endDate = editor.getText().toString();
 
         RadioButton buttnMale = (RadioButton) findViewById(R.id.radio_female);
         RadioButton buttnFemale = (RadioButton) findViewById(R.id.radio_male);
@@ -331,8 +416,9 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
         }
 
         if (nationalID.equals("") || name.equals("") || fatherName.equals("") ||
-                motherName.equals("") || phoneNumber.equals("") || !(buttnMale.isChecked() ||
-                buttnFemale.isChecked())) {
+                motherName.equals("") || birthDate.equals("") || phoneNumber.equals("")
+                || treatment_startDate.equals("") || treatment_endDate.equals("")
+                || !(buttnMale.isChecked() || buttnFemale.isChecked())) {
             return false;
         } else if (numTreatments == 0) {
             return false;
@@ -395,9 +481,21 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
             editor = (EditText) findViewById(R.id.Mothers_name);
             String motherName = editor.getText().toString();
 
+            // get the birthdate
+            editor = (EditText) findViewById(R.id.Birthdate);
+            String birthDate = editor.getText().toString();
+
             // get the phone_number
             editor = (EditText) findViewById(R.id.PhoneNumber);
             String phone_number = editor.getText().toString();
+
+            // get the project start date
+            editor = (EditText) findViewById(R.id.treatment_start_day);
+            String treatment_startDate = editor.getText().toString();
+
+            // get the project end date
+            editor = (EditText) findViewById(R.id.treatment_end_day);
+            String treatment_endDate = editor.getText().toString();
 
             // get the sex
             String sex = "";
@@ -421,8 +519,23 @@ public class NewPatientDataActivity extends Activity implements DatePickerFragme
                 }
             }
 
+            // determines which treatments are checked and stores them in ArrayList of Projects
+            ArrayList<String> visitDays = new ArrayList<String>();
+            ListView daysVisited = (ListView) findViewById(R.id.treatment_days);
+            SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
+            for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+                if (daysPicked.get(i)) {
+                    //String treatment = treatmentListText.getAdapter().getItem(i).toString();
+                    visitDays.add("1");
+                }
+                else{
+                    visitDays.add("0");
+                }
+            }
+
             // Submit the patient data to the server.
-            addToDatabase(name, fatherName, motherName, "2", nationalID, date_string, phone_number, sex);
+            addToDatabase(name, fatherName, motherName, "2", nationalID, birthDate, phone_number,
+                    sex, visitDays, treatment_startDate, treatment_endDate);
 
             // then query the database to get the patient, including the patient code generated by server
             GetPatientLoadTask getP = new GetPatientLoadTask();
