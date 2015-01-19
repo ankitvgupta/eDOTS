@@ -151,7 +151,11 @@ public class Patient extends Object{
         return temp.toString();
 
     }
-    
+
+    /**
+     * @author Ankit
+     * @return this patient's schedule
+     */
     public Schedule getPatientSchedule(){
         String patientCode = pid; // for production
         //String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
