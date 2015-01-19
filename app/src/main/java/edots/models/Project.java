@@ -25,7 +25,7 @@ public class Project {
         try {
             Random r = new Random();
             int num = r.nextInt(100);
-            id = "5";
+            id = "6";
             name = Integer.toString(num);
         }
         catch (Exception e){

@@ -65,7 +65,13 @@ public class OfflineStorageManager {
         return null;
     }
 
-    // Queries service for promoter object with promoter username
+    /**
+     * Queries service for promoter object with promoter username
+     * @param promoterUsername
+     * @param c
+     * @return a promoter object
+     */
+    //TODO: promoterUsername is never used
     public static Promoter GetWebPromoterData(String promoterUsername, Context c) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         String user_id = prefs.getString((c.getString(R.string.key_userid)), null);
@@ -160,6 +166,7 @@ public class OfflineStorageManager {
     // Gets Patient object that is with this CodigoPaciente
     public static Patient GetWebPatientData(String patient_id) {
         GetPatientFromIDTask newP = new GetPatientFromIDTask();
+        // TODO: do not hard code in the url
         AsyncTask get_patient = newP.execute("http://demo.sociosensalud.org.pe", patient_id);
         Patient p;
         try {
