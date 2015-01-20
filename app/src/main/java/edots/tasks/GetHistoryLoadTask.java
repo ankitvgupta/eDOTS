@@ -54,6 +54,8 @@ public class GetHistoryLoadTask extends AsyncTask<String,String,ArrayList<Visit>
             SoapObject resSoapTemp = null;
 
             int numVisits = resSoap.getPropertyCount();
+            Log.i("GetHistoryLoadTask: The number of visits is", Integer.toString(numVisits));
+
 
             // loop over all of the visits that the patient made
             for (int i = 0; i < numVisits; i++){

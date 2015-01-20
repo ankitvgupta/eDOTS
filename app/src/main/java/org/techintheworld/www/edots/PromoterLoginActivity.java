@@ -282,6 +282,7 @@ public class PromoterLoginActivity extends Activity {
                 // locale_data load
                 JSONArray object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "locale_data"));
                 locales = new String[object.length()];
+
                 // look at all locales
                 for (int i = 0; i < object.length(); i++) {
                     JSONObject obj = object.getJSONObject(i);

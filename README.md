@@ -12,6 +12,7 @@ eDOTS
 	2. Changing treatments for patients (Lili)
 	3. Delete patient from promoter
 
+
 3. Register Patients
   1. add phone numbers and communicate with Pacientes_contactos - DONE
   2. If internet cuts out, then add some banner that alerts them @JN and @Ankit (with what is possible) - DONE

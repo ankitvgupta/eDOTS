@@ -176,20 +176,6 @@
                 android:focusable="false">
             </EditText>
 
-            <!--Treatment End Day field-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/treatmnet_end_day"/>
-
-            <EditText
-                android:id="@+id/treatment_end_day"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:focusable="false">
-            </EditText>
-
             <!--Treatment Days field-->
             <TextView
                 android:layout_width="wrap_content"
@@ -208,6 +194,20 @@
                 android:divider="#CCCCCC"
                 android:dividerHeight="1dp"
                 android:paddingLeft="2dp" />
+
+            <!--Treatment End Day field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/treatmnet_end_day"/>
+
+            <EditText
+                android:id="@+id/treatment_end_day"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
 
             <!--fingerprint button-->
             <Button

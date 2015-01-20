@@ -86,6 +86,7 @@ public class GetPatientActivity extends Activity {
                                        int arg2, long arg3) {
                 setButtons(false);
                 int index = arg0.getSelectedItemPosition();
+
                 if (index > 0) {
                     try {
                         currentPatient = new Patient(object.getJSONObject(index-1).toString());
@@ -113,7 +114,6 @@ public class GetPatientActivity extends Activity {
         }
     }
 
-    // nishant's test function
     // TODO: delete @Nishant
     public void testFunction() {
         GetPatientContactLoadTask result = new GetPatientContactLoadTask();
@@ -190,7 +190,7 @@ public class GetPatientActivity extends Activity {
             GetPatientLoadTask newP = new GetPatientLoadTask();
             AsyncTask p = newP.execute(getString(R.string.server_url), nationalid);
 
-            
+
             // parse the result, and return it
             try {
                 currentPatient = (Patient) p.get();
@@ -506,6 +506,7 @@ public class GetPatientActivity extends Activity {
         try {
             // load list of patients from file patient_data
             object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+
             String[] patients = new String[object.length()+1];
             patients[0] = getString(R.string.get_patient_select_patient);
             // look at all patients
