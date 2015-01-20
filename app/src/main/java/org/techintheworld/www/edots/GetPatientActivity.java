@@ -243,11 +243,16 @@ public class GetPatientActivity extends Activity {
      * Turns on or off the buttons on the page to disallow accidental clicks when no patient is loaded.
      */
     public void setButtons(boolean val){
+        
+        // Toggle the buttons as needed
         Button historyBtn = (Button) findViewById(R.id.history_button);
         historyBtn.setEnabled(val);
         Button newVisitBtn = (Button) findViewById(R.id.new_visit_button);
         newVisitBtn.setEnabled(val);
+        Button changeSchemaBtn = (Button) findViewById(R.id.change_schema_button);
+        changeSchemaBtn.setEnabled(val);
         
+        // If val is false, then clear the text fields.
         if (!val){
             TextView patientname = (TextView) findViewById(R.id.patientname);
             TextView nationalid = (TextView) findViewById(R.id.nationalid);

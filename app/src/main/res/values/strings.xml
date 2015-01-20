@@ -110,5 +110,7 @@
     <string name="visit_mode">Visit Mode</string>
     <string name="patient_home">Patient Home</string>
     <string name="clinic">Clinic</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
 
 </resources>
