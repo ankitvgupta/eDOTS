@@ -101,5 +101,8 @@
     <string name="login_error_message"> Your username or password was incorrect or invalid</string>
     <string name="server_url">http://demo.sociosensalud.org.pe</string>
     <string name="title_activity_change_schema">ChangeSchemaActivity</string>
+    <string name="visit_mode">Visit Mode</string>
+    <string name="patient_home">Patient Home</string>
+    <string name="clinic">Clinic</string>
 
 </resources>
