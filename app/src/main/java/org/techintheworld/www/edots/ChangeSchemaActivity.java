@@ -33,12 +33,13 @@ public class ChangeSchemaActivity extends Activity {
         setContentView(R.layout.activity_change_schema);
         
 
-
+git ad
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
         } catch (Exception e) {
             // TODO: Don't print the stack trace, give some sort of dialog box instead
             e.printStackTrace();
+            return;
         }
 
         // Add the current patient's DNI
@@ -53,22 +54,15 @@ public class ChangeSchemaActivity extends Activity {
         Schema currentPatientSchema = currentPatient.getEnrolledSchema();
         Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
         
-        EditText
+        EditText startDate = (EditText) findViewById(R.id.changeSchema_treatment_start_day);
+        startDate.setText(currentPatientSchedule.getStartDate());
+        
+        EditText endDate = (EditText) findViewById(R.id.changeSchema_treatment_end_day);
+        endDate.setText(currentPatientSchedule.getEndDate());
 
         loadTreatmentDayCheckboxes(currentPatientSchedule);
         
-        // get the
-        GetPatientSchemaLoadTask schemaLoader = new GetPatientSchemaLoadTask();
-        try {
-            Schema currentPatientSchema = schemaLoader.execute(getString(R.string.server_url), currentPatient.getPid()).get();
-            
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
-        } catch (NullPointerException e1){
-            Log.e("GetPatientActivity: LoadPatient", "NullPointerException");
-        }
+
                 
         
         /*

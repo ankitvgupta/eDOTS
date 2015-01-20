@@ -11,6 +11,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.util.ArrayList;
 
 import edots.models.Schedule;
+import edots.models.Schema;
 import edots.models.Visit;
 
 /**
@@ -18,14 +19,14 @@ import edots.models.Visit;
  *
  * Given a PatientID, queries the database and returns the Patient Schedule
  */
-public class GetPatientSchemaLoadTask extends AsyncTask<String,String,Schedule> {
+public class GetPatientSchemaLoadTask extends AsyncTask<String,String,Schema> {
 
 
     @Override
-    protected Schedule doInBackground(String... params) {
+    protected Schema doInBackground(String... params) {
 
         // instantiate results array to be returned
-        Schedule result = new Schedule();
+        Schema result = new Schema();
 
         // setup server parameters
         String urlserver = params[0];
@@ -62,7 +63,8 @@ public class GetPatientSchemaLoadTask extends AsyncTask<String,String,Schedule> 
             String startDate =resSoap.getProperty("startDate").toString();
             String endDate = resSoap.getProperty("endDate").toString();
             
-            result = new Schedule(codigoPaciente, lunes, martes, miercoles, jueves, viernes, sabado, domingo, startDate, endDate);
+            //TODO: Change this to actually make a schema
+            Schedule result2 = new Schedule(codigoPaciente, lunes, martes, miercoles, jueves, viernes, sabado, domingo, startDate, endDate);
 
             // return null if no patient found or patient had no visits
             if (resSoap.getPropertyCount() == 0){
