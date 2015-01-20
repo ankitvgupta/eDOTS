@@ -1,6 +1,5 @@
 package edots.utils;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -56,13 +55,6 @@ public class AccountLogin {
             if (response.equals(c.getString(R.string.session_init_key)) || response.equals(c.getString(R.string.password_expired_key))) {
 
                 editor.commit();
-            }
-            else{
-                ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
-
-                loginProgress.setTitle("Login Error");
-                loginProgress.setMessage("Your username or password was incorrect or invalid");
-                loginProgress.show();
             }
 
 

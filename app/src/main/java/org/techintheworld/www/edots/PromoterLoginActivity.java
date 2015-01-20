@@ -128,6 +128,7 @@ public class PromoterLoginActivity extends Activity {
         // Progress Dialog starts
         final ProgressBar p_d = (ProgressBar)findViewById(R.id.marker_progress);
         p_d.getHandler().post(new Runnable() {
+            @Override
             public void run() {
                 p_d.setVisibility(View.VISIBLE);
             }
@@ -161,8 +162,6 @@ public class PromoterLoginActivity extends Activity {
                 catch(JSONException e1){
                     Log.e("ProgramLoginActivity: switchPatientType","JSON exception on Load");
                 }
-
-
             }
                 for (int i = 0; i < objLocale.length; i++) {
                     if (locale_name.equals(objLocale[i].name)) {
@@ -185,7 +184,11 @@ public class PromoterLoginActivity extends Activity {
                 Promoter new_promoter = OfflineStorageManager.GetWebPromoterData(username, this);
                 OfflineStorageManager.SaveWebPatientData(new_promoter, this);
                 Intent intent = new Intent(this, MainMenuActivity.class);
-                p_d.setVisibility(View.GONE);
+                p_d.getHandler().post(new Runnable() {
+                    public void run() {
+                        p_d.setVisibility(View.GONE);
+                    }
+                });
 
                 //TESTING ONLY:
                 OfflineStorageManager sm = new OfflineStorageManager();
@@ -207,7 +210,11 @@ public class PromoterLoginActivity extends Activity {
         }
         else{
            AlertError("Login Error","Your username or password was incorrect or invalid" );
-           p_d.setVisibility(View.GONE);
+            p_d.getHandler().post(new Runnable() {
+                public void run() {
+                    p_d.setVisibility(View.GONE);
+                }
+            });
         }
 
     }
@@ -242,7 +249,9 @@ public class PromoterLoginActivity extends Activity {
         if(password != null && !password.isEmpty()) {
 
             String message =  AccountLogin.login(username, password, locale, locale_name, this);
-
+            if (message == null){
+                return false;
+            }
             if(message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))){
                 OfflineStorageManager.SetLastLocalUpdateTime(this);
                 return true;
