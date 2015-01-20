@@ -32,8 +32,6 @@ public class ChangeSchemaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_schema);
         
-
-git ad
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
         } catch (Exception e) {
