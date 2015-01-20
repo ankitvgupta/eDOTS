@@ -213,6 +213,13 @@ public class NewPatientDataActivity extends Activity {
         treatmentDays.add("Friday");
         treatmentDays.add("Saturday");
         treatmentDays.add("Sunday");
+        treatmentDays.add("Monday Afternoon");
+        treatmentDays.add("Tuesday Afternoon");
+        treatmentDays.add("Wednesday Afternoon");
+        treatmentDays.add("Thursday Afternoon");
+        treatmentDays.add("Friday Afternoon");
+        treatmentDays.add("Saturday Afternoon");
+        treatmentDays.add("Sunday Afternoon");
 
         // creating adapter for ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -521,7 +528,7 @@ public class NewPatientDataActivity extends Activity {
                     //String treatment = schemaListText.getAdapter().getItem(i).toString();
                     visitDays.add("1");
                 }
-                else{
+                else {
                     visitDays.add("0");
                 }
             }
