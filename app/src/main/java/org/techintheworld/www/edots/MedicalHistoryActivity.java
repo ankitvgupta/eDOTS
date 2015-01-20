@@ -71,6 +71,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
         weekAgo = cal.getTime();
         cal.add(Calendar.MONTH, -1);
         monthAgo = cal.getTime();
+        cal.add(Calendar.MONTH, 1);
 
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
@@ -95,13 +96,20 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
         String startDate = patientSchedule.getStartDate(); // day/month/year
         String endDate = patientSchedule.getEndDate(); // day/month/year
-        Boolean Monday = false;
-        Boolean Tuesday = false;
-        Boolean Wednesday = false;
-        Boolean Thursday = false;
-        Boolean Friday = false;
-        Boolean Saturday = false;
-        Boolean Sunday = false;
+        Boolean Monday = patientSchedule.scheduledLunes();
+        Boolean MondayTarde = patientSchedule.scheduledLunesTarde();
+        Boolean Tuesday = patientSchedule.scheduledMartes();
+        Boolean TuesdayTarde = patientSchedule.scheduledMartesTarde();
+        Boolean Wednesday = patientSchedule.scheduledMiercoles();
+        Boolean WednesdayTarde = patientSchedule.scheduledMiercolesTarde();
+        Boolean Thursday = patientSchedule.scheduledJueves();
+        Boolean ThursdayTarde = patientSchedule.scheduledJuevesTarde();
+        Boolean Friday = patientSchedule.scheduledViernes();
+        Boolean FridayTarde = patientSchedule.scheduledViernesTarde();
+        Boolean Saturday = patientSchedule.scheduledSabado();
+        Boolean SaturdayTarde = patientSchedule.scheduledSabadoTarde();
+        Boolean Sunday = patientSchedule.scheduledDomingo();
+        Boolean SundayTarde = patientSchedule.scheduledDomingoTarde();
 
         int total_missed = 0;
         int total_received = 0;
@@ -112,28 +120,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
         int past_month_missed = 0;
         int past_month_received = 0;
-
-        if (patientSchedule.getLunes().equals("1")) {
-            Monday = true;
-        }
-        if (patientSchedule.getMartes().equals("1")) {
-            Tuesday = true;
-        }
-        if (patientSchedule.getMiercoles().equals("1")) {
-            Wednesday = true;
-        }
-        if (patientSchedule.getJueves().equals("1")) {
-            Thursday = true;
-        }
-        if (patientSchedule.getViernes().equals("1")) {
-            Friday = true;
-        }
-        if (patientSchedule.getSabado().equals("1")) {
-            Saturday = true;
-        }
-        if (patientSchedule.getDomingo().equals("1")) {
-            Sunday = true;
-        }
 
         Date startDateObj = new Date();
         Date endDateObj = new Date();
@@ -204,8 +190,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
             numVisits = patientVisits.size();
         }
 
-        Log.v("MedicalHistoryActivity", "Number of visits: " + numVisits);
-
         String visitDate;
         Date visitDateObj = new Date();
 
@@ -227,9 +211,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
                 past_month_missed--;
             }
 
-            if (total_missed != 0) {
-                total_missed--;
-            }
+            total_missed--;
             total_received++;
         }
 
