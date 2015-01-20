@@ -68,7 +68,7 @@ public class ChangeSchemaActivity extends Activity {
                 android.R.layout.simple_list_item_checked, treatmentDays);
 
         // creates ListView checkboxes
-        ListView listview = (ListView) findViewById(R.id.treatment_days);
+        ListView listview = (ListView) findViewById(R.id.changeSchema_treatment_days);
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
     }
