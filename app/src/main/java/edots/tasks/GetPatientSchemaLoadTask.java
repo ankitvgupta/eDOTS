@@ -18,7 +18,7 @@ import edots.models.Visit;
  *
  * Given a PatientID, queries the database and returns the Patient Schedule
  */
-public class GetPatientScheduleLoadTask extends AsyncTask<String,String,Schedule> {
+public class GetPatientSchemaLoadTask extends AsyncTask<String,String,Schedule> {
 
 
     @Override
@@ -66,11 +66,11 @@ public class GetPatientScheduleLoadTask extends AsyncTask<String,String,Schedule
 
             // return null if no patient found or patient had no visits
             if (resSoap.getPropertyCount() == 0){
-                Log.v("GetPatientScheduleLoadTask: This is not a valid person or has no schedule", "This is not a valid person or has no visits");
+                Log.v("GetPatientSchemaLoadTask: This is not a valid person or has no schedule", "This is not a valid person or has no visits");
                 return null;
             }
 
-            Log.v("GetPatientScheduleLoadTask: The object we got is", resSoap.toString());
+            Log.v("GetPatientSchemaLoadTask: The object we got is", resSoap.toString());
         }
         catch (Exception e)
         {

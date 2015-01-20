@@ -15,7 +15,7 @@ import org.ksoap2.transport.HttpTransportSE;
  * @author ankit
  * upload new patient schedule to server and insert it into the database
  */
-public class NewScheduleUploadTask extends AsyncTask<String,String,String> {
+public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
 
     @Override
     protected String doInBackground(String... params) {
@@ -61,7 +61,6 @@ public class NewScheduleUploadTask extends AsyncTask<String,String,String> {
             // - seems like the response codes are flipped)
             SoapPrimitive resSoap = (SoapPrimitive) envelope.getResponse();
 
-            Log.v("NewScheduleUploadTask: The object we got is", resSoap.toString());
             returnvalue = resSoap.toString();
         }
         catch (Exception e)

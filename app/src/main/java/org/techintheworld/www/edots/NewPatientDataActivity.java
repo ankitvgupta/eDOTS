@@ -31,12 +31,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
+import edots.models.Drug;
 import edots.models.Patient;
 import edots.models.Schema;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPatientUploadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
-import edots.tasks.NewScheduleUploadTask;
+import edots.tasks.NewSchemaUploadTask;
 import edots.utils.InternetConnection;
 
 /*
@@ -56,6 +57,7 @@ public class NewPatientDataActivity extends Activity {
 
     private Patient currentPatient;
     private ArrayList<Schema> schemaList = new ArrayList<Schema>();
+    private ArrayList<Drug> drugList = new ArrayList<Drug>();
     private ArrayList<String> treatmentDays = new ArrayList<String>();
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -81,7 +83,8 @@ public class NewPatientDataActivity extends Activity {
         setContentView(R.layout.activity_new_patient_data);
 
         loadDatePickers();
-        loadTreatmentSpinner();
+        loadSchemaSpinner();
+        loadDrugCheckboxes();
         loadTreatmentDayCheckboxes();
 
         // check if not connected to internet, then disable everything and show dialog
@@ -190,11 +193,45 @@ public class NewPatientDataActivity extends Activity {
         }
     }
 
-    /* Written by Nishant
-     * Loads Checkboxes Dynamically for Treatment Projects
+    /**
+     * @author lili 
+     * Loads all schema options for the spinner
      */
-    public void loadTreatmentSpinner() {
+    public void loadSchemaSpinner() {
 
+    }
+
+    /**
+     * @author lili
+     * Loads Checkboxes Dynamically for Drugs
+     */
+    public void loadDrugCheckboxes() {
+        // list of treatment study groups
+        // for testing
+        drugList.add(new Drug());
+        drugList.add(new Drug());
+        drugList.add(new Drug());
+        drugList.add(new Drug());
+
+        // sets layout_height for ListView based on number of drugs
+        ListView drugView = (ListView) findViewById(R.id.drugs);
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * drugList.size(), getResources().getDisplayMetrics());
+        drugView.getLayoutParams().height = height;
+
+
+        ArrayList<String> checkboxesText = new ArrayList<String>();
+        for (int i = 0; i < drugList.size(); i++) {
+            checkboxesText.add(drugList.get(i).getName());
+        }
+        
+        // creating adapter for ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_checked, checkboxesText);
+
+        // creates ListView checkboxes
+        ListView listview = (ListView) findViewById(R.id.drugs);
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listview.setAdapter(adapter);
     }
 
     /**
@@ -213,6 +250,13 @@ public class NewPatientDataActivity extends Activity {
         treatmentDays.add("Friday");
         treatmentDays.add("Saturday");
         treatmentDays.add("Sunday");
+        treatmentDays.add("Monday Afternoon");
+        treatmentDays.add("Tuesday Afternoon");
+        treatmentDays.add("Wednesday Afternoon");
+        treatmentDays.add("Thursday Afternoon");
+        treatmentDays.add("Friday Afternoon");
+        treatmentDays.add("Saturday Afternoon");
+        treatmentDays.add("Sunday Afternoon");
 
         // creating adapter for ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -280,7 +324,7 @@ public class NewPatientDataActivity extends Activity {
         // TODO: upload schema start and end date
         // TODO: upload visit mode -- home or clinic
         NewPatientUploadTask uploader = new NewPatientUploadTask();
-        NewScheduleUploadTask scheduleUploader = new NewScheduleUploadTask();
+        NewSchemaUploadTask scheduleUploader = new NewSchemaUploadTask();
         try {
             String url = getString(R.string.server_url);
             String result = uploader.execute(url, name, father, mother, docType, nationalID, birthDate, sex).get();
@@ -521,7 +565,7 @@ public class NewPatientDataActivity extends Activity {
                     //String treatment = schemaListText.getAdapter().getItem(i).toString();
                     visitDays.add("1");
                 }
-                else{
+                else {
                     visitDays.add("0");
                 }
             }

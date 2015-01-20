@@ -96,20 +96,28 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
         String startDate = patientSchedule.getStartDate(); // day/month/year
         String endDate = patientSchedule.getEndDate(); // day/month/year
-        Boolean Monday = patientSchedule.scheduledLunes();
+        Boolean MondayMorning = patientSchedule.scheduledLunes();
         Boolean MondayTarde = patientSchedule.scheduledLunesTarde();
-        Boolean Tuesday = patientSchedule.scheduledMartes();
+        Boolean TuesdayMorning = patientSchedule.scheduledMartes();
         Boolean TuesdayTarde = patientSchedule.scheduledMartesTarde();
-        Boolean Wednesday = patientSchedule.scheduledMiercoles();
+        Boolean WednesdayMorning = patientSchedule.scheduledMiercoles();
         Boolean WednesdayTarde = patientSchedule.scheduledMiercolesTarde();
-        Boolean Thursday = patientSchedule.scheduledJueves();
+        Boolean ThursdayMorning = patientSchedule.scheduledJueves();
         Boolean ThursdayTarde = patientSchedule.scheduledJuevesTarde();
-        Boolean Friday = patientSchedule.scheduledViernes();
+        Boolean FridayMorning = patientSchedule.scheduledViernes();
         Boolean FridayTarde = patientSchedule.scheduledViernesTarde();
-        Boolean Saturday = patientSchedule.scheduledSabado();
+        Boolean SaturdayMorning = patientSchedule.scheduledSabado();
         Boolean SaturdayTarde = patientSchedule.scheduledSabadoTarde();
-        Boolean Sunday = patientSchedule.scheduledDomingo();
+        Boolean SundayMorning = patientSchedule.scheduledDomingo();
         Boolean SundayTarde = patientSchedule.scheduledDomingoTarde();
+
+        Boolean Monday = (MondayMorning || MondayTarde);
+        Boolean Tuesday = (TuesdayMorning || TuesdayTarde);
+        Boolean Wednesday = (WednesdayMorning || WednesdayTarde);
+        Boolean Thursday = (ThursdayMorning || ThursdayTarde);
+        Boolean Friday = (FridayMorning || FridayTarde);
+        Boolean Saturday = (SaturdayMorning || SaturdayTarde);
+        Boolean Sunday = (SundayMorning || SundayTarde);
 
         int total_missed = 0;
         int total_received = 0;
