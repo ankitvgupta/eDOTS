@@ -51,10 +51,8 @@ public class ChangeSchemaActivity extends Activity {
 
         loadTreatmentDayCheckboxes(currentPatientSchedule);
         
-        
-        
-        // get the current patient's schedule
-        
+        // get the
+                
         
         /*
         GetSchemaLoadTask schemaLoader = new GetSchemaLoadTask();
@@ -89,6 +87,9 @@ public class ChangeSchemaActivity extends Activity {
         checkSchemaDayBoxes(s);
         
     }
+    
+    
+    
     
     public void checkSchemaDayBoxes(Schedule s){
         ListView treatmentView = (ListView) findViewById(R.id.changeSchema_treatment_days);

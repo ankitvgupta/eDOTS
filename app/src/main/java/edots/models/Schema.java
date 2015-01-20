@@ -20,6 +20,8 @@ public class Schema  extends Saveable{
     private String phase;
     private String visit_mode; // 1 for "clinic" or 2 for "patient home"
     private Schedule schedule;
+    private String startDate;
+    private String endDate;
 
     // For testing only
     public Schema() {
@@ -27,6 +29,11 @@ public class Schema  extends Saveable{
             id = "1";
             name = "SampleSchemaName";
             drugs = new ArrayList<>(Arrays.asList(new Drug()));
+            phase = "SamplePhase";
+            visit_mode = "1";
+            schedule = new Schedule();
+            startDate = "21/12/2014";
+            endDate = "21/12/2015";
         }
         catch (Exception e){
             e.printStackTrace();
