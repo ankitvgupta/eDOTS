@@ -5,6 +5,7 @@ eDOTS
 	3. If Offline, ThenSome Alert- DECIDING AGAINST THIS
 	4. Legend For Calendar
 	5. Changing Schedule from real schedule
+	6. Fix Locale in Medical History display/ general reformatting/ make them have actual names 
 
 2. Get Patient
 	1. If no schedule, make them create one when they try and log a new visit (Brendan)
