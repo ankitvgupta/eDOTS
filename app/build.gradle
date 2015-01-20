@@ -1,0 +1,34 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        applicationId "org.techintheworld.www.edots"
+        minSdkVersion 16
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        debug{
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+        }
+    }
+}
+
+dependencies {
+    compile 'com.roomorama:caldroid:1.1.7'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/Parse-1.7.1.jar')
+    compile 'com.android.support:support-v4:18.0.0'
+    compile files('libs/ksoap2-android-assembly-3.3.0-jar-with-dependencies.jar')
+}
