@@ -476,6 +476,18 @@ public class GetPatientActivity extends Activity {
         }
     }
 
+
+    /**
+     * switch to switchChangeSchemaActivity
+     */
+    public void switchChangeSchemaActivity(View view) {
+        if (currentPatient != null) {
+            Intent intent = new Intent(this, ChangeSchemaActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
+    }
+    
     /**
      * switch to NewPatientActivity
      */

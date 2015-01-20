@@ -101,4 +101,6 @@
     <string name="login_error_message"> Your username or password was incorrect or invalid</string>
     <string name="server_url">http://demo.sociosensalud.org.pe</string>
     <string name="serverurl">/EdotsWS/Service1.asmx</string>
+    <string name="title_activity_change_schema">ChangeSchemaActivity</string>
+
 </resources>
