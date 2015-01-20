@@ -229,6 +229,15 @@
                 android:dividerHeight="1dp"
                 android:paddingLeft="2dp" />
 
+            <CheckBox android:id="@+id/checkbox_morning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/morning"/>
+            <CheckBox android:id="@+id/checkbox_afternoon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/afternoon"/>
+
             <!--Visit Mode field-->
             <TextView
                 android:layout_width="wrap_content"

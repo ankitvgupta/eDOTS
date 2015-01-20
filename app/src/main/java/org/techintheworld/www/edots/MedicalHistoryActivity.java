@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import edots.models.Patient;
 import edots.models.Schedule;
@@ -47,6 +48,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
     SimpleDateFormat dayOfTheWeekFormatter = new SimpleDateFormat("EEEE");
     SimpleDateFormat visitDateFormatter = new SimpleDateFormat("EEE dd/MM/yyyy");
     Date currentDate;
+    Date weekAgo;
+    Date monthAgo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,10 @@ public class MedicalHistoryActivity extends FragmentActivity {
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         currentDate = cal.getTime();
+        cal.add(Calendar.DATE, -7);
+        weekAgo = cal.getTime();
+        cal.add(Calendar.MONTH, -1);
+        monthAgo = cal.getTime();
 
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
@@ -95,6 +102,16 @@ public class MedicalHistoryActivity extends FragmentActivity {
         Boolean Friday = false;
         Boolean Saturday = false;
         Boolean Sunday = false;
+
+        int total_missed = 0;
+        int total_received = 0;
+        int total_future = 0;
+
+        int past_week_missed = 0;
+        int past_week_received = 0;
+
+        int past_month_missed = 0;
+        int past_month_received = 0;
 
         if (patientSchedule.getLunes().equals("1")) {
             Monday = true;
@@ -164,9 +181,16 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
                 do {
                     if (newDate.before(currentDate)) {
-                        caldroidFragment.setBackgroundResourceForDate(R.color.light_red, newDate);
+                        caldroidFragment.setBackgroundResourceForDate(R.color.red, newDate);
+                        total_missed++;
+                        if (newDate.after(weekAgo)){
+                            past_week_missed++;
+                        } else if (newDate.after(monthAgo)) {
+                            past_month_missed++;
+                        }
                     } else if (newDate.after(currentDate)) {
                         caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, newDate);
+                        total_future++;
                     }
                     c.add(Calendar.DATE, 7);
                     newDate = c.getTime();
@@ -180,6 +204,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
             numVisits = patientVisits.size();
         }
 
+        Log.v("MedicalHistoryActivity", "Number of visits: " + numVisits);
+
         String visitDate;
         Date visitDateObj = new Date();
 
@@ -192,6 +218,19 @@ public class MedicalHistoryActivity extends FragmentActivity {
             }
 
             caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDateObj);
+
+            if (visitDateObj.after(weekAgo)) {
+                past_week_received++;
+                past_week_missed--;
+            } else if (visitDateObj.after(monthAgo)) {
+                past_month_received++;
+                past_month_missed--;
+            }
+
+            if (total_missed != 0) {
+                total_missed--;
+            }
+            total_received++;
         }
 
         CaldroidListener listener = new CaldroidListener() {
@@ -208,6 +247,33 @@ public class MedicalHistoryActivity extends FragmentActivity {
         };
 
         caldroidFragment.setCaldroidListener(listener);
+        updateTreatmentTable(total_missed, total_received, total_future, past_week_missed,
+                past_week_received, past_month_missed, past_month_received);
+    }
+
+    public void updateTreatmentTable(int total_missed, int total_received, int total_future,
+                                     int past_week_missed, int past_week_received,
+                                     int past_month_missed, int past_month_received) {
+
+        TextView pastWeekMissed = (TextView) findViewById(R.id.past_week_missed);
+        TextView pastWeekReceived = (TextView) findViewById(R.id.past_week_received);
+
+        pastWeekMissed.setText(Integer.toString(past_week_missed));
+        pastWeekReceived.setText(Integer.toString(past_week_received));
+
+        TextView pastMonthMissed = (TextView) findViewById(R.id.past_month_missed);
+        TextView pastMonthReceived = (TextView) findViewById(R.id.past_month_received);
+
+        pastMonthMissed.setText(Integer.toString(past_month_missed));
+        pastMonthReceived.setText(Integer.toString(past_month_received));
+
+        TextView totalMissed = (TextView) findViewById(R.id.total_missed);
+        TextView totalReceived = (TextView) findViewById(R.id.total_received);
+        TextView totalFuture = (TextView) findViewById(R.id.total_future);
+
+        totalMissed.setText(Integer.toString(total_missed));
+        totalReceived.setText(Integer.toString(total_received));
+        totalFuture.setText(Integer.toString(total_future));
     }
 
     /*
