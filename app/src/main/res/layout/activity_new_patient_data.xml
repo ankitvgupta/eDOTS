@@ -142,7 +142,7 @@
                     android:onClick="onRadioButtonClicked"/>
             </RadioGroup>
 
-            <!--Active Treatments field-->
+            <!--Active Schema field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,6 +151,27 @@
 
             <ListView
                 android:id="@+id/schema"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:paddingLeft="2dp" >
+            </ListView>
+
+            
+            <!--Drugs field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/drugs"/>
+            
+            <ListView
+                android:id="@+id/drugs"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="10dp"
