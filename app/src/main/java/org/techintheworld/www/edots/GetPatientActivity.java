@@ -88,16 +88,17 @@ public class GetPatientActivity extends Activity {
                                        int arg2, long arg3) {
                 setButtons(false);
                 int index = arg0.getSelectedItemPosition();
-                try{
-                    currentPatient = new Patient(object.getJSONObject(index).toString());
-                    Log.v("GetPatientActivity.java: The patient that we loaded is", currentPatient.toString());
-                    fillTable();
-                }
-                catch (NullPointerException e1){
-                    e1.printStackTrace();
-                }
-                catch (JSONException e1){
-                    e1.printStackTrace();
+
+                if (index > 0) {
+                    try {
+                        currentPatient = new Patient(object.getJSONObject(index-1).toString());
+                        Log.v("GetPatientActivity.java: The patient that we loaded is", currentPatient.toString());
+                        fillTable();
+                    } catch (NullPointerException e1) {
+                        e1.printStackTrace();
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
 
@@ -115,7 +116,7 @@ public class GetPatientActivity extends Activity {
         }
     }
 
-    // nishant's test function
+    // TODO: delete @Nishant
     public void testFunction() {
         GetPatientContactLoadTask result = new GetPatientContactLoadTask();
         result.execute(getString(R.string.server_url), "30C85C6A-D30E-48D2-949B-0004965E626F");
@@ -151,7 +152,6 @@ public class GetPatientActivity extends Activity {
     public void btnSearchClicked(View view) {
         hideKeyboard();
         loadPatient(view);
-        Log.v("GetPatientActivity: loaded patient", currentPatient.toString());
     }
 
 
@@ -194,8 +194,8 @@ public class GetPatientActivity extends Activity {
             GetPatientLoadTask newP = new GetPatientLoadTask();
             AsyncTask p = newP.execute(getString(R.string.server_url), nationalid);
 
-            
-            // parse the result, and return itg
+
+            // parse the result, and return it
             try {
                 currentPatient = (Patient) p.get();
                 ArrayList<Visit> visits = currentPatient.getPatientHistory(this);
@@ -221,10 +221,9 @@ public class GetPatientActivity extends Activity {
     public void loadPatientProject(){
         Project currentProject;
         PatientProjectLoadTask loadTask = new PatientProjectLoadTask();
-        Log.v("GetPatientActivity: pid and userid", currentPatient.getPid()+ promoterId);
-        AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
 
         try {
+            AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
             currentProject = (Project) task.get();
             currentPatient.setEnrolledProject(currentProject);
             Log.v("GetPatientActivity.java: The project", currentProject.toString());
@@ -515,12 +514,15 @@ public class GetPatientActivity extends Activity {
         try {
             // load list of patients from file patient_data
             object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
-            String[] patients = new String[object.length()];
+
+            String[] patients = new String[object.length()+1];
+            patients[0] = getString(R.string.get_patient_select_patient);
+
             // look at all patients
             for (int i = 0; i < object.length(); i++){
                 JSONObject obj = object.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
-                    patients[i] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
+                patients[i+1] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
             }
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, patients);
