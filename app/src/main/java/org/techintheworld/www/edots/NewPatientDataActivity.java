@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,16 +29,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
-import edots.models.Project;
+import edots.models.Schema;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPatientUploadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
 import edots.tasks.NewScheduleUploadTask;
-import edots.utils.DatePickerFragment;
 import edots.utils.InternetConnection;
 
 /*
@@ -58,7 +55,7 @@ import edots.utils.InternetConnection;
 public class NewPatientDataActivity extends Activity {
 
     private Patient currentPatient;
-    private ArrayList<Project> treatmentList = new ArrayList<Project>();
+    private ArrayList<Schema> treatmentList = new ArrayList<Schema>();
     private ArrayList<String> treatmentDays = new ArrayList<String>();
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -199,10 +196,10 @@ public class NewPatientDataActivity extends Activity {
     public void loadTreatmentCheckboxes() {
         // list of treatment study groups
         // for testing
-        treatmentList.add(new Project());
-        treatmentList.add(new Project());
-        treatmentList.add(new Project());
-        treatmentList.add(new Project());
+        treatmentList.add(new Schema());
+        treatmentList.add(new Schema());
+        treatmentList.add(new Schema());
+        treatmentList.add(new Schema());
 
         // sets layout_height for ListView based on number of treatments
         ListView treatmentView = (ListView) findViewById(R.id.treatments);
@@ -512,13 +509,13 @@ public class NewPatientDataActivity extends Activity {
             }
 
             // determines which treatments are checked and stores them in ArrayList of Projects
-            ArrayList<Project> enrolledProjects = new ArrayList<Project>();
+            ArrayList<Schema> enrolledSchemas = new ArrayList<Schema>();
             ListView treatmentListText = (ListView) findViewById(R.id.treatments);
             SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
             for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
                 if (checkedItems.get(i)) {
                     //String treatment = treatmentListText.getAdapter().getItem(i).toString();
-                    enrolledProjects.add(treatmentList.get(i));
+                    enrolledSchemas.add(treatmentList.get(i));
                 }
             }
 
