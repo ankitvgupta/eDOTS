@@ -97,6 +97,10 @@ public class MedicalHistoryActivity extends FragmentActivity {
         Boolean Saturday = false;
         Boolean Sunday = false;
 
+        int total_missed = 0;
+        int total_received = 0;
+        int total_future = 0;
+
         if (patientSchedule.getLunes().equals("1")) {
             Monday = true;
         }
@@ -166,8 +170,10 @@ public class MedicalHistoryActivity extends FragmentActivity {
                 do {
                     if (newDate.before(currentDate)) {
                         caldroidFragment.setBackgroundResourceForDate(R.color.red, newDate);
+                        total_missed++;
                     } else if (newDate.after(currentDate)) {
                         caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, newDate);
+                        total_future++;
                     }
                     c.add(Calendar.DATE, 7);
                     newDate = c.getTime();
@@ -181,6 +187,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
             numVisits = patientVisits.size();
         }
 
+        Log.v("MedicalHistoryActivity", "Number of visits: " + numVisits);
+
         String visitDate;
         Date visitDateObj = new Date();
 
@@ -193,6 +201,10 @@ public class MedicalHistoryActivity extends FragmentActivity {
             }
 
             caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDateObj);
+            if (total_missed != 0) {
+                total_missed--;
+            }
+            total_received++;
         }
 
         CaldroidListener listener = new CaldroidListener() {
@@ -209,9 +221,11 @@ public class MedicalHistoryActivity extends FragmentActivity {
         };
 
         caldroidFragment.setCaldroidListener(listener);
+        updateTreatmentTable(total_missed, total_received, total_future);
     }
 
-    public void updateTreatmentTable() {
+    public void updateTreatmentTable(int total_missed, int total_received, int total_future) {
+
         TextView pastWeekMissed = (TextView) findViewById(R.id.past_week_missed);
         TextView pastWeekReceived = (TextView) findViewById(R.id.past_week_received);
         TextView pastWeekFuture = (TextView) findViewById(R.id.past_week_future);
@@ -223,6 +237,10 @@ public class MedicalHistoryActivity extends FragmentActivity {
         TextView totalMissed = (TextView) findViewById(R.id.total_missed);
         TextView totalReceived = (TextView) findViewById(R.id.total_received);
         TextView totalFuture = (TextView) findViewById(R.id.total_future);
+
+        totalMissed.setText(Integer.toString(total_missed));
+        totalReceived.setText(Integer.toString(total_received));
+        totalFuture.setText(Integer.toString(total_future));
     }
 
     /*
