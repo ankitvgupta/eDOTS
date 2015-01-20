@@ -486,11 +486,11 @@ public class NewPatientDataActivity extends Activity {
 
             // determines which treatments are checked and stores them in ArrayList of Projects
             ArrayList<Schema> enrolledSchemas = new ArrayList<Schema>();
-            ListView treatmentListText = (ListView) findViewById(R.id.schema);
-            SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
-            for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+            ListView schemaListText = (ListView) findViewById(R.id.schema);
+            SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
+            for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
                 if (checkedItems.get(i)) {
-                    //String treatment = treatmentListText.getAdapter().getItem(i).toString();
+                    //String treatment = schemaListText.getAdapter().getItem(i).toString();
                     enrolledSchemas.add(schemaList.get(i));
                 }
             }
@@ -499,9 +499,9 @@ public class NewPatientDataActivity extends Activity {
             ArrayList<String> visitDays = new ArrayList<String>();
             ListView daysVisited = (ListView) findViewById(R.id.schema_days);
             SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
-            for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+            for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
                 if (daysPicked.get(i)) {
-                    //String treatment = treatmentListText.getAdapter().getItem(i).toString();
+                    //String treatment = schemaListText.getAdapter().getItem(i).toString();
                     visitDays.add("1");
                 }
                 else{
