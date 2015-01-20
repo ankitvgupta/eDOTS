@@ -313,6 +313,8 @@ public class NewPatientDataActivity extends Activity {
             GetPatientLoadTask gpl = new GetPatientLoadTask();
             Patient p = gpl.execute(url, nationalID).get();
             /*
+
+>>>>>>> d79c73afb925a5c432240dba02dec16554d49cca
             String result2 = scheduleUploader.execute(
                                     url,
                                     p.getPid(),
@@ -327,6 +329,7 @@ public class NewPatientDataActivity extends Activity {
                                     treatmentEndDate,
                                     "1").get();
                                     */
+
             SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
             NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
             String npuMessage = npu.execute(getString(R.string.server_url), p.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();

@@ -37,7 +37,8 @@ import edots.models.Visit;
  * The Calendar
  */
 
-public class git MedicalHistoryActivity extends FragmentActivity {
+
+public class MedicalHistoryActivity extends FragmentActivity {
     Patient currentPatient;
     Context c = this;
 
