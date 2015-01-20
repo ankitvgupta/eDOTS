@@ -16,7 +16,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="phone_number">Phone Number</string>
-    <string name="schema_days">Treatment Days</string>
+    <string name="schema_days">Schema Days</string>
     <string name="schema_start_day">Schema Start Day</string>
     <string name="schema_end_day">Schema End Day</string>
     <string name="existing_patient"> Existing Patient</string>
