@@ -52,8 +52,7 @@
         </activity>
         <activity
             android:name=".NewVisitActivity"
-            android:label="@string/title_activity_new_visit"
-            android:parentActivityName=".MedicalHistoryActivity" >
+            android:label="@string/title_activity_new_visit" >
         </activity>
         <activity
             android:name=".PromoterLoginActivity"
