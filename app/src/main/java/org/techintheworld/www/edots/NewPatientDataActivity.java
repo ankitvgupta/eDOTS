@@ -55,7 +55,7 @@ import edots.utils.InternetConnection;
 public class NewPatientDataActivity extends Activity {
 
     private Patient currentPatient;
-    private ArrayList<Schema> treatmentList = new ArrayList<Schema>();
+    private ArrayList<Schema> schemaList = new ArrayList<Schema>();
     private ArrayList<String> treatmentDays = new ArrayList<String>();
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -81,7 +81,7 @@ public class NewPatientDataActivity extends Activity {
         setContentView(R.layout.activity_new_patient_data);
 
         loadDatePickers();
-        loadTreatmentCheckboxes();
+        loadTreatmentSpinner();
         loadTreatmentDayCheckboxes();
 
         // check if not connected to internet, then disable everything and show dialog
@@ -100,8 +100,8 @@ public class NewPatientDataActivity extends Activity {
     public void loadDatePickers() {
 
         birthDateDisplay = (EditText) findViewById(R.id.Birthdate);
-        startDateDisplay = (EditText) findViewById(R.id.treatment_start_day);
-        endDateDisplay = (EditText) findViewById(R.id.treatment_end_day);
+        startDateDisplay = (EditText) findViewById(R.id.schema_start_day);
+        endDateDisplay = (EditText) findViewById(R.id.schema_end_day);
 
         /* get the current date */
         birthDate = Calendar.getInstance();
@@ -193,39 +193,15 @@ public class NewPatientDataActivity extends Activity {
     /* Written by Nishant
      * Loads Checkboxes Dynamically for Treatment Projects
      */
-    public void loadTreatmentCheckboxes() {
-        // list of treatment study groups
-        // for testing
-        treatmentList.add(new Schema());
-        treatmentList.add(new Schema());
-        treatmentList.add(new Schema());
-        treatmentList.add(new Schema());
+    public void loadTreatmentSpinner() {
 
-        // sets layout_height for ListView based on number of treatments
-        ListView treatmentView = (ListView) findViewById(R.id.treatments);
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * treatmentList.size(), getResources().getDisplayMetrics());
-        treatmentView.getLayoutParams().height = height;
-
-
-        ArrayList<String> checkboxesText = new ArrayList<String>();
-        for (int i = 0; i < treatmentList.size(); i++) {
-            checkboxesText.add(treatmentList.get(i).getName());
-        }
-        // creating adapter for ListView
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_checked, checkboxesText);
-
-        // creates ListView checkboxes
-        ListView listview = (ListView) findViewById(R.id.treatments);
-        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listview.setAdapter(adapter);
     }
 
     /**
      * @author lili
      */
     public void loadTreatmentDayCheckboxes() {
-        ListView treatmentView = (ListView) findViewById(R.id.treatment_days);
+        ListView treatmentView = (ListView) findViewById(R.id.schema_days);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
         treatmentView.getLayoutParams().height = height;
 
@@ -243,7 +219,7 @@ public class NewPatientDataActivity extends Activity {
                 android.R.layout.simple_list_item_checked, treatmentDays);
 
         // creates ListView checkboxes
-        ListView listview = (ListView) findViewById(R.id.treatment_days);
+        ListView listview = (ListView) findViewById(R.id.schema_days);
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
     }
@@ -397,16 +373,16 @@ public class NewPatientDataActivity extends Activity {
         editor = (EditText) findViewById(R.id.PhoneNumber);
         String phoneNumber = editor.getText().toString();
 
-        editor = (EditText) findViewById(R.id.treatment_start_day);
+        editor = (EditText) findViewById(R.id.schema_start_day);
         String treatment_startDate = editor.getText().toString();
 
-        editor = (EditText) findViewById(R.id.treatment_end_day);
+        editor = (EditText) findViewById(R.id.schema_end_day);
         String treatment_endDate = editor.getText().toString();
 
         RadioButton buttnMale = (RadioButton) findViewById(R.id.radio_female);
         RadioButton buttnFemale = (RadioButton) findViewById(R.id.radio_male);
 
-        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
+        ListView treatmentListText = (ListView) findViewById(R.id.schema);
         SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
         int numTreatments = 0;
         for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
@@ -490,11 +466,11 @@ public class NewPatientDataActivity extends Activity {
             String phone_number = editor.getText().toString();
 
             // get the project start date
-            editor = (EditText) findViewById(R.id.treatment_start_day);
+            editor = (EditText) findViewById(R.id.schema_start_day);
             String treatment_startDate = editor.getText().toString();
 
             // get the project end date
-            editor = (EditText) findViewById(R.id.treatment_end_day);
+            editor = (EditText) findViewById(R.id.schema_end_day);
             String treatment_endDate = editor.getText().toString();
 
             // get the sex
@@ -510,18 +486,18 @@ public class NewPatientDataActivity extends Activity {
 
             // determines which treatments are checked and stores them in ArrayList of Projects
             ArrayList<Schema> enrolledSchemas = new ArrayList<Schema>();
-            ListView treatmentListText = (ListView) findViewById(R.id.treatments);
+            ListView treatmentListText = (ListView) findViewById(R.id.schema);
             SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
             for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
                 if (checkedItems.get(i)) {
                     //String treatment = treatmentListText.getAdapter().getItem(i).toString();
-                    enrolledSchemas.add(treatmentList.get(i));
+                    enrolledSchemas.add(schemaList.get(i));
                 }
             }
 
             // determines which treatments are checked and stores them in ArrayList of Projects
             ArrayList<String> visitDays = new ArrayList<String>();
-            ListView daysVisited = (ListView) findViewById(R.id.treatment_days);
+            ListView daysVisited = (ListView) findViewById(R.id.schema_days);
             SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
             for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
                 if (daysPicked.get(i)) {
