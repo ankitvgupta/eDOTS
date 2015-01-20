@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.tasks.GetHistoryLoadTask;
-import edots.tasks.GetPatientScheduleLoadTask;
 
 
 /**
@@ -36,7 +35,7 @@ public class Patient extends Saveable{
     private Date birthDate;
     private String nationalID;
     private String sex;
-    private Project enrolledProject;
+    private Schema enrolledSchema;
 
     public Patient(){
 
@@ -50,18 +49,18 @@ public class Patient extends Saveable{
      * @param d Date of birth (as a date object)
      * @param nid national id
      * @param s sex
-     * @param project ArrayList of projects enrolled in
+     * @param schema ArrayList of projects enrolled in
      * @param mother mothers's name
      * @param father father's name
      * @param patientID Patient ID
      * @param doc document type
      */
-    public Patient (String n, Date d, String nid, String s, Project project, String mother, String father, String patientID, int doc){
+    public Patient (String n, Date d, String nid, String s, Schema schema, String mother, String father, String patientID, int doc){
         name = n;
         birthDate = d;
         nationalID = nid;
         sex = s;
-        enrolledProject = project;
+        enrolledSchema = schema;
         mothersName = mother;
         fathersName = father;
         pid = patientID;
@@ -85,9 +84,7 @@ public class Patient extends Saveable{
         sex ="Female";
         mothersName = "Mary";
         fathersName = "John";
-        //Project testProject = new Project();
-        //Project testProject2 = new Project();
-        enrolledProject = new Project();
+        enrolledSchema = new Schema();
         doctype = 1;
     }
 
@@ -108,7 +105,7 @@ public class Patient extends Saveable{
             sex = n.get("sex").toString();
             pid = n.get("pid").toString();
             doctype = Integer.valueOf(n.get("doctype").toString());
-            enrolledProject = new Project(n.get("enrolledProject").toString());
+            enrolledSchema = new Schema(n.get("enrolledProject").toString());
             /*JSONArray arry = new JSONArray(n.get("enrolledProjects").toString());
             for (int i = 0; i < arry.length(); i++){
                 enrolledProjects.add(new Project(arry.getString(i)));
@@ -142,7 +139,7 @@ public class Patient extends Saveable{
             temp.put("birthDate", birthday);
             temp.put("nationalID", getNationalID());
             temp.put("sex", getSex());
-            temp.put("enrolledProject", getEnrolledProject());
+            temp.put("enrolledProject", getEnrolledSchema());
             temp.put("pid", getPid());
             temp.put("doctype",  Integer.toString(getDoctype()));
         } catch (JSONException e) {
@@ -248,8 +245,8 @@ public class Patient extends Saveable{
         return sex;
     }
 
-    public Project getEnrolledProject(){
-        return enrolledProject;
+    public Schema getEnrolledSchema(){
+        return enrolledSchema;
     }
 
     public void setName(String n){
@@ -282,7 +279,7 @@ public class Patient extends Saveable{
         pid=s;
     }
 
-    public void setEnrolledProject(Project p){
-        enrolledProject = p;
+    public void setEnrolledSchema(Schema p){
+        enrolledSchema = p;
     }
 }

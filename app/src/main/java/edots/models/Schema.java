@@ -1,33 +1,28 @@
 package edots.models;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *
  * @author JN
- * @since 2015-01-06
- *
  *
  */
-public class Project extends Saveable{
-    // TODO: consistent capitalization of all class variables
+
+public class Schema  extends Saveable{
     private String id;
     private String name;
+    private ArrayList<Drug> drugs;
 
 
     // For testing only
-    public Project() {
+    public Schema() {
         try {
-            Random r = new Random();
-            int num = r.nextInt(100);
             id = "6";
-            name = Integer.toString(num);
+            name = "test";
         }
         catch (Exception e){
             e.printStackTrace();
@@ -35,10 +30,9 @@ public class Project extends Saveable{
     }
 
     /**
-     *
-     * @param JSONString a JSON object represeting the project
+     * @param JSONString a JSON object representing the project
      */
-    public Project (String JSONString){
+    public Schema(String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
             id = n.get("projectId").toString();
@@ -53,7 +47,7 @@ public class Project extends Saveable{
      * @param i project id
      * @param n name of the project
      */
-    public Project(String i, String n){
+    public Schema(String i, String n){
         id = i;
         name = n;
     }
@@ -91,7 +85,11 @@ public class Project extends Saveable{
         return name;
     }
 
+    public ArrayList<Drug> getDrugs() {
+        return drugs;
+    }
 
-
-
+    public void setDrugs(ArrayList<Drug> drugs) {
+        this.drugs = drugs;
+    }
 }

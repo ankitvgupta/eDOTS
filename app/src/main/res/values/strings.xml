@@ -16,9 +16,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="phone_number">Phone Number</string>
-    <string name="treatment_days">Treatment Days</string>
-    <string name="treatment_start_day">Project Start Day</string>
-    <string name="treatmnet_end_day">Project End Day</string>
+    <string name="schema_days">Treatment Days</string>
+    <string name="schema_start_day">Schema Start Day</string>
+    <string name="schema_end_day">Schema End Day</string>
     <string name="existing_patient"> Existing Patient</string>
     <string name="get_patient_button_use_national_id">Search</string>
     <string name="get_patient_search_new_patient">Search for new patient</string>
@@ -33,15 +33,14 @@
     <string name="register_participant">Register Participant</string>
     <string name="log_out">Log Out</string>
     <string name="send_sms">Send SMS</string>
-    <string name="title_activity_second">SecondActivity</string>
-    <string name="title_activity_get_patient">GetPatient</string>
-    <string name="title_activity_new_patient_data">NewPatientData</string>
-    <string name="title_activity_check_finger_print">CheckFingerPrint</string>
-    <string name="title_activity_confirm_patient">ConfirmPatient</string>
-    <string name="title_activity_patient_home">PatientHome</string>
-    <string name="title_activity_medical_history">MedicalHistory</string>
-    <string name="title_activity_new_visit">NewVisit</string>
-    <string name="title_activity_promoter_login">promoterLogin</string>
+    <string name="title_activity_get_patient">Existing Patient</string>
+    <string name="title_activity_new_patient_data">Register Patient</string>
+    <string name="title_activity_check_finger_print">FingerPrint</string>
+    <string name="title_activity_confirm_patient">Confirm Patient</string>
+    <string name="title_activity_patient_home">Patient Home</string>
+    <string name="title_activity_medical_history">Medical History</string>
+    <string name="title_activity_new_visit">New Visit</string>
+    <string name="title_activity_promoter_login">Login</string>
     <string name="title_activity_patient_type">PatientTypeActivity</string>
     <string name="name"> Name </string>
     <string name="national_ID"> National ID</string>
@@ -51,17 +50,15 @@
     <string name="mothers_name"> Mother\`s Name</string>
     <string name="birthdate"> Birthdate</string>
     <string name="sex"> Sex</string>
-    <string name="data_treatment"> Active Project</string>
     <string name="ID">ID</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="new_visit_site">Site</string>
-    <string name="new_visit_treatment">Active Project</string>
+    <string name="schema">Schema</string>
     <string name="new_visit_done">Submit</string>
     <string name="locale"> Locale</string>
     <string name="select_locale">Select a Local!!</string>
     <string name="login_try_again">Try Again</string>
-    <string name="title_activity_geo_fence">GeoFenceActivity</string>
     <string name="show_selected_local">Show Selected Local</string>
     <string name="txtLocal">Local</string>
     <string name="hello_world">Hello World</string>
@@ -77,11 +74,8 @@
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
     <string name="view_all_patients">View all Patients</string>
-    <string name="namespace">http://demo.sociosensalud.org.pe</string>
-    <string name="serverurl">EdotsWS/Service1.asmx</string>
-   <!-- <string name="serverurl">/EdotsWS/Service1.asmx</string> -->
 
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Main Menu</string>
     <string name="date_label_set">Press the button to set the date</string>
     <string name="date_button_set">Set Date</string>
     <string name="date_view_set">The Date is: </string>
@@ -94,18 +88,18 @@
     <string name="patient_data_filename">patient_data</string>
     <string name="promoter_data_filename">promoter_data</string>
     <string name="new_visit_filename">new_visit_data</string>
-
-    <string name="sms_sent">SMS_SENT</string>
-    <string name="sms_delivered">SMS_DELIVERED</string>
+ <string name="refresh">Refresh</string>
+    <string name="visits_data_filename">visits_data</string>
+    <string name="sms_sent">SMS SENT</string>
+    <string name="sms_delivered">SMS DELIVERED</string>
     <string name="patient_not_found_new_patient">Would you like to register a new patient?</string>
     <string name="add_patient">Add Patient</string>
     <string name="patient_not_listed">Patient Not Listed</string>
-    <string name="patient_not_listed_add_patient">This Patient Is Not Listed As One of Your Patients. Would You Like To Add this Patient?</string>
-    <string name="refresh">Refresh</string>
-    <string name="visits_data_filename">visits_data</string>
-    <string name="title_activity_show_visit">ShowVisitActivity</string>
+    <string name="patient_not_listed_add_patient">This patient is not listed as one of your patients. Would you like to add this patient?</string>
+    <string name="title_activity_show_visit">Past Visit</string>
     <string name="medical_history_see_full_history">See Full Patient History</string>
-    <string name="title_activity_multi_date_picker">MultiDatePickerActivity</string>
     <string name="login_error_message"> Your username or password was incorrect or invalid</string>
     <string name="server_url">http://demo.sociosensalud.org.pe</string>
+    <string name="title_activity_change_schema">ChangeSchemaActivity</string>
+
 </resources>
