@@ -23,7 +23,7 @@ eDOTS
 5. SMS - @JN and @Ankit (with what is possible)
   1. Knowing which patients to send texts to
   2. What should the content of the text be
-	3. Being able to find relationship between promoters and coordinators
+  3. Being able to find relationship between promoters and coordinators
 
 6. General
   1. Refactor LoadTasks so that offline and online happen in the same class (working on it for visits)

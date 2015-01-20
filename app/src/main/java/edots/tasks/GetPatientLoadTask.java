@@ -14,8 +14,8 @@ import java.util.Date;
 import edots.models.Patient;
 import edots.models.Project;
 
-/*
- * Written by Ankit
+/**
+ * @author ankit
  *
  * Given a NationalID, queries the server and returns the patient object of the corresponding patient.
  */

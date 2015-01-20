@@ -54,7 +54,6 @@ public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
     private String promoterId;
-    private AsyncTask<String, String, Patient> patient;
     private Spinner spnPatient;
     private Context c = this;
     JSONArray object;
