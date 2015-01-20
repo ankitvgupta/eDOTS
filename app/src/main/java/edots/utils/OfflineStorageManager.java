@@ -289,7 +289,7 @@ public class OfflineStorageManager {
         NewVisitUploadTask upload_visit = new NewVisitUploadTask(context);
 
         try{
-            String result = upload_visit.execute(context.getString(R.string.namespace),
+            String result = upload_visit.execute(context.getString(R.string.server_url),
                     currentVisit.getLocaleCode(),
                     currentVisit.getProjectCode(),
                     currentVisit.getVisitGroupCode(),
