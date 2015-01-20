@@ -15,7 +15,7 @@ public class Drug {
     private String dosage;
     
     public Drug(){
-        this.id = "SampleDrugId";
+        this.id = "0";
         this.name = "SampleDrugName";
         this.symbol = "SampleDrugSymbol";
         this.dosage = "SampleDrugDosage";

@@ -149,6 +149,10 @@ public class Patient extends Saveable{
         return temp.toString();
 
     }
+   
+    public Schema getSchema(){
+        return new Schema();
+    }
 
     /**
      * @author Ankit
@@ -246,8 +250,8 @@ public class Patient extends Saveable{
     }
 
     public Schema getEnrolledSchema(){
-        return enrolledSchema;
-    }
+        return new Schema();
+    } // TODO: This is for testing only, change this to the actual current schema
 
     public void setName(String n){
         name=n;
