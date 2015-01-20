@@ -108,7 +108,7 @@ public class NewPatientDataActivity extends Activity {
 
         birthDateDisplay.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                showDateDialog(birthDateDisplay, birthDate);
+            showDateDialog(birthDateDisplay, birthDate);
             }
         });
 
@@ -116,7 +116,7 @@ public class NewPatientDataActivity extends Activity {
 
         startDateDisplay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                showDateDialog(startDateDisplay, startDate);
+            showDateDialog(startDateDisplay, startDate);
             }
         });
 
@@ -124,7 +124,7 @@ public class NewPatientDataActivity extends Activity {
 
         endDateDisplay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                showDateDialog(endDateDisplay, endDate);
+            showDateDialog(endDateDisplay, endDate);
             }
         });
 
