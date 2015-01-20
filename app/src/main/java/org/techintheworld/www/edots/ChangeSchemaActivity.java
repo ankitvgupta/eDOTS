@@ -3,6 +3,7 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,15 +12,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schedule;
 import edots.models.Schema;
+import edots.tasks.GetPatientSchemaLoadTask;
 
 
 public class ChangeSchemaActivity extends Activity {
     
     Patient currentPatient;
+
     private ArrayList<String> treatmentDays = new ArrayList<String>();
 
 
@@ -48,10 +52,23 @@ public class ChangeSchemaActivity extends Activity {
         // get the current patient's schema
         Schema currentPatientSchema = currentPatient.getEnrolledSchema();
         Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
+        
+        EditText
 
         loadTreatmentDayCheckboxes(currentPatientSchedule);
         
         // get the
+        GetPatientSchemaLoadTask schemaLoader = new GetPatientSchemaLoadTask();
+        try {
+            Schema currentPatientSchema = schemaLoader.execute(getString(R.string.server_url), currentPatient.getPid()).get();
+            
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("GetPatientActivity: LoadPatient", "NullPointerException");
+        }
                 
         
         /*
