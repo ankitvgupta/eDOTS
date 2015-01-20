@@ -38,9 +38,16 @@ public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
         request.addProperty("Viernes", params[6]);
         request.addProperty("Sabado", params[7]);
         request.addProperty("Domingo", params[8]);
-        request.addProperty("FechaComienzo", params[9]);
-        request.addProperty("FechaTermino", params[10]);
-        request.addProperty("Active", params[11]);
+        request.addProperty("LunesTarde", params[9]);
+        request.addProperty("MartesTarde", params[10]);
+        request.addProperty("MiercolesTarde", params[11]);
+        request.addProperty("JuevesTarde", params[12]);
+        request.addProperty("ViernesTarde", params[13]);
+        request.addProperty("SabadoTarde", params[14]);
+        request.addProperty("DomingoTarde", params[15]);
+        request.addProperty("FechaComienzo", params[16]);
+        request.addProperty("FechaTermino", params[17]);
+        request.addProperty("Active", params[18]);
 ;
 
         // setup request
@@ -54,20 +61,17 @@ public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
         try
         {
             transporte.call(SOAP_ACTION, envelope);
-
             // receive response (as a string)
             // TODO: Determine why it says that the patient already exists even though it doesn't
             // (It says patient exists when it doesn't and then adds it anyways
             // - seems like the response codes are flipped)
             SoapPrimitive resSoap = (SoapPrimitive) envelope.getResponse();
-
             returnvalue = resSoap.toString();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
 
         return returnvalue;
     }
