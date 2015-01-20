@@ -9,11 +9,6 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.text.SimpleDateFormat;
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.Arrays;
-=======
->>>>>>> ee43f20a751be5cb4637c55ce7273dbf5def3312
 import java.util.Date;
 
 import edots.models.Patient;
