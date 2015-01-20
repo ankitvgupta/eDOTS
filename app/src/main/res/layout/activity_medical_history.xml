@@ -51,8 +51,6 @@
                 android:id="@+id/past_week_missed"/>
             <TextView
                 android:id="@+id/past_week_received"/>
-            <TextView
-                android:id="@+id/past_week_future"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -62,8 +60,6 @@
                 android:id="@+id/past_month_missed"/>
             <TextView
                 android:id="@+id/past_month_received"/>
-            <TextView
-                android:id="@+id/past_month_future"/>
         </TableRow>
         <TableRow>
             <TextView
