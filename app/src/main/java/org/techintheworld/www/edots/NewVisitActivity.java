@@ -1,7 +1,10 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -24,6 +27,7 @@ import edots.models.Visit;
 import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
 import edots.utils.DatePickerFragment;
+import edots.utils.InternetConnection;
 import edots.utils.TimePickerFragment;
 
 /**
@@ -81,6 +85,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // load the visit group number and visit number
         // TODO: put this into a function
         NewVisitLoadTask newV = new NewVisitLoadTask();
+
         AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, currentPatient.getEnrolledSchema().getId());
         // parse the result, and return it
         try {
@@ -92,11 +97,13 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         } catch (ExecutionException e1) {
             e1.printStackTrace();
         } catch (NullPointerException e1){
-            Log.e("NewVisit: get visit","");
+            Log.e("NewVisit:OnCreate new visit","is null");
         }
 
+
+        //TODO: do not hardcode this, this is for testing only
+        currentVisit = new Visit();
         currentVisit.setLocaleCode(localeCode);
-        currentVisit.setPromoterId(promoterId);
 
         // visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
@@ -201,28 +208,36 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
      * @return -1 for error, 1 or 2 for success
      */
     public String addToDatabase(){
-        NewVisitUploadTask uploader = new NewVisitUploadTask();
+        NewVisitUploadTask uploader = new NewVisitUploadTask(this);
         String result = "-1";
-        try {
-            Log.v("new visit: currentVisit", currentVisit.toString());
-            result = uploader.execute(getString(R.string.server_url),
-                                      currentVisit.getLocaleCode(),
-                                      currentVisit.getProjectCode(),
-                                      currentVisit.getVisitGroupCode(),
-                                      currentVisit.getVisitCode(),
-                                      currentPatient.getPid(),
-                                      currentVisit.getVisitDate(),
-                                      currentVisit.getVisitTime(),
-                                      currentVisit.getPromoterId()).get();
+        boolean connected = InternetConnection.checkConnection(this);
+        if (connected){
+            try {
+                result = uploader.execute(getString(R.string.server_url),
+                        currentVisit.getLocaleCode(),
+                        currentVisit.getProjectCode(),
+                        currentVisit.getVisitGroupCode(),
+                        currentVisit.getVisitCode(),
+                        currentPatient.getPid(),
+                        currentVisit.getVisitDate(),
+                        currentVisit.getVisitTime(),
+                        currentVisit.getPromoterId()).get();
 
-            Log.v("What we got was", result);
+                Log.i("NewVisitActivity: addtoDatabase result", result);
+            }
+            catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            catch (ExecutionException e){
+                e.printStackTrace();
+            }
         }
-        catch (InterruptedException e){
-            e.printStackTrace();
+        else{
+            uploader.saveVisitLocally(currentVisit);
+            Log.i("NewVisitActivity: addtoDatabase localsaved", currentVisit.toString());
+
         }
-        catch (ExecutionException e){
-            e.printStackTrace();
-        }
+
         return result;
     }
 
@@ -239,14 +254,32 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
         //TODO: code the message in strings.xml
         if (result.equals("-1")){
-            Log.v("New Visit: result", result);
-            Toast.makeText(getBaseContext(),"Failed to submit. Please try again",Toast.LENGTH_SHORT).show();
+            Log.i("New Visit: result", result);
+            AlertError("Connection Error", "This visit will be saved locally and uploaded when internet resumes");
+
         }
         else{
             Toast.makeText(getBaseContext(), "Successfully submitted", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
+
         }
+
+    }
+
+    public void AlertError(String title, String message) {
+        // Alert if username and password are not entered
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton (Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getBaseContext(), MainMenuActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        alertDialog.show();
     }
 
 

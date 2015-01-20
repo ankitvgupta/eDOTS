@@ -28,15 +28,17 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
 
 import edots.models.Patient;
 import edots.models.Schema;
 import edots.models.Promoter;
+import edots.models.Visit;
+import edots.tasks.GetPatientContactLoadTask;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
 import edots.tasks.PatientProjectLoadTask;
 import edots.utils.OfflineStorageManager;
-import edots.tasks.GetPatientContactLoadTask;
 
 
 /*
@@ -73,7 +75,7 @@ public class GetPatientActivity extends Activity {
         loadPatientSpinner();
         testFunction();
         try {
-            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
         }
         catch(JSONException e1){
             e1.printStackTrace();
@@ -165,13 +167,15 @@ public class GetPatientActivity extends Activity {
 
         setButtons(false);
         currentPatient = null;
-        JSONArray object;
+
+        // TODO: Check if Patient is already stored locally first
+        JSONArray arr;
         try {
             // load list of patients from file patient_data
-            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+            arr = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
             // look at all patients
-            for (int i = 0; i < object.length(); i++){
-                JSONObject obj = object.getJSONObject(i);
+            for (int i = 0; i < arr.length(); i++){
+                JSONObject obj = arr.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
                 // this ensures that they have a NationalId
                 if (p.getNationalID() == nationalid) {
@@ -193,6 +197,10 @@ public class GetPatientActivity extends Activity {
             // parse the result, and return it
             try {
                 currentPatient = (Patient) p.get();
+                ArrayList<Visit> visits = currentPatient.getPatientHistory(this);
+                Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
+                //Log.v("Patient that we got is", currentPatient.toString());
+
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             } catch (ExecutionException e1) {
@@ -366,7 +374,7 @@ public class GetPatientActivity extends Activity {
             fillTable();
             // TODO: needs comments!
             try {
-                object = new JSONArray(OfflineStorageManager.getJSONFromLocal(c, "patient_data"));
+                object = new JSONArray(OfflineStorageManager.getStringFromLocal(c, "patient_data"));
                 // look at all patients
                 boolean already_found = false;
                 for (int i = 0; i < object.length(); i++) {
@@ -430,7 +438,7 @@ public class GetPatientActivity extends Activity {
 
                 try {
                     npu.execute(getString(R.string.server_url), currentPatient.getPid(), promoterId, "0").get();
-                    Promoter promoter = new Promoter(OfflineStorageManager.getJSONFromLocal(c, "promoter_data"));
+                    Promoter promoter = new Promoter(OfflineStorageManager.getStringFromLocal(c, "promoter_data"));
                     OfflineStorageManager.SaveWebPatientData(promoter, c);
                 } catch (Exception e1) {
                     Log.e("GetPatientActivity: loadPatient", "ExecutionException Probably");
@@ -475,6 +483,18 @@ public class GetPatientActivity extends Activity {
         }
     }
 
+
+    /**
+     * switch to switchChangeSchemaActivity
+     */
+    public void switchChangeSchemaActivity(View view) {
+        if (currentPatient != null) {
+            Intent intent = new Intent(this, ChangeSchemaActivity.class);
+            intent.putExtra("Patient", currentPatient.toString());
+            startActivity(intent);
+        }
+    }
+    
     /**
      * switch to NewPatientActivity
      */
@@ -504,7 +524,8 @@ public class GetPatientActivity extends Activity {
         JSONArray object;
         try {
             // load list of patients from file patient_data
-            object = new JSONArray(OfflineStorageManager.getJSONFromLocal(this, "patient_data"));
+
+            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
 
             String[] patients = new String[object.length()+1];
             patients[0] = getString(R.string.get_patient_select_patient);

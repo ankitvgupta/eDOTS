@@ -11,7 +11,8 @@ import java.util.ArrayList;
  * @author JN
  *
  */
-public class Schema {
+
+public class Schema  extends Saveable{
     private String id;
     private String name;
     private ArrayList<Drug> drugs;

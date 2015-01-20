@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Model for Promoters.
  *
  */
-public class Promoter extends Object {
+public class Promoter extends Saveable {
     private String Id;
     private String Locale;
     private ArrayList<String> patient_ids;
@@ -30,10 +30,9 @@ public class Promoter extends Object {
      *
      * @param u Id of promoter
      * @param l Locale of promoter
-     * @param p NOTUSED
      * @param pt ids of the patient of that promoter
      */
-    public Promoter(String u,String l, String p, ArrayList<String> pt){
+    public Promoter(String u,String l, ArrayList<String> pt){
         Id = u;
         Locale = l;
         patient_ids=pt;

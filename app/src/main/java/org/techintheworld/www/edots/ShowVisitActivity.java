@@ -77,7 +77,7 @@ public class ShowVisitActivity extends Activity {
         TextView header = (TextView) findViewById(R.id.medical_history_for_patient);
         header.setText("Past Visits for " + patientName + " on " + dateFormatter.format(selectedDate));
 
-        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
         if (patientVisits != null) {
             numVisits = patientVisits.size();
@@ -92,7 +92,6 @@ public class ShowVisitActivity extends Activity {
             visitDate = patientVisits.get(i).getVisitDate();
             timeVal = patientVisits.get(i).getVisitTime();
             projectCode = patientVisits.get(i).getProjectCode();
-            userCode = patientVisits.get(i).getPromoterId();
             visitCode = patientVisits.get(i).getVisitCode();
             visitGroupCode = patientVisits.get(i).getVisitGroupCode();
 
@@ -201,7 +200,7 @@ public class ShowVisitActivity extends Activity {
         header.setText("All Past Visits for " + patientName);
 
 
-        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
         if (patientVisits != null){
             numVisits = patientVisits.size();
@@ -214,7 +213,6 @@ public class ShowVisitActivity extends Activity {
             visitDate = patientVisits.get(i).getVisitDate();
             timeVal = patientVisits.get(i).getVisitTime();
             projectCode = patientVisits.get(i).getProjectCode();
-            userCode = patientVisits.get(i).getPromoterId();
             visitCode = patientVisits.get(i).getVisitCode();
             visitGroupCode = patientVisits.get(i).getVisitGroupCode();
 

@@ -1,5 +1,6 @@
 package edots.models;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -25,7 +26,7 @@ import edots.tasks.GetHistoryLoadTask;
  * Model for Patients
  *
  */
-public class Patient extends Object{
+public class Patient extends Saveable{
     private String pid;
     private int doctype;
     private String name;
@@ -186,14 +187,16 @@ public class Patient extends Object{
      * @author ankitgupta
      * @return a list of this patient's visits, as an ArrayList of Visits
      */
-    public ArrayList<Visit> getPatientHistory (){
+    public ArrayList<Visit> getPatientHistory (Context context){
         String patientCode = pid; // for production
         //String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
-        GetHistoryLoadTask newP = new GetHistoryLoadTask();
+
+        GetHistoryLoadTask newP = new GetHistoryLoadTask(context);
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
         try {
             ArrayList<Visit> visits = (ArrayList<Visit>) p.get();
             Log.v("Patient.java: The visits are", visits.toString());
+            Log.e("Patientjava getPatientHistory number of visits", String.valueOf(visits.size()));
             return visits;
         }
         catch (InterruptedException e){

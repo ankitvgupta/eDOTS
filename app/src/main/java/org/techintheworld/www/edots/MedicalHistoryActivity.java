@@ -40,8 +40,9 @@ import edots.models.Visit;
  */
 
 public class MedicalHistoryActivity extends FragmentActivity {
-    Patient currentPatient;
-    Context c = this;
+
+    private Patient currentPatient;
+    private Context c = this;
     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat dayOfTheWeekFormatter = new SimpleDateFormat("EEEE");
     SimpleDateFormat visitDateFormatter = new SimpleDateFormat("EEE dd/MM/yyyy");
@@ -82,6 +83,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     * Adds colors and listeners to calendar
     */
     public void updateCalendar(CaldroidFragment caldroidFragment, Calendar cal) {
+
         Schedule patientSchedule = currentPatient.getPatientSchedule();
 
         String startDate = patientSchedule.getStartDate(); // day/month/year
@@ -172,7 +174,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
             }
         }
 
-        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
         if (patientVisits != null) {
             numVisits = patientVisits.size();

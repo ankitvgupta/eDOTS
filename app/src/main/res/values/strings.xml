@@ -74,6 +74,7 @@
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
     <string name="view_all_patients">View all Patients</string>
+
     <string name="title_activity_main">Main Menu</string>
     <string name="date_label_set">Press the button to set the date</string>
     <string name="date_button_set">Set Date</string>
@@ -86,6 +87,9 @@
     <string name="no_internet_connection">Error connecting to internet</string>
     <string name="patient_data_filename">patient_data</string>
     <string name="promoter_data_filename">promoter_data</string>
+    <string name="new_visit_filename">new_visit_data</string>
+ <string name="refresh">Refresh</string>
+    <string name="visits_data_filename">visits_data</string>
     <string name="sms_sent">SMS SENT</string>
     <string name="sms_delivered">SMS DELIVERED</string>
     <string name="patient_not_found_new_patient">Would you like to register a new patient?</string>
@@ -96,4 +100,6 @@
     <string name="medical_history_see_full_history">See Full Patient History</string>
     <string name="login_error_message"> Your username or password was incorrect or invalid</string>
     <string name="server_url">http://demo.sociosensalud.org.pe</string>
+    <string name="title_activity_change_schema">ChangeSchemaActivity</string>
+
 </resources>
