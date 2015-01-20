@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -21,8 +22,9 @@ public class Schema  extends Saveable{
     // For testing only
     public Schema() {
         try {
-            id = "6";
-            name = "test";
+            id = "1";
+            name = "SampleSchemaName";
+            drugs = new ArrayList<>(Arrays.asList(new Drug()));
         }
         catch (Exception e){
             e.printStackTrace();

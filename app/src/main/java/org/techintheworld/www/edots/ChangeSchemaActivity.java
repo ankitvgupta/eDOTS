@@ -13,6 +13,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import edots.models.Patient;
+import edots.models.Schedule;
+import edots.models.Schema;
 
 
 public class ChangeSchemaActivity extends Activity {
@@ -35,11 +37,20 @@ public class ChangeSchemaActivity extends Activity {
             e.printStackTrace();
         }
 
+        // Add the current patient's DNI
         EditText dni = (EditText) findViewById(R.id.changeSchema_National_ID);
         dni.setText(currentPatient.getNationalID());
         
+        // Add the current patient's name
         EditText patientName = (EditText) findViewById(R.id.changeSchema_Name);
         patientName.setText(currentPatient.getName());
+        
+        // get the current patient's schema
+        Schema currentPatientSchema = currentPatient.getEnrolledSchema();
+        Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
+        
+        // get the current patient's schedule
+        
         
         /*
         GetSchemaLoadTask schemaLoader = new GetSchemaLoadTask();
