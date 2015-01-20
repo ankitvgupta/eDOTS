@@ -17,6 +17,9 @@ public class Schema  extends Saveable{
     private String name;
     private ArrayList<Drug> drugs;
 // TODO: add phase
+    private String visit_mode; // 1 for "clinic" or 2 for "patient home"
+    private String start_date;
+    private String end_date;
 
     // For testing only
     public Schema() {
@@ -91,5 +94,29 @@ public class Schema  extends Saveable{
 
     public void setDrugs(ArrayList<Drug> drugs) {
         this.drugs = drugs;
+    }
+
+    public String getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
+    }
+
+    public String getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(String end_date) {
+        this.end_date = end_date;
+    }
+
+    public String getVisit_mode() {
+        return visit_mode;
+    }
+
+    public void setVisit_mode(String visit_mode) {
+        this.visit_mode = visit_mode;
     }
 }
