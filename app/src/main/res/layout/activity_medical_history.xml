@@ -63,7 +63,7 @@
             <TextView
                 android:id="@+id/past_month_received"/>
             <TextView
-                android:id="@+id/past_month_total"/>
+                android:id="@+id/past_month_future"/>
         </TableRow>
         <TableRow>
             <TextView

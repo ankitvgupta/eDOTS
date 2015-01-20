@@ -87,6 +87,7 @@ public class MainMenuActivity extends Activity {
 
     }
 
+
     /**
      * 
      * @author Ankit 
@@ -95,29 +96,26 @@ public class MainMenuActivity extends Activity {
      * TODO: For now this just pulls all of the patients of the given promoter
      * TODO: Change this to load the true missed patients 
      */
-    private void loadMissedPatients(){
+    private void loadMissedPatients() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String promoterID = prefs.getString("userid", null);
 
-  
+
         LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
         AsyncTask loadPatientsTask = loadPatients.execute(getString(R.string.server_url), promoterID);
         try {
             patients = (ArrayList<String>) loadPatientsTask.get();
             Log.v("MainMenuActivity.java: The patients in the second load are", patients.toString());
-        }
-        catch (InterruptedException e){
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        catch (NullPointerException e){
-            e.printStackTrace();
-        }
-        
-        
     }
+        
+
 
 
     /**

@@ -1,6 +1,5 @@
 package edots.utils;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -12,7 +11,7 @@ import org.techintheworld.www.edots.R;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Login;
-import edots.models.Project;
+import edots.models.Schema;
 import edots.tasks.LoginTask;
 import edots.tasks.PromoterProjectLoadTask;
 
@@ -44,8 +43,8 @@ public class AccountLogin {
             Login login = loginAsyncTask.get();
             PromoterProjectLoadTask promoterProjectTask= new PromoterProjectLoadTask();
             AsyncTask promoterProjects = promoterProjectTask.execute(locale_id, Integer.toString(login.UserID));
-            Project[] projectList = (Project[]) promoterProjects.get();
-            Log.v("AccountLogin: promoter projects", projectList.toString());
+            Schema[] schemaList = (Schema[]) promoterProjects.get();
+            Log.v("AccountLogin: promoter projects", schemaList.toString());
             response = login.Message;
             editor.putString(c.getString(R.string.username), username);
             editor.putString(c.getString(R.string.key_userid), String.valueOf(login.UserID));
@@ -56,13 +55,6 @@ public class AccountLogin {
             if (response.equals(c.getString(R.string.session_init_key)) || response.equals(c.getString(R.string.password_expired_key))) {
 
                 editor.commit();
-            }
-            else{
-                ProgressDialog.Builder loginProgress = new ProgressDialog.Builder(c);
-
-                loginProgress.setTitle("Login Error");
-                loginProgress.setMessage("Your username or password was incorrect or invalid");
-                loginProgress.show();
             }
 
 

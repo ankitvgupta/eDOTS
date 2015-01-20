@@ -32,6 +32,10 @@ eDOTS
 	5. Should texts be automated? It would only involve only clicking a button.
 
 
+<<<<<<< HEAD
+6. Offline Storage refactoring and saving visits - JN
+    1. save project the patients are enrolled
+=======
 6. General
   1. Refactor LoadTasks so that offline and online happen in the same class (working on it for visits, saving is not done, offline upload works)
 		- JN AND ANKIT are gonna kill this
@@ -48,6 +52,7 @@ Things to Communicate with Juan
 4. Offline functionality
 5. Fingerprint Reader 
 
+>>>>>>> aa98cd360799fe3d3e4233d4871ea8d3423c17d3
 
 
 Overview of App Structure:

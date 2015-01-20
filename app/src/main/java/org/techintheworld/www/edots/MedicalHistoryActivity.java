@@ -41,8 +41,9 @@ import edots.models.Visit;
  */
 
 public class MedicalHistoryActivity extends FragmentActivity {
-    Patient currentPatient;
-    Context c = this;
+
+    private Patient currentPatient;
+    private Context c = this;
     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat dayOfTheWeekFormatter = new SimpleDateFormat("EEEE");
     SimpleDateFormat visitDateFormatter = new SimpleDateFormat("EEE dd/MM/yyyy");
@@ -83,6 +84,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     * Adds colors and listeners to calendar
     */
     public void updateCalendar(CaldroidFragment caldroidFragment, Calendar cal) {
+
         Schedule patientSchedule = currentPatient.getPatientSchedule();
 
         String startDate = patientSchedule.getStartDate(); // day/month/year
@@ -173,7 +175,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
             }
         }
 
-        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory();
+        ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
         if (patientVisits != null) {
             numVisits = patientVisits.size();
@@ -214,14 +216,13 @@ public class MedicalHistoryActivity extends FragmentActivity {
         TextView pastWeekReceived = (TextView) findViewById(R.id.past_week_received);
         TextView pastWeekFuture = (TextView) findViewById(R.id.past_week_future);
 
-        TextView pastWeekMissed = (TextView) findViewById(R.id.past_month_missed);
-        TextView pastWeekMissed = (TextView) findViewById(R.id.past_month_received);
-        TextView pastWeekMissed = (TextView) findViewById(R.id.past_month_future);
+        TextView pastMonthMissed = (TextView) findViewById(R.id.past_month_missed);
+        TextView pastMonthReceived = (TextView) findViewById(R.id.past_month_received);
+        TextView pastMonthFuture = (TextView) findViewById(R.id.past_month_future);
 
-        TextView pastWeekMissed = (TextView) findViewById(R.id.total_missed);
-        TextView pastWeekMissed = (TextView) findViewById(R.id.total_received);
-        TextView pastWeekMissed = (TextView) findViewById(R.id.total_future);
-
+        TextView totalMissed = (TextView) findViewById(R.id.total_missed);
+        TextView totalReceived = (TextView) findViewById(R.id.total_received);
+        TextView totalFuture = (TextView) findViewById(R.id.total_future);
     }
 
     /*

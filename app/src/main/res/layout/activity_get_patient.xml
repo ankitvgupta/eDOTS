@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView">
         <LinearLayout
             android:layout_width="fill_parent"
             android:orientation="vertical"
@@ -185,9 +186,20 @@
                     android:padding="5dip">
 
                 </TableRow>
+                
 
             </TableLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change Schema/Schedule"
+                android:id="@+id/change_schema_button"
+                android:layout_alignBottom="@+id/scrollView"
+                android:onClick="switchChangeSchemaActivity"
+                android:layout_centerHorizontal="true" />
         </LinearLayout>
     </ScrollView>
+
+
 
 </RelativeLayout>
