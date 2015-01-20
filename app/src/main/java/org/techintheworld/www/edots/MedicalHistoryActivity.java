@@ -209,6 +209,21 @@ public class MedicalHistoryActivity extends FragmentActivity {
         caldroidFragment.setCaldroidListener(listener);
     }
 
+    public void updateTreatmentTable() {
+        TextView pastWeekMissed = (TextView) findViewById(R.id.past_week_missed);
+        TextView pastWeekReceived = (TextView) findViewById(R.id.past_week_received);
+        TextView pastWeekFuture = (TextView) findViewById(R.id.past_week_future);
+
+        TextView pastWeekMissed = (TextView) findViewById(R.id.past_month_missed);
+        TextView pastWeekMissed = (TextView) findViewById(R.id.past_month_received);
+        TextView pastWeekMissed = (TextView) findViewById(R.id.past_month_future);
+
+        TextView pastWeekMissed = (TextView) findViewById(R.id.total_missed);
+        TextView pastWeekMissed = (TextView) findViewById(R.id.total_received);
+        TextView pastWeekMissed = (TextView) findViewById(R.id.total_future);
+
+    }
+
     /*
      * Written by Nishant
      * Loads full medical history of patient
