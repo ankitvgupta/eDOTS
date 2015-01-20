@@ -125,7 +125,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/sex"/>
 
-
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -162,7 +161,7 @@
                 android:paddingLeft="2dp" >
             </ListView>
 
-            <!--Treatment Start Day field-->
+            <!--Schema Start Day field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -176,7 +175,21 @@
                 android:focusable="false">
             </EditText>
 
-            <!--Treatment Days field-->
+            <!--Schema End Day field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/schema_end_day"/>
+
+            <EditText
+                android:id="@+id/schema_end_day"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+            
+            <!--Schema Days field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -195,20 +208,29 @@
                 android:dividerHeight="1dp"
                 android:paddingLeft="2dp" />
 
-            <!--Treatment End Day field-->
+            <!--Visit Mode field-->
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/schema_end_day"/>
-
-            <EditText
-                android:id="@+id/schema_end_day"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:focusable="false">
-            </EditText>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/visit_mode"/>
 
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_clinic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clinic"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_patient_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_home"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+            
             <!--fingerprint button-->
             <Button
                 android:layout_width="wrap_content"
