@@ -30,7 +30,7 @@ eDOTS
 	3. Being able to find relationship between promoters and coordinators - YEAH
 	4. Deciding when to Send Texts
 	5. Should texts be automated? It would only involve only clicking a button.
-	
+
 
 6. General
   1. Refactor LoadTasks so that offline and online happen in the same class (working on it for visits, saving is not done, offline upload works)

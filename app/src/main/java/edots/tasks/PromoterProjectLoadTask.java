@@ -7,22 +7,22 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import edots.models.Project;
+import edots.models.Schema;
 
 /**
  * @author lili
  * parameters: localeId, promoterId
  * load the projects the promoter can administer
  */
-public class PromoterProjectLoadTask extends AsyncTask<String,String,Project[]> {
+public class PromoterProjectLoadTask extends AsyncTask<String,String,Schema[]> {
 
 
-    private Project[] lstProyecto;
+    private Schema[] lstProyecto;
 
     @Override
-    protected Project[] doInBackground(String... params) {
+    protected Schema[] doInBackground(String... params) {
 
-        Project[] resul= null;
+        Schema[] resul= null;
 
         String urlserver = "http://demo.sociosensalud.org.pe";
         final String NAMESPACE = urlserver+"/";
@@ -46,7 +46,7 @@ public class PromoterProjectLoadTask extends AsyncTask<String,String,Project[]> 
 
             SoapObject resSoap =(SoapObject)envelope.getResponse();
 
-            lstProyecto = new Project[resSoap.getPropertyCount()];
+            lstProyecto = new Schema[resSoap.getPropertyCount()];
 
             for (int i = 0; i < lstProyecto.length; i++)
             {
@@ -55,7 +55,7 @@ public class PromoterProjectLoadTask extends AsyncTask<String,String,Project[]> 
                 String Id = ic.getProperty(0).toString();
                 String name = ic.getProperty(1).toString();
 
-                Project pro = new Project(Id, name);
+                Schema pro = new Schema(Id, name);
                 lstProyecto[i] = pro;
             }
             if (resSoap.getPropertyCount()>0){

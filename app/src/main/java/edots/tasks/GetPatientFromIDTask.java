@@ -9,12 +9,10 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import edots.models.Patient;
-import edots.models.Project;
+import edots.models.Schema;
 
 /**
  * Created by jfang on 1/12/15.
@@ -86,10 +84,10 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
             else { sex = "Male"; }
             //Project testProject = new Project();
             //Project testProject2 = new Project();
-            Project enrolledProject = new Project();
+            Schema enrolledSchema = new Schema();
 
             // instantiate a new patient object to be returned
-            p = new Patient(name, birthDate, nationalID, sex, enrolledProject, mothersName, fathersName, patientID, docType);
+            p = new Patient(name, birthDate, nationalID, sex, enrolledSchema, mothersName, fathersName, patientID, docType);
 
         }
         catch (Exception e)

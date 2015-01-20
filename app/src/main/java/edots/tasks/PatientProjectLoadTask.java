@@ -8,19 +8,19 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import edots.models.Project;
+import edots.models.Schema;
 
 /**
  * @author lili
  * parameters: patientId, promoterId
  * load the projects for the patient's new visit with the promoter
  */
-public class PatientProjectLoadTask extends AsyncTask<String,String,Project> {
+public class PatientProjectLoadTask extends AsyncTask<String,String,Schema> {
     @Override
-    protected Project doInBackground(String... params) {
+    protected Schema doInBackground(String... params) {
 
         // instantiate patient to be returned
-        Project p = null;
+        Schema p = null;
 
         // setup server parameters
         // TODO: do not hard code in the url
@@ -55,7 +55,7 @@ public class PatientProjectLoadTask extends AsyncTask<String,String,Project> {
             SoapObject ic = (SoapObject) resSoap.getProperty(0);
 
             // instantiate a new project to be returned
-            p = new Project(ic.getProperty("CodigoProyecto").toString(),ic.getProperty("Proyecto").toString());
+            p = new Schema(ic.getProperty("CodigoProyecto").toString(),ic.getProperty("Proyecto").toString());
         }
         catch (Exception e)
         {

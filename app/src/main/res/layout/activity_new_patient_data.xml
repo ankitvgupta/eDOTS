@@ -147,7 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/data_treatment"/>
+                android:text="@string/schema"/>
 
             <ListView
                 android:id="@+id/treatments"
@@ -167,7 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/treatment_start_day"/>
+                android:text="@string/schema_start_day"/>
 
             <EditText
                 android:id="@+id/treatment_start_day"
@@ -181,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/treatment_days"/>
+                android:text="@string/schema_days"/>
 
             <ListView
                 android:id="@+id/treatment_days"
@@ -200,7 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/treatmnet_end_day"/>
+                android:text="@string/schema_end_day"/>
 
             <EditText
                 android:id="@+id/treatment_end_day"

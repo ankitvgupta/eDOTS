@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
-import edots.models.Project;
+import edots.models.Schema;
 import edots.models.Promoter;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
@@ -54,7 +54,6 @@ public class GetPatientActivity extends Activity {
 
     private Patient currentPatient;
     private String promoterId;
-    private AsyncTask<String, String, Patient> patient;
     private Spinner spnPatient;
     private Context c = this;
     JSONArray object;
@@ -211,14 +210,14 @@ public class GetPatientActivity extends Activity {
      * load the project a patient is currently enrolled in into the patient object
      */
     public void loadPatientProject(){
-        Project currentProject;
+        Schema currentSchema;
         PatientProjectLoadTask loadTask = new PatientProjectLoadTask();
 
         try {
             AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
-            currentProject = (Project) task.get();
-            currentPatient.setEnrolledProject(currentProject);
-            Log.v("GetPatientActivity.java: The project", currentProject.toString());
+            currentSchema = (Schema) task.get();
+            currentPatient.setEnrolledSchema(currentSchema);
+            Log.v("GetPatientActivity.java: The project", currentSchema.toString());
         } catch (InterruptedException e1) {
             //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
             e1.printStackTrace();

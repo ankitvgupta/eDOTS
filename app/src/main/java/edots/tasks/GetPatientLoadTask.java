@@ -12,10 +12,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import edots.models.Patient;
-import edots.models.Project;
+import edots.models.Schema;
 
-/*
- * Written by Ankit
+/**
+ * @author ankit
  *
  * Given a NationalID, queries the server and returns the patient object of the corresponding patient.
  */
@@ -86,12 +86,12 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             else { sex = "Male"; }
             
             // actual project will be loaded in PatientProjectLoadTask
-            Project enrolledProject = new Project();
+            Schema enrolledSchema = new Schema();
 
             Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
 
             // instantiate a new patient to be returned
-            p = new Patient(name, birthDate, nationalID, sex, enrolledProject, mothersName, fathersName, patientID, docType);
+            p = new Patient(name, birthDate, nationalID, sex, enrolledSchema, mothersName, fathersName, patientID, docType);
 
             Log.v("patient object:", p.toString());
 

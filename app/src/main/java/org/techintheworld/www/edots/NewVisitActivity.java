@@ -81,7 +81,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // load the visit group number and visit number
         // TODO: put this into a function
         NewVisitLoadTask newV = new NewVisitLoadTask();
-        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, currentPatient.getEnrolledProject().getId());
+        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, currentPatient.getEnrolledSchema().getId());
         // parse the result, and return it
         try {
             currentVisit = (Visit) v.get();
@@ -137,8 +137,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // visit project
         visitProjectEditor = (EditText) findViewById(R.id.visitProject);
         // TODO: display project name
-        visitProjectEditor.setText(currentPatient.getEnrolledProject().getId()+"-"+
-                                   currentPatient.getEnrolledProject().getName());
+        visitProjectEditor.setText(currentPatient.getEnrolledSchema().getId()+"-"+
+                                   currentPatient.getEnrolledSchema().getName());
 
         // visit group
         visitGroupEditor = (EditText) findViewById(R.id.visitGroup);
