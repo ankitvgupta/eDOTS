@@ -48,7 +48,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
     SimpleDateFormat visitDateFormatter = new SimpleDateFormat("EEE dd/MM/yyyy");
     Date currentDate;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

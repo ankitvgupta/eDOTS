@@ -29,7 +29,6 @@ public class Schedule {
         this.domingo = "0";
         this.startDate = "01/12/2014";
         this.endDate = "15/02/2015";
-        
     };
     
     public Schedule (String code, String l, String ma, String mi, String j, String v, String s, String d, String start, String end){

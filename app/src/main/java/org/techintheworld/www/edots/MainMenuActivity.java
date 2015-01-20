@@ -372,4 +372,13 @@ public class MainMenuActivity extends Activity {
         Intent intent = new Intent(this, PromoterLoginActivity.class);
         startActivity(intent);
     }
+
+    /**
+     * @author lili
+     * disable back button on this activity
+     */
+    @Override
+    public void onBackPressed() {
+        return;
+    }
 }

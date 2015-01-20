@@ -195,7 +195,6 @@
                 android:dividerHeight="1dp"
                 android:paddingLeft="2dp" />
 
-
             <!--Treatment End Day field-->
             <TextView
                 android:layout_width="wrap_content"
