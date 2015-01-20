@@ -200,6 +200,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
         String visitDate;
         Date visitDateObj = new Date();
+        int day_of_week;
+        int hour_of_day;
 
         for (int i = (numVisits - 1); i >= 0; i--) {
             try {
@@ -208,6 +210,16 @@ public class MedicalHistoryActivity extends FragmentActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(visitDateObj);
+            day_of_week = c.get(Calendar.DAY_OF_WEEK);
+            hour_of_day = c.get(Calendar.HOUR_OF_DAY);
+
+            // give Brendan patient and a date, get two boolean values in return
+
+            // add in condition checks for morning and afternoon visits and then figure out whether
+            // to make it red or green.
 
             caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDateObj);
 
