@@ -5,7 +5,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *
@@ -21,10 +20,8 @@ public class Schema {
     // For testing only
     public Schema() {
         try {
-            Random r = new Random();
-            int num = r.nextInt(100);
             id = "6";
-            name = Integer.toString(num);
+            name = "test";
         }
         catch (Exception e){
             e.printStackTrace();
@@ -87,7 +84,11 @@ public class Schema {
         return name;
     }
 
+    public ArrayList<Drug> getDrugs() {
+        return drugs;
+    }
 
-
-
+    public void setDrugs(ArrayList<Drug> drugs) {
+        this.drugs = drugs;
+    }
 }
