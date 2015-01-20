@@ -48,29 +48,36 @@
                 android:text="@string/past_week"
                 android:padding="3dip"/>
             <TextView
-                android:id="@+id/past_week_missed"/>
+                android:id="@+id/past_week_missed"
+                android:gravity="center_horizontal"/>
             <TextView
-                android:id="@+id/past_week_received"/>
+                android:id="@+id/past_week_received"
+                android:gravity="center_horizontal"/>
         </TableRow>
         <TableRow>
             <TextView
                 android:text="@string/past_month"
                 android:padding="3dip"/>
             <TextView
-                android:id="@+id/past_month_missed"/>
+                android:id="@+id/past_month_missed"
+                android:gravity="center_horizontal"/>
             <TextView
-                android:id="@+id/past_month_received"/>
+                android:id="@+id/past_month_received"
+                android:gravity="center_horizontal"/>
         </TableRow>
         <TableRow>
             <TextView
                 android:text="@string/total"
                 android:padding="3dip"/>
             <TextView
-                android:id="@+id/total_missed"/>
+                android:id="@+id/total_missed"
+                android:gravity="center_horizontal"/>
             <TextView
-                android:id="@+id/total_received"/>
+                android:id="@+id/total_received"
+                android:gravity="center_horizontal"/>
             <TextView
-                android:id="@+id/total_future"/>
+                android:id="@+id/total_future"
+                android:gravity="center_horizontal"/>
         </TableRow>
 
     </TableLayout>
