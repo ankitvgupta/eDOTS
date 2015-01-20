@@ -3,9 +3,14 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import edots.models.Patient;
 
@@ -13,6 +18,8 @@ import edots.models.Patient;
 public class ChangeSchemaActivity extends Activity {
     
     Patient currentPatient;
+    private ArrayList<String> treatmentDays = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,33 @@ public class ChangeSchemaActivity extends Activity {
         AsyncTask*/
         
     }
+    /**
+     * @author lili
+     */
+    public void loadTreatmentDayCheckboxes() {
+        ListView treatmentView = (ListView) findViewById(R.id.changeSchema_treatment_days);
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
+        treatmentView.getLayoutParams().height = height;
+
+        //ArrayList<String> treatmentDays = new ArrayList<String>();
+        treatmentDays.add("Monday");
+        treatmentDays.add("Tuesday");
+        treatmentDays.add("Wednesday");
+        treatmentDays.add("Thursday");
+        treatmentDays.add("Friday");
+        treatmentDays.add("Saturday");
+        treatmentDays.add("Sunday");
+
+        // creating adapter for ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_checked, treatmentDays);
+
+        // creates ListView checkboxes
+        ListView listview = (ListView) findViewById(R.id.treatment_days);
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listview.setAdapter(adapter);
+    }
+    
 
 
     @Override
