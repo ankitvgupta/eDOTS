@@ -37,7 +37,7 @@ import edots.models.Schema;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPatientUploadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
-import edots.tasks.NewScheduleUploadTask;
+import edots.tasks.NewSchemaUploadTask;
 import edots.utils.InternetConnection;
 
 /*
@@ -324,7 +324,7 @@ public class NewPatientDataActivity extends Activity {
         // TODO: upload schema start and end date
         // TODO: upload visit mode -- home or clinic
         NewPatientUploadTask uploader = new NewPatientUploadTask();
-        NewScheduleUploadTask scheduleUploader = new NewScheduleUploadTask();
+        NewSchemaUploadTask scheduleUploader = new NewSchemaUploadTask();
         try {
             String url = getString(R.string.server_url);
             String result = uploader.execute(url, name, father, mother, docType, nationalID, birthDate, sex).get();
