@@ -329,4 +329,9 @@ public class PromoterLoginActivity extends Activity {
             Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        return;
+    }
 }
