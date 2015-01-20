@@ -74,7 +74,7 @@
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
     <string name="view_all_patients">View all Patients</string>
-
+<string name="locale_filename">local_data</string>
     <string name="title_activity_main">Main Menu</string>
     <string name="date_label_set">Press the button to set the date</string>
     <string name="date_button_set">Set Date</string>
@@ -101,5 +101,6 @@
     <string name="login_error_message"> Your username or password was incorrect or invalid</string>
     <string name="server_url">http://demo.sociosensalud.org.pe</string>
     <string name="title_activity_change_schema">ChangeSchemaActivity</string>
+    <string name="last_updated">Local storage last updated</string>
 
 </resources>

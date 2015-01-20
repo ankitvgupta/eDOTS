@@ -75,7 +75,10 @@ public class GetPatientActivity extends Activity {
         loadPatientSpinner();
         testFunction();
         try {
-            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
+
+            OfflineStorageManager sm = new OfflineStorageManager(this);
+            String patient_file = getString(R.string.patient_data_filename);
+            object = new JSONArray(sm.getStringFromLocal(patient_file));
         }
         catch(JSONException e1){
             e1.printStackTrace();
@@ -171,8 +174,11 @@ public class GetPatientActivity extends Activity {
         // TODO: Check if Patient is already stored locally first
         JSONArray arr;
         try {
+            OfflineStorageManager sm = new OfflineStorageManager(this);
+            String patient_file = getString(R.string.patient_data_filename);
+
             // load list of patients from file patient_data
-            arr = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
+            arr = new JSONArray(sm.getStringFromLocal(patient_file));
             // look at all patients
             for (int i = 0; i < arr.length(); i++){
                 JSONObject obj = arr.getJSONObject(i);
@@ -374,7 +380,8 @@ public class GetPatientActivity extends Activity {
             fillTable();
             // TODO: needs comments!
             try {
-                object = new JSONArray(OfflineStorageManager.getStringFromLocal(c, "patient_data"));
+                OfflineStorageManager sm = new OfflineStorageManager(this);
+                String patient_file = getString(R.string.patient_data_filename);
                 // look at all patients
                 boolean already_found = false;
                 for (int i = 0; i < object.length(); i++) {
@@ -438,7 +445,10 @@ public class GetPatientActivity extends Activity {
 
                 try {
                     npu.execute(getString(R.string.server_url), currentPatient.getPid(), promoterId, "0").get();
-                    Promoter promoter = new Promoter(OfflineStorageManager.getStringFromLocal(c, "promoter_data"));
+                    OfflineStorageManager sm = new OfflineStorageManager(this);
+                    String promoter_file = getString(R.string.promoter_data_filename);
+                    String promoter_JSON = sm.getStringFromLocal(promoter_file);
+                    Promoter promoter = new Promoter(promoter_JSON);
                     OfflineStorageManager.SaveWebPatientData(promoter, c);
                 } catch (Exception e1) {
                     Log.e("GetPatientActivity: loadPatient", "ExecutionException Probably");

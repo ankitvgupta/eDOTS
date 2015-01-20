@@ -68,4 +68,19 @@ public class AccountLogin {
         return response;
     }
 
+    /**
+     * Checks Shared Preferences if already logged in by checking if saved username is the same as the current one
+     *
+     * @return username of the promoter that is logged in
+     * @author JN
+     */
+    public static String CheckAlreadyLoggedIn(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String username = prefs.getString((context.getString(R.string.username)), null);
+        if (username != null) {
+            return username;
+        }
+        return null;
+    }
+
 }

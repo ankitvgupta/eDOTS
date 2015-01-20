@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
@@ -57,8 +59,6 @@ public class MainMenuActivity extends Activity {
             scheduleSMSAlarm(phoneNo, message, calendar);
             }
         });
-
-        OfflineStorageManager.UpdateLocalStorage(this);
     }
 
 
@@ -85,6 +85,19 @@ public class MainMenuActivity extends Activity {
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pIntent);
         Log.w("MainMenuActivity:scheduleAlarm scheduled for", cal.toString());
 
+    }
+
+    private void updateLocalManual(View v){
+        OfflineStorageManager sm = new OfflineStorageManager(this);
+        if (sm.CanUpdateLocalStorage()){
+            sm.UpdateLocalStorage();
+            long time = sm.GetLastLocalUpdateTime();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            String dateString = formatter.format(new Date(time));
+            String to_print = getString(R.string.last_updated) + " " + dateString;
+            Toast.makeText(getBaseContext(),dateString,
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -114,8 +127,6 @@ public class MainMenuActivity extends Activity {
             e.printStackTrace();
         }
     }
-        
-
 
 
     /**
