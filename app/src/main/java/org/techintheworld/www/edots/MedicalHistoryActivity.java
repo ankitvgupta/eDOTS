@@ -40,9 +40,9 @@ import edots.models.Visit;
  */
 
 public class MedicalHistoryActivity extends FragmentActivity {
+
     private Patient currentPatient;
     private Context c = this;
-
     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat dayOfTheWeekFormatter = new SimpleDateFormat("EEEE");
     SimpleDateFormat visitDateFormatter = new SimpleDateFormat("EEE dd/MM/yyyy");
@@ -85,7 +85,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
     public void updateCalendar(CaldroidFragment caldroidFragment, Calendar cal) {
 
         Schedule patientSchedule = currentPatient.getPatientSchedule();
-
 
         String startDate = patientSchedule.getStartDate(); // day/month/year
         String endDate = patientSchedule.getEndDate(); // day/month/year
