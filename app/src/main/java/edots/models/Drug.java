@@ -13,6 +13,14 @@ public class Drug {
     private String name;
     private String symbol;
     private String dosage;
+    
+    public Drug(){
+        this.id = "SampleDrugId";
+        this.name = "SampleDrugName";
+        this.symbol = "SampleDrugSymbol";
+        this.dosage = "SampleDrugDosage";
+        
+    }
 
     public Drug(String id, String name, String symbol) {
         this.id = id;
