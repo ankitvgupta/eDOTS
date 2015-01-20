@@ -1,0 +1,227 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="org.techintheworld.www.edots.NewPatientDataActivity">
+
+    <ScrollView
+        android:id="@+id/newpatient_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:id="@+id/newPatientLayout"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:layout_height="fill_parent"
+            android:weightSum="1">
+
+            <!--notification for no internet -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:layout_height="32sp"
+                android:textColor="@color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:background="@color/light_red"
+                android:visibility="gone"
+
+                android:id="@+id/internet_status"
+                android:text="@string/no_internet_connection"/>
+
+            <!--national ID field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/national_ID"/>
+
+            <EditText
+                android:id="@+id/National_ID"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:digits="1234567890"
+                android:layout_width="fill_parent">
+            </EditText>
+
+            <!--name field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/new_patient_data_name"/>
+
+            <EditText
+                android:id="@+id/Name"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:layout_width="fill_parent">
+            </EditText>
+
+            <!--father's name field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/fathers_name"/>
+
+            <EditText
+                android:id="@+id/Fathers_name"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:layout_width="fill_parent">
+            </EditText>
+
+            <!--mother's name field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/mothers_name"/>
+
+            <EditText
+                android:id="@+id/Mothers_name"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:layout_width="fill_parent">
+            </EditText>
+
+            <!--Birthdate field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/birthdate"/>
+
+            <EditText
+                android:id="@+id/Birthdate"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
+            <!--Phone Number field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/phone_number"/>
+
+            <EditText
+                android:id="@+id/PhoneNumber"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:digits="1234567890"/>
+
+            <!--Sex field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/sex"/>
+
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/male"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/female"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+
+            <!--Active Treatments field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/data_treatment"/>
+
+            <ListView
+                android:id="@+id/treatments"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:paddingLeft="2dp" >
+            </ListView>
+
+            <!--Treatment Start Day field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/treatment_start_day"/>
+
+            <EditText
+                android:id="@+id/treatment_start_day"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
+            <!--Treatment End Day field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/treatmnet_end_day"/>
+
+            <EditText
+                android:id="@+id/treatment_end_day"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
+            <!--Treatment Days field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/treatment_days"/>
+
+            <ListView
+                android:id="@+id/treatment_days"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:paddingLeft="2dp" />
+
+            <!--fingerprint button-->
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_fingerprint"
+                android:onClick="switchCheckFingerPrint"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Patient"
+                android:onClick="addPatientBtn"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

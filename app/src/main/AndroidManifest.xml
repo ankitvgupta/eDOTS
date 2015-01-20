@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.techintheworld.www.edots" >
+
+    <uses-sdk android:minSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".GetPatientActivity"
+            android:label="@string/title_activity_get_patient"
+            android:parentActivityName=".MainMenuActivity" >
+        </activity>
+        <activity
+            android:name=".NewPatientDataActivity"
+            android:label="@string/title_activity_new_patient_data"
+            android:parentActivityName=".MainMenuActivity" >
+        </activity>
+        <activity
+            android:name=".CheckFingerPrintActivity"
+            android:label="@string/title_activity_check_finger_print" >
+        </activity>
+        <activity
+            android:name=".ConfirmPatientActivity"
+            android:label="@string/title_activity_confirm_patient" >
+        </activity>
+        <activity
+            android:name=".MedicalHistoryActivity"
+            android:label="@string/title_activity_medical_history"
+            android:parentActivityName=".GetPatientActivity" >
+        </activity>
+        <activity
+            android:name=".NewVisitActivity"
+            android:label="@string/title_activity_new_visit"
+            android:parentActivityName=".MedicalHistoryActivity" >
+        </activity>
+        <activity
+            android:name=".PromoterLoginActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainMenuActivity"
+            android:label="MainMenuActivity" >
+        </activity>
+
+        <receiver android:name="edots.utils.SMSAlarmReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.DATA_SMS_RECEIVED" />
+                <data android:scheme="sms" />
+                <data android:port="8901" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".ShowVisitActivity"
+            android:label="@string/title_activity_show_visit"
+            android:parentActivityName=".GetPatientActivity">
+        </activity>
+    </application>
+
+</manifest>

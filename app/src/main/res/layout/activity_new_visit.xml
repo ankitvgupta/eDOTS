@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="org.techintheworld.www.edots.NewVisitActivity">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <!--date field-->
+            <TextView android:text="@string/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/visitDate"
+                android:focusable="false" />
+
+            <!--time field-->
+            <TextView android:text="@string/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/visitTime"
+                android:focusable="false" />
+
+            <!--site field-->
+            <TextView android:text="@string/locale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <EditText
+                android:id="@+id/visitLocale"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:focusable="false" />
+
+            <!--project field-->
+            <TextView android:text="@string/project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <EditText
+                android:id="@+id/visitProject"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:focusable="false" />
+
+            <!--visit group field-->
+            <TextView android:text="@string/visit_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <EditText
+                android:id="@+id/visitGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:focusable="false" />
+
+            <!--visit field-->
+            <TextView android:text="@string/visit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <EditText
+                android:id="@+id/visitNo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:focusable="false" />
+
+            <!--may want to make this a select from rather than edit direct-->
+            <!--<TextView android:text="@string/new_visit_treatment"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+            <!--<ListView-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:id="@+id/active_treatments"-->
+                <!--android:layout_height="wrap_content">-->
+
+            <!--</ListView>-->
+
+            <Button
+                android:layout_marginTop="1sp"
+                android:text="@string/new_visit_done"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:labelFor="@string/new_visit_done"
+                android:onClick="submitVisit"
+                android:imeOptions="actionDone"/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+</RelativeLayout>
