@@ -213,23 +213,24 @@ public class NewPatientDataActivity extends Activity {
         drugList.add(new Drug());
         drugList.add(new Drug());
 
-        // sets layout_height for ListView based on number of treatments
-        ListView treatmentView = (ListView) findViewById(R.id.drugs);
+        // sets layout_height for ListView based on number of drugs
+        ListView drugView = (ListView) findViewById(R.id.drugs);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * drugList.size(), getResources().getDisplayMetrics());
-        treatmentView.getLayoutParams().height = height;
+        drugView.getLayoutParams().height = height;
 
 
         ArrayList<String> checkboxesText = new ArrayList<String>();
         for (int i = 0; i < drugList.size(); i++) {
             checkboxesText.add(drugList.get(i).getName());
         }
+        
         // creating adapter for ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_checked, checkboxesText);
 
         // creates ListView checkboxes
         ListView listview = (ListView) findViewById(R.id.drugs);
-        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
     }
 
