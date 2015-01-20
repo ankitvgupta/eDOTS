@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import edots.models.Patient;
 import edots.models.Schedule;
@@ -47,7 +46,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
     SimpleDateFormat dayOfTheWeekFormatter = new SimpleDateFormat("EEEE");
     SimpleDateFormat visitDateFormatter = new SimpleDateFormat("EEE dd/MM/yyyy");
     Date currentDate;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

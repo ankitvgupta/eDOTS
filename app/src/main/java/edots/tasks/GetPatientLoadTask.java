@@ -9,8 +9,11 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.text.SimpleDateFormat;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Arrays;
+=======
+>>>>>>> ee43f20a751be5cb4637c55ce7273dbf5def3312
 import java.util.Date;
 
 import edots.models.Patient;
@@ -86,11 +89,8 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             String sex = "null";
             if (sexInt == 2){ sex = "Female";}
             else { sex = "Male"; }
-
-            // create test projects to add
-            // TODO: Change this to real one.
-            //Project testProject = new Project();
-            //Project testProject2 = new Project();
+            
+            // actual project will be loaded in PatientProjectLoadTask
             Project enrolledProject = new Project();
 
             Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
