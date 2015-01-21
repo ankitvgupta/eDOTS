@@ -38,6 +38,8 @@ import edots.models.Visit;
 /*
  * Written by Nishant
  * The Calendar
+ * Uses the Caldroid API
+ * https://github.com/roomorama/Caldroid
  */
 
 public class MedicalHistoryActivity extends FragmentActivity {
@@ -51,6 +53,33 @@ public class MedicalHistoryActivity extends FragmentActivity {
     Date weekAgo;
     Date monthAgo;
 
+    Boolean Monday;
+    Boolean Tuesday;
+    Boolean Wednesday;
+    Boolean Thursday;
+    Boolean Friday;
+    Boolean Saturday;
+    Boolean Sunday;
+    int difference;
+    boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+
+    Date startDateObj = new Date();
+    Date endDateObj = new Date();
+
+    int total_missed = 0;
+    int total_received = 0;
+    int total_future = 0;
+
+    int past_week_missed = 0;
+    int past_week_received = 0;
+
+    int past_month_missed = 0;
+    int past_month_received = 0;
+
+    int startDayOfTheWeekInt;
+
+    CaldroidFragment caldroidFragment = new CaldroidFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +92,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
             e.printStackTrace();
         }
 
-        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        // instantiates Caldroid and saves current date, weekAgo and monthAgo dates.
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         currentDate = cal.getTime();
@@ -78,7 +107,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
         caldroidFragment.setArguments(args);
 
-        updateCalendar(caldroidFragment, cal);
+        updateCalendar();
 
         android.support.v4.app.FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.calendar1, caldroidFragment);
@@ -90,10 +119,11 @@ public class MedicalHistoryActivity extends FragmentActivity {
     * Written by Nishant
     * Adds colors and listeners to calendar
     */
-    public void updateCalendar(CaldroidFragment caldroidFragment, Calendar cal) {
+    public void updateCalendar() {
 
         Schedule patientSchedule = currentPatient.getPatientSchedule();
 
+        // gets exact schedule for the current patient
         String startDate = patientSchedule.getStartDate(); // day/month/year
         String endDate = patientSchedule.getEndDate(); // day/month/year
         Boolean MondayMorning = patientSchedule.scheduledLunes();
@@ -111,59 +141,76 @@ public class MedicalHistoryActivity extends FragmentActivity {
         Boolean SundayMorning = patientSchedule.scheduledDomingo();
         Boolean SundayTarde = patientSchedule.scheduledDomingoTarde();
 
-        Boolean Monday = (MondayMorning || MondayTarde);
-        Boolean Tuesday = (TuesdayMorning || TuesdayTarde);
-        Boolean Wednesday = (WednesdayMorning || WednesdayTarde);
-        Boolean Thursday = (ThursdayMorning || ThursdayTarde);
-        Boolean Friday = (FridayMorning || FridayTarde);
-        Boolean Saturday = (SaturdayMorning || SaturdayTarde);
-        Boolean Sunday = (SundayMorning || SundayTarde);
-
-        int total_missed = 0;
-        int total_received = 0;
-        int total_future = 0;
-
-        int past_week_missed = 0;
-        int past_week_received = 0;
-
-        int past_month_missed = 0;
-        int past_month_received = 0;
-
-        Date startDateObj = new Date();
-        Date endDateObj = new Date();
-        String startDayOfTheWeek = "";
-        String endDayOfTheWeek = "";
+        // checks which days of the weeks there will be visits
+        Monday = (MondayMorning || MondayTarde);
+        Tuesday = (TuesdayMorning || TuesdayTarde);
+        Wednesday = (WednesdayMorning || WednesdayTarde);
+        Thursday = (ThursdayMorning || ThursdayTarde);
+        Friday = (FridayMorning || FridayTarde);
+        Saturday = (SaturdayMorning || SaturdayTarde);
+        Sunday = (SundayMorning || SundayTarde);
 
         try {
-            startDateObj = dateFormatter.parse(startDate);
-            startDayOfTheWeek = dayOfTheWeekFormatter.format(startDateObj);
-
             endDateObj = dateFormatter.parse(endDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        int startDayOfTheWeekInt = 0;
+        startDayOfTheWeekInt = getDayOfTheWeekInt(startDate);
 
-        if (startDayOfTheWeek.equals("Monday")) {
-            startDayOfTheWeekInt = 0;
-        } else if (startDayOfTheWeek.equals("Tuesday")) {
-            startDayOfTheWeekInt = 1;
-        } else if (startDayOfTheWeek.equals("Wednesday")) {
-            startDayOfTheWeekInt = 2;
-        } else if (startDayOfTheWeek.equals("Thursday")) {
-            startDayOfTheWeekInt = 3;
-        } else if (startDayOfTheWeek.equals("Friday")) {
-            startDayOfTheWeekInt = 4;
-        } else if (startDayOfTheWeek.equals("Saturday")) {
-            startDayOfTheWeekInt = 5;
-        } else if (startDayOfTheWeek.equals("Sunday")) {
-            startDayOfTheWeekInt = 6;
+        assignScheduledDays();
+
+        assignAttendedDays();
+
+        individualDateListeners();
+
+        updateTreatmentTable(total_missed, total_received, total_future, past_week_missed,
+                past_week_received, past_month_missed, past_month_received);
+    }
+
+    /*
+    * Written by Nishant
+    * Given a date, returns the day of the week for that date in integer form
+    */
+    public int getDayOfTheWeekInt(String date) {
+
+        String dayOfTheWeek = "";
+        try {
+            startDateObj = dateFormatter.parse(date);
+            dayOfTheWeek = dayOfTheWeekFormatter.format(startDateObj);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        int difference;
-        boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+        int dateInt = 0;
 
+        if (dayOfTheWeek.equals("Monday")) {
+            return dateInt;
+        } else if (dayOfTheWeek.equals("Tuesday")) {
+            dateInt = 1;
+        } else if (dayOfTheWeek.equals("Wednesday")) {
+            dateInt = 2;
+        } else if (dayOfTheWeek.equals("Thursday")) {
+            dateInt = 3;
+        } else if (dayOfTheWeek.equals("Friday")) {
+            dateInt = 4;
+        } else if (dayOfTheWeek.equals("Saturday")) {
+            dateInt = 5;
+        } else if (dayOfTheWeek.equals("Sunday")) {
+            dateInt = 6;
+        }
+
+        return dateInt;
+    }
+
+    /*
+    * Written by Nishant
+    * Colors all the days that there are scheduled visits before the current date to red
+    * Colors all the days that there are scheduled visits after the current date to blue (future visits)
+    * Keeps count of how many scheduled visits there are in the past month, past week, total and future
+    */
+    public void assignScheduledDays() {
+        //
         for (int j = 0; j < weekdays.length; j++) {
             if (weekdays[j]) {
                 difference = j - startDayOfTheWeekInt;
@@ -191,7 +238,15 @@ public class MedicalHistoryActivity extends FragmentActivity {
                 } while (newDate.before(endDateObj));
             }
         }
+    }
 
+    /*
+    * Written by Nishant
+    * Colors the days with all successfully attended visits (both morning and afternoon) to green
+    * Updates the count of missed and attended visits within the past week and month and total.
+    */
+    public void assignAttendedDays() {
+        // gets an Array of Visits that were attended by the patient
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
         if (patientVisits != null) {
@@ -234,7 +289,13 @@ public class MedicalHistoryActivity extends FragmentActivity {
             total_missed--;
             total_received++;
         }
+    }
 
+    /*
+    * Written by Nishant
+    * Attaches a listener to each date, upon click will load the medical history for that day
+    */
+    public void individualDateListeners() {
         CaldroidListener listener = new CaldroidListener() {
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -249,10 +310,13 @@ public class MedicalHistoryActivity extends FragmentActivity {
         };
 
         caldroidFragment.setCaldroidListener(listener);
-        updateTreatmentTable(total_missed, total_received, total_future, past_week_missed,
-                past_week_received, past_month_missed, past_month_received);
     }
 
+    /*
+    * Written by Nishant
+    * Updates the summary statistics (below the calendar) for visits missed and attended in the
+    * past week, month, total and future
+    */
     public void updateTreatmentTable(int total_missed, int total_received, int total_future,
                                      int past_week_missed, int past_week_received,
                                      int past_month_missed, int past_month_received) {
@@ -281,6 +345,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     /*
      * Written by Nishant
      * Loads full medical history of patient
+     * Currently inactive because the button for this is disabled in the XML
      */
     public void loadFullHistory (View view) {
         Intent intent = new Intent(this, ShowVisitActivity.class);
@@ -288,7 +353,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
         intent.putExtra("Visit Date", "");
         startActivity(intent);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
