@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -23,6 +24,7 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
+import edots.models.Schedule;
 import edots.models.Visit;
 import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
@@ -187,7 +189,53 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return super.onOptionsItemSelected(item);
     }
 
+    
+    /**
+     * @author lili
+     */
+//    public void loadSchemaDayCheckboxes(Schedule s) {
+//        ListView treatmentView = (ListView) findViewById(R.id.changeSchema_schema_days);
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
+//        treatmentView.getLayoutParams().height = height;
+//
+//        //ArrayList<String> treatmentDays = new ArrayList<String>();
+//        //TODO: should not hardcode the strings for days
+//        treatmentDays.add("Monday");
+//        treatmentDays.add("Tuesday");
+//        treatmentDays.add("Wednesday");
+//        treatmentDays.add("Thursday");
+//        treatmentDays.add("Friday");
+//        treatmentDays.add("Saturday");
+//        treatmentDays.add("Sunday");
+//
+//        // creating adapter for ListView
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_checked, treatmentDays);
+//
+//        // creates ListView checkboxes
+//        ListView listview = (ListView) findViewById(R.id.changeSchema_schema_days);
+//        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+//        listview.setAdapter(adapter);
+//
+//        checkSchemaDayBoxes(s);
+//
+//    }
 
+
+    /**
+     * @author lili
+     * check the checkboxes according to the current schedule 
+     */
+    public void checkSchemaDayBoxes(Schedule s){
+        ListView treatmentView = (ListView) findViewById(R.id.changeSchema_schema_days);
+
+        String oneHotCoding = s.toOneHotCoding();
+        for (int i = 0; i < 14; i++){
+            treatmentView.setItemChecked(i,(oneHotCoding.charAt(i) == '1'));
+        }
+    }
+
+    
     /**
      * insert new visit into the database
      * @return -1 for error, 1 or 2 for success
