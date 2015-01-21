@@ -58,6 +58,7 @@ public class ChangeSchemaActivity extends Activity {
         loadSchemaDayCheckboxes(currentPatientSchedule);
 
     }
+    
     /**
      * @author lili
      */
@@ -84,8 +85,7 @@ public class ChangeSchemaActivity extends Activity {
         ListView listview = (ListView) findViewById(R.id.changeSchema_schema_days);
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
-
-
+        checkSchemaDayBoxes(s);
     }
 
 

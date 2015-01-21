@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -25,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schedule;
+import edots.models.Schema;
 import edots.models.Visit;
 import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
@@ -43,6 +43,8 @@ import edots.utils.TimePickerFragment;
  *  Adds a new visit to the db
  */
 
+//TODO: add scheduled days
+    
 public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
 
     private Patient currentPatient;
@@ -50,7 +52,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     EditText datePicker;
     EditText timePicker;
     EditText visitLocaleEditor;
-    EditText schemaEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat displayTimeFormat = new SimpleDateFormat("HH:mm");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
@@ -101,8 +102,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         }
 
 
-        //TODO: do not hardcode this, this is for testing only
-        currentVisit = new Visit();
         currentVisit.setLocaleCode(localeCode);
 
         // visit date
@@ -134,14 +133,22 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             }
         });
 
-        // visit time
-        schemaEditor = (EditText) findViewById(R.id.schema_information);
-        schemaEditor.setText(currentPatient.getSchema().toString());
+        Schema currentPatientSchema = currentPatient.getEnrolledSchema();
+        Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
+        
+        // start day
+        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
+        startDate.setText(currentPatientSchedule.getStartDate());
+        
+        // end day
+        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
+        endDate.setText(currentPatientSchedule.getEndDate());
         
         // visit locale
         visitLocaleEditor = (EditText) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
         visitLocaleEditor.setText(localeName);
+        
     }
 
     /**
@@ -152,7 +159,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     public void returnDate(Date date) {
         datePicker.setText(displayDateFormat.format(date));
         visitDate = date;
-        currentVisit.setVisitDate(dbDateFormat.format(date));
     }
 
     /**
@@ -162,7 +168,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     public void returnTime(Date time) {
         timePicker.setText(displayTimeFormat.format(time));
         visitTime = time;
-        currentVisit.setVisitTime(dbTimeFormat.format(time));
     }
 
     @Override
@@ -188,53 +193,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
         return super.onOptionsItemSelected(item);
     }
-
     
-    /**
-     * @author lili
-     */
-//    public void loadSchemaDayCheckboxes(Schedule s) {
-//        ListView treatmentView = (ListView) findViewById(R.id.changeSchema_schema_days);
-//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
-//        treatmentView.getLayoutParams().height = height;
-//
-//        //ArrayList<String> treatmentDays = new ArrayList<String>();
-//        //TODO: should not hardcode the strings for days
-//        treatmentDays.add("Monday");
-//        treatmentDays.add("Tuesday");
-//        treatmentDays.add("Wednesday");
-//        treatmentDays.add("Thursday");
-//        treatmentDays.add("Friday");
-//        treatmentDays.add("Saturday");
-//        treatmentDays.add("Sunday");
-//
-//        // creating adapter for ListView
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_checked, treatmentDays);
-//
-//        // creates ListView checkboxes
-//        ListView listview = (ListView) findViewById(R.id.changeSchema_schema_days);
-//        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-//        listview.setAdapter(adapter);
-//
-//        checkSchemaDayBoxes(s);
-//
-//    }
-
-
-    /**
-     * @author lili
-     * check the checkboxes according to the current schedule 
-     */
-    public void checkSchemaDayBoxes(Schedule s){
-        ListView treatmentView = (ListView) findViewById(R.id.changeSchema_schema_days);
-
-        String oneHotCoding = s.toOneHotCoding();
-        for (int i = 0; i < 14; i++){
-            treatmentView.setItemChecked(i,(oneHotCoding.charAt(i) == '1'));
-        }
-    }
-
     
     /**
      * insert new visit into the database
@@ -284,7 +243,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         currentVisit.setVisitDate(dbDateFormat.format(visitDate));
         currentVisit.setVisitTime(dbTimeFormat.format(visitTime));
         String result = addToDatabase();
-
+        // TODO: LOG
+        Log.i("New visit: visit", currentVisit.toString());
         //TODO: code the message in strings.xml
         if (result.equals("-1")){
             Log.i("New Visit: result", result);

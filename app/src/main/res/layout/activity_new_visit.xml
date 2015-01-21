@@ -53,17 +53,40 @@
                 android:layout_height="fill_parent"
                 android:focusable="false" />
 
-            <!--schema field-->
-            <TextView android:text="@string/schema_information"
+            <!--schema Start Day field-->
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/schema_start_day"/>
 
             <EditText
-                android:id="@+id/schema_information"
+                android:id="@+id/changeSchema_schema_start_day"
+                android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
+            <!--Schema End Day field-->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:focusable="false" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/schema_end_day"/>
+
+            <EditText
+                android:id="@+id/changeSchema_schema_end_day"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
+            <!--Schema Days field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/schema_days"/>
 
             <!--submit button-->
             <Button
