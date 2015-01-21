@@ -12,6 +12,7 @@ import edots.models.Schema;
 
 /**
  * @author lili
+ * @deprecated
  * parameters: patientId, promoterId
  * load the projects for the patient's new visit with the promoter
  */
