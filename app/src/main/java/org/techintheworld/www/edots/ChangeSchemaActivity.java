@@ -123,9 +123,9 @@ public class ChangeSchemaActivity extends Activity {
         
         
         
-        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
+        EditText startDate = (EditText) findViewById(R.id.schema_start_day);
         String start = startDate.getText().toString();
-        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
+        EditText endDate = (EditText) findViewById(R.id.schema_end_day);
         String end = endDate.getText().toString();
         
 
