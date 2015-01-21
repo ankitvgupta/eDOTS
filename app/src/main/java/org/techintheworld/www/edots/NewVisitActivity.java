@@ -190,10 +190,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // if there is no internet connection, load the visit group and visit numbers with dummy values
         else {
             String eDOTS_code = getString(R.string.edots_code);
-            // String visitGroup,String nombreGroupoVisita,String vis,
-            // String descripcionVisita are filled in as dummy 0s
+            // String visitGroup,String nombreGroupoVisita,String visitcode,
+            // String descripcionVisita are filled in as dummy values
 
-            visit = new Visit(localeId, eDOTS_code, "1", "name_group", "1", "description", patientId, "date", "time", promoterId);
+            visit = new Visit(localeId, eDOTS_code, "0", "name_group", "0", "description", patientId, "date", "time", promoterId);
             Log.e("NewVisitActivity: loadCurrentVisit", visit.toString());
 
         }

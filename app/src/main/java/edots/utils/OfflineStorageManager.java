@@ -26,6 +26,7 @@ import edots.models.Saveable;
 import edots.models.Visit;
 import edots.tasks.GetPatientFromIDTask;
 import edots.tasks.LoadPatientFromPromoterTask;
+import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
 
 /**
@@ -253,6 +254,30 @@ public class OfflineStorageManager {
         return time_updated;
     }
 
+
+    public Visit updateVisitCodes(Visit old_visit){
+        String patientId = old_visit.getPacientCode();
+        String localeId = old_visit.getLocaleCode();
+
+        NewVisitLoadTask newV = new NewVisitLoadTask();
+        AsyncTask v = newV.execute(patientId, localeId);
+        // parse the result, and return it
+        try {
+            Visit visit_codes = (Visit) v.get();
+            old_visit.setDescripcionVisita( visit_codes.getDescripcionVisita());
+            old_visit.setNombreGrupoVisita(visit_codes.getNombreGrupoVisita());
+            old_visit.setVisitGroupCode(visit_codes.getVisitGroupCode());
+            old_visit.setVisitCode(visit_codes.getVisitCode());
+            Log.e("OfflineStorageManager:updateVisitCodes", old_visit.toString());
+            return old_visit;
+        }
+        catch (InterruptedException e1){
+            e1.printStackTrace();
+        } catch (ExecutionException e1){
+            e1.printStackTrace();
+        }
+        return null;
+    }
     /**
      * Called when internet is connected and there is a visit to upload
      *
@@ -273,7 +298,7 @@ public class OfflineStorageManager {
             boolean connected= InternetConnection.checkConnection(context);
             if(connected){
                 try {
-
+                    currentVisit = updateVisitCodes(currentVisit);
                     String result = upload_visit.execute(context.getString(R.string.server_url),
                             currentVisit.getLocaleCode(),
                             currentVisit.getProjectCode(),

@@ -104,13 +104,23 @@ public class Visit extends Saveable {
 
     public String getProjectCode() {return ProjectCode;}
 
+    public void setProjectCode(String code){ ProjectCode = code;}
+
     public String getVisitGroupCode() {return VisitGroupCode;}
+
+    public void setVisitGroupCode(String groupCode){VisitGroupCode = groupCode;}
 
     public String getNombreGrupoVisita() {return NombreGrupoVisita;}
 
+    public void setNombreGrupoVisita(String groupName){ NombreGrupoVisita = groupName;}
+
     public String getVisitCode() {return VisitCode;}
 
+    public void setVisitCode(String visitCode){ VisitCode = visitCode;}
+
     public String getDescripcionVisita() {return DescripcionVisita;}
+
+    public void setDescripcionVisita(String descripcionVisita){DescripcionVisita = descripcionVisita;}
 
     public String getPacientCode() {return PacientCode;}
 
