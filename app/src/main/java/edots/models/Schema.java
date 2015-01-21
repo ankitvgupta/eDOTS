@@ -162,8 +162,7 @@ public class Schema  extends Saveable{
         }
         return schema_strings;
     }
-=======
-    
+
     public String printDrugs(){
         String result = "";
         for (int i = 0; i < drugs.size(); i++){
@@ -175,5 +174,4 @@ public class Schema  extends Saveable{
         return result;
     }
 
->>>>>>> 0b15a66b035ec0d65af9f7c838a195ec29580945
 }
