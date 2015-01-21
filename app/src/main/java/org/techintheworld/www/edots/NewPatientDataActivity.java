@@ -71,6 +71,22 @@ public class NewPatientDataActivity extends Activity {
     private EditText startDateDisplay;
     private EditText endDateDisplay;
 
+    EditText nationalID = (EditText) findViewById(R.id.National_ID);
+    EditText name = (EditText) findViewById(R.id.Name);
+    EditText fatherName = (EditText) findViewById(R.id.Fathers_name);
+    EditText motherName = (EditText) findViewById(R.id.Mothers_name);
+    EditText birthDateText = (EditText) findViewById(R.id.Birthdate);
+    EditText phoneNumber = (EditText) findViewById(R.id.PhoneNumber);
+    EditText schemaStartDate = (EditText) findViewById(R.id.schema_start_day);
+    EditText schemaEndDate = (EditText)findViewById(R.id.schema_end_day);
+    RadioButton femaleBtn = (RadioButton) findViewById(R.id.radio_female);
+    RadioButton maleBtn = (RadioButton) findViewById(R.id.radio_male);
+    RadioButton clinicBtn = (RadioButton) findViewById(R.id.radio_clinic);
+    RadioButton patientHomeBtn = (RadioButton) findViewById(R.id.radio_patient_home);
+    ListView schemaListText = (ListView) findViewById(R.id.schema);
+    ListView daysVisited = (ListView) findViewById(R.id.schema_days);
+
+
     static final int DATE_DIALOG_ID = 0;
 
     @Override
@@ -136,7 +152,9 @@ public class NewPatientDataActivity extends Activity {
         updateDisplay(endDateDisplay, endDate);
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Updates text for DatePickers
+     */
     private void updateDisplay(EditText dateDisplay, Calendar date) {
         dateDisplay.setText(
                 new StringBuilder()
@@ -147,14 +165,18 @@ public class NewPatientDataActivity extends Activity {
 
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Displays date dialog for setting the date
+     */
     public void showDateDialog(EditText dateDisplay, Calendar date) {
         activeDateDisplay = dateDisplay;
         activeDate = date;
         showDialog(DATE_DIALOG_ID);
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Tells listener for Datepicker what to do
+     */
     private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -166,13 +188,17 @@ public class NewPatientDataActivity extends Activity {
         }
     };
 
-    // written by Nishant
+    /* @author Nishant
+     * Resets the Datepicker
+     */
     private void unregisterDateDisplay() {
         activeDateDisplay = null;
         activeDate = null;
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Used for Datepicker
+     */
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -182,7 +208,9 @@ public class NewPatientDataActivity extends Activity {
         return null;
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Displays date dialog for setting the date
+     */
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
         super.onPrepareDialog(id, dialog);
@@ -194,7 +222,7 @@ public class NewPatientDataActivity extends Activity {
     }
 
     /**
-     * @author lili 
+     * @author lili
      * Loads all schema options for the spinner
      */
     public void loadSchemaSpinner() {
@@ -235,7 +263,9 @@ public class NewPatientDataActivity extends Activity {
     }
 
     /**
-     * @author lili
+     * @author nishant
+     * updated: lili
+     * loads treatment day checkboxes
      */
     public void loadTreatmentDayCheckboxes() {
         ListView treatmentView = (ListView) findViewById(R.id.schema_days);
@@ -401,50 +431,28 @@ public class NewPatientDataActivity extends Activity {
      * Ensures none of the entered fields are empty
      */
     public boolean validateEmpty() {
-        EditText editor = (EditText) findViewById(R.id.National_ID);
-        String nationalID = editor.getText().toString();
+        String nationalIDVal = nationalID.getText().toString();
+        String nameVal = name.getText().toString();
+        String fatherNameVal = fatherName.getText().toString();
+        String motherNameVal = motherName.getText().toString();
+        String birthDateVal = birthDateText.getText().toString();
+        String phoneNumberVal = phoneNumber.getText().toString();
+        String schemaStartDateVal = schemaStartDate.getText().toString();
+        String schemaEndDateVal = schemaEndDate.getText().toString();
 
-        editor = (EditText) findViewById(R.id.Name);
-        String name = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.Fathers_name);
-        String fatherName = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.Mothers_name);
-        String motherName = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.Birthdate);
-        String birthDate = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.PhoneNumber);
-        String phoneNumber = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.schema_start_day);
-        String treatment_startDate = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.schema_end_day);
-        String treatment_endDate = editor.getText().toString();
-
-        RadioButton btnMale = (RadioButton) findViewById(R.id.radio_female);
-        RadioButton btnFemale = (RadioButton) findViewById(R.id.radio_male);
-
-        RadioButton btnHome = (RadioButton) findViewById(R.id.radio_clinic);
-        RadioButton btnClinic = (RadioButton) findViewById(R.id.radio_patient_home);
-
-        ListView treatmentListText = (ListView) findViewById(R.id.schema);
-        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
+        SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
         int numTreatments = 0;
-        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+        for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
             if (checkedItems.get(i)) {
                 numTreatments++;
             }
         }
 
-        if (nationalID.equals("") || name.equals("") || fatherName.equals("") ||
-                motherName.equals("") || birthDate.equals("") || phoneNumber.equals("")
-                || treatment_startDate.equals("") || treatment_endDate.equals("")
-                || !(btnMale.isChecked() || btnFemale.isChecked())
-                || !(btnHome.isChecked() || btnClinic.isChecked())) {
+        if (nationalIDVal.equals("") || nameVal.equals("") || fatherNameVal.equals("") ||
+                motherNameVal.equals("") || birthDateVal.equals("") || phoneNumberVal.equals("")
+                || schemaStartDateVal.equals("") || schemaEndDateVal.equals("")
+                || !(maleBtn.isChecked() || femaleBtn.isChecked())
+                || !(clinicBtn.isChecked() || patientHomeBtn.isChecked())) {
             return false;
         } else if (numTreatments == 0) {
             return false;
@@ -478,7 +486,6 @@ public class NewPatientDataActivity extends Activity {
         }
     }
 
-
     /*
      * Written by Nishant
      * Takes all the user-entered data and creates new patient object
@@ -490,79 +497,47 @@ public class NewPatientDataActivity extends Activity {
         } else if (!(validateNationalID())) {
             AlertError("Entry Error", "The entered NationalID is not valid");
         } else {
-
-            // get the national id
-            EditText editor = (EditText) findViewById(R.id.National_ID);
-            String nationalID = editor.getText().toString();
-
-            // get the name
-            editor = (EditText) findViewById(R.id.Name);
-            String name = editor.getText().toString();
-
-            // get the father's name
-            editor = (EditText) findViewById(R.id.Fathers_name);
-            String fatherName = editor.getText().toString();
-
-            // get the mother's name
-            editor = (EditText) findViewById(R.id.Mothers_name);
-            String motherName = editor.getText().toString();
-
-            // get the birthdate
-            editor = (EditText) findViewById(R.id.Birthdate);
-            String birthDate = editor.getText().toString();
-
-            // get the phone_number
-            editor = (EditText) findViewById(R.id.PhoneNumber);
-            String phone_number = editor.getText().toString();
-
-            // get the project start date
-            editor = (EditText) findViewById(R.id.schema_start_day);
-            String schema_start_date = editor.getText().toString();
-
-            // get the project end date
-            editor = (EditText) findViewById(R.id.schema_end_day);
-            String schema_end_date = editor.getText().toString();
+            String nationalIDVal = nationalID.getText().toString();
+            String nameVal = name.getText().toString();
+            String fatherNameVal = fatherName.getText().toString();
+            String motherNameVal = motherName.getText().toString();
+            String birthDateVal = birthDateText.getText().toString();
+            String phoneNumberVal = phoneNumber.getText().toString();
+            String schemaStartDateVal = schemaStartDate.getText().toString();
+            String schemaEndDateVal = schemaEndDate.getText().toString();
 
             // get the sex
             String sex = "";
-            RadioButton btn = (RadioButton) findViewById(R.id.radio_female);
-            if (btn.isChecked()) {
+            if (femaleBtn.isChecked()) {
                 sex = "2";
             }
-            btn = (RadioButton) findViewById(R.id.radio_male);
-            if (btn.isChecked()) {
+            if (maleBtn.isChecked()) {
                 sex = "1";
             }
 
             // get the visit mode
             String visit_mode = "";
-            btn = (RadioButton) findViewById(R.id.radio_clinic);
-            if (btn.isChecked()) {
+            if (clinicBtn.isChecked()) {
                 visit_mode = "1";
             }
-            btn = (RadioButton) findViewById(R.id.radio_patient_home);
-            if (btn.isChecked()) {
+            if (patientHomeBtn.isChecked()) {
                 visit_mode = "2";
             }
             
             // determines which treatments are checked and stores them in ArrayList of Projects
             ArrayList<Schema> enrolledSchemas = new ArrayList<Schema>();
-            ListView schemaListText = (ListView) findViewById(R.id.schema);
             SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
             for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
                 if (checkedItems.get(i)) {
-                    //String treatment = schemaListText.getAdapter().getItem(i).toString();
                     enrolledSchemas.add(schemaList.get(i));
                 }
             }
 
             // determines which treatments are checked and stores them in ArrayList of Projects
             ArrayList<String> visitDays = new ArrayList<String>();
-            ListView daysVisited = (ListView) findViewById(R.id.schema_days);
             SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
             for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
                 if (daysPicked.get(i)) {
-                    //String treatment = schemaListText.getAdapter().getItem(i).toString();
                     visitDays.add("1");
                 }
                 else {
@@ -571,13 +546,13 @@ public class NewPatientDataActivity extends Activity {
             }
 
             // Submit the patient data to the server.
-            addToDatabase(name, fatherName, motherName, "2", nationalID, birthDate, phone_number,
-                    sex, visitDays, schema_start_date, schema_end_date, visit_mode);
+            addToDatabase(nameVal, fatherNameVal, motherNameVal, "2", nationalIDVal, birthDateVal,
+                    phoneNumberVal, sex, visitDays, schemaStartDateVal, schemaEndDateVal, visit_mode);
 
             // then query the database to get the patient, including the patient code generated by server
             GetPatientLoadTask getP = new GetPatientLoadTask();
             try {
-                AsyncTask p = getP.execute(getString(R.string.server_url), nationalID);
+                AsyncTask p = getP.execute(getString(R.string.server_url), nationalIDVal);
                 currentPatient = (Patient) p.get();
                 Log.v("What we got was", currentPatient.toString());
                 // switch to NewVisitActivity
