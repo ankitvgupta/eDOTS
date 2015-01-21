@@ -205,8 +205,9 @@ public class NewPatientDataActivity extends Activity {
      * @author lili
      * Loads Checkboxes Dynamically for Drugs
      */
+    // TODO: add dosage text editors
     public void loadDrugCheckboxes() {
-        // list of treatment study groups
+        // list of drugs
         // for testing
         drugList.add(new Drug());
         drugList.add(new Drug());
