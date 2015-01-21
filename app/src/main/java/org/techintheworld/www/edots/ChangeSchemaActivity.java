@@ -58,10 +58,10 @@ public class ChangeSchemaActivity extends Activity {
         currentPatientSchedule = currentPatientSchema.getSchedule();
         Log.v("ChangeSchemaActivity: the current schedule is", currentPatientSchedule.toString());
         
-        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
+        EditText startDate = (EditText) findViewById(R.id.schema_start_day);
         startDate.setText(currentPatientSchedule.getStartDate());
         
-        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
+        EditText endDate = (EditText) findViewById(R.id.schema_end_day);
         endDate.setText(currentPatientSchedule.getEndDate());
 
         loadSchemaDayCheckboxes(currentPatientSchedule);
