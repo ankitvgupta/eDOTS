@@ -255,6 +255,13 @@ public class OfflineStorageManager {
     }
 
 
+    /**
+     * Calls service to get the DescripcionVisita, NombreGrupoVisita, VisitGroupCode, and VisitCode
+     * Then returns a visit with those fields plugged into the one passed in
+     * @author JN
+     * @param old_visit The Visit object to be modified
+     * @return Modified object
+     */
     public Visit updateVisitCodes(Visit old_visit){
         String patientId = old_visit.getPacientCode();
         String localeId = old_visit.getLocaleCode();
@@ -268,7 +275,7 @@ public class OfflineStorageManager {
             old_visit.setNombreGrupoVisita(visit_codes.getNombreGrupoVisita());
             old_visit.setVisitGroupCode(visit_codes.getVisitGroupCode());
             old_visit.setVisitCode(visit_codes.getVisitCode());
-            Log.e("OfflineStorageManager:updateVisitCodes", old_visit.toString());
+            Log.i("OfflineStorageManager:updateVisitCodes", old_visit.toString());
             return old_visit;
         }
         catch (InterruptedException e1){
@@ -281,7 +288,7 @@ public class OfflineStorageManager {
     /**
      * Called when internet is connected and there is a visit to upload
      *
-     * @return
+     * @return true if complete upload and upload is successful
      * @author JN
      */
     public boolean UploadLocalVisit() {
@@ -308,7 +315,7 @@ public class OfflineStorageManager {
                             currentVisit.getVisitDate(),
                             currentVisit.getVisitTime(),
                             currentVisit.getPromoterId()).get();
-                    Log.e("OfflineStorageManager: uploadLocalVisit result", result);
+                    Log.i("OfflineStorageManager: uploadLocalVisit result", result);
                     if (result.equals("1") || result.equals("2")){
                         boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
                         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
@@ -336,16 +343,15 @@ public class OfflineStorageManager {
 
         }
         else{
-            return true;
+            return false;
         }
     }
 
     /**
-     * Loads when MainMenuActivity is created and checks if need to get new info from the service
-     * if last update was less than 5 hours ago, will make calls to update local files
+     * Loads when MainMenuActivity is created and checks if can update local storage
+     * @author JN
+     * @return true if has internet and already logged in
      */
-    // TODO: some kind of manual fetch method and in general just clean this up
-    // TODO: check that promoter is logged in/sharedpref exist, getlastupdated
     public boolean CanUpdateLocalStorage() {
         boolean isConnected = InternetConnection.checkConnection(context);
         String logged_in = AccountLogin.CheckAlreadyLoggedIn(context);

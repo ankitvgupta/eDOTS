@@ -65,7 +65,11 @@ public class MainMenuActivity extends Activity {
     protected void onResume(){
         super.onResume();
         OfflineStorageManager sm = new OfflineStorageManager(this);
-        sm.UploadLocalVisit();
+        String upload_success = getString(R.string.upload_visit_success);
+        if (sm.UploadLocalVisit()){
+            Toast.makeText(getBaseContext(),upload_success,
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
 

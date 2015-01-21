@@ -116,7 +116,8 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitLocaleEditor = (TextView) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
         visitLocaleEditor.setText(localeName);
-        
+
+        Log.e("NewVisitActivity:OnCreate", currentSchema.toString());
         // visit mode
         TextView visitMode = (TextView) findViewById(R.id.visitMode);
         if (currentSchema.getVisit_mode().equals("1")) {
@@ -283,12 +284,11 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
      * @param view The current view
      */
     public void submitVisit(View view) {
-        // TODO: get the time and stuff here
         currentVisit.setVisitDate(dbDateFormat.format(visitDate));
         currentVisit.setVisitTime(dbTimeFormat.format(visitTime));
         String result = addToDatabase();
         Log.i("New visit:submitVisit visit", currentVisit.toString());
-        //TODO: code the message in strings.xml
+        // Conditions on if connection to server was made and submitted correctly
         if (result.equals("-1")) {
             Log.i("New Visit:submitVisit result", result);
             AlertError("Connection Error", getString(R.string.new_visit_upload_error_message));
@@ -300,6 +300,11 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     }
 
+    /**
+     * Creates dialog that is used to show error in internet connection
+     * @param title
+     * @param message
+     */
     public void AlertError(String title, String message) {
         // Alert if username and password are not entered
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
