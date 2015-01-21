@@ -69,7 +69,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     Boolean Saturday;
     Boolean Sunday;
     int difference;
-    boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+
 
     String startDate;
     String endDate;
@@ -220,7 +220,9 @@ public class MedicalHistoryActivity extends FragmentActivity {
     * Keeps count of how many scheduled visits there are in the past month, past week, total and future
     */
     public void assignScheduledDays() {
-        //
+
+        boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+
         for (int j = 0; j < weekdays.length; j++) {
             if (weekdays[j]) {
                 difference = j - startDayOfTheWeekInt;
