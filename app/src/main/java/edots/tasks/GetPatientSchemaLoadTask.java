@@ -8,11 +8,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import java.util.ArrayList;
-
 import edots.models.Schedule;
 import edots.models.Schema;
-import edots.models.Visit;
 
 /**
  * Written by Ankit on 1/12/15.
@@ -64,7 +61,8 @@ public class GetPatientSchemaLoadTask extends AsyncTask<String,String,Schema> {
             String endDate = resSoap.getProperty("endDate").toString();
             
             //TODO: Change this to actually make a schema
-            Schedule result2 = new Schedule(codigoPaciente, lunes, martes, miercoles, jueves, viernes, sabado, domingo, startDate, endDate);
+            Schedule result2 = new Schedule();
+//            codigoPaciente, lunes, martes, miercoles, jueves, viernes, sabado, domingo, startDate, endDate);
 
             // return null if no patient found or patient had no visits
             if (resSoap.getPropertyCount() == 0){

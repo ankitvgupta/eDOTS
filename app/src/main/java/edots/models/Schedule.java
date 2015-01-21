@@ -1,5 +1,10 @@
 package edots.models;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Ankit on 1/19/15.
  * 
@@ -7,7 +12,6 @@ package edots.models;
  */
 public class Schedule {
     
-    private String codigoPaciente;
     private String lunes;
     private String lunesTarde;
     private String martes;
@@ -27,7 +31,6 @@ public class Schedule {
     private String endDate;
     
     public Schedule(){
-        codigoPaciente = "1";
         this.lunes = "1";
         this.lunesTarde = "0";
         this.martes = "1";
@@ -46,9 +49,8 @@ public class Schedule {
         this.endDate = "15/02/2015";
     };
     
-    public Schedule (String code, String l, String lT, String ma, String maT, String mi, String miT, String j, String jT,
+    public Schedule (String l, String lT, String ma, String maT, String mi, String miT, String j, String jT,
                      String v, String vT, String s, String sT, String d, String dT, String start, String end){
-        this.codigoPaciente = code;
         this.lunes = l;
         this.lunesTarde = lT;
         this.martes = ma;
@@ -67,11 +69,65 @@ public class Schedule {
         this.endDate = end;
         
     }
-    
-   public String getCodigoPaciente(){
-       return codigoPaciente;    
-   }
 
+
+    /**
+     * @param JSONString a JSON object representing the project
+     */
+    public Schedule(String JSONString){
+        try {
+            JSONObject n = new JSONObject(JSONString);
+            String days = n.get("days").toString();
+            lunes = Character.toString(days.charAt(0));
+            lunesTarde = Character.toString(days.charAt(1));
+            martes = Character.toString(days.charAt(2));
+            martesTarde = Character.toString(days.charAt(3));
+            miercoles = Character.toString(days.charAt(4));
+            miercolesTarde = Character.toString(days.charAt(5));
+            jueves = Character.toString(days.charAt(6));
+            juevesTarde = Character.toString(days.charAt(7));
+            viernes = Character.toString(days.charAt(8));
+            viernesTarde = Character.toString(days.charAt(9));
+            sabado = Character.toString(days.charAt(10));
+            sabadoTarde = Character.toString(days.charAt(11));
+            domingo = Character.toString(days.charAt(12));
+            domingoTarde = Character.toString(days.charAt(13));
+            startDate = n.get("startDate").toString();
+            endDate = n.get("endDate").toString();
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    @Override
+    /**
+     * @return JSON representation of the schedule
+     *
+     */
+    public String toString(){
+        JSONObject temp = new JSONObject();
+        try {
+            temp.put("days", toDays());
+            temp.put("startDate", getStartDate());
+            temp.put("endDate", getEndDate());
+        } catch (JSONException e) {
+            Log.v("JSON Exception", "Found a JSON Exception");
+            e.printStackTrace();
+        }
+        return temp.toString();
+    }
+
+    
+    /**
+     * @return 14 digit one-hot coding for the schedule
+     *
+     */
+    public String toDays(){
+        return lunes+lunesTarde+martes+martesTarde+miercoles+miercolesTarde+jueves+juevesTarde+viernes+viernesTarde+sabado+sabadoTarde+domingo+domingoTarde;
+    }
+    
     public String getLunes() {
         return lunes;
     }
@@ -120,10 +176,6 @@ public class Schedule {
 
     public String getEndDate() {
         return endDate;
-    }
-
-    public void setCodigoPaciente(String codigoPaciente) {
-        this.codigoPaciente = codigoPaciente;
     }
 
     public void setLunes(String lunes) {

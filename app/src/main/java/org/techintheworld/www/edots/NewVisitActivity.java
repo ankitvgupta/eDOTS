@@ -48,9 +48,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     EditText datePicker;
     EditText timePicker;
     EditText visitLocaleEditor;
-    EditText visitProjectEditor;
-    EditText visitGroupEditor;
-    EditText visitNoEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat displayTimeFormat = new SimpleDateFormat("HH:mm");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");

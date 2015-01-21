@@ -1,6 +1,8 @@
 package edots.models;
+
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,13 +41,21 @@ public class Schema  extends Saveable{
     }
 
     /**
-     * @param JSONString a JSON object representing the project
+     * @param JSONString a JSON object representing the schema
      */
     public Schema(String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
-            id = n.get("projectId").toString();
+            id = n.get("id").toString();
             name = n.get("name").toString();
+            drugs = new ArrayList<Drug>();
+            JSONArray arry = new JSONArray(n.get("drugs").toString());
+            for (int i = 0; i < arry.length(); i++){
+                drugs.add(new Drug(arry.getString(i)));
+            }
+            phase = n.get("phase").toString();
+            visit_mode = n.get("visit_mode").toString();
+            schedule = new Schedule(n.get("schedule").toString());
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -71,6 +81,10 @@ public class Schema  extends Saveable{
         try {
             temp.put("projectId", getId());
             temp.put("name", getName());
+            temp.put("drugs", getDrugs());
+            temp.put("phase", getPhase());
+            temp.put("visit_mode", getVisit_mode());
+            temp.put("schedule", getSchedule());
         } catch (JSONException e) {
             Log.v("JSON Exception", "Found a JSON Exception");
             e.printStackTrace();
