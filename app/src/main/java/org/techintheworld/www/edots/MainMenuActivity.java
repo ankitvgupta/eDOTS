@@ -96,7 +96,12 @@ public class MainMenuActivity extends Activity {
 
     }
 
-    private void updateLocalManual(View v){
+    /**
+     * Linked to the refresh button to manually allwo updating of local storage
+     * @author JN
+     * @param view
+     */
+    public void updateLocalManual(View view){
         OfflineStorageManager sm = new OfflineStorageManager(this);
         if (sm.CanUpdateLocalStorage()){
             sm.UpdateLocalStorage();
@@ -104,7 +109,7 @@ public class MainMenuActivity extends Activity {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
             String dateString = formatter.format(new Date(time));
             String to_print = getString(R.string.last_updated) + " " + dateString;
-            Toast.makeText(getBaseContext(),dateString,
+            Toast.makeText(getBaseContext(),to_print,
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -121,7 +126,6 @@ public class MainMenuActivity extends Activity {
     private void loadMissedPatients() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String promoterID = prefs.getString("userid", null);
-
 
         LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
         AsyncTask loadPatientsTask = loadPatients.execute(getString(R.string.server_url), promoterID);
