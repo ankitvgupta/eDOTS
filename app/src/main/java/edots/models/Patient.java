@@ -199,8 +199,8 @@ public class Patient extends Saveable{
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
         try {
             ArrayList<Visit> visits = (ArrayList<Visit>) p.get();
-            Log.v("Patient.java: The visits are", visits.toString());
-            Log.e("Patientjava getPatientHistory number of visits", String.valueOf(visits.size()));
+            Log.i("Patient.java: The visits are", visits.toString());
+            Log.i("Patient.java getPatientHistory number of visits", String.valueOf(visits.size()));
             return visits;
         }
         catch (InterruptedException e){
@@ -250,7 +250,8 @@ public class Patient extends Saveable{
     }
 
     public Schema getEnrolledSchema(){
-        return new Schema();
+        //return new Schema();
+        return enrolledSchema;
     } // TODO: This is for testing only, change this to the actual current schema
 
     public void setName(String n){

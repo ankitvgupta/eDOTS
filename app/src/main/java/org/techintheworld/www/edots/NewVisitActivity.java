@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -52,7 +53,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     private Schedule currentSchedule;
     EditText datePicker;
     EditText timePicker;
-    EditText visitLocaleEditor;
+    TextView visitLocaleEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat displayTimeFormat = new SimpleDateFormat("HH:mm");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
@@ -112,17 +113,31 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         });
 
         // visit locale
-        visitLocaleEditor = (EditText) findViewById(R.id.visitLocale);
+        visitLocaleEditor = (TextView) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
         visitLocaleEditor.setText(localeName);
 
+        Log.e("NewVisitActivity:OnCreate", currentSchema.toString());
+        // visit mode
+        TextView visitMode = (TextView) findViewById(R.id.visitMode);
+        if (currentSchema.getVisit_mode().equals("1")) {
+            visitMode.setText(R.string.clinic);
+        }
+        else if (currentSchema.getVisit_mode().equals("2"))  {
+            visitMode.setText(R.string.patient_home);
+        }
+        
         // start date
-        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
+        TextView startDate = (TextView) findViewById(R.id.schema_start_day);
         startDate.setText(currentSchedule.getStartDate());
 
         // end date
-        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
+        TextView endDate = (TextView) findViewById(R.id.schema_end_day);
         endDate.setText(currentSchedule.getEndDate());
+
+        TextView drugText = (TextView) findViewById(R.id.drugs);
+        Log.i("New visit: print drugs", currentSchema.printDrugs());
+        drugText.setText(currentSchema.printDrugs());
 
     }
 
@@ -180,7 +195,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
                 visit.setPromoterId(promoterId);
                 Log.v("NewVisitActivity.java: The patient visit that we got is", visit.toString());
             } catch (InterruptedException e1) {
-                //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
                 e1.printStackTrace();
             } catch (ExecutionException e1) {
                 e1.printStackTrace();
@@ -190,7 +204,13 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         }
         // if there is no internet connection, load the visit group and visit numbers with dummy values
         else {
-            visit = new Visit(localeId, "5", "0", "0", "0", "0", patientId, "date", "time", promoterId);
+            String eDOTS_code = getString(R.string.edots_code);
+            // String visitGroup,String nombreGroupoVisita,String visitcode,
+            // String descripcionVisita are filled in as dummy values
+
+            visit = new Visit(localeId, eDOTS_code, "0", "name_group", "0", "description", patientId, "date", "time", promoterId);
+            Log.e("NewVisitActivity: loadCurrentVisit", visit.toString());
+
         }
         return visit;
     }
@@ -267,10 +287,10 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         currentVisit.setVisitDate(dbDateFormat.format(visitDate));
         currentVisit.setVisitTime(dbTimeFormat.format(visitTime));
         String result = addToDatabase();
-        Log.i("New visit: visit", currentVisit.toString());
-        //TODO: code the message in strings.xml
+        Log.i("New visit:submitVisit visit", currentVisit.toString());
+        // Conditions on if connection to server was made and submitted correctly
         if (result.equals("-1")) {
-            Log.i("New Visit: result", result);
+            Log.i("New Visit:submitVisit result", result);
             AlertError("Connection Error", getString(R.string.new_visit_upload_error_message));
         } else {
             Toast.makeText(getBaseContext(), "Successfully submitted", Toast.LENGTH_SHORT).show();
@@ -280,6 +300,11 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
     }
 
+    /**
+     * Creates dialog that is used to show error in internet connection
+     * @param title
+     * @param message
+     */
     public void AlertError(String title, String message) {
         // Alert if username and password are not entered
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();

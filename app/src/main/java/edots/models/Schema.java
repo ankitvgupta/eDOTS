@@ -30,6 +30,9 @@ public class Schema  extends Saveable{
             id = "1";
             name = "SampleSchemaName";
             drugs = new ArrayList<>(Arrays.asList(new Drug()));
+            drugs.add(new Drug());
+            drugs.add(new Drug());
+            drugs.add(new Drug());
             phase = "SamplePhase";
             visit_mode = "1";
             schedule = new Schedule();
@@ -45,6 +48,7 @@ public class Schema  extends Saveable{
      * @param i project id
      * @param n name of the project
      */
+    @Deprecated
     public Schema(String i, String n){
         id = i;
         name = n;
@@ -56,6 +60,7 @@ public class Schema  extends Saveable{
     public Schema(String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
+            //Log.v()
             id = n.get("id").toString();
             name = n.get("name").toString();
             drugs = new ArrayList<Drug>();
@@ -65,7 +70,6 @@ public class Schema  extends Saveable{
             }
             phase = n.get("phase").toString();
             visit_mode = n.get("visit_mode").toString();
-//            schedule = new Schedule();
             schedule = new Schedule(n.get("schedule").toString());
         }
         catch (JSONException e) {
@@ -142,6 +146,7 @@ public class Schema  extends Saveable{
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
+<<<<<<< HEAD
 
 
     /**
@@ -157,4 +162,18 @@ public class Schema  extends Saveable{
         }
         return schema_strings;
     }
+=======
+    
+    public String printDrugs(){
+        String result = "";
+        for (int i = 0; i < drugs.size(); i++){
+            result += drugs.get(i).getSymbol()+"\t"+drugs.get(i).getDosage();
+            if (i< drugs.size() - 1){
+                result += ",\t";
+            }
+        }
+        return result;
+    }
+
+>>>>>>> 0b15a66b035ec0d65af9f7c838a195ec29580945
 }

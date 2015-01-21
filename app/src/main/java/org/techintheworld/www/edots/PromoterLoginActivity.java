@@ -43,6 +43,27 @@ import edots.utils.OfflineStorageManager;
 public class PromoterLoginActivity extends Activity {
     private Spinner spnLocale;
 
+    protected void onResume() {
+        super.onResume();
+        String username = AccountLogin.CheckAlreadyLoggedIn(this);
+
+        if (username != null) {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
+        } else {
+            String myurl = getString(R.string.server_url);
+            loadLocaleSpinner(myurl);
+
+        }
+        spnLocale.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,6 +255,9 @@ public class PromoterLoginActivity extends Activity {
             }
         } catch (JSONException e1) {
             Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
+        }
+        catch(NullPointerException e1){
+            Log.e("PromoterLoginActivity: loadLocaleActivity", "Null Pointer Exception ");
         }
     }
 
