@@ -6,7 +6,6 @@ import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
@@ -19,8 +18,9 @@ import edots.models.VisitDay;
 
 
 /**
- * @author ankit
- * upload new patient schedule to server and insert it into the database
+ * @author Brendan
+ * Loads Visit Days to an array list
+ * Only to be used in calendar
  */
 public class GetVisitPerDayLoadTask extends AsyncTask<String,String,ArrayList<VisitDay>> {
 
