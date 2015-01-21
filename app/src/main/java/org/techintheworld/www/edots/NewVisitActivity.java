@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,7 +47,7 @@ import edots.utils.TimePickerFragment;
 //TODO: add scheduled days
 
 public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
-
+    private Context context;
     private Patient currentPatient;
     private Visit currentVisit;
     private Schema currentSchema;
@@ -136,6 +137,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitDate = date;
     }
 
+    
     /**
      * @author lili
      * set the text field as the selected time
@@ -169,24 +171,30 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     public Visit loadCurrentVisit(String patientId, String localeId, String promoterId){
         // instantiate a new visit
         Visit visit = null;
-        
-        // load the visit group number and visit number
-        NewVisitLoadTask newV = new NewVisitLoadTask();
-        AsyncTask v = newV.execute(patientId, localeId);
-        // parse the result, and return it
-        try {
-            visit = (Visit) v.get();
-            visit.setPromoterId(promoterId);
-            Log.v("NewVisitActivity.java: The patient visit that we got is", visit.toString());
-        } catch (InterruptedException e1) {
-            //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
-        } catch (NullPointerException e1){
-            Log.e("NewVisit:OnCreate new visit","is null");
+         
+        // if there is internet connection, load with actual visit number / visit group / visit description etc.
+        if (InternetConnection.checkConnection(context)) {
+            // load the visit group number and visit number
+            NewVisitLoadTask newV = new NewVisitLoadTask();
+            AsyncTask v = newV.execute(patientId, localeId);
+            // parse the result, and return it
+            try {
+                visit = (Visit) v.get();
+                visit.setPromoterId(promoterId);
+                Log.v("NewVisitActivity.java: The patient visit that we got is", visit.toString());
+            } catch (InterruptedException e1) {
+                //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
+                e1.printStackTrace();
+            } catch (ExecutionException e1) {
+                e1.printStackTrace();
+            } catch (NullPointerException e1) {
+                Log.e("NewVisit:OnCreate new visit", "is null");
+            }
         }
-        
+        // if there is no internet connection, load the visit group and visit numbers with dummy values
+        else {
+            visit = new Visit(localeId,"5","0","0","0","0",patientId,"date","time",promoterId);
+        }
         return visit;
     }
 
