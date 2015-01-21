@@ -22,11 +22,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Locale;
 import edots.tasks.LocaleLoadTask;
 import edots.utils.AccountLogin;
+import edots.utils.InternetConnection;
 import edots.utils.OfflineStorageManager;
 
 
@@ -40,7 +42,6 @@ import edots.utils.OfflineStorageManager;
  */
 public class PromoterLoginActivity extends Activity {
     private Spinner spnLocale;
-    private AsyncTask<String, String, Locale[]> loadLocale;
 
 
     @Override
@@ -49,10 +50,12 @@ public class PromoterLoginActivity extends Activity {
         setContentView(R.layout.activity_promoter_login);
         spnLocale = (Spinner) findViewById(R.id.locale_spinner);
         String username = AccountLogin.CheckAlreadyLoggedIn(this);
+
         if (username != null) {
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
         } else {
+            Log.e("PromoterLoginActivity: OnCreate", "loadLocaleSpinner going to run " + username);
             String myurl = getString(R.string.server_url);
             loadLocaleSpinner(myurl);
         }
@@ -69,8 +72,6 @@ public class PromoterLoginActivity extends Activity {
             }
         });
     }
-
-
 
 
     @Override
@@ -122,48 +123,20 @@ public class PromoterLoginActivity extends Activity {
         String password = p.getText().toString();
 
         String locale_name = spnLocale.getItemAtPosition(spnLocale.getSelectedItemPosition()).toString();
-        String locale_num = "1";
+        String locale_num = null;
         Locale[] objLocale = new Locale[0];
         String[] wee;
 
-        try {
-            if (loadLocale.get() == null) {
-                objLocale = loadLocale.get();
-            } else {
-                try {
-                    OfflineStorageManager sm = new OfflineStorageManager(this);
-                    //TODO: there is a file not found exception for this
-                    String locale_file = getString(R.string.locale_filename);
-                    JSONArray object = new JSONArray(sm.getStringFromLocal(locale_file));
 
-                    objLocale = new Locale[object.length()];
-                    // look at all patients
-                    for (int i = 0; i < object.length(); i++) {
-                        JSONObject obj = object.getJSONObject(i);
-                        objLocale[i] = new Locale(obj.toString());
-                    }
-                } catch (JSONException e1) {
-                    Log.e("ProgramLoginActivity: switchPatientType", "JSON exception on Load");
-                }
-            }
-            for (int i = 0; i < objLocale.length; i++) {
-                if (locale_name.equals(objLocale[i].name)) {
-                    locale_num = String.valueOf(objLocale[i].id);
-                }
-
-            }
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
-        } catch (NullPointerException e1) {
-            Log.e("ProgramLoginActivity: switchPatientType", "NullPointerException on Load");
+        if (locale_name != null) {
+            locale_num = Locale.GetLocaleNumber(this, locale_name);
+            Log.e("PromoterLoginActivity: switchPatientType", locale_num);
         }
 
-        boolean validLogin = checkLogin(username, password, locale_num, locale_name);
+        boolean validLogin = AccountLogin.CheckLogin(this, username, password, locale_num, locale_name);
         if (validLogin) {
             OfflineStorageManager sm = new OfflineStorageManager(this);
-            if (sm.CanUpdateLocalStorage()){
+            if (sm.CanUpdateLocalStorage()) {
                 sm.UpdateLocalStorage();
             }
             Intent intent = new Intent(this, MainMenuActivity.class);
@@ -203,34 +176,6 @@ public class PromoterLoginActivity extends Activity {
         loginError.show();
     }
 
-    /**
-     * Calls login web service and returns true if login is successful
-     *
-     * @param username input promoter username
-     * @param password input promoter password
-     * @param locale   input promoter locale from Spinner
-     * @return true if login successful from Service, false if not successful
-     * @author JN
-     */
-    public boolean checkLogin(String username, String password, String locale, String locale_name) {
-        if (password != null && !password.isEmpty()) {
-
-            String message = AccountLogin.login(username, password, locale, locale_name, this);
-            if (message == null) {
-                return false;
-            }
-            if (message.equals(getString(R.string.session_init_key)) || message.equals(getString(R.string.password_expired_key))) {
-                return true;
-
-            } else {
-                Log.i("login", "Datos incorrectos");
-            }
-            return false;
-        } else {
-            return false;
-        }
-
-    }
 
     /**
      * @param url the url of the server
@@ -240,45 +185,47 @@ public class PromoterLoginActivity extends Activity {
      */
     private void loadLocaleSpinner(String url) {
         LocaleLoadTask localeTask = new LocaleLoadTask();
-        // load locale from server
-        loadLocale = localeTask.execute(url);
-        Locale[] objLocale;
+        AsyncTask loadLocale;
+        ArrayList<Locale> arrLocale = null;
         String[] locales;
-        try {
-            // try server side first
-            objLocale = loadLocale.get();
-            locales = new String[objLocale.length];
+        boolean connected = InternetConnection.checkConnection(this);
+        if (connected){
+            try {
+                // try server side first
+                loadLocale = localeTask.execute(url);
+                arrLocale = (ArrayList<Locale>) loadLocale.get();
+                locales = Locale.ConvertLocalObjsToStrings(arrLocale);
 
-            for (int i = 0; i < objLocale.length; i++) {
-                locales[i] = objLocale[i].name;
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                        this, android.R.layout.simple_spinner_item, locales);
+                spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnLocale.setAdapter(spinnerArrayAdapter);
+                OfflineStorageManager sm = new OfflineStorageManager(this);
+                String locale_file = getString(R.string.locale_filename);
+                sm.SaveArrayListToLocal(arrLocale, locale_file);
+                Log.e("PromoterLoginActivity: loadLocaleSpinner", "loadLocaleSpinner going to run " + arrLocale.toString());
+
+            } catch (InterruptedException e1) {
+                Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");
+            } catch (ExecutionException e1) {
+                Log.e("PromoterLoginActivity: loadLocaleActivity1", "Execution Exception");
+            } catch (NullPointerException e1) {
+                Log.e("PromoterLoginActivity: loadLocaleActivity1", " NullPointerException");
             }
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                    this, android.R.layout.simple_spinner_item, locales);
-            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spnLocale.setAdapter(spinnerArrayAdapter);
-            OfflineStorageManager sm = new OfflineStorageManager(this);
-            sm.SaveLocaleData(objLocale);
-            Log.w("PromoterLoginActivity: loadLocaleSpinner", "saving to locale data file");
-
-        } catch (InterruptedException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");
-        } catch (ExecutionException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity1", "Execution Exception");
-        } catch (NullPointerException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity1", " NullPointerException");
         }
 
+        // Load data locally
         try {
-            if (loadLocale.get() == null) {
+            if (arrLocale == null) {
                 // locale_data load
                 String locale_file = getString(R.string.locale_filename);
                 OfflineStorageManager sm = new OfflineStorageManager(this);
-                JSONArray object = new JSONArray(sm.getStringFromLocal(locale_file));
-                locales = new String[object.length()];
+                JSONArray array = new JSONArray(sm.getStringFromLocal(locale_file));
+                locales = new String[array.length()];
 
                 // look at all locales
-                for (int i = 0; i < object.length(); i++) {
-                    JSONObject obj = object.getJSONObject(i);
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject obj = array.getJSONObject(i);
                     Locale l = new Locale(obj.toString());
                     locales[i] = l.name;
                 }
@@ -287,10 +234,6 @@ public class PromoterLoginActivity extends Activity {
                 spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnLocale.setAdapter(spinnerArrayAdapter);
             }
-        } catch (ExecutionException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Execution Exception On Load");
-        } catch (InterruptedException e1) {
-            Log.e("PromoterLoginActivity: loadLocaleActivity", "Interrupted Exception On Load");
         } catch (JSONException e1) {
             Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
         }

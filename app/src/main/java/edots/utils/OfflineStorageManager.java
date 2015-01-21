@@ -344,6 +344,7 @@ public class OfflineStorageManager {
      * @param l the array of locales that you wish to save locally
      * @throws JSONException an exception where JSON cannot be cast
      * @author Brendan
+     * @deprecated
      */
     public void SaveLocaleData(Locale[] l) {
         // Save to local file for Locale
