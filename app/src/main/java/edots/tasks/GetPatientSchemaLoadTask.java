@@ -64,7 +64,7 @@ public class GetPatientSchemaLoadTask extends AsyncTask<String,String,Schema> {
             String endDate = resSoap.getProperty("endDate").toString();
             
             //TODO: Change this to actually make a schema
-            Schedule result2 = new Schedule(codigoPaciente, lunes, martes, miercoles, jueves, viernes, sabado, domingo, startDate, endDate);
+//            Schedule result2 = new Schedule(codigoPaciente, lunes, martes, miercoles, jueves, viernes, sabado, domingo, startDate, endDate);
 
             // return null if no patient found or patient had no visits
             if (resSoap.getPropertyCount() == 0){
