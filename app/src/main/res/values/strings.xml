@@ -107,6 +107,7 @@
     <string name="past_month">Past Month: </string>
     <string name="total">Total: </string>
     <string name="title_activity_change_schema">ChangeSchemaActivity</string>
+    <string name="edots_code">5</string>
     <string name="last_updated">Local storage last updated</string>
 
     <string name="visit_mode">Visit Mode</string>
@@ -118,5 +119,6 @@
     <string name="edit_schema">Edit Schema</string>
     <string name="schema_information">Schema Information</string>
     <string name="new_visit_upload_error_message">This visit will be saved locally and uploaded when internet resumes</string>
+    <string name="upload_visit_success">Locally saved visit uploaded successfully</string>
 
 </resources>

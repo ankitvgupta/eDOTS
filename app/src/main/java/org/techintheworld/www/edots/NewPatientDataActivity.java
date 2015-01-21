@@ -585,7 +585,7 @@ public class NewPatientDataActivity extends Activity {
                 }
             }
 
-            // determines which treatments are checked and stores them in ArrayList of Projects
+            // determines which days are checked and stores them in ArrayList of strings
             ArrayList<String> visitDays = new ArrayList<String>();
             SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
             for (int i = 0; i < daysVisited.getAdapter().getCount(); i++) {
