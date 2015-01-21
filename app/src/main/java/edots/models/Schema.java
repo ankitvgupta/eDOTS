@@ -30,6 +30,9 @@ public class Schema  extends Saveable{
             id = "1";
             name = "SampleSchemaName";
             drugs = new ArrayList<>(Arrays.asList(new Drug()));
+            drugs.add(new Drug());
+            drugs.add(new Drug());
+            drugs.add(new Drug());
             phase = "SamplePhase";
             visit_mode = "1";
             schedule = new Schedule();
@@ -65,7 +68,6 @@ public class Schema  extends Saveable{
             }
             phase = n.get("phase").toString();
             visit_mode = n.get("visit_mode").toString();
-//            schedule = new Schedule();
             schedule = new Schedule(n.get("schedule").toString());
         }
         catch (JSONException e) {
@@ -142,4 +144,16 @@ public class Schema  extends Saveable{
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
+    
+    public String printDrugs(){
+        String result = "";
+        for (int i = 0; i < drugs.size(); i++){
+            result += drugs.get(i).getSymbol()+"\t"+drugs.get(i).getDosage();
+            if (i< drugs.size() - 1){
+                result += ",\t";
+            }
+        }
+        return result;
+    }
+
 }

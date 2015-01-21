@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -117,12 +118,16 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitLocaleEditor.setText(localeName);
 
         // start date
-        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
+        EditText startDate = (EditText) findViewById(R.id.schema_start_day);
         startDate.setText(currentSchedule.getStartDate());
 
         // end date
-        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
+        EditText endDate = (EditText) findViewById(R.id.schema_end_day);
         endDate.setText(currentSchedule.getEndDate());
+
+        TextView drugText = (TextView) findViewById(R.id.drugs);
+        Log.i("New visit: print drugs", currentSchema.printDrugs());
+        drugText.setText(currentSchema.printDrugs());
 
     }
 
