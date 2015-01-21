@@ -1,8 +1,10 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,10 +14,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schedule;
 import edots.models.Schema;
+import edots.tasks.NewSchemaUploadTask;
 
 // TODO: name and national ID fields should not be editable
 
@@ -115,6 +119,59 @@ public class ChangeSchemaActivity extends Activity {
     }
     
     public void submitChangeSchema(View view) {
+
+        
+        
+        
+        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
+        String start = startDate.getText().toString();
+        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
+        String end = endDate.getText().toString();
+        
+
+        ArrayList<String> visitDays = new ArrayList<String>();
+        ListView daysVisited = (ListView) findViewById(R.id.changeSchema_schema_days);
+        SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
+        for (int i = 0; i < daysVisited.getAdapter().getCount(); i++) {
+            if (daysPicked.get(i)) {
+                visitDays.add("1");
+            }
+            else {
+                visitDays.add("0");
+            }
+        }
+
+        NewSchemaUploadTask schemaUploader = new NewSchemaUploadTask();
+        
+        try {
+            String s = schemaUploader.execute(
+                    getString(R.string.server_url),
+                    currentPatient.getPid(),
+                    visitDays.get(0),
+                    visitDays.get(1),
+                    visitDays.get(2),
+                    visitDays.get(3),
+                    visitDays.get(4),
+                    visitDays.get(5),
+                    visitDays.get(6),
+                    visitDays.get(7),
+                    visitDays.get(8),
+                    visitDays.get(9),
+                    visitDays.get(10),
+                    visitDays.get(11),
+                    visitDays.get(12),
+                    visitDays.get(13),
+                    "2014-05-28 00:00:00.0",
+                    "2015-05-28 00:00:00.0",
+                    "1",
+                    "1").get();
+            Log.v("ChangeSchemaActivity.java: The result of the schema upload was: ", s);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        
         return;
         
     }
