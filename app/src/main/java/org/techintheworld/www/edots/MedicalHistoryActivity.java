@@ -53,13 +53,13 @@ public class MedicalHistoryActivity extends FragmentActivity {
     Date weekAgo;
     Date monthAgo;
 
-    Boolean Monday;
-    Boolean Tuesday;
-    Boolean Wednesday;
-    Boolean Thursday;
-    Boolean Friday;
-    Boolean Saturday;
-    Boolean Sunday;
+    Boolean Monday = false;
+    Boolean Tuesday = false;
+    Boolean Wednesday = false;
+    Boolean Thursday = false;
+    Boolean Friday = false;
+    Boolean Saturday = false;
+    Boolean Sunday = false;
     int difference;
     boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
 

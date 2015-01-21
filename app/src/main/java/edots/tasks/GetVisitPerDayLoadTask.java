@@ -53,7 +53,7 @@ public class GetVisitPerDayLoadTask extends AsyncTask<String,String,ArrayList<Vi
 
             // get the response
             SoapObject resSoap = (SoapObject) envelope.getResponse();
-            SoapObject resSoapTemp = null;
+            SoapObject resSoapTemp;
 
             int numVisitDays = resSoap.getPropertyCount();
             Log.i("GetVisitDayLoadTask: The number of VisitDays is", Integer.toString(numVisitDays));
@@ -72,7 +72,7 @@ public class GetVisitPerDayLoadTask extends AsyncTask<String,String,ArrayList<Vi
 
             // return null if the dates provided are invalid
             if (resSoap.getPropertyCount() == 0) {
-                Log.v("GetVisitPerDayLoadTask: ","format of dates was invalid was invald");
+                Log.v("GetVisitPerDayLoadTask: ","format of dates was invalid was invalid");
                 return null;
             }
             Log.v("GetVisitPerDayLoadTask: The visitday object we got is", resSoap.toString());
