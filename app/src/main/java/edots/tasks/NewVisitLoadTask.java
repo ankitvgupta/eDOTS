@@ -33,7 +33,7 @@ public class NewVisitLoadTask extends AsyncTask<String,String,Visit> {
 
         request.addProperty("CodigoPaciente", params[0]);
         request.addProperty("CodigoLocal", params[1]);
-        request.addProperty("CodigoProyecto", params[2]);
+        request.addProperty("CodigoProyecto", "5"); // 5 for eDOTS
 
         // create request
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -57,7 +57,7 @@ public class NewVisitLoadTask extends AsyncTask<String,String,Visit> {
 
             // instantiate a new visit to be returned
             v = new Visit(params[1],
-                          params[2],
+                          "5",
                           ic.getProperty("CodigoGrupoVisita").toString(),
                           ic.getProperty("NombreGrupoVisita").toString(),
                           ic.getProperty("CodigoVisita").toString(),
