@@ -58,9 +58,9 @@ public class GetVisitPerDayLoadTask extends AsyncTask<String,String,ArrayList<Vi
             int numVisitDays = resSoap.getPropertyCount();
             Log.i("GetVisitDayLoadTask: The number of VisitDays is", Integer.toString(numVisitDays));
 
-            // loop over all of the visits that the patient made
+            // loop over all of the visitdays that the patient made
             for (int i = 0; i < numVisitDays; i++) {
-                // for each iteration, create a visit object and add to the results array
+                // for each iteration, create a visitday object and add to the results array
                 resSoapTemp = (SoapObject) resSoap.getProperty(i);
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 Date day = format.parse(resSoapTemp.getProperty("CodigoDroga").toString());
@@ -70,7 +70,7 @@ public class GetVisitPerDayLoadTask extends AsyncTask<String,String,ArrayList<Vi
                 visitDays.add(tmp);
             }
 
-            // return null if no patient found or patient had no visits
+            // return null if the dates provided are invalid
             if (resSoap.getPropertyCount() == 0) {
                 Log.v("GetVisitPerDayLoadTask: ","format of dates was invalid was invald");
                 return null;
