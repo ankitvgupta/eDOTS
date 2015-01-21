@@ -48,6 +48,7 @@ public class Schema  extends Saveable{
      * @param i project id
      * @param n name of the project
      */
+    @Deprecated
     public Schema(String i, String n){
         id = i;
         name = n;
@@ -59,6 +60,7 @@ public class Schema  extends Saveable{
     public Schema(String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
+            //Log.v()
             id = n.get("id").toString();
             name = n.get("name").toString();
             drugs = new ArrayList<Drug>();

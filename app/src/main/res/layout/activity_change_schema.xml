@@ -129,8 +129,18 @@
                 android:divider="#CCCCCC"
                 android:dividerHeight="1dp"
                 android:paddingLeft="2dp" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button"
+                android:onClick="submitChangeSchema"
+                android:id="@+id/change_schema_submit_button"
+                android:layout_alignBottom="@+id/changeSchema_ScrollView"
+                android:layout_centerHorizontal="true" />
 
         </LinearLayout>
     </ScrollView>
+
+    
 
 </RelativeLayout>

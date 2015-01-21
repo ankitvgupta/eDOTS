@@ -12,13 +12,13 @@ import edots.models.Drug;
 
 /**
  * Created by brendan on 1/20/15.
+ * Loads the list of drugs given a CodigoEsquema
  */
 public class GetDrugLoadTask extends AsyncTask<String,String,ArrayList<Drug> > {
 
     @Override
     protected ArrayList<Drug> doInBackground(String... params) {
         // instantiate results array to be returned
-        //ArrayList<Visit> results = new ArrayList<Visit>();
 
         // setup server parameters
         String urlserver = params[0];
@@ -28,7 +28,7 @@ public class GetDrugLoadTask extends AsyncTask<String,String,ArrayList<Drug> > {
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
-        // added CodigoPaciente for the request (used to find the patient)
+        // added CodigoEsquema for the request (used to specify an Esquema)
         request.addProperty("CodigoEsquema", params[1]);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
@@ -47,9 +47,9 @@ public class GetDrugLoadTask extends AsyncTask<String,String,ArrayList<Drug> > {
             int numDrugs = resSoap.getPropertyCount();
             Log.i("GetDrugLoadTask: The number of drugs is", Integer.toString(numDrugs));
 
-            // loop over all of the visits that the patient made
+            // loop over all of the drugs for a given scheme made
             for (int i = 0; i < numDrugs; i++) {
-                // for each iteration, create a visit object and add to the results array
+                // for each iteration, create a drug object and add to the results array
                 resSoapTemp = (SoapObject) resSoap.getProperty(i);
                 String id = resSoapTemp.getProperty("CodigoDroga").toString();
                 String name = resSoapTemp.getProperty("Farmacos").toString();
@@ -60,16 +60,15 @@ public class GetDrugLoadTask extends AsyncTask<String,String,ArrayList<Drug> > {
                 drugs.add(tmp);
             }
 
-            // return null if no patient found or patient had no visits
+            // return null the scheme was almost certainly not a valid scheme
             if (resSoap.getPropertyCount() == 0) {
-                Log.v("GetHistoryLoadTask: This is not a valid person or has no visits", "This is not a valid person or has no visits");
+                Log.v("GetDrugLoadTask", "This scheme has no associated drugs");
                 return null;
             }
-            Log.v("GetHistoryLoadTask: The history object we got is", resSoap.toString());
+            Log.v("GetDrugLoadTask: The drug object we got was", resSoap.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
-
         }
 
         return drugs;
