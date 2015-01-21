@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,7 +46,6 @@ import edots.utils.TimePickerFragment;
 //TODO: add scheduled days
 
 public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
-    private Context context;
     private Patient currentPatient;
     private Visit currentVisit;
     private Schema currentSchema;
@@ -171,10 +169,9 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     public Visit loadCurrentVisit(String patientId, String localeId, String promoterId){
         // instantiate a new visit
         Visit visit = null;
-         
         // if there is internet connection, load with actual visit number / visit group / visit description etc.
-        if (InternetConnection.checkConnection(context)) {
-            // load the visit group number and visit number
+        if (InternetConnection.checkConnection(this)) {
+            //  load the visit group number and visit number
             NewVisitLoadTask newV = new NewVisitLoadTask();
             AsyncTask v = newV.execute(patientId, localeId);
             // parse the result, and return it
