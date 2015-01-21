@@ -26,6 +26,7 @@ import edots.models.Saveable;
 import edots.models.Visit;
 import edots.tasks.GetPatientFromIDTask;
 import edots.tasks.LoadPatientFromPromoterTask;
+import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
 
 /**
@@ -253,10 +254,41 @@ public class OfflineStorageManager {
         return time_updated;
     }
 
+
+    /**
+     * Calls service to get the DescripcionVisita, NombreGrupoVisita, VisitGroupCode, and VisitCode
+     * Then returns a visit with those fields plugged into the one passed in
+     * @author JN
+     * @param old_visit The Visit object to be modified
+     * @return Modified object
+     */
+    public Visit updateVisitCodes(Visit old_visit){
+        String patientId = old_visit.getPacientCode();
+        String localeId = old_visit.getLocaleCode();
+
+        NewVisitLoadTask newV = new NewVisitLoadTask();
+        AsyncTask v = newV.execute(patientId, localeId);
+        // parse the result, and return it
+        try {
+            Visit visit_codes = (Visit) v.get();
+            old_visit.setDescripcionVisita( visit_codes.getDescripcionVisita());
+            old_visit.setNombreGrupoVisita(visit_codes.getNombreGrupoVisita());
+            old_visit.setVisitGroupCode(visit_codes.getVisitGroupCode());
+            old_visit.setVisitCode(visit_codes.getVisitCode());
+            Log.i("OfflineStorageManager:updateVisitCodes", old_visit.toString());
+            return old_visit;
+        }
+        catch (InterruptedException e1){
+            e1.printStackTrace();
+        } catch (ExecutionException e1){
+            e1.printStackTrace();
+        }
+        return null;
+    }
     /**
      * Called when internet is connected and there is a visit to upload
      *
-     * @return
+     * @return true if complete upload and upload is successful
      * @author JN
      */
     public boolean UploadLocalVisit() {
@@ -270,45 +302,56 @@ public class OfflineStorageManager {
             Visit currentVisit = new Visit(new_visit);
             Log.i("OfflineStorageManager: uploadLocalVisit new current visit", currentVisit.toString());
             NewVisitUploadTask upload_visit = new NewVisitUploadTask(context);
+            boolean connected= InternetConnection.checkConnection(context);
+            if(connected){
+                try {
+                    currentVisit = updateVisitCodes(currentVisit);
+                    String result = upload_visit.execute(context.getString(R.string.server_url),
+                            currentVisit.getLocaleCode(),
+                            currentVisit.getProjectCode(),
+                            currentVisit.getVisitGroupCode(),
+                            currentVisit.getVisitCode(),
+                            currentVisit.getPacientCode(),
+                            currentVisit.getVisitDate(),
+                            currentVisit.getVisitTime(),
+                            currentVisit.getPromoterId()).get();
+                    Log.i("OfflineStorageManager: uploadLocalVisit result", result);
+                    if (result.equals("1") || result.equals("2")){
+                        boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
+                        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+                        SharedPreferences.Editor editor = mPreferences.edit();
+                        editor.remove(context.getString(R.string.new_visit_filename));
+                        editor.commit();
+                        Log.i("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
 
-            try {
-
-                String result = upload_visit.execute(context.getString(R.string.server_url),
-                        currentVisit.getLocaleCode(),
-                        currentVisit.getProjectCode(),
-                        currentVisit.getVisitGroupCode(),
-                        currentVisit.getVisitCode(),
-                        currentVisit.getPacientCode(),
-                        currentVisit.getVisitDate(),
-                        currentVisit.getVisitTime(),
-                        currentVisit.getPromoterId()).get();
-                Log.i("OfflineStorageManager: uploadLocalVisit result", result);
-                boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
-                SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.remove(context.getString(R.string.new_visit_filename));
-                editor.commit();
-                Log.i("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
-                return true;
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-                return false;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                    return false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+            else{
                 return false;
             }
+
         }
         else{
-            return true;
+            return false;
         }
     }
 
     /**
-     * Loads when MainMenuActivity is created and checks if need to get new info from the service
-     * if last update was less than 5 hours ago, will make calls to update local files
+     * Loads when MainMenuActivity is created and checks if can update local storage
+     * @author JN
+     * @return true if has internet and already logged in
      */
-    // TODO: some kind of manual fetch method and in general just clean this up
-    // TODO: check that promoter is logged in/sharedpref exist, getlastupdated
     public boolean CanUpdateLocalStorage() {
         boolean isConnected = InternetConnection.checkConnection(context);
         String logged_in = AccountLogin.CheckAlreadyLoggedIn(context);

@@ -25,51 +25,49 @@ public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "InsertarParticipanteSchedule";// TODO: Change this to a new method for schedule uploads
+        final String METHOD_NAME = "InsertarPacienteEsquema";// TODO: Change this to a new method for schedule uploads
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         // add all of the patient properties to the request
         request.addProperty("CodigoPaciente", params[1]);
         request.addProperty("Lunes", params[2]);
-        request.addProperty("Martes", params[3]);
-        request.addProperty("Miercoles", params[4]);
-        request.addProperty("Jueves", params[5]);
-        request.addProperty("Viernes", params[6]);
-        request.addProperty("Sabado", params[7]);
-        request.addProperty("Domingo", params[8]);
-        request.addProperty("LunesTarde", params[9]);
-        request.addProperty("MartesTarde", params[10]);
-        request.addProperty("MiercolesTarde", params[11]);
-        request.addProperty("JuevesTarde", params[12]);
-        request.addProperty("ViernesTarde", params[13]);
-        request.addProperty("SabadoTarde", params[14]);
+        request.addProperty("LunesTarde", params[3]);
+        request.addProperty("Martes", params[4]);
+        request.addProperty("MartesTarde", params[5]);
+        request.addProperty("Miercoles", params[6]);        
+        request.addProperty("MiercolesTarde", params[7]);
+        request.addProperty("Jueves", params[8]);
+        request.addProperty("JuevesTarde", params[9]);
+        request.addProperty("Viernes", params[10]);
+        request.addProperty("ViernesTarde", params[11]);
+        request.addProperty("Sabado", params[12]);
+        request.addProperty("SabadoTarde", params[13]);
+        request.addProperty("Domingo", params[14]);
         request.addProperty("DomingoTarde", params[15]);
+        
         request.addProperty("FechaComienzo", params[16]);
         request.addProperty("FechaTermino", params[17]);
-        request.addProperty("Active", params[18]);
-        request.addProperty("CodigoEsquema", params[19]);
-        request.addProperty("FechaComienzo", params[20]);
-        request.addProperty("FechaTermino", params[21]);
-        request.addProperty("Activo", params[22]);
-        request.addProperty("TipoDeVisito", params[23]);
-        request.addProperty("EsquemaNombre", params[24]);
-        request.addProperty("EsquemaFase", params[25]);
+        
+        request.addProperty("CodigoEsquema", params[18]);
+        request.addProperty("TipoDeVisito", params[19]);
+
+        String returnvalue = "";
+        
+        /*
+
         // setup request
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
         envelope.setOutputSoapObject(request);
         HttpTransportSE transporte = new HttpTransportSE(URL);
         transporte.debug = true;
-        String returnvalue = "";
+        //String returnvalue = "";
 
         try
         {
             transporte.call(SOAP_ACTION, envelope);
             // receive response (as a string)
-            // TODO: Determine why it says that the patient already exists even though it doesn't
-            // (It says patient exists when it doesn't and then adds it anyways
-            // - seems like the response codes are flipped)
             SoapPrimitive resSoap = (SoapPrimitive) envelope.getResponse();
             returnvalue = resSoap.toString();
         }
@@ -77,6 +75,7 @@ public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
         {
             e.printStackTrace();
         }
+        */
 
         return returnvalue;
     }
