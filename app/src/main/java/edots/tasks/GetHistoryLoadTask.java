@@ -36,7 +36,8 @@ public class GetHistoryLoadTask extends AsyncTask<String,String,ArrayList<Visit>
     public ArrayList<Visit> getVisitsFromLocal(String patient_id){
         String fileName= context.getString(R.string.visits_data_filename);
         try{
-            JSONArray visits_array = new JSONArray(OfflineStorageManager.getStringFromLocal(context, fileName));
+            OfflineStorageManager sm = new OfflineStorageManager(context);
+            JSONArray visits_array = new JSONArray(sm.getStringFromLocal(fileName));
             for (int i = 0; i < visits_array.length(); i++){
                 JSONObject obj = visits_array.getJSONObject(i);
                 Visit p = new Visit(obj.toString());
@@ -51,9 +52,9 @@ public class GetHistoryLoadTask extends AsyncTask<String,String,ArrayList<Visit>
     }
 
     public void saveVisitsToLocal(ArrayList<Visit> visits){
-        OfflineStorageManager storage = new OfflineStorageManager();
+        OfflineStorageManager storage = new OfflineStorageManager(context);
         String fileName = context.getString(R.string.visits_data_filename);
-        storage.SaveArrayListToLocal(visits, fileName, context);
+        storage.SaveArrayListToLocal(visits, fileName);
 
     }
 

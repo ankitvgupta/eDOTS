@@ -21,7 +21,7 @@ public class AccountLogin {
 
     // TODO: refactor dialog back into promoter login activity
 
-    public static String login(String username, String password, String locale_id, String locale_name, Context c) {
+    public static String login( Context c, String username, String password, String locale_id, String locale_name) {
         // TODO: check internet connection
 
         LoginTask runner = new LoginTask();
@@ -57,6 +57,51 @@ public class AccountLogin {
             response = e3.getMessage();
         }
         return response;
+    }
+
+    /**
+     * Checks Shared Preferences if already logged in by checking if saved username is the same as the current one
+     *
+     * @return username of the promoter that is logged in
+     * @author JN
+     */
+    public static String CheckAlreadyLoggedIn(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String username = prefs.getString((context.getString(R.string.username)), null);
+        if (username != null) {
+            return username;
+        }
+        return null;
+    }
+
+
+    /**
+     * Calls login web service and returns true if login is successful
+     *
+     * @param username input promoter username
+     * @param password input promoter password
+     * @param locale   input promoter locale from Spinner
+     * @return true if login successful from Service, false if not successful
+     * @author JN
+     */
+    public static boolean CheckLogin(Context context, String username, String password, String locale, String locale_name) {
+        if (password != null && !password.isEmpty()) {
+
+            String message = login(context, username, password, locale, locale_name);
+            if (message == null) {
+                return false;
+            }
+            if (message.equals(context.getString(R.string.session_init_key)) || message.equals(context.getString(R.string.password_expired_key))) {
+                return true;
+
+            } else {
+                Log.i("login", "Datos incorrectos");
+            }
+            return false;
+        } else {
+            return false;
+        }
+
     }
 
 }

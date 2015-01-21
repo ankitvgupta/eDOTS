@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 /**
  * Created by jfang on 1/14/15.
+ * @deprecated
+ * @author JN
  */
 public class SMSAlarmReceiver extends BroadcastReceiver {
     private final String sms_action = "org.techintheworld.www.edots.MainMenuActivity";

@@ -1,18 +1,19 @@
 package edots.models;
 
+import android.content.Context;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.ksoap2.serialization.KvmSerializable;
-import org.ksoap2.serialization.PropertyInfo;
+import org.techintheworld.www.edots.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Hashtable;
+
+import edots.utils.OfflineStorageManager;
 
 
-public class Locale implements KvmSerializable {
+public class Locale extends Saveable {
     public int id;
     public String name;
 
@@ -48,42 +49,7 @@ public class Locale implements KvmSerializable {
         }
 
     }
-    @Override
-    public Object getProperty(int arg0) {
 
-        switch(arg0)
-        {
-            case 0:
-                return id;
-            case 1:
-                return name;
-
-        }
-
-        return null;
-    }
-
-    @Override
-    public int getPropertyCount() {
-        return 2;
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public void getPropertyInfo(int ind, Hashtable ht, PropertyInfo info) {
-        switch(ind)
-        {
-            case 0:
-                info.type = PropertyInfo.INTEGER_CLASS;
-                info.name = "Id";
-                break;
-            case 1:
-                info.type = PropertyInfo.STRING_CLASS;
-                info.name = "Name";
-                break;
-            default:break;
-        }
-    }
     @Override
     public String toString() {
         JSONObject temp = new JSONObject();
@@ -96,19 +62,43 @@ public class Locale implements KvmSerializable {
         return temp.toString();
     }
 
-    @Override
-    public void setProperty(int ind, Object val) {
-        switch(ind)
-        {
-            case 0:
-                id = Integer.parseInt(val.toString());
-                break;
-            case 1:
-                name = val.toString();
-                break;
-            default:
-                break;
+    /**
+     * Parses out just the locale name from a list of Locale objects and returns as an array of strings
+     * @author JN
+     * @param locales ArrayList of Locale objects
+     * @return array of strings that contain only the 'name' of the locales
+     */
+    public static String[] ConvertLocalObjsToStrings(ArrayList<Locale> locales) {
+        String[] locale_strings = new String[locales.size()];
+
+        for (int i = 0; i < locales.size(); i++) {
+            locale_strings[i] = locales.get(i).name;
         }
+        return locale_strings;
     }
+
+    public static String GetLocaleNumber(Context context, String locale_name){
+        OfflineStorageManager sm = new OfflineStorageManager(context);
+        String locale_file = context.getString(R.string.locale_filename);
+        try{
+            JSONArray array = new JSONArray(sm.getStringFromLocal(locale_file));
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                Locale l = new Locale(obj.toString());
+                if (l.name.equals(locale_name)){
+                    return String.valueOf(l.id);
+                }
+            }
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+            Log.e("Locale.java: GetLocaleNumber", "JSONException");
+        }
+        return null;
+
+
+    }
+
+
 }
 
