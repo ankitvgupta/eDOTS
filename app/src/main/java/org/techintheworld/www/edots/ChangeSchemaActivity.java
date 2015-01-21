@@ -1,9 +1,7 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,13 +10,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schedule;
 import edots.models.Schema;
-import edots.tasks.GetPatientSchemaLoadTask;
 
+// TODO: name and national ID fields should not be editable
 
 public class ChangeSchemaActivity extends Activity {
     
@@ -70,6 +67,7 @@ public class ChangeSchemaActivity extends Activity {
         treatmentView.getLayoutParams().height = height;
 
         //ArrayList<String> treatmentDays = new ArrayList<String>();
+        //TODO: should not hardcode the strings for days
         treatmentDays.add("Monday");
         treatmentDays.add("Tuesday");
         treatmentDays.add("Wednesday");
@@ -97,23 +95,10 @@ public class ChangeSchemaActivity extends Activity {
     public void checkSchemaDayBoxes(Schedule s){
         ListView treatmentView = (ListView) findViewById(R.id.changeSchema_treatment_days);
         
-        if (s.scheduledLunes())
-            treatmentView.setItemChecked(0,true);
-        if (s.scheduledMartes())
-            treatmentView.setItemChecked(1,true);
-        if (s.scheduledMiercoles())
-            treatmentView.setItemChecked(2,true);
-        if (s.scheduledJueves())
-            treatmentView.setItemChecked(3,true);
-        if (s.scheduledViernes())
-            treatmentView.setItemChecked(4,true);
-        if (s.scheduledSabado())
-            treatmentView.setItemChecked(5,true);
-        if (s.scheduledDomingo())
-            treatmentView.setItemChecked(6,true);
-
-
-
+        String oneHotCoding = s.toOneHotCoding();
+        for (int i = 0; i < 14; i++){
+            treatmentView.setItemChecked(i,(oneHotCoding.charAt(i) == '1'));
+        }
     }
     
 
