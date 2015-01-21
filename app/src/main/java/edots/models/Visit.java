@@ -100,7 +100,7 @@ public class Visit extends Saveable {
 
     public String getLocaleCode() {return LocaleCode;}
 
-    public void setLocaleCode(String localeCode) {LocaleCode = localeCode;}
+    public void setLocaleId(String localeCode) {LocaleCode = localeCode;}
 
     public String getProjectCode() {return ProjectCode;}
 

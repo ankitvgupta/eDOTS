@@ -44,11 +44,13 @@ import edots.utils.TimePickerFragment;
  */
 
 //TODO: add scheduled days
-    
+
 public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
 
     private Patient currentPatient;
     private Visit currentVisit;
+    private Schema currentSchema;
+    private Schedule currentSchedule;
     EditText datePicker;
     EditText timePicker;
     EditText visitLocaleEditor;
@@ -67,43 +69,19 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_visit);
 
-        // get localeCode, localeName and promoterId from sharedPreferences
+        // get localeId, localeName and promoterId from sharedPreferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String localeName = prefs.getString((getString(R.string.login_locale_name)), null);
-        String localeCode = prefs.getString((getString(R.string.login_locale)), null);
+        String localeId = prefs.getString((getString(R.string.login_locale)), null);
         String promoterId = prefs.getString((getString(R.string.key_userid)), null);
-
-        // if a patient was passed in, pre-load that patient
-        try {
-            currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
-        }
-        catch (Exception e){
-            // TODO: Don't print the stack trace, give some sort of dialog box instead
-            e.printStackTrace();
-        }
-        Log.v("NewVisit: currentpatient", currentPatient.toString());
-
-        // load the visit group number and visit number
-        // TODO: put this into a function
-        NewVisitLoadTask newV = new NewVisitLoadTask();
-
-        AsyncTask v = newV.execute(currentPatient.getPid(), localeCode, currentPatient.getEnrolledSchema().getId());
-        // parse the result, and return it
-        try {
-            currentVisit = (Visit) v.get();
-            Log.v("NewVisitActivity.java: The patient visit that we got is", currentVisit.toString());
-        } catch (InterruptedException e1) {
-            //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
-        } catch (NullPointerException e1){
-            Log.e("NewVisit:OnCreate new visit","is null");
-        }
-
-
-        currentVisit.setLocaleCode(localeCode);
-
+        
+        // load currentPatient object from intent
+        currentPatient = loadCurrentPatient();
+        currentSchema = currentPatient.getEnrolledSchema();
+        currentSchedule = currentSchema.getSchedule();
+        // load currentVisit
+        currentVisit = loadCurrentVisit(currentPatient.getPid(), localeId, promoterId);
+        
         // visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
         Date currentTime = new Date();
@@ -133,21 +111,18 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             }
         });
 
-        Schema currentPatientSchema = currentPatient.getEnrolledSchema();
-        Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
-        
-        // start day
-        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
-        startDate.setText(currentPatientSchedule.getStartDate());
-        
-        // end day
-        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
-        endDate.setText(currentPatientSchedule.getEndDate());
-        
         // visit locale
         visitLocaleEditor = (EditText) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
         visitLocaleEditor.setText(localeName);
+        
+        // start date
+        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
+        startDate.setText(currentSchedule.getStartDate());
+        
+        // end date
+        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
+        endDate.setText(currentSchedule.getEndDate());
         
     }
 
@@ -170,6 +145,52 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitTime = time;
     }
 
+
+    /**
+     * if a patient was passed in, pre-load that patient
+     */
+    public Patient loadCurrentPatient(){
+        Patient p = null;
+        try {
+            p = new Patient(getIntent().getExtras().getString("Patient"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        Log.v("NewVisit: currentpatient", p.toString());
+        return p;
+    }
+
+    
+    /**
+     * return a visit object loaded with all fields (patient Id, visit number, visit group number, etc.)
+     * except for visit date and visit time
+     */
+    public Visit loadCurrentVisit(String patientId, String localeId, String promoterId){
+        // instantiate a new visit
+        Visit visit = null;
+        
+        // load the visit group number and visit number
+        NewVisitLoadTask newV = new NewVisitLoadTask();
+        AsyncTask v = newV.execute(patientId, localeId);
+        // parse the result, and return it
+        try {
+            visit = (Visit) v.get();
+            visit.setPromoterId(promoterId);
+            Log.v("NewVisitActivity.java: The patient visit that we got is", visit.toString());
+        } catch (InterruptedException e1) {
+            //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("NewVisit:OnCreate new visit","is null");
+        }
+        
+        return visit;
+    }
+
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -179,6 +200,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return true;
     }
 
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -243,19 +265,16 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         currentVisit.setVisitDate(dbDateFormat.format(visitDate));
         currentVisit.setVisitTime(dbTimeFormat.format(visitTime));
         String result = addToDatabase();
-        // TODO: LOG
         Log.i("New visit: visit", currentVisit.toString());
         //TODO: code the message in strings.xml
         if (result.equals("-1")){
             Log.i("New Visit: result", result);
-            AlertError("Connection Error", "This visit will be saved locally and uploaded when internet resumes");
-
+            AlertError("Connection Error", getString(R.string.new_visit_upload_error_message));
         }
         else{
             Toast.makeText(getBaseContext(), "Successfully submitted", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
-
         }
 
     }
