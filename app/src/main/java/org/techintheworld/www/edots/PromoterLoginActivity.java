@@ -55,7 +55,6 @@ public class PromoterLoginActivity extends Activity {
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
         } else {
-            Log.e("PromoterLoginActivity: OnCreate", "loadLocaleSpinner going to run " + username);
             String myurl = getString(R.string.server_url);
             loadLocaleSpinner(myurl);
         }
@@ -203,7 +202,6 @@ public class PromoterLoginActivity extends Activity {
                 OfflineStorageManager sm = new OfflineStorageManager(this);
                 String locale_file = getString(R.string.locale_filename);
                 sm.SaveArrayListToLocal(arrLocale, locale_file);
-                Log.e("PromoterLoginActivity: loadLocaleSpinner", "loadLocaleSpinner going to run " + arrLocale.toString());
 
             } catch (InterruptedException e1) {
                 Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");
@@ -237,5 +235,10 @@ public class PromoterLoginActivity extends Activity {
         } catch (JSONException e1) {
             Log.e("PromoterLoginActivity: loadLocaleActivity", " JSON Exception On Load");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 }

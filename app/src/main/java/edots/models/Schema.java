@@ -1,14 +1,17 @@
 package edots.models;
+
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
- * @author JN
+ * @author Lili
  *
  */
 
@@ -16,13 +19,21 @@ public class Schema  extends Saveable{
     private String id;
     private String name;
     private ArrayList<Drug> drugs;
+    private String phase;
+    private String visit_mode; // 1 for "clinic" or 2 for "patient home"
+    private Schedule schedule;
 
 
     // For testing only
     public Schema() {
         try {
-            id = "6";
-            name = "test";
+            id = "1";
+            name = "SampleSchemaName";
+            drugs = new ArrayList<>(Arrays.asList(new Drug()));
+            phase = "SamplePhase";
+            visit_mode = "1";
+            schedule = new Schedule();
+
         }
         catch (Exception e){
             e.printStackTrace();
@@ -30,13 +41,21 @@ public class Schema  extends Saveable{
     }
 
     /**
-     * @param JSONString a JSON object representing the project
+     * @param JSONString a JSON object representing the schema
      */
     public Schema(String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
-            id = n.get("projectId").toString();
+            id = n.get("id").toString();
             name = n.get("name").toString();
+            drugs = new ArrayList<Drug>();
+            JSONArray arry = new JSONArray(n.get("drugs").toString());
+            for (int i = 0; i < arry.length(); i++){
+                drugs.add(new Drug(arry.getString(i)));
+            }
+            phase = n.get("phase").toString();
+            visit_mode = n.get("visit_mode").toString();
+            schedule = new Schedule(n.get("schedule").toString());
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -62,6 +81,10 @@ public class Schema  extends Saveable{
         try {
             temp.put("projectId", getId());
             temp.put("name", getName());
+            temp.put("drugs", getDrugs());
+            temp.put("phase", getPhase());
+            temp.put("visit_mode", getVisit_mode());
+            temp.put("schedule", getSchedule());
         } catch (JSONException e) {
             Log.v("JSON Exception", "Found a JSON Exception");
             e.printStackTrace();
@@ -91,5 +114,29 @@ public class Schema  extends Saveable{
 
     public void setDrugs(ArrayList<Drug> drugs) {
         this.drugs = drugs;
+    }
+
+    public String getVisit_mode() {
+        return visit_mode;
+    }
+
+    public void setVisit_mode(String visit_mode) {
+        this.visit_mode = visit_mode;
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 }

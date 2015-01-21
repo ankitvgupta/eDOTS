@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:digits="1234567890"
-                android:layout_width="fill_parent">
+                android:layout_width="fill_parent"
+                android:focusable="false">
             </EditText>
 
             <!--name field-->
@@ -125,7 +126,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/sex"/>
 
-
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
                     android:onClick="onRadioButtonClicked"/>
             </RadioGroup>
 
-            <!--Active Treatments field-->
+            <!--Active Schema field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
                 android:text="@string/schema"/>
 
             <ListView
-                android:id="@+id/treatments"
+                android:id="@+id/schema"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="10dp"
@@ -162,7 +162,28 @@
                 android:paddingLeft="2dp" >
             </ListView>
 
-            <!--Treatment Start Day field-->
+            
+            <!--Drugs field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/drugs"/>
+            
+            <ListView
+                android:id="@+id/drugs"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:paddingLeft="2dp" >
+            </ListView>
+
+            <!--Schema Start Day field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -170,13 +191,27 @@
                 android:text="@string/schema_start_day"/>
 
             <EditText
-                android:id="@+id/treatment_start_day"
+                android:id="@+id/schema_start_day"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:focusable="false">
             </EditText>
 
-            <!--Treatment Days field-->
+            <!--Schema End Day field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/schema_end_day"/>
+
+            <EditText
+                android:id="@+id/schema_end_day"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+            
+            <!--Schema Days field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -184,7 +219,7 @@
                 android:text="@string/schema_days"/>
 
             <ListView
-                android:id="@+id/treatment_days"
+                android:id="@+id/schema_days"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="10dp"
@@ -195,20 +230,30 @@
                 android:dividerHeight="1dp"
                 android:paddingLeft="2dp" />
 
-            <!--Treatment End Day field-->
+
+            <!--Visit Mode field-->
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/schema_end_day"/>
-
-            <EditText
-                android:id="@+id/treatment_end_day"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:focusable="false">
-            </EditText>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/visit_mode"/>
 
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_clinic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clinic"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_patient_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_home"
+                    android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+            
             <!--fingerprint button-->
             <Button
                 android:layout_width="wrap_content"

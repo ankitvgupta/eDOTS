@@ -53,53 +53,42 @@
                 android:layout_height="fill_parent"
                 android:focusable="false" />
 
-            <!--project field-->
-            <TextView android:text="@string/project"
+            <!--schema Start Day field-->
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/schema_start_day"/>
 
             <EditText
-                android:id="@+id/visitProject"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:focusable="false" />
-
-            <!--visit group field-->
-            <TextView android:text="@string/visit_group"
-                android:layout_width="wrap_content"
+                android:id="@+id/changeSchema_schema_start_day"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
+            <!--Schema End Day field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/schema_end_day"/>
 
             <EditText
-                android:id="@+id/visitGroup"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:focusable="false" />
-
-            <!--visit field-->
-            <TextView android:text="@string/visit"
-                android:layout_width="wrap_content"
+                android:id="@+id/changeSchema_schema_end_day"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-            <EditText
-                android:id="@+id/visitNo"
                 android:layout_width="fill_parent"
+                android:focusable="false">
+            </EditText>
+
+            <!--Schema Days field-->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:focusable="false" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/schema_days"/>
 
-            <!--may want to make this a select from rather than edit direct-->
-            <!--<TextView android:text="@string/new_visit_treatment"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-            <!--<ListView-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:id="@+id/active_treatments"-->
-                <!--android:layout_height="wrap_content">-->
-
-            <!--</ListView>-->
-
+            <!--submit button-->
             <Button
                 android:layout_marginTop="1sp"
                 android:text="@string/new_visit_done"

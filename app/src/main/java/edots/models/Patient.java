@@ -149,6 +149,10 @@ public class Patient extends Saveable{
         return temp.toString();
 
     }
+   
+    public Schema getSchema(){
+        return new Schema();
+    }
 
     /**
      * @author Ankit
@@ -162,7 +166,7 @@ public class Patient extends Saveable{
         /*
         String patientCode = pid; // for production
         //String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
-        GetPatientScheduleLoadTask newP = new GetPatientScheduleLoadTask();
+        GetPatientSchemaLoadTask newP = new GetPatientSchemaLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
         try {
             Schedule s = (Schedule) p.get();
@@ -246,8 +250,8 @@ public class Patient extends Saveable{
     }
 
     public Schema getEnrolledSchema(){
-        return enrolledSchema;
-    }
+        return new Schema();
+    } // TODO: This is for testing only, change this to the actual current schema
 
     public void setName(String n){
         name=n;

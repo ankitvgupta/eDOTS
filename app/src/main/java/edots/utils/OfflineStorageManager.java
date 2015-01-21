@@ -260,38 +260,48 @@ public class OfflineStorageManager {
      * @return
      * @author JN
      */
-    private boolean uploadLocalVisit() {
-        String new_visit_file = context.getString(R.string.new_visit_filename);
-        String new_visit = getStringFromLocal(new_visit_file);
-        Log.e("OfflineStorageManager: uploadLocal", new_visit);
-        Visit currentVisit = new Visit(new_visit);
-        Log.e("OfflineStorageManager: uploadLocal new current visit", currentVisit.toString());
-        NewVisitUploadTask upload_visit = new NewVisitUploadTask(context);
+    public boolean UploadLocalVisit() {
+        SharedPreferences sprefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String visit_exists = sprefs.getString(context.getString(R.string.new_visit_filename), null);
 
-        try {
-            String result = upload_visit.execute(context.getString(R.string.server_url),
-                    currentVisit.getLocaleCode(),
-                    currentVisit.getProjectCode(),
-                    currentVisit.getVisitGroupCode(),
-                    currentVisit.getVisitCode(),
-                    currentVisit.getPacientCode(),
-                    currentVisit.getVisitDate(),
-                    currentVisit.getVisitTime(),
-                    currentVisit.getPromoterId()).get();
-            Log.e("OfflineStorageManager: uploadLocalVisit result", result);
-            boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
-            SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-            SharedPreferences.Editor editor = mPreferences.edit();
-            editor.remove(context.getString(R.string.new_visit_filename));
-            editor.commit();
-            Log.e("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
+        // if there exists a visit to upload
+        if (visit_exists != null){
+            String new_visit_file = context.getString(R.string.new_visit_filename);
+            String new_visit = getStringFromLocal(new_visit_file);
+            Log.e("OfflineStorageManager: uploadLocal", new_visit);
+            Visit currentVisit = new Visit(new_visit);
+            Log.e("OfflineStorageManager: uploadLocal new current visit", currentVisit.toString());
+            NewVisitUploadTask upload_visit = new NewVisitUploadTask(context);
+
+            try {
+
+                String result = upload_visit.execute(context.getString(R.string.server_url),
+                        currentVisit.getLocaleCode(),
+                        currentVisit.getProjectCode(),
+                        currentVisit.getVisitGroupCode(),
+                        currentVisit.getVisitCode(),
+                        currentVisit.getPacientCode(),
+                        currentVisit.getVisitDate(),
+                        currentVisit.getVisitTime(),
+                        currentVisit.getPromoterId()).get();
+                Log.e("OfflineStorageManager: uploadLocalVisit result", result);
+                boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
+                SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.remove(context.getString(R.string.new_visit_filename));
+                editor.commit();
+                Log.e("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
+                return true;
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+                return false;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        else{
             return true;
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return false;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return false;
         }
     }
 
@@ -307,13 +317,6 @@ public class OfflineStorageManager {
         if (!isConnected || (logged_in==null) ){
             return false;
         }
-
-        // TODO: upload visit
-        //        String result = prefs.getString(context.getString(R.string.new_visit_filename), null);
-        // Log.e("OfflineStorageManager: UpdateLocalStorage", "going to upload local visit");
-        // boolean visit_upload = uploadLocalVisit();
-
-
         return true;
     }
 

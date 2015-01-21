@@ -31,12 +31,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
+import edots.models.Drug;
 import edots.models.Patient;
 import edots.models.Schema;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPatientUploadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
-import edots.tasks.NewScheduleUploadTask;
+import edots.tasks.NewSchemaUploadTask;
 import edots.utils.InternetConnection;
 
 /*
@@ -55,7 +56,8 @@ import edots.utils.InternetConnection;
 public class NewPatientDataActivity extends Activity {
 
     private Patient currentPatient;
-    private ArrayList<Schema> treatmentList = new ArrayList<Schema>();
+    private ArrayList<Schema> schemaList = new ArrayList<Schema>();
+    private ArrayList<Drug> drugList = new ArrayList<Drug>();
     private ArrayList<String> treatmentDays = new ArrayList<String>();
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -69,6 +71,22 @@ public class NewPatientDataActivity extends Activity {
     private EditText startDateDisplay;
     private EditText endDateDisplay;
 
+    EditText nationalID;
+    EditText name;
+    EditText fatherName;
+    EditText motherName;
+    EditText birthDateText;
+    EditText phoneNumber;
+    EditText schemaStartDate;
+    EditText schemaEndDate;
+    RadioButton femaleBtn;
+    RadioButton maleBtn;
+    RadioButton clinicBtn;
+    RadioButton patientHomeBtn;
+    ListView schemaListText;
+    ListView daysVisited;
+    ListView drugsList;
+
     static final int DATE_DIALOG_ID = 0;
 
     @Override
@@ -80,8 +98,25 @@ public class NewPatientDataActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
 
+        nationalID = (EditText) findViewById(R.id.National_ID);
+        name = (EditText) findViewById(R.id.Name);
+        fatherName = (EditText) findViewById(R.id.Fathers_name);
+        motherName = (EditText) findViewById(R.id.Mothers_name);
+        birthDateText = (EditText) findViewById(R.id.Birthdate);
+        phoneNumber = (EditText) findViewById(R.id.PhoneNumber);
+        schemaStartDate = (EditText) findViewById(R.id.schema_start_day);
+        schemaEndDate = (EditText)findViewById(R.id.schema_end_day);
+        femaleBtn = (RadioButton) findViewById(R.id.radio_female);
+        maleBtn = (RadioButton) findViewById(R.id.radio_male);
+        clinicBtn = (RadioButton) findViewById(R.id.radio_clinic);
+        patientHomeBtn = (RadioButton) findViewById(R.id.radio_patient_home);
+        schemaListText = (ListView) findViewById(R.id.schema);
+        daysVisited = (ListView) findViewById(R.id.schema_days);
+        drugsList = (ListView) findViewById(R.id.drugs);
+
         loadDatePickers();
-        loadTreatmentCheckboxes();
+        loadSchemaCheckboxes();
+        loadDrugCheckboxes();
         loadTreatmentDayCheckboxes();
 
         // check if not connected to internet, then disable everything and show dialog
@@ -100,15 +135,15 @@ public class NewPatientDataActivity extends Activity {
     public void loadDatePickers() {
 
         birthDateDisplay = (EditText) findViewById(R.id.Birthdate);
-        startDateDisplay = (EditText) findViewById(R.id.treatment_start_day);
-        endDateDisplay = (EditText) findViewById(R.id.treatment_end_day);
+        startDateDisplay = (EditText) findViewById(R.id.schema_start_day);
+        endDateDisplay = (EditText) findViewById(R.id.schema_end_day);
 
         /* get the current date */
         birthDate = Calendar.getInstance();
 
         birthDateDisplay.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                showDateDialog(birthDateDisplay, birthDate);
+            showDateDialog(birthDateDisplay, birthDate);
             }
         });
 
@@ -116,7 +151,7 @@ public class NewPatientDataActivity extends Activity {
 
         startDateDisplay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                showDateDialog(startDateDisplay, startDate);
+            showDateDialog(startDateDisplay, startDate);
             }
         });
 
@@ -124,7 +159,7 @@ public class NewPatientDataActivity extends Activity {
 
         endDateDisplay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                showDateDialog(endDateDisplay, endDate);
+            showDateDialog(endDateDisplay, endDate);
             }
         });
 
@@ -133,7 +168,9 @@ public class NewPatientDataActivity extends Activity {
         updateDisplay(endDateDisplay, endDate);
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Updates text for DatePickers
+     */
     private void updateDisplay(EditText dateDisplay, Calendar date) {
         dateDisplay.setText(
                 new StringBuilder()
@@ -144,14 +181,18 @@ public class NewPatientDataActivity extends Activity {
 
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Displays date dialog for setting the date
+     */
     public void showDateDialog(EditText dateDisplay, Calendar date) {
         activeDateDisplay = dateDisplay;
         activeDate = date;
         showDialog(DATE_DIALOG_ID);
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Tells listener for Datepicker what to do
+     */
     private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -163,13 +204,17 @@ public class NewPatientDataActivity extends Activity {
         }
     };
 
-    // written by Nishant
+    /* @author Nishant
+     * Resets the Datepicker
+     */
     private void unregisterDateDisplay() {
         activeDateDisplay = null;
         activeDate = null;
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Used for Datepicker
+     */
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -179,7 +224,9 @@ public class NewPatientDataActivity extends Activity {
         return null;
     }
 
-    // written by Nishant
+    /* @author Nishant
+     * Displays date dialog for setting the date
+     */
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
         super.onPrepareDialog(id, dialog);
@@ -191,45 +238,77 @@ public class NewPatientDataActivity extends Activity {
     }
 
     /* Written by Nishant
-     * Loads Checkboxes Dynamically for Treatment Projects
+     * Loads Checkboxes Dynamically for Schemas
      */
-    public void loadTreatmentCheckboxes() {
+    public void loadSchemaCheckboxes() {
         // list of treatment study groups
         // for testing
-        treatmentList.add(new Schema());
-        treatmentList.add(new Schema());
-        treatmentList.add(new Schema());
-        treatmentList.add(new Schema());
+        schemaList.add(new Schema());
+        schemaList.add(new Schema());
+        schemaList.add(new Schema());
+        schemaList.add(new Schema());
 
         // sets layout_height for ListView based on number of treatments
-        ListView treatmentView = (ListView) findViewById(R.id.treatments);
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * treatmentList.size(), getResources().getDisplayMetrics());
+        ListView treatmentView = (ListView) findViewById(R.id.schema);
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * schemaList.size(), getResources().getDisplayMetrics());
         treatmentView.getLayoutParams().height = height;
 
 
         ArrayList<String> checkboxesText = new ArrayList<String>();
-        for (int i = 0; i < treatmentList.size(); i++) {
-            checkboxesText.add(treatmentList.get(i).getName());
+        for (int i = 0; i < schemaList.size(); i++) {
+            checkboxesText.add(schemaList.get(i).getName());
         }
         // creating adapter for ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_checked, checkboxesText);
 
         // creates ListView checkboxes
-        ListView listview = (ListView) findViewById(R.id.treatments);
-        listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listview.setAdapter(adapter);
+        schemaListText.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        schemaListText.setAdapter(adapter);
+    }
+
+
+    /**
+     * @author nishant
+     * Loads Checkboxes Dynamically for Drugs
+     */
+    // TODO: add dosage text editors
+    public void loadDrugCheckboxes() {
+        // list of drugs
+        // for testing
+        drugList.add(new Drug());
+        drugList.add(new Drug());
+        drugList.add(new Drug());
+        drugList.add(new Drug());
+
+        // sets layout_height for ListView based on number of drugs
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * drugList.size(), getResources().getDisplayMetrics());
+        drugsList.getLayoutParams().height = height;
+
+
+        ArrayList<String> checkboxesText = new ArrayList<String>();
+        for (int i = 0; i < drugList.size(); i++) {
+            checkboxesText.add(drugList.get(i).getName());
+        }
+        
+        // creating adapter for ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_checked, checkboxesText);
+
+        // creates ListView checkboxes
+        drugsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        drugsList.setAdapter(adapter);
     }
 
     /**
-     * @author lili
+     * @author nishant
+     * updated: lili
+     * loads treatment day checkboxes
      */
     public void loadTreatmentDayCheckboxes() {
-        ListView treatmentView = (ListView) findViewById(R.id.treatment_days);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
-        treatmentView.getLayoutParams().height = height;
+        daysVisited.getLayoutParams().height = height;
 
-        //ArrayList<String> treatmentDays = new ArrayList<String>();
         treatmentDays.add("Monday");
         treatmentDays.add("Tuesday");
         treatmentDays.add("Wednesday");
@@ -237,15 +316,21 @@ public class NewPatientDataActivity extends Activity {
         treatmentDays.add("Friday");
         treatmentDays.add("Saturday");
         treatmentDays.add("Sunday");
+        treatmentDays.add("Monday Afternoon");
+        treatmentDays.add("Tuesday Afternoon");
+        treatmentDays.add("Wednesday Afternoon");
+        treatmentDays.add("Thursday Afternoon");
+        treatmentDays.add("Friday Afternoon");
+        treatmentDays.add("Saturday Afternoon");
+        treatmentDays.add("Sunday Afternoon");
 
         // creating adapter for ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_checked, treatmentDays);
 
         // creates ListView checkboxes
-        ListView listview = (ListView) findViewById(R.id.treatment_days);
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listview.setAdapter(adapter);
+        daysVisited.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        daysVisited.setAdapter(adapter);
     }
 
 
@@ -297,12 +382,16 @@ public class NewPatientDataActivity extends Activity {
 
     public void addToDatabase(String name, String father, String mother, String docType,
                               String nationalID, String birthDate, String phoneNumber, String sex,
-                              ArrayList<String> visitDays, String treatmentStartDate,
-                              String treatmentEndDate) {
+                              ArrayList<String> visitDays, String schemaStartDate,
+                              String schemaEndDate, String visit_mode, ArrayList<Schema> enrolledSchemas,
+                              ArrayList<Drug> enrolledDrugs) {
 
         // TODO: UPLOAD PHONE NUMBER
+        // TODO: upload schema start and end date
+        // TODO: upload visit mode -- home or clinic
+        // TODO: upload enrolledSchemas, enrolledDrugs,
         NewPatientUploadTask uploader = new NewPatientUploadTask();
-        NewScheduleUploadTask scheduleUploader = new NewScheduleUploadTask();
+        NewSchemaUploadTask scheduleUploader = new NewSchemaUploadTask();
         try {
             String url = getString(R.string.server_url);
             String result = uploader.execute(url, name, father, mother, docType, nationalID, birthDate, sex).get();
@@ -379,52 +468,49 @@ public class NewPatientDataActivity extends Activity {
      * Ensures none of the entered fields are empty
      */
     public boolean validateEmpty() {
-        EditText editor = (EditText) findViewById(R.id.National_ID);
-        String nationalID = editor.getText().toString();
+        String nationalIDVal = nationalID.getText().toString();
+        String nameVal = name.getText().toString();
+        String fatherNameVal = fatherName.getText().toString();
+        String motherNameVal = motherName.getText().toString();
+        String birthDateVal = birthDateText.getText().toString();
+        String phoneNumberVal = phoneNumber.getText().toString();
+        String schemaStartDateVal = schemaStartDate.getText().toString();
+        String schemaEndDateVal = schemaEndDate.getText().toString();
 
-        editor = (EditText) findViewById(R.id.Name);
-        String name = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.Fathers_name);
-        String fatherName = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.Mothers_name);
-        String motherName = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.Birthdate);
-        String birthDate = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.PhoneNumber);
-        String phoneNumber = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.treatment_start_day);
-        String treatment_startDate = editor.getText().toString();
-
-        editor = (EditText) findViewById(R.id.treatment_end_day);
-        String treatment_endDate = editor.getText().toString();
-
-        RadioButton buttnMale = (RadioButton) findViewById(R.id.radio_female);
-        RadioButton buttnFemale = (RadioButton) findViewById(R.id.radio_male);
-
-        ListView treatmentListText = (ListView) findViewById(R.id.treatments);
-        SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
-        int numTreatments = 0;
-        for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+        SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
+        int numSchemas = 0;
+        for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
             if (checkedItems.get(i)) {
-                numTreatments++;
+                numSchemas++;
             }
         }
 
-        if (nationalID.equals("") || name.equals("") || fatherName.equals("") ||
-                motherName.equals("") || birthDate.equals("") || phoneNumber.equals("")
-                || treatment_startDate.equals("") || treatment_endDate.equals("")
-                || !(buttnMale.isChecked() || buttnFemale.isChecked())) {
+        SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
+        int scheduledDays = 0;
+        for (int i = 0; i < daysVisited.getAdapter().getCount(); i++) {
+            if (daysPicked.get(i)) {
+                scheduledDays++;
+            }
+        }
+
+        SparseBooleanArray drugsPicked = drugsList.getCheckedItemPositions();
+        int numDrugs = 0;
+        for (int i = 0; i < drugsList.getAdapter().getCount(); i++) {
+            if (drugsPicked.get(i)) {
+                numDrugs++;
+            }
+        }
+
+        if (nationalIDVal.equals("") || nameVal.equals("") || fatherNameVal.equals("") ||
+                motherNameVal.equals("") || birthDateVal.equals("") || phoneNumberVal.equals("")
+                || schemaStartDateVal.equals("") || schemaEndDateVal.equals("")
+                || !(maleBtn.isChecked() || femaleBtn.isChecked())
+                || !(clinicBtn.isChecked() || patientHomeBtn.isChecked())) {
             return false;
-        } else if (numTreatments == 0) {
+        } else if (numSchemas == 0 || scheduledDays == 0 || numDrugs == 0) {
             return false;
         }
         return true;
-
     }
 
     /**
@@ -452,7 +538,6 @@ public class NewPatientDataActivity extends Activity {
         }
     }
 
-
     /*
      * Written by Nishant
      * Takes all the user-entered data and creates new patient object
@@ -464,83 +549,71 @@ public class NewPatientDataActivity extends Activity {
         } else if (!(validateNationalID())) {
             AlertError("Entry Error", "The entered NationalID is not valid");
         } else {
-
-            // get the national id
-            EditText editor = (EditText) findViewById(R.id.National_ID);
-            String nationalID = editor.getText().toString();
-
-            // get the name
-            editor = (EditText) findViewById(R.id.Name);
-            String name = editor.getText().toString();
-
-            // get the father's name
-            editor = (EditText) findViewById(R.id.Fathers_name);
-            String fatherName = editor.getText().toString();
-
-            // get the mother's name
-            editor = (EditText) findViewById(R.id.Mothers_name);
-            String motherName = editor.getText().toString();
-
-            // get the birthdate
-            editor = (EditText) findViewById(R.id.Birthdate);
-            String birthDate = editor.getText().toString();
-
-            // get the phone_number
-            editor = (EditText) findViewById(R.id.PhoneNumber);
-            String phone_number = editor.getText().toString();
-
-            // get the project start date
-            editor = (EditText) findViewById(R.id.treatment_start_day);
-            String treatment_startDate = editor.getText().toString();
-
-            // get the project end date
-            editor = (EditText) findViewById(R.id.treatment_end_day);
-            String treatment_endDate = editor.getText().toString();
+            String nationalIDVal = nationalID.getText().toString();
+            String nameVal = name.getText().toString();
+            String fatherNameVal = fatherName.getText().toString();
+            String motherNameVal = motherName.getText().toString();
+            String birthDateVal = birthDateText.getText().toString();
+            String phoneNumberVal = phoneNumber.getText().toString();
+            String schemaStartDateVal = schemaStartDate.getText().toString();
+            String schemaEndDateVal = schemaEndDate.getText().toString();
 
             // get the sex
             String sex = "";
-            RadioButton buttn = (RadioButton) findViewById(R.id.radio_female);
-            if (buttn.isChecked()) {
+            if (femaleBtn.isChecked()) {
                 sex = "2";
             }
-            buttn = (RadioButton) findViewById(R.id.radio_male);
-            if (buttn.isChecked()) {
+            if (maleBtn.isChecked()) {
                 sex = "1";
             }
 
+            // get the visit mode
+            String visit_mode = "";
+            if (clinicBtn.isChecked()) {
+                visit_mode = "1";
+            }
+            if (patientHomeBtn.isChecked()) {
+                visit_mode = "2";
+            }
+            
             // determines which treatments are checked and stores them in ArrayList of Projects
             ArrayList<Schema> enrolledSchemas = new ArrayList<Schema>();
-            ListView treatmentListText = (ListView) findViewById(R.id.treatments);
-            SparseBooleanArray checkedItems = treatmentListText.getCheckedItemPositions();
-            for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+            SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
+            for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
                 if (checkedItems.get(i)) {
-                    //String treatment = treatmentListText.getAdapter().getItem(i).toString();
-                    enrolledSchemas.add(treatmentList.get(i));
+                    enrolledSchemas.add(schemaList.get(i));
                 }
             }
 
             // determines which treatments are checked and stores them in ArrayList of Projects
             ArrayList<String> visitDays = new ArrayList<String>();
-            ListView daysVisited = (ListView) findViewById(R.id.treatment_days);
             SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
-            for (int i = 0; i < treatmentListText.getAdapter().getCount(); i++) {
+            for (int i = 0; i < daysVisited.getAdapter().getCount(); i++) {
                 if (daysPicked.get(i)) {
-                    //String treatment = treatmentListText.getAdapter().getItem(i).toString();
                     visitDays.add("1");
                 }
-                else{
+                else {
                     visitDays.add("0");
                 }
             }
 
+            ArrayList<Drug> enrolledDrugs = new ArrayList<Drug>();
+            SparseBooleanArray drugsPicked = drugsList.getCheckedItemPositions();
+            for (int i = 0; i < drugsList.getAdapter().getCount(); i++) {
+                if (drugsPicked.get(i)) {
+                    enrolledDrugs.add(drugList.get(i));
+                }
+            }
+
             // Submit the patient data to the server.
-            addToDatabase(name, fatherName, motherName, "2", nationalID, birthDate, phone_number,
-                    sex, visitDays, treatment_startDate, treatment_endDate);
+            addToDatabase(nameVal, fatherNameVal, motherNameVal, "2", nationalIDVal, birthDateVal,
+                    phoneNumberVal, sex, visitDays, schemaStartDateVal, schemaEndDateVal, visit_mode,
+                    enrolledSchemas, enrolledDrugs);
 
             // then query the database to get the patient, including the patient code generated by server
             GetPatientLoadTask getP = new GetPatientLoadTask();
             try {
-                AsyncTask p = getP.execute(getString(R.string.server_url), nationalID);
+                AsyncTask p = getP.execute(getString(R.string.server_url), nationalIDVal);
                 currentPatient = (Patient) p.get();
                 Log.v("What we got was", currentPatient.toString());
                 // switch to NewVisitActivity

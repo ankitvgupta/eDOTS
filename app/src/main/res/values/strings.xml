@@ -16,7 +16,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="phone_number">Phone Number</string>
-    <string name="schema_days">Treatment Days</string>
+    <string name="schema_days">Schema Days</string>
     <string name="schema_start_day">Schema Start Day</string>
     <string name="schema_end_day">Schema End Day</string>
     <string name="existing_patient"> Existing Patient</string>
@@ -100,7 +100,22 @@
     <string name="medical_history_see_full_history">See Full Patient History</string>
     <string name="login_error_message"> Your username or password was incorrect or invalid</string>
     <string name="server_url">http://demo.sociosensalud.org.pe</string>
+    <string name="missed">Missed</string>
+    <string name="received">Received</string>
+    <string name="future">Future</string>
+    <string name="past_week">Past Week: </string>
+    <string name="past_month">Past Month: </string>
+    <string name="total">Total: </string>
     <string name="title_activity_change_schema">ChangeSchemaActivity</string>
     <string name="last_updated">Local storage last updated</string>
+
+    <string name="visit_mode">Visit Mode</string>
+    <string name="patient_home">Patient Home</string>
+    <string name="clinic">Clinic</string>
+    <string name="drugs">Drugs</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+
+    <string name="schema_information">Schema Information</string>
 
 </resources>

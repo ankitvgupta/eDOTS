@@ -1,7 +1,6 @@
 package edots.tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -40,9 +39,6 @@ public class LocaleLoadTask extends AsyncTask<String,String,ArrayList<Locale>> {
         envelope.setOutputSoapObject(request);
         HttpTransportSE transporte = new HttpTransportSE(URL);
         transporte.debug = true;
-
-        Log.e("LocaleLoadTask:do in Background", "here");
-
 
         try
         {

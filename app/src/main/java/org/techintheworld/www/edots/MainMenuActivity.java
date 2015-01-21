@@ -62,9 +62,18 @@ public class MainMenuActivity extends Activity {
     }
 
 
+    protected void onResume(){
+        super.onResume();
+        OfflineStorageManager sm = new OfflineStorageManager(this);
+        Log.e("MainMenuActivity: OnResume", sm.toString() + " " + this.toString());
+        sm.UpdateLocalStorage();
+    }
+
+
     /**
      * Schedules an system alarm to send an SMS with input parameters
      * @author JN
+     * @deprecated
      * @param phone phone number to send SMS to
      * @param msg message content of the SMS
      * @param cal Calendar object that is the time the SMS will be sent
