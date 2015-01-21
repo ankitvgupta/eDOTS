@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -35,6 +36,7 @@ import edots.models.Drug;
 import edots.models.Patient;
 import edots.models.Schema;
 import edots.tasks.GetPatientLoadTask;
+import edots.tasks.GetPatientSchemaLoadTask;
 import edots.tasks.NewPatientUploadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
 import edots.tasks.NewSchemaUploadTask;
@@ -55,6 +57,7 @@ import edots.utils.InternetConnection;
 
 public class NewPatientDataActivity extends Activity {
 
+    private Spinner spnLocale;
     private Patient currentPatient;
     private ArrayList<Schema> schemaList = new ArrayList<Schema>();
     private ArrayList<Drug> drugList = new ArrayList<Drug>();
@@ -110,14 +113,17 @@ public class NewPatientDataActivity extends Activity {
         maleBtn = (RadioButton) findViewById(R.id.radio_male);
         clinicBtn = (RadioButton) findViewById(R.id.radio_clinic);
         patientHomeBtn = (RadioButton) findViewById(R.id.radio_patient_home);
-        schemaListText = (ListView) findViewById(R.id.schema);
+//        schemaListText = (ListView) findViewById(R.id.schema);
         daysVisited = (ListView) findViewById(R.id.schema_days);
         drugsList = (ListView) findViewById(R.id.drugs);
+        spnLocale = (Spinner) findViewById(R.id.schema_spinner);
 
         loadDatePickers();
-        loadSchemaCheckboxes();
+        loadSchemaSpinner(this.getString(R.string.server_url));
+        //loadSchemaCheckboxes();
         loadDrugCheckboxes();
         loadTreatmentDayCheckboxes();
+
 
         // check if not connected to internet, then disable everything and show dialog
         if (!InternetConnection.checkConnection(this)){
@@ -240,32 +246,32 @@ public class NewPatientDataActivity extends Activity {
     /* Written by Nishant
      * Loads Checkboxes Dynamically for Schemas
      */
-    public void loadSchemaCheckboxes() {
-        // list of treatment study groups
-        // for testing
-        schemaList.add(new Schema());
-        schemaList.add(new Schema());
-        schemaList.add(new Schema());
-        schemaList.add(new Schema());
-
-        // sets layout_height for ListView based on number of treatments
-        ListView treatmentView = (ListView) findViewById(R.id.schema);
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * schemaList.size(), getResources().getDisplayMetrics());
-        treatmentView.getLayoutParams().height = height;
-
-
-        ArrayList<String> checkboxesText = new ArrayList<String>();
-        for (int i = 0; i < schemaList.size(); i++) {
-            checkboxesText.add(schemaList.get(i).getName());
-        }
-        // creating adapter for ListView
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_checked, checkboxesText);
-
-        // creates ListView checkboxes
-        schemaListText.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        schemaListText.setAdapter(adapter);
-    }
+//    public void loadSchemaCheckboxes() {
+//        // list of treatment study groups
+//        // for testing
+//        schemaList.add(new Schema());
+//        schemaList.add(new Schema());
+//        schemaList.add(new Schema());
+//        schemaList.add(new Schema());
+//
+//        // sets layout_height for ListView based on number of treatments
+//        ListView treatmentView = (ListView) findViewById(R.id.schema);
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * schemaList.size(), getResources().getDisplayMetrics());
+//        treatmentView.getLayoutParams().height = height;
+//
+//
+//        ArrayList<String> checkboxesText = new ArrayList<String>();
+//        for (int i = 0; i < schemaList.size(); i++) {
+//            checkboxesText.add(schemaList.get(i).getName());
+//        }
+//        // creating adapter for ListView
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_checked, checkboxesText);
+//
+//        // creates ListView checkboxes
+//        schemaListText.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//        schemaListText.setAdapter(adapter);
+//    }
 
 
     /**
@@ -641,6 +647,37 @@ public class NewPatientDataActivity extends Activity {
             } else {
                 e.printStackTrace();
             }
+        }
+    }
+
+
+    /**
+     * @param url the url of the server
+     *            Loads the spinner for all the locales first by pulling down from server
+     *            And if that does not work, then by checking file locally
+     * @author Brendan
+     */
+    private void loadSchemaSpinner(String url) {
+        GetPatientSchemaLoadTask schemaLoadTask = new GetPatientSchemaLoadTask();
+        AsyncTask loadSchema;
+        ArrayList<Schema> arrSchema = null;
+        String[] locales;
+        try {
+            // try server side first
+            loadSchema = schemaLoadTask.execute(url, "D74CCD37-8DE4-447C-946E-1300E9498577");
+            arrSchema = (ArrayList<Schema>) loadSchema.get();
+            locales = Schema.ConvertSchemaObjsToStrings(arrSchema);
+
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                    this, android.R.layout.simple_spinner_item, locales);
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnLocale.setAdapter(spinnerArrayAdapter);
+        } catch (InterruptedException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");
+        } catch (ExecutionException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity1", "Execution Exception");
+        } catch (NullPointerException e1) {
+            Log.e("PromoterLoginActivity: loadLocaleActivity1", " NullPointerException");
         }
     }
 }

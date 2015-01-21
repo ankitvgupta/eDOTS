@@ -142,4 +142,19 @@ public class Schema  extends Saveable{
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
+
+
+    /**
+     *
+     * @param schemas a list of scehmas
+     * @return an array with the list of names of the schemas
+     */
+    public static String[] ConvertSchemaObjsToStrings(ArrayList<Schema> schemas) {
+        String[] schema_strings = new String[schemas.size()];
+
+        for (int i = 0; i < schemas.size(); i++) {
+            schema_strings[i] = schemas.get(i).phase + " " + schemas.get(i).name;
+        }
+        return schema_strings;
+    }
 }
