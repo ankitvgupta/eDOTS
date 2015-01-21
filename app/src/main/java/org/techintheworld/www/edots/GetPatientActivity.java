@@ -27,12 +27,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.concurrent.ExecutionException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schema;
-import edots.models.Promoter;
 import edots.models.Visit;
 import edots.tasks.GetPatientContactLoadTask;
 import edots.tasks.GetPatientLoadTask;
@@ -392,7 +391,7 @@ public class GetPatientActivity extends Activity {
                     }
                 }
                 if (!already_found) {
-                    patientNotListedAlert();
+                    patientNotListedAlert(this);
                 }
             }
             catch(Exception e){
@@ -429,7 +428,8 @@ public class GetPatientActivity extends Activity {
      * Alert for when patient is not listed as one of the patients for a promoter
      * If user presses add patient button, then adds to list of patients for logged-in promoter
      */
-    private void patientNotListedAlert() {
+    private void patientNotListedAlert(Context c) {
+        final Context context = c;
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(this.getString(R.string.patient_not_listed));
         alertDialog.setMessage(this.getString(R.string.patient_not_listed_add_patient));
@@ -445,13 +445,12 @@ public class GetPatientActivity extends Activity {
 
                 try {
                     npu.execute(getString(R.string.server_url), currentPatient.getPid(), promoterId, "0").get();
-                    OfflineStorageManager sm = new OfflineStorageManager(this);
-                    String promoter_file = getString(R.string.promoter_data_filename);
-                    String promoter_JSON = sm.getStringFromLocal(promoter_file);
-                    Promoter promoter = new Promoter(promoter_JSON);
-                    OfflineStorageManager.SaveWebPatientData(promoter, c);
+                    OfflineStorageManager sm = new OfflineStorageManager(context);
+                    if (sm.CanUpdateLocalStorage()){
+                        sm.UpdateLocalStorage();
+                    }
                 } catch (Exception e1) {
-                    Log.e("GetPatientActivity: loadPatient", "ExecutionException Probably");
+                    Log.e("GetPatientActivity: loadPatient", "ExecutionException Probably11");
                 }
             }
         });
@@ -531,17 +530,18 @@ public class GetPatientActivity extends Activity {
      * Loads the Patient Spinner by loading all patients from the JSON file patient_data
      */
     private void loadPatientSpinner(){
-        JSONArray object;
+        JSONArray array;
         try {
             // load list of patients from file patient_data
+            OfflineStorageManager sm = new OfflineStorageManager(this);
+            String patient_file = getString(R.string.patient_data_filename);
+            array = new JSONArray(sm.getStringFromLocal(patient_file));
 
-            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
-
-            String[] patients = new String[object.length()+1];
+            String[] patients = new String[array.length()+1];
             patients[0] = getString(R.string.get_patient_select_patient);
             // look at all patients
-            for (int i = 0; i < object.length(); i++){
-                JSONObject obj = object.getJSONObject(i);
+            for (int i = 0; i < array.length(); i++){
+                JSONObject obj = array.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
                 patients[i+1] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
             }

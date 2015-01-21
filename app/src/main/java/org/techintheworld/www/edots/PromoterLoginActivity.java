@@ -132,6 +132,7 @@ public class PromoterLoginActivity extends Activity {
             } else {
                 try {
                     OfflineStorageManager sm = new OfflineStorageManager(this);
+                    //TODO: there is a file not found exception for this
                     String locale_file = getString(R.string.locale_filename);
                     JSONArray object = new JSONArray(sm.getStringFromLocal(locale_file));
 
@@ -237,7 +238,7 @@ public class PromoterLoginActivity extends Activity {
      *            And if that does not work, then by checking file locally
      * @author Brendan
      */
-    public void loadLocaleSpinner(String url) {
+    private void loadLocaleSpinner(String url) {
         LocaleLoadTask localeTask = new LocaleLoadTask();
         // load locale from server
         loadLocale = localeTask.execute(url);
@@ -257,6 +258,7 @@ public class PromoterLoginActivity extends Activity {
             spnLocale.setAdapter(spinnerArrayAdapter);
             OfflineStorageManager sm = new OfflineStorageManager(this);
             sm.SaveLocaleData(objLocale);
+            Log.w("PromoterLoginActivity: loadLocaleSpinner", "saving to locale data file");
 
         } catch (InterruptedException e1) {
             Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");

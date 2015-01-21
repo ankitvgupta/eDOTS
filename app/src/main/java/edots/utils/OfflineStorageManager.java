@@ -186,7 +186,7 @@ public class OfflineStorageManager {
 
         // Testing only: read from file to see that data is not appended
         String s = getStringFromLocal(filename);
-        Log.e("OfflineStorageManager: SaveArrayListToLocal", s);
+        Log.i("OfflineStorageManager: SaveArrayListToLocal", s);
     }
 
 
@@ -304,8 +304,7 @@ public class OfflineStorageManager {
     public boolean CanUpdateLocalStorage() {
         boolean isConnected = InternetConnection.checkConnection(context);
         String logged_in = AccountLogin.CheckAlreadyLoggedIn(context);
-
-        if (!isConnected || !(logged_in==null) ){
+        if (!isConnected || (logged_in==null) ){
             return false;
         }
 
@@ -315,7 +314,7 @@ public class OfflineStorageManager {
         // boolean visit_upload = uploadLocalVisit();
 
 
-        return false;
+        return true;
     }
 
     /**
@@ -348,8 +347,8 @@ public class OfflineStorageManager {
      */
     public void SaveLocaleData(Locale[] l) {
         // Save to local file for Locale
-        String locale_filename = "locale_data";
-        boolean locale_result = context.deleteFile("locale_data");
+        String locale_filename = context.getString(R.string.locale_filename);
+        boolean locale_result = context.deleteFile(locale_filename);
         if (!locale_result) {
             Log.e("OfflineStorageManager: SaveWebPromoterData", "Locale delete file failed");
         }
