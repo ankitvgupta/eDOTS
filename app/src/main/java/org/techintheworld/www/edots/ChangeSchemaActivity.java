@@ -2,9 +2,11 @@ package org.techintheworld.www.edots;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -47,7 +49,10 @@ public class ChangeSchemaActivity extends Activity {
         
         // get the current patient's schema
         Schema currentPatientSchema = currentPatient.getEnrolledSchema();
+        
         Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
+        currentPatientSchedule = currentPatientSchema.getSchedule();
+        Log.v("ChangeSchemaActivity: the current schedule is", currentPatientSchedule.toString());
         
         EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
         startDate.setText(currentPatientSchedule.getStartDate());
@@ -64,18 +69,25 @@ public class ChangeSchemaActivity extends Activity {
      */
     public void loadSchemaDayCheckboxes(Schedule s) {
         ListView schemaView = (ListView) findViewById(R.id.changeSchema_schema_days);
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 700, getResources().getDisplayMetrics());
         schemaView.getLayoutParams().height = height;
 
         //ArrayList<String> schemaDays = new ArrayList<String>();
         //TODO: should not hardcode the strings for days
         schemaDays.add("Monday");
+        schemaDays.add("MondayAfternoon");
         schemaDays.add("Tuesday");
+        schemaDays.add("TuesdayAfternoon");
         schemaDays.add("Wednesday");
+        schemaDays.add("WednesdayAfternoon");
         schemaDays.add("Thursday");
+        schemaDays.add("ThursdayAfternoon");
         schemaDays.add("Friday");
+        schemaDays.add("FridayAfternoon");
         schemaDays.add("Saturday");
+        schemaDays.add("SaturdayAfternoon");
         schemaDays.add("Sunday");
+        schemaDays.add("SundayAfternoon");
 
         // creating adapter for ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -100,6 +112,11 @@ public class ChangeSchemaActivity extends Activity {
         for (int i = 0; i < 14; i++){
             schemaView.setItemChecked(i, (oneHotCoding.charAt(i) == '1'));
         }
+    }
+    
+    public void submitChangeSchema(View view) {
+        return;
+        
     }
 
 
