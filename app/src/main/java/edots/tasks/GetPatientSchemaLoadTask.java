@@ -29,7 +29,7 @@ public class GetPatientSchemaLoadTask extends AsyncTask<String,String,Schema> {
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "ListadoVisitas1"; // TODO: Change to the method for getting a schedule
+        final String METHOD_NAME = "ListadoPacienteEsquema"; 
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
@@ -48,6 +48,8 @@ public class GetPatientSchemaLoadTask extends AsyncTask<String,String,Schema> {
 
             // get the response
             SoapObject resSoap = (SoapObject) envelope.getResponse();
+            
+            
             
             String codigoPaciente = resSoap.getProperty("CodigoPaciente").toString(); // need to change the C# function to actually pull the locale
             String lunes = resSoap.getProperty("lunes").toString();
