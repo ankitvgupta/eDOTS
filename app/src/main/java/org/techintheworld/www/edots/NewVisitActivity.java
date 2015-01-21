@@ -35,17 +35,17 @@ import edots.utils.TimePickerFragment;
 /**
  * @author lili
  * @author ankit
- *
- * Controller for Adding a Visit
- *     Associated View: activity_new_visit.xml
- *     Associated Models: Visit
- *
- *  Adds a new visit to the db
+ *         <p/>
+ *         Controller for Adding a Visit
+ *         Associated View: activity_new_visit.xml
+ *         Associated Models: Visit
+ *         <p/>
+ *         Adds a new visit to the db
  */
 
 //TODO: add scheduled days
 
-public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener{
+public class NewVisitActivity extends Activity implements DatePickerFragment.TheListener, TimePickerFragment.TheListener {
     private Patient currentPatient;
     private Visit currentVisit;
     private Schema currentSchema;
@@ -73,22 +73,24 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         String localeName = prefs.getString((getString(R.string.login_locale_name)), null);
         String localeId = prefs.getString((getString(R.string.login_locale)), null);
         String promoterId = prefs.getString((getString(R.string.key_userid)), null);
-        
+
         // load currentPatient object from intent
         currentPatient = loadCurrentPatient();
         currentSchema = currentPatient.getEnrolledSchema();
         currentSchedule = currentSchema.getSchedule();
+
         // load currentVisit
         currentVisit = loadCurrentVisit(currentPatient.getPid(), localeId, promoterId);
-        
+        //TODO: check if this is null
+        Log.e("NewVisitActivity: OnCreate", currentVisit.toString());
+
         // visit date
         datePicker = (EditText) findViewById(R.id.visitDate);
         Date currentTime = new Date();
         // set the default date to today
         datePicker.setText(displayDateFormat.format(currentTime));
         // pop up date picker dialog when clicked
-        datePicker.setOnClickListener(new View.OnClickListener()
-        {
+        datePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 DialogFragment picker = new DatePickerFragment();
@@ -101,8 +103,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // set the default date to today
         timePicker.setText(displayTimeFormat.format(currentTime));
         // pop up time picker dialog when clicked
-        timePicker.setOnClickListener(new View.OnClickListener()
-        {
+        timePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 DialogFragment picker = new TimePickerFragment();
@@ -114,15 +115,15 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitLocaleEditor = (EditText) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
         visitLocaleEditor.setText(localeName);
-        
+
         // start date
         EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
         startDate.setText(currentSchedule.getStartDate());
-        
+
         // end date
         EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
         endDate.setText(currentSchedule.getEndDate());
-        
+
     }
 
     /**
@@ -135,7 +136,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitDate = date;
     }
 
-    
+
     /**
      * @author lili
      * set the text field as the selected time
@@ -149,24 +150,23 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     /**
      * if a patient was passed in, pre-load that patient
      */
-    public Patient loadCurrentPatient(){
+    public Patient loadCurrentPatient() {
         Patient p = null;
         try {
             p = new Patient(getIntent().getExtras().getString("Patient"));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Log.v("NewVisit: currentpatient", p.toString());
         return p;
     }
 
-    
+
     /**
      * return a visit object loaded with all fields (patient Id, visit number, visit group number, etc.)
      * except for visit date and visit time
      */
-    public Visit loadCurrentVisit(String patientId, String localeId, String promoterId){
+    public Visit loadCurrentVisit(String patientId, String localeId, String promoterId) {
         // instantiate a new visit
         Visit visit = null;
         // if there is internet connection, load with actual visit number / visit group / visit description etc.
@@ -190,12 +190,12 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         }
         // if there is no internet connection, load the visit group and visit numbers with dummy values
         else {
-            visit = new Visit(localeId,"5","0","0","0","0",patientId,"date","time",promoterId);
+            visit = new Visit(localeId, "5", "0", "0", "0", "0", patientId, "date", "time", promoterId);
         }
         return visit;
     }
 
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -205,7 +205,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         return true;
     }
 
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -220,17 +220,18 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
 
         return super.onOptionsItemSelected(item);
     }
-    
-    
+
+
     /**
      * insert new visit into the database
+     *
      * @return -1 for error, 1 or 2 for success
      */
-    public String addToDatabase(){
+    public String addToDatabase() {
         NewVisitUploadTask uploader = new NewVisitUploadTask(this);
         String result = "-1";
         boolean connected = InternetConnection.checkConnection(this);
-        if (connected){
+        if (connected) {
             try {
                 result = uploader.execute(getString(R.string.server_url),
                         currentVisit.getLocaleCode(),
@@ -243,16 +244,13 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
                         currentVisit.getPromoterId()).get();
 
                 Log.i("NewVisitActivity: addtoDatabase result", result);
-            }
-            catch (InterruptedException e){
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            catch (ExecutionException e){
-                e.printStackTrace();
-            }
-        }
-        else{
-            uploader.saveVisitLocally(currentVisit);
+        } else {
+            uploader.SaveVisitLocally(currentVisit);
             Log.i("NewVisitActivity: addtoDatabase localsaved", currentVisit.toString());
 
         }
@@ -265,18 +263,16 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     /**
      * @param view The current view
      */
-    public void submitVisit(View view)
-    {
+    public void submitVisit(View view) {
         currentVisit.setVisitDate(dbDateFormat.format(visitDate));
         currentVisit.setVisitTime(dbTimeFormat.format(visitTime));
         String result = addToDatabase();
         Log.i("New visit: visit", currentVisit.toString());
         //TODO: code the message in strings.xml
-        if (result.equals("-1")){
+        if (result.equals("-1")) {
             Log.i("New Visit: result", result);
             AlertError("Connection Error", getString(R.string.new_visit_upload_error_message));
-        }
-        else{
+        } else {
             Toast.makeText(getBaseContext(), "Successfully submitted", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, MainMenuActivity.class);
             startActivity(intent);
@@ -289,7 +285,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setButton (Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getBaseContext(), MainMenuActivity.class);
                 startActivity(intent);

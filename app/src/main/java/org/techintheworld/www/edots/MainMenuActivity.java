@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
@@ -57,14 +59,21 @@ public class MainMenuActivity extends Activity {
             scheduleSMSAlarm(phoneNo, message, calendar);
             }
         });
+    }
 
-        OfflineStorageManager.UpdateLocalStorage(this);
+
+    protected void onResume(){
+        super.onResume();
+        OfflineStorageManager sm = new OfflineStorageManager(this);
+        Log.e("MainMenuActivity: OnResume", sm.toString() + " " + this.toString());
+        sm.UploadLocalVisit();
     }
 
 
     /**
      * Schedules an system alarm to send an SMS with input parameters
      * @author JN
+     * @deprecated
      * @param phone phone number to send SMS to
      * @param msg message content of the SMS
      * @param cal Calendar object that is the time the SMS will be sent
@@ -87,6 +96,24 @@ public class MainMenuActivity extends Activity {
 
     }
 
+    /**
+     * Linked to the refresh button to manually allwo updating of local storage
+     * @author JN
+     * @param view
+     */
+    public void updateLocalManual(View view){
+        OfflineStorageManager sm = new OfflineStorageManager(this);
+        if (sm.CanUpdateLocalStorage()){
+            sm.UpdateLocalStorage();
+            long time = sm.GetLastLocalUpdateTime();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            String dateString = formatter.format(new Date(time));
+            String to_print = getString(R.string.last_updated) + " " + dateString;
+            Toast.makeText(getBaseContext(),to_print,
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     /**
      * 
@@ -99,7 +126,6 @@ public class MainMenuActivity extends Activity {
     private void loadMissedPatients() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String promoterID = prefs.getString("userid", null);
-
 
         LoadPatientFromPromoterTask loadPatients = new LoadPatientFromPromoterTask();
         AsyncTask loadPatientsTask = loadPatients.execute(getString(R.string.server_url), promoterID);
@@ -114,8 +140,6 @@ public class MainMenuActivity extends Activity {
             e.printStackTrace();
         }
     }
-        
-
 
 
     /**

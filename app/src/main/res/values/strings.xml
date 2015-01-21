@@ -74,7 +74,7 @@
     <string name="session_init_key">Gracias por Iniciar Sesion</string>
     <string name="password_expired_key">Contraseña caducada</string>
     <string name="view_all_patients">View all Patients</string>
-
+<string name="locale_filename">locale_data</string>
     <string name="title_activity_main">Main Menu</string>
     <string name="date_label_set">Press the button to set the date</string>
     <string name="date_button_set">Set Date</string>
@@ -107,13 +107,15 @@
     <string name="past_month">Past Month: </string>
     <string name="total">Total: </string>
     <string name="title_activity_change_schema">ChangeSchemaActivity</string>
+    <string name="last_updated">Local storage last updated</string>
+
     <string name="visit_mode">Visit Mode</string>
     <string name="patient_home">Patient Home</string>
     <string name="clinic">Clinic</string>
     <string name="drugs">Drugs</string>
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
-
+    <string name="edit_schema">Edit Schema</string>
     <string name="schema_information">Schema Information</string>
     <string name="new_visit_upload_error_message">This visit will be saved locally and uploaded when internet resumes</string>
 
