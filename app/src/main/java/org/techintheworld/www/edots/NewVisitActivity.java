@@ -116,7 +116,16 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         visitLocaleEditor = (TextView) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
         visitLocaleEditor.setText(localeName);
-
+        
+        // visit mode
+        TextView visitMode = (TextView) findViewById(R.id.visitMode);
+        if (currentSchema.getVisit_mode().equals("1")) {
+            visitMode.setText(R.string.clinic);
+        }
+        else if (currentSchema.getVisit_mode().equals("2"))  {
+            visitMode.setText(R.string.patient_home);
+        }
+        
         // start date
         TextView startDate = (TextView) findViewById(R.id.schema_start_day);
         startDate.setText(currentSchedule.getStartDate());
