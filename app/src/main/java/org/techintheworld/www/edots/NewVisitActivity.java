@@ -48,9 +48,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     EditText datePicker;
     EditText timePicker;
     EditText visitLocaleEditor;
-    EditText visitProjectEditor;
-    EditText visitGroupEditor;
-    EditText visitNoEditor;
+    EditText schemaEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat displayTimeFormat = new SimpleDateFormat("HH:mm");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
@@ -134,10 +132,13 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
             }
         });
 
+        // visit time
+        schemaEditor = (EditText) findViewById(R.id.schema_information);
+        schemaEditor.setText(currentPatient.getSchema().toString());
+        
         // visit locale
         visitLocaleEditor = (EditText) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
-        // TODO: should this be a dropdown menu of all locales?
         visitLocaleEditor.setText(localeName);
     }
 
