@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:digits="1234567890"
-                android:layout_width="fill_parent">
+                android:layout_width="fill_parent"
+                android:focusable="false">
             </EditText>
 
             <!--name field-->
@@ -141,7 +142,7 @@
                     android:onClick="onRadioButtonClicked"/>
             </RadioGroup>
 
-            <!--Active Treatments field-->
+            <!--Active Schema field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -150,6 +151,27 @@
 
             <ListView
                 android:id="@+id/schema"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:paddingLeft="2dp" >
+            </ListView>
+
+            
+            <!--Drugs field-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/drugs"/>
+            
+            <ListView
+                android:id="@+id/drugs"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="10dp"
@@ -208,14 +230,6 @@
                 android:dividerHeight="1dp"
                 android:paddingLeft="2dp" />
 
-            <CheckBox android:id="@+id/checkbox_morning"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/morning"/>
-            <CheckBox android:id="@+id/checkbox_afternoon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/afternoon"/>
 
             <!--Visit Mode field-->
             <TextView

@@ -3,6 +3,7 @@ package org.techintheworld.www.edots;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,15 +12,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schedule;
 import edots.models.Schema;
+import edots.tasks.GetPatientSchemaLoadTask;
 
 
 public class ChangeSchemaActivity extends Activity {
     
     Patient currentPatient;
+
     private ArrayList<String> treatmentDays = new ArrayList<String>();
 
 
@@ -28,13 +32,12 @@ public class ChangeSchemaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_schema);
         
-
-
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
         } catch (Exception e) {
             // TODO: Don't print the stack trace, give some sort of dialog box instead
             e.printStackTrace();
+            return;
         }
 
         // Add the current patient's DNI
@@ -48,17 +51,15 @@ public class ChangeSchemaActivity extends Activity {
         // get the current patient's schema
         Schema currentPatientSchema = currentPatient.getEnrolledSchema();
         Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
+        
+        EditText startDate = (EditText) findViewById(R.id.changeSchema_treatment_start_day);
+        startDate.setText(currentPatientSchedule.getStartDate());
+        
+        EditText endDate = (EditText) findViewById(R.id.changeSchema_treatment_end_day);
+        endDate.setText(currentPatientSchedule.getEndDate());
 
         loadTreatmentDayCheckboxes(currentPatientSchedule);
-        
-        
-        
-        // get the current patient's schedule
-        
-        
-        /*
-        GetSchemaLoadTask schemaLoader = new GetSchemaLoadTask();
-        AsyncTask*/   
+
     }
     /**
      * @author lili
@@ -89,6 +90,9 @@ public class ChangeSchemaActivity extends Activity {
         checkSchemaDayBoxes(s);
         
     }
+    
+    
+    
     
     public void checkSchemaDayBoxes(Schedule s){
         ListView treatmentView = (ListView) findViewById(R.id.changeSchema_treatment_days);

@@ -43,7 +43,8 @@
                     android:inputType="number"
                     android:hint="@string/national_ID"
                     android:layout_weight="1"
-                    android:layout_width="fill_parent">
+                    android:layout_width="fill_parent"
+                    android:focusable="false">
                 </EditText>
                 <!-- button for continuing using national id -->
                 <Button

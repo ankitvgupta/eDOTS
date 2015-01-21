@@ -166,7 +166,7 @@ public class Patient extends Saveable{
         /*
         String patientCode = pid; // for production
         //String patientCode = "D74CCD37-8DE4-447C-946E-1300E9498577"; // for testing only
-        GetPatientScheduleLoadTask newP = new GetPatientScheduleLoadTask();
+        GetPatientSchemaLoadTask newP = new GetPatientSchemaLoadTask();
         AsyncTask p = newP.execute("http://demo.sociosensalud.org.pe", patientCode);
         try {
             Schedule s = (Schedule) p.get();

@@ -11,9 +11,7 @@ import org.techintheworld.www.edots.R;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Login;
-import edots.models.Schema;
 import edots.tasks.LoginTask;
-import edots.tasks.PromoterProjectLoadTask;
 
 /**
  * TODO: author, description of the file
@@ -41,10 +39,6 @@ public class AccountLogin {
 
         try {
             Login login = loginAsyncTask.get();
-            PromoterProjectLoadTask promoterProjectTask= new PromoterProjectLoadTask();
-            AsyncTask promoterProjects = promoterProjectTask.execute(locale_id, Integer.toString(login.UserID));
-            Schema[] schemaList = (Schema[]) promoterProjects.get();
-            Log.v("AccountLogin: promoter projects", schemaList.toString());
             response = login.Message;
             editor.putString(c.getString(R.string.username), username);
             editor.putString(c.getString(R.string.key_userid), String.valueOf(login.UserID));
@@ -53,11 +47,8 @@ public class AccountLogin {
 
             Log.i("login", "OnClick_response:" + response);
             if (response.equals(c.getString(R.string.session_init_key)) || response.equals(c.getString(R.string.password_expired_key))) {
-
                 editor.commit();
             }
-
-
         } catch (InterruptedException e1) {
             response = e1.getMessage();
         } catch (ExecutionException e2) {

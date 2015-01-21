@@ -27,17 +27,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.concurrent.ExecutionException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
-import edots.models.Schema;
 import edots.models.Promoter;
+import edots.models.Schema;
 import edots.models.Visit;
 import edots.tasks.GetPatientContactLoadTask;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
-import edots.tasks.PatientProjectLoadTask;
 import edots.utils.OfflineStorageManager;
 
 
@@ -217,23 +216,24 @@ public class GetPatientActivity extends Activity {
      * @author lili
      * load the project a patient is currently enrolled in into the patient object
      */
-    public void loadPatientProject(){
-        Schema currentSchema;
-        PatientProjectLoadTask loadTask = new PatientProjectLoadTask();
-
-        try {
-            AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
-            currentSchema = (Schema) task.get();
-            currentPatient.setEnrolledSchema(currentSchema);
-            Log.v("GetPatientActivity.java: The project", currentSchema.toString());
-        } catch (InterruptedException e1) {
-            //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
-        } catch (NullPointerException e1){
-            Log.e("null pointer exception","");
-        }
+    public void loadPatientSchema(){
+        Schema currentSchema = new Schema();
+        currentPatient.setEnrolledSchema(currentSchema);
+//        below is the real code when the load task works
+//        GetPatientSchemaLoadTask loadTask = new GetPatientSchemaLoadTask();
+//
+//        try {
+//            AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
+//            currentSchema = (Schema) task.get();
+//            currentPatient.setEnrolledSchema(currentSchema);
+//            Log.v("GetPatientActivity.java: The project", currentSchema.toString());
+//        } catch (InterruptedException e1) {
+//            e1.printStackTrace();
+//        } catch (ExecutionException e1) {
+//            e1.printStackTrace();
+//        } catch (NullPointerException e1){
+//            Log.e("null pointer exception","");
+//        }
     }
 
     /**
@@ -363,7 +363,7 @@ public class GetPatientActivity extends Activity {
         // lookup the given patient;
         try {
             currentPatient = lookupPatient(pid);
-            loadPatientProject();
+            loadPatientSchema();
         }
         catch(JSONException e1){
             e1.printStackTrace();
