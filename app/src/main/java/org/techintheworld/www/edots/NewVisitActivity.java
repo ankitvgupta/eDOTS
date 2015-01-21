@@ -53,7 +53,7 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
     private Schedule currentSchedule;
     EditText datePicker;
     EditText timePicker;
-    EditText visitLocaleEditor;
+    TextView visitLocaleEditor;
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat displayTimeFormat = new SimpleDateFormat("HH:mm");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
@@ -113,16 +113,16 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         });
 
         // visit locale
-        visitLocaleEditor = (EditText) findViewById(R.id.visitLocale);
+        visitLocaleEditor = (TextView) findViewById(R.id.visitLocale);
         // set visit locale default to the promoter's locale
         visitLocaleEditor.setText(localeName);
 
         // start date
-        EditText startDate = (EditText) findViewById(R.id.schema_start_day);
+        TextView startDate = (TextView) findViewById(R.id.schema_start_day);
         startDate.setText(currentSchedule.getStartDate());
 
         // end date
-        EditText endDate = (EditText) findViewById(R.id.schema_end_day);
+        TextView endDate = (TextView) findViewById(R.id.schema_end_day);
         endDate.setText(currentSchedule.getEndDate());
 
         TextView drugText = (TextView) findViewById(R.id.drugs);

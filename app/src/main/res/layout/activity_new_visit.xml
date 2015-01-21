@@ -15,93 +15,143 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
-            <!--date field-->
-            <TextView android:text="@string/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:ems="10"
-                android:id="@+id/visitDate"
-                android:focusable="false" />
-
-            <!--time field-->
-            <TextView android:text="@string/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:ems="10"
-                android:id="@+id/visitTime"
-                android:focusable="false" />
-
-            <!--site field-->
-            <TextView android:text="@string/locale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-            <EditText
-                android:id="@+id/visitLocale"
+            <TableLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:focusable="false" />
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/linearLayout">
 
-            <!--schema Start Day field-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/schema_start_day"/>
+                <TableRow>
+                    <!--date field-->
+                    <TextView android:text="@string/date"
+                        android:layout_width="0dip"
+                        android:layout_weight="0.4"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#808080"/>
 
-            <EditText
-                android:id="@+id/schema_start_day"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:focusable="false">
-            </EditText>
+                    <EditText
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:inputType="date"
+                        android:ems="10"
+                        android:id="@+id/visitDate"
+                        android:focusable="false" />
+                </TableRow>
+                
+                <TableRow>
+                    <!--time field-->
+                    <TextView android:text="@string/time"
+                        android:layout_width="0dip"
+                        android:layout_weight="0.4"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#808080"/>
+                    <EditText
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:inputType="date"
+                        android:ems="15"
+                        android:id="@+id/visitTime"
+                        android:focusable="false" />
+                </TableRow>
+                
+                <TableRow>
+                    <!--locale field-->
+                    <TextView android:text="@string/locale"
+                        android:paddingTop="@dimen/activity_field_vertical_margin"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#808080"/>
 
-            <!--Schema End Day field-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/schema_end_day"/>
+                    <TextView
+                        android:id="@+id/visitLocale"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:focusable="false"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                </TableRow>
 
-            <EditText
-                android:id="@+id/schema_end_day"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:focusable="false">
-            </EditText>
+                <TableRow>
+                    <!--visit mode field-->
+                    <TextView android:text="@string/visit_mode"
+                        android:paddingTop="@dimen/activity_field_vertical_margin"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#808080"/>
+
+                    <TextView
+                        android:id="@+id/visitMode"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:focusable="false"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                </TableRow>
+                
+                <TableRow>
+                    <!--schema Start Day field-->
+                    <TextView
+                        android:paddingTop="@dimen/activity_field_vertical_margin"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/schema_start_day"
+                        android:textColor="#808080"/>
+
+                    <TextView
+                        android:text ="01/02/2015"
+                        android:id="@+id/schema_start_day"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:focusable="false"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </TableRow>
+                
+                <TableRow>
+                    <!--Schema End Day field-->
+                    <TextView
+                        android:paddingTop="@dimen/activity_field_vertical_margin"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/schema_end_day"
+                        android:textColor="#808080"/>
+
+                    <TextView
+                        android:id="@+id/schema_end_day"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:focusable="false"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                </TableRow>
+            </TableLayout>
+
+            
 
             <!--Schema Days field-->
             <TextView
+                android:paddingTop="@dimen/activity_field_vertical_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/schema_days"/>
+                android:text="@string/schema_days"
+                android:textColor="#808080"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/schema_day"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:focusable="false">
-            </EditText>
+                android:focusable="false"/>
 
             <!--Drugs field-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/drugs"/>
+                android:text="@string/drugs"
+                android:textColor="#808080" />
 
             <TextView
                 android:id="@+id/drugs"
