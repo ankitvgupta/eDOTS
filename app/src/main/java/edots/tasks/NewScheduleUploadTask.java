@@ -41,7 +41,6 @@ public class NewScheduleUploadTask extends AsyncTask<String,String,String> {
         request.addProperty("FechaComienzo", params[9]);
         request.addProperty("FechaTermino", params[10]);
         request.addProperty("Active", params[11]);
-;
 
         // setup request
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
