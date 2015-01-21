@@ -66,7 +66,7 @@ public class MainMenuActivity extends Activity {
         super.onResume();
         OfflineStorageManager sm = new OfflineStorageManager(this);
         Log.e("MainMenuActivity: OnResume", sm.toString() + " " + this.toString());
-        sm.UpdateLocalStorage();
+        sm.UploadLocalVisit();
     }
 
 

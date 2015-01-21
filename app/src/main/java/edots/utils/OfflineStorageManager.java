@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
-import edots.models.Locale;
 import edots.models.Patient;
 import edots.models.Promoter;
 import edots.models.Saveable;
@@ -268,9 +267,8 @@ public class OfflineStorageManager {
         if (visit_exists != null){
             String new_visit_file = context.getString(R.string.new_visit_filename);
             String new_visit = getStringFromLocal(new_visit_file);
-            Log.e("OfflineStorageManager: uploadLocal", new_visit);
             Visit currentVisit = new Visit(new_visit);
-            Log.e("OfflineStorageManager: uploadLocal new current visit", currentVisit.toString());
+            Log.i("OfflineStorageManager: uploadLocalVisit new current visit", currentVisit.toString());
             NewVisitUploadTask upload_visit = new NewVisitUploadTask(context);
 
             try {
@@ -284,13 +282,13 @@ public class OfflineStorageManager {
                         currentVisit.getVisitDate(),
                         currentVisit.getVisitTime(),
                         currentVisit.getPromoterId()).get();
-                Log.e("OfflineStorageManager: uploadLocalVisit result", result);
+                Log.i("OfflineStorageManager: uploadLocalVisit result", result);
                 boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
                 SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.remove(context.getString(R.string.new_visit_filename));
                 editor.commit();
-                Log.e("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
+                Log.i("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
                 return true;
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -343,45 +341,6 @@ public class OfflineStorageManager {
     }
 
 
-    /**
-     * @param l the array of locales that you wish to save locally
-     * @throws JSONException an exception where JSON cannot be cast
-     * @author Brendan
-     * @deprecated
-     */
-    public void SaveLocaleData(Locale[] l) {
-        // Save to local file for Locale
-        String locale_filename = context.getString(R.string.locale_filename);
-        boolean locale_result = context.deleteFile(locale_filename);
-        if (!locale_result) {
-            Log.e("OfflineStorageManager: SaveWebPromoterData", "Locale delete file failed");
-        }
 
-        int num_locales = l.length;
-        JSONArray ja = new JSONArray();
-        try {
-            // Puts all Locales into JSON form and saves them to an a JSON array
-            for (int i = 0; i < num_locales; i++) {
-                JSONObject obj = new JSONObject(l[i].toString());
-                ja.put(obj);
-            }
-        } catch (JSONException e) {
-            Log.e("OfflineStorageManager: SaveLocaleData", "Error saving locale");
-        }
-
-        // Saves locale data of this promoter to a file named under locale_filename
-
-        String localeData = ja.toString();
-
-        FileOutputStream l_outputStream;
-        try {
-            l_outputStream = context.openFileOutput(locale_filename, Context.MODE_PRIVATE);
-            l_outputStream.write(localeData.getBytes());
-            l_outputStream.close();
-        } catch (Exception e) {
-            Log.w("StorageManager: Saving Locale files error", "Cannot write to locale file");
-            e.printStackTrace();
-        }
-    }
 
 }
