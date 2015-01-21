@@ -48,6 +48,13 @@ public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
         request.addProperty("FechaComienzo", params[16]);
         request.addProperty("FechaTermino", params[17]);
         request.addProperty("Active", params[18]);
+        request.addProperty("CodigoEsquema", params[19]);
+        request.addProperty("FechaComienzo", params[20]);
+        request.addProperty("FechaTermino", params[21]);
+        request.addProperty("Activo", params[22]);
+        request.addProperty("TipoDeVisito", params[23]);
+        request.addProperty("EsquemaNombre", params[24]);
+        request.addProperty("EsquemaFase", params[25]);
 ;
 
         // setup request

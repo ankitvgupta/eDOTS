@@ -139,22 +139,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         // set visit locale default to the promoter's locale
         // TODO: should this be a dropdown menu of all locales?
         visitLocaleEditor.setText(localeName);
-
-
-        // visit project
-        visitProjectEditor = (EditText) findViewById(R.id.visitProject);
-        // TODO: display project name
-        visitProjectEditor.setText(currentPatient.getEnrolledSchema().getId()+"-"+
-                                   currentPatient.getEnrolledSchema().getName());
-
-        // visit group
-        visitGroupEditor = (EditText) findViewById(R.id.visitGroup);
-        visitGroupEditor.setText(currentVisit.getVisitGroupCode()+"-"+currentVisit.getNombreGrupoVisita());
-
-        // visit number
-        visitNoEditor = (EditText) findViewById(R.id.visitNo);
-        visitNoEditor.setText(currentVisit.getVisitCode()+"-"+currentVisit.getDescripcionVisita());
-
     }
 
     /**

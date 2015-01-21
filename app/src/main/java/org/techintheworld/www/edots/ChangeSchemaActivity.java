@@ -59,13 +59,7 @@ public class ChangeSchemaActivity extends Activity {
         endDate.setText(currentPatientSchedule.getEndDate());
 
         loadTreatmentDayCheckboxes(currentPatientSchedule);
-        
 
-                
-        
-        /*
-        GetSchemaLoadTask schemaLoader = new GetSchemaLoadTask();
-        AsyncTask*/   
     }
     /**
      * @author lili

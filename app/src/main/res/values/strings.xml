@@ -114,4 +114,6 @@
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
 
+    <string name="schema_information">Schema Information</string>
+
 </resources>
