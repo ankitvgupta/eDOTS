@@ -146,7 +146,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     */
     public void updateCalendar() {
 
-        Schedule patientSchedule = currentPatient.getPatientSchedule();
+        Schedule patientSchedule = currentPatient.getEnrolledSchema().getSchedule();
 
         // gets exact schedule for the current patient
         startDate = patientSchedule.getStartDate(); // day/month/year
@@ -188,6 +188,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
         assignAttendedDays();
 
         individualDateListeners();
+
+        updateSummaryParameters();
 
         updateTreatmentTable(total_missed, total_received, total_future, past_week_missed,
                 past_week_received, past_month_missed, past_month_received);
@@ -270,7 +272,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
     /*
     * Written by Nishant
     * Colors the days with all successfully attended visits (both morning and afternoon) to green
-    * Updates the count of missed and attended visits within the past week and month and total.
     */
     public void assignAttendedDays() {
 
@@ -356,7 +357,13 @@ public class MedicalHistoryActivity extends FragmentActivity {
                 }
             }
         }
+    }
 
+    /*
+    * Written by Nishant
+    * Updates the count of missed and attended visits within the past week and month and total.
+    */
+    public void updateSummaryParameters() {
         // gets an Array of Visits that were attended by the patient
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
