@@ -68,7 +68,6 @@ public class GetPatientActivity extends Activity {
         // fetch promoterID from SharedPreferences
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
         promoterId = sPrefs.getString(getString(R.string.key_userid), "");
-
         
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();

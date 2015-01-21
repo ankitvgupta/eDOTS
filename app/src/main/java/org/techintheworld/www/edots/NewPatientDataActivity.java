@@ -465,7 +465,7 @@ public class NewPatientDataActivity extends Activity {
 
     /*
      * Written by Nishant
-     * Ensures none of the entered fields are empty
+     * Ensures none of the fields are empty
      */
     public boolean validateEmpty() {
         String nationalIDVal = nationalID.getText().toString();

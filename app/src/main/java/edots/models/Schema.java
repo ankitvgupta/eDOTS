@@ -40,12 +40,24 @@ public class Schema  extends Saveable{
         }
     }
 
+    
+    /**
+     * @param i project id
+     * @param n name of the project
+     */
+    @Deprecated
+    public Schema(String i, String n){
+        id = i;
+        name = n;
+    }
+
     /**
      * @param JSONString a JSON object representing the schema
      */
     public Schema(String JSONString){
         try {
             JSONObject n = new JSONObject(JSONString);
+            //Log.v()
             id = n.get("id").toString();
             name = n.get("name").toString();
             drugs = new ArrayList<Drug>();
@@ -55,6 +67,7 @@ public class Schema  extends Saveable{
             }
             phase = n.get("phase").toString();
             visit_mode = n.get("visit_mode").toString();
+//            schedule = new Schedule();
             schedule = new Schedule(n.get("schedule").toString());
         }
         catch (JSONException e) {
@@ -62,15 +75,7 @@ public class Schema  extends Saveable{
         }
     }
 
-    /**
-     * @param i project id
-     * @param n name of the project
-     */
-    public Schema(String i, String n){
-        id = i;
-        name = n;
-    }
-
+    
     @Override
     /**
      * @return a JSON Serialization of the Project object
@@ -79,7 +84,7 @@ public class Schema  extends Saveable{
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("projectId", getId());
+            temp.put("id", getId());
             temp.put("name", getName());
             temp.put("drugs", getDrugs());
             temp.put("phase", getPhase());

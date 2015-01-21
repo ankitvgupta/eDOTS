@@ -75,6 +75,7 @@ public class Schedule {
      * @param JSONString a JSON object representing the project
      */
     public Schedule(String JSONString){
+        // TODO: check it is 0101010 format
         try {
             JSONObject n = new JSONObject(JSONString);
             String days = n.get("days").toString();

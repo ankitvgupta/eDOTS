@@ -2,10 +2,14 @@ package org.techintheworld.www.edots;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Html;
@@ -30,10 +34,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schedule;
 import edots.models.Visit;
+import edots.models.VisitDay;
+import edots.tasks.GetVisitPerDayLoadTask;
+import edots.utils.InternetConnection;
 
 /*
  * Written by Nishant
@@ -53,6 +61,21 @@ public class MedicalHistoryActivity extends FragmentActivity {
     Date weekAgo;
     Date monthAgo;
 
+    Boolean MondayMorning;
+    Boolean MondayTarde;
+    Boolean TuesdayMorning;
+    Boolean TuesdayTarde;
+    Boolean WednesdayMorning;
+    Boolean WednesdayTarde;
+    Boolean ThursdayMorning;
+    Boolean ThursdayTarde;
+    Boolean FridayMorning;
+    Boolean FridayTarde;
+    Boolean SaturdayMorning;
+    Boolean SaturdayTarde;
+    Boolean SundayMorning;
+    Boolean SundayTarde;
+
     Boolean Monday;
     Boolean Tuesday;
     Boolean Wednesday;
@@ -61,8 +84,10 @@ public class MedicalHistoryActivity extends FragmentActivity {
     Boolean Saturday;
     Boolean Sunday;
     int difference;
-    boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
 
+
+    String startDate;
+    String endDate;
     Date startDateObj = new Date();
     Date endDateObj = new Date();
 
@@ -121,25 +146,25 @@ public class MedicalHistoryActivity extends FragmentActivity {
     */
     public void updateCalendar() {
 
-        Schedule patientSchedule = currentPatient.getPatientSchedule();
+        Schedule patientSchedule = currentPatient.getEnrolledSchema().getSchedule();
 
         // gets exact schedule for the current patient
-        String startDate = patientSchedule.getStartDate(); // day/month/year
-        String endDate = patientSchedule.getEndDate(); // day/month/year
-        Boolean MondayMorning = patientSchedule.scheduledLunes();
-        Boolean MondayTarde = patientSchedule.scheduledLunesTarde();
-        Boolean TuesdayMorning = patientSchedule.scheduledMartes();
-        Boolean TuesdayTarde = patientSchedule.scheduledMartesTarde();
-        Boolean WednesdayMorning = patientSchedule.scheduledMiercoles();
-        Boolean WednesdayTarde = patientSchedule.scheduledMiercolesTarde();
-        Boolean ThursdayMorning = patientSchedule.scheduledJueves();
-        Boolean ThursdayTarde = patientSchedule.scheduledJuevesTarde();
-        Boolean FridayMorning = patientSchedule.scheduledViernes();
-        Boolean FridayTarde = patientSchedule.scheduledViernesTarde();
-        Boolean SaturdayMorning = patientSchedule.scheduledSabado();
-        Boolean SaturdayTarde = patientSchedule.scheduledSabadoTarde();
-        Boolean SundayMorning = patientSchedule.scheduledDomingo();
-        Boolean SundayTarde = patientSchedule.scheduledDomingoTarde();
+        startDate = patientSchedule.getStartDate(); // day/month/year
+        endDate = patientSchedule.getEndDate(); // day/month/year
+        MondayMorning = patientSchedule.scheduledLunes();
+        MondayTarde = patientSchedule.scheduledLunesTarde();
+        TuesdayMorning = patientSchedule.scheduledMartes();
+        TuesdayTarde = patientSchedule.scheduledMartesTarde();
+        WednesdayMorning = patientSchedule.scheduledMiercoles();
+        WednesdayTarde = patientSchedule.scheduledMiercolesTarde();
+        ThursdayMorning = patientSchedule.scheduledJueves();
+        ThursdayTarde = patientSchedule.scheduledJuevesTarde();
+        FridayMorning = patientSchedule.scheduledViernes();
+        FridayTarde = patientSchedule.scheduledViernesTarde();
+        SaturdayMorning = patientSchedule.scheduledSabado();
+        SaturdayTarde = patientSchedule.scheduledSabadoTarde();
+        SundayMorning = patientSchedule.scheduledDomingo();
+        SundayTarde = patientSchedule.scheduledDomingoTarde();
 
         // checks which days of the weeks there will be visits
         Monday = (MondayMorning || MondayTarde);
@@ -163,6 +188,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
         assignAttendedDays();
 
         individualDateListeners();
+
+        updateSummaryParameters();
 
         updateTreatmentTable(total_missed, total_received, total_future, past_week_missed,
                 past_week_received, past_month_missed, past_month_received);
@@ -210,7 +237,9 @@ public class MedicalHistoryActivity extends FragmentActivity {
     * Keeps count of how many scheduled visits there are in the past month, past week, total and future
     */
     public void assignScheduledDays() {
-        //
+
+        boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+
         for (int j = 0; j < weekdays.length; j++) {
             if (weekdays[j]) {
                 difference = j - startDayOfTheWeekInt;
@@ -243,9 +272,98 @@ public class MedicalHistoryActivity extends FragmentActivity {
     /*
     * Written by Nishant
     * Colors the days with all successfully attended visits (both morning and afternoon) to green
-    * Updates the count of missed and attended visits within the past week and month and total.
     */
     public void assignAttendedDays() {
+
+        ArrayList<VisitDay> visitDays = new ArrayList<VisitDay> ();
+
+        try {
+            GetVisitPerDayLoadTask getVisitDays = new GetVisitPerDayLoadTask();
+            AsyncTask visit = getVisitDays.execute(getString(R.string.server_url),
+                    currentPatient.getPid(), startDate, endDate);
+            visitDays = (ArrayList<VisitDay>) visit.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch(NullPointerException e)
+        {
+            if (!InternetConnection.checkConnection(this)) {
+                AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
+            } else {
+                e.printStackTrace();
+            }
+        }
+
+        Log.v("MedicalHistoryActivity", "visitDays: " + visitDays);
+
+        int numDays = visitDays.size();
+        Calendar c = Calendar.getInstance();
+        int day_of_week;
+        int morning;
+        int afternoon;
+        boolean morningVisit;
+        boolean afternoonVisit;
+
+
+        for (int i = (numDays - 1); i >= 0; i--) {
+            VisitDay visitDay = visitDays.get(i);
+            Date visitDate = visitDay.getDate();
+            morning = visitDay.getMorning();
+            afternoon = visitDay.getAfternoon();
+
+            if (morning == 0) {
+                morningVisit = false;
+            } else {
+                morningVisit = true;
+            }
+
+            if (afternoon == 0) {
+                afternoonVisit = false;
+            } else {
+                afternoonVisit = true;
+            }
+
+            c.setTime(visitDate);
+            day_of_week = c.get(Calendar.DAY_OF_WEEK);
+
+            if (day_of_week == Calendar.MONDAY) {
+                if (morningVisit == MondayMorning && afternoonVisit == MondayTarde) {
+                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                }
+            } else if (day_of_week == Calendar.TUESDAY) {
+                if (morningVisit == TuesdayMorning && afternoonVisit == TuesdayTarde) {
+                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                }
+            } else if (day_of_week == Calendar.WEDNESDAY) {
+                if (morningVisit == WednesdayMorning && afternoonVisit == WednesdayTarde) {
+                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                }
+            } else if (day_of_week == Calendar.THURSDAY) {
+                if (morningVisit == ThursdayMorning && afternoonVisit == ThursdayTarde) {
+                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                }
+            } else if (day_of_week == Calendar.FRIDAY) {
+                if (morningVisit == FridayMorning && afternoonVisit == FridayTarde) {
+                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                }
+            } else if (day_of_week == Calendar.SATURDAY) {
+                if (morningVisit == SaturdayMorning && afternoonVisit == SaturdayTarde) {
+                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                }
+            } else if (day_of_week == Calendar.SUNDAY) {
+                if (morningVisit == SundayMorning && afternoonVisit == SundayTarde) {
+                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                }
+            }
+        }
+    }
+
+    /*
+    * Written by Nishant
+    * Updates the count of missed and attended visits within the past week and month and total.
+    */
+    public void updateSummaryParameters() {
         // gets an Array of Visits that were attended by the patient
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
@@ -255,8 +373,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
         String visitDate;
         Date visitDateObj = new Date();
-        int day_of_week;
-        int hour_of_day;
 
         for (int i = (numVisits - 1); i >= 0; i--) {
             try {
@@ -265,18 +381,6 @@ public class MedicalHistoryActivity extends FragmentActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(visitDateObj);
-            day_of_week = c.get(Calendar.DAY_OF_WEEK);
-            hour_of_day = c.get(Calendar.HOUR_OF_DAY);
-
-            // give Brendan patient and a date, get two boolean values in return
-
-            // add in condition checks for morning and afternoon visits and then figure out whether
-            // to make it red or green.
-
-            caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDateObj);
 
             if (visitDateObj.after(weekAgo)) {
                 past_week_received++;
@@ -352,6 +456,23 @@ public class MedicalHistoryActivity extends FragmentActivity {
         intent.putExtra("Patient", currentPatient.toString());
         intent.putExtra("Visit Date", "");
         startActivity(intent);
+    }
+
+    /*
+     * Written by Nishant
+     * Alert Dialog in case of User Error
+     */
+    public void AlertError(String title, String message) {
+        // Alert if username and password are not entered
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton (Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // here you can add functions
+            }
+        });
+        alertDialog.show();
     }
 
     @Override
