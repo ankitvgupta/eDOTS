@@ -43,7 +43,7 @@ public class Drug {
             JSONObject n = new JSONObject(JSONString);
             id = n.get("id").toString();
             name = n.get("name").toString();
-            name = n.get("symbol").toString();
+            symbol = n.get("symbol").toString();
             dosage = n.get("dosage").toString();
         }
         catch (JSONException e) {

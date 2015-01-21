@@ -113,7 +113,7 @@
     <string name="drugs">Drugs</string>
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
-
+    <string name="edit_schema">Edit Schema</string>
     <string name="schema_information">Schema Information</string>
     <string name="new_visit_upload_error_message">This visit will be saved locally and uploaded when internet resumes</string>
 
