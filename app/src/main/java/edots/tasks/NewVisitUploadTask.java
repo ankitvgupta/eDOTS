@@ -31,9 +31,11 @@ public class NewVisitUploadTask extends AsyncTask<String,String,String> {
     public NewVisitUploadTask(Context c){
         context = c;
     }
-    public boolean saveVisitLocally(Visit v){
+
+    public boolean SaveVisitLocally(Visit v){
         String filename = context.getString(R.string.new_visit_filename);
-        boolean save_success = OfflineStorageManager.SaveSaveableToLocal(v,filename, context);
+        OfflineStorageManager sm = new OfflineStorageManager(context);
+        boolean save_success = sm.SaveSaveableToLocal(v,filename);
         Log.e("NewVisitUploadTask saveVisitLocally",v.toString() );
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         SharedPreferences.Editor editor = mPreferences.edit();

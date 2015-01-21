@@ -73,7 +73,10 @@ public class GetPatientActivity extends Activity {
         loadPatientSpinner();
         testFunction();
         try {
-            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
+
+            OfflineStorageManager sm = new OfflineStorageManager(this);
+            String patient_file = getString(R.string.patient_data_filename);
+            object = new JSONArray(sm.getStringFromLocal(patient_file));
         }
         catch(JSONException e1){
             e1.printStackTrace();
@@ -169,8 +172,11 @@ public class GetPatientActivity extends Activity {
         // TODO: Check if Patient is already stored locally first
         JSONArray arr;
         try {
+            OfflineStorageManager sm = new OfflineStorageManager(this);
+            String patient_file = getString(R.string.patient_data_filename);
+
             // load list of patients from file patient_data
-            arr = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
+            arr = new JSONArray(sm.getStringFromLocal(patient_file));
             // look at all patients
             for (int i = 0; i < arr.length(); i++){
                 JSONObject obj = arr.getJSONObject(i);
@@ -378,7 +384,8 @@ public class GetPatientActivity extends Activity {
             fillTable();
             // TODO: needs comments!
             try {
-                object = new JSONArray(OfflineStorageManager.getStringFromLocal(c, "patient_data"));
+                OfflineStorageManager sm = new OfflineStorageManager(this);
+                String patient_file = getString(R.string.patient_data_filename);
                 // look at all patients
                 boolean already_found = false;
                 for (int i = 0; i < object.length(); i++) {
@@ -389,7 +396,7 @@ public class GetPatientActivity extends Activity {
                     }
                 }
                 if (!already_found) {
-                    patientNotListedAlert();
+                    patientNotListedAlert(this);
                 }
             }
             catch(Exception e){
@@ -426,7 +433,8 @@ public class GetPatientActivity extends Activity {
      * Alert for when patient is not listed as one of the patients for a promoter
      * If user presses add patient button, then adds to list of patients for logged-in promoter
      */
-    private void patientNotListedAlert() {
+    private void patientNotListedAlert(Context c) {
+        final Context context = c;
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(this.getString(R.string.patient_not_listed));
         alertDialog.setMessage(this.getString(R.string.patient_not_listed_add_patient));
@@ -442,10 +450,12 @@ public class GetPatientActivity extends Activity {
 
                 try {
                     npu.execute(getString(R.string.server_url), currentPatient.getPid(), promoterId, "0").get();
-                    Promoter promoter = new Promoter(OfflineStorageManager.getStringFromLocal(c, "promoter_data"));
-                    OfflineStorageManager.SaveWebPatientData(promoter, c);
+                    OfflineStorageManager sm = new OfflineStorageManager(context);
+                    if (sm.CanUpdateLocalStorage()){
+                        sm.UpdateLocalStorage();
+                    }
                 } catch (Exception e1) {
-                    Log.e("GetPatientActivity: loadPatient", "ExecutionException Probably");
+                    Log.e("GetPatientActivity: loadPatient", "ExecutionException Probably11");
                 }
             }
         });
@@ -525,17 +535,18 @@ public class GetPatientActivity extends Activity {
      * Loads the Patient Spinner by loading all patients from the JSON file patient_data
      */
     private void loadPatientSpinner(){
-        JSONArray object;
+        JSONArray array;
         try {
             // load list of patients from file patient_data
+            OfflineStorageManager sm = new OfflineStorageManager(this);
+            String patient_file = getString(R.string.patient_data_filename);
+            array = new JSONArray(sm.getStringFromLocal(patient_file));
 
-            object = new JSONArray(OfflineStorageManager.getStringFromLocal(this, "patient_data"));
-
-            String[] patients = new String[object.length()+1];
+            String[] patients = new String[array.length()+1];
             patients[0] = getString(R.string.get_patient_select_patient);
             // look at all patients
-            for (int i = 0; i < object.length(); i++){
-                JSONObject obj = object.getJSONObject(i);
+            for (int i = 0; i < array.length(); i++){
+                JSONObject obj = array.getJSONObject(i);
                 Patient p = new Patient(obj.toString());
                 patients[i+1] = p.getName() + " " + p.getFathersName() + " " + p.getMothersName();
             }
