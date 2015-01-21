@@ -91,7 +91,7 @@
                 android:text="@string/schema_start_day"/>
 
             <EditText
-                android:id="@+id/changeSchema_schema_start_day"
+                android:id="@+id/schema_start_day"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:focusable="false">
@@ -105,7 +105,7 @@
                 android:text="@string/schema_end_day"/>
 
             <EditText
-                android:id="@+id/changeSchema_schema_end_day"
+                android:id="@+id/schema_end_day"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:focusable="false">
