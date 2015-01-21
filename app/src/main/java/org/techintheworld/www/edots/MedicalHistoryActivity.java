@@ -2,10 +2,14 @@ package org.techintheworld.www.edots;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Html;
@@ -30,10 +34,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schedule;
 import edots.models.Visit;
+import edots.models.VisitDay;
+import edots.tasks.GetVisitPerDayLoadTask;
+import edots.utils.InternetConnection;
 
 /*
  * Written by Nishant
@@ -63,6 +71,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
     int difference;
     boolean[] weekdays = {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
 
+    String startDate;
+    String endDate;
     Date startDateObj = new Date();
     Date endDateObj = new Date();
 
@@ -124,8 +134,8 @@ public class MedicalHistoryActivity extends FragmentActivity {
         Schedule patientSchedule = currentPatient.getPatientSchedule();
 
         // gets exact schedule for the current patient
-        String startDate = patientSchedule.getStartDate(); // day/month/year
-        String endDate = patientSchedule.getEndDate(); // day/month/year
+        startDate = patientSchedule.getStartDate(); // day/month/year
+        endDate = patientSchedule.getEndDate(); // day/month/year
         Boolean MondayMorning = patientSchedule.scheduledLunes();
         Boolean MondayTarde = patientSchedule.scheduledLunesTarde();
         Boolean TuesdayMorning = patientSchedule.scheduledMartes();
@@ -246,6 +256,34 @@ public class MedicalHistoryActivity extends FragmentActivity {
     * Updates the count of missed and attended visits within the past week and month and total.
     */
     public void assignAttendedDays() {
+
+        ArrayList<VisitDay> visitDays = new ArrayList<VisitDay> ();
+
+        try {
+            GetVisitPerDayLoadTask getVisitDays = new GetVisitPerDayLoadTask();
+            AsyncTask visit = getVisitDays.execute(getString(R.string.server_url),
+                    currentPatient.getPid(), startDate, endDate);
+            visitDays = (ArrayList<VisitDay>) visit.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch(NullPointerException e)
+        {
+            if (!InternetConnection.checkConnection(this)) {
+                AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
+            } else {
+                e.printStackTrace();
+            }
+        }
+
+        Log.v("MedicalHistoryActivity", "visitDays: " + visitDays);
+
+        // visitDays is an array of {day, morning, evening}
+
+        int numDays = visitDays.size();
+
+
         // gets an Array of Visits that were attended by the patient
         ArrayList<Visit> patientVisits = currentPatient.getPatientHistory(this);
         int numVisits = 0;
@@ -352,6 +390,23 @@ public class MedicalHistoryActivity extends FragmentActivity {
         intent.putExtra("Patient", currentPatient.toString());
         intent.putExtra("Visit Date", "");
         startActivity(intent);
+    }
+
+    /*
+     * Written by Nishant
+     * Alert Dialog in case of User Error
+     */
+    public void AlertError(String title, String message) {
+        // Alert if username and password are not entered
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton (Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // here you can add functions
+            }
+        });
+        alertDialog.show();
     }
 
     @Override
