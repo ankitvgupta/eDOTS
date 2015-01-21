@@ -57,7 +57,7 @@ public class Visit extends Saveable {
         try {
             JSONObject n = new JSONObject(JSONobj);
             LocaleCode = n.get("LocaleCode").toString();
-            ProjectCode = n.get("VisitGroupCode").toString();
+            ProjectCode = n.get("ProjectCode").toString();
             VisitGroupCode = n.get("VisitGroupCode").toString();
             VisitCode = n.get("VisitCode").toString();
             PacientCode = n.get("PacientCode").toString();

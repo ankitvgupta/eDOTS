@@ -180,7 +180,6 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
                 visit.setPromoterId(promoterId);
                 Log.v("NewVisitActivity.java: The patient visit that we got is", visit.toString());
             } catch (InterruptedException e1) {
-                //TODO: do something when it cannot fetch a new visit (error message, break and return to main menu)
                 e1.printStackTrace();
             } catch (ExecutionException e1) {
                 e1.printStackTrace();
@@ -190,7 +189,13 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
         }
         // if there is no internet connection, load the visit group and visit numbers with dummy values
         else {
-            visit = new Visit(localeId, "5", "0", "0", "0", "0", patientId, "date", "time", promoterId);
+            String eDOTS_code = getString(R.string.edots_code);
+            // String visitGroup,String nombreGroupoVisita,String vis,
+            // String descripcionVisita are filled in as dummy 0s
+
+            visit = new Visit(localeId, eDOTS_code, "1", "name_group", "1", "description", patientId, "date", "time", promoterId);
+            Log.e("NewVisitActivity: loadCurrentVisit", visit.toString());
+
         }
         return visit;
     }
@@ -264,13 +269,14 @@ public class NewVisitActivity extends Activity implements DatePickerFragment.The
      * @param view The current view
      */
     public void submitVisit(View view) {
+        // TODO: get the time and stuff here
         currentVisit.setVisitDate(dbDateFormat.format(visitDate));
         currentVisit.setVisitTime(dbTimeFormat.format(visitTime));
         String result = addToDatabase();
-        Log.i("New visit: visit", currentVisit.toString());
+        Log.i("New visit:submitVisit visit", currentVisit.toString());
         //TODO: code the message in strings.xml
         if (result.equals("-1")) {
-            Log.i("New Visit: result", result);
+            Log.i("New Visit:submitVisit result", result);
             AlertError("Connection Error", getString(R.string.new_visit_upload_error_message));
         } else {
             Toast.makeText(getBaseContext(), "Successfully submitted", Toast.LENGTH_SHORT).show();

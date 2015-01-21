@@ -107,6 +107,7 @@
     <string name="past_month">Past Month: </string>
     <string name="total">Total: </string>
     <string name="title_activity_change_schema">ChangeSchemaActivity</string>
+    <string name="edots_code">5</string>
     <string name="last_updated">Local storage last updated</string>
 
     <string name="visit_mode">Visit Mode</string>

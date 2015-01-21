@@ -270,33 +270,45 @@ public class OfflineStorageManager {
             Visit currentVisit = new Visit(new_visit);
             Log.i("OfflineStorageManager: uploadLocalVisit new current visit", currentVisit.toString());
             NewVisitUploadTask upload_visit = new NewVisitUploadTask(context);
+            boolean connected= InternetConnection.checkConnection(context);
+            if(connected){
+                try {
 
-            try {
+                    String result = upload_visit.execute(context.getString(R.string.server_url),
+                            currentVisit.getLocaleCode(),
+                            currentVisit.getProjectCode(),
+                            currentVisit.getVisitGroupCode(),
+                            currentVisit.getVisitCode(),
+                            currentVisit.getPacientCode(),
+                            currentVisit.getVisitDate(),
+                            currentVisit.getVisitTime(),
+                            currentVisit.getPromoterId()).get();
+                    Log.e("OfflineStorageManager: uploadLocalVisit result", result);
+                    if (result.equals("1") || result.equals("2")){
+                        boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
+                        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+                        SharedPreferences.Editor editor = mPreferences.edit();
+                        editor.remove(context.getString(R.string.new_visit_filename));
+                        editor.commit();
+                        Log.i("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
 
-                String result = upload_visit.execute(context.getString(R.string.server_url),
-                        currentVisit.getLocaleCode(),
-                        currentVisit.getProjectCode(),
-                        currentVisit.getVisitGroupCode(),
-                        currentVisit.getVisitCode(),
-                        currentVisit.getPacientCode(),
-                        currentVisit.getVisitDate(),
-                        currentVisit.getVisitTime(),
-                        currentVisit.getPromoterId()).get();
-                Log.i("OfflineStorageManager: uploadLocalVisit result", result);
-                boolean deletion = context.deleteFile(context.getString(R.string.new_visit_filename));
-                SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.remove(context.getString(R.string.new_visit_filename));
-                editor.commit();
-                Log.i("OfflineStorageManager: uploadLocalVisit file deletion", String.valueOf(deletion));
-                return true;
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-                return false;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                    return false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+            else{
                 return false;
             }
+
         }
         else{
             return true;
