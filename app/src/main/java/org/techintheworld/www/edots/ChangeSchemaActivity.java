@@ -1,9 +1,7 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,19 +10,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
 import edots.models.Schedule;
 import edots.models.Schema;
-import edots.tasks.GetPatientSchemaLoadTask;
 
+// TODO: name and national ID fields should not be editable
 
 public class ChangeSchemaActivity extends Activity {
     
     Patient currentPatient;
 
-    private ArrayList<String> treatmentDays = new ArrayList<String>();
+    private ArrayList<String> schemaDays = new ArrayList<String>();
 
 
     @Override
@@ -52,70 +49,58 @@ public class ChangeSchemaActivity extends Activity {
         Schema currentPatientSchema = currentPatient.getEnrolledSchema();
         Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
         
-        EditText startDate = (EditText) findViewById(R.id.changeSchema_treatment_start_day);
+        EditText startDate = (EditText) findViewById(R.id.changeSchema_schema_start_day);
         startDate.setText(currentPatientSchedule.getStartDate());
         
-        EditText endDate = (EditText) findViewById(R.id.changeSchema_treatment_end_day);
+        EditText endDate = (EditText) findViewById(R.id.changeSchema_schema_end_day);
         endDate.setText(currentPatientSchedule.getEndDate());
 
-        loadTreatmentDayCheckboxes(currentPatientSchedule);
+        loadSchemaDayCheckboxes(currentPatientSchedule);
 
     }
+    
     /**
      * @author lili
      */
-    public void loadTreatmentDayCheckboxes(Schedule s) {
-        ListView treatmentView = (ListView) findViewById(R.id.changeSchema_treatment_days);
+    public void loadSchemaDayCheckboxes(Schedule s) {
+        ListView schemaView = (ListView) findViewById(R.id.changeSchema_schema_days);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
-        treatmentView.getLayoutParams().height = height;
+        schemaView.getLayoutParams().height = height;
 
-        //ArrayList<String> treatmentDays = new ArrayList<String>();
-        treatmentDays.add("Monday");
-        treatmentDays.add("Tuesday");
-        treatmentDays.add("Wednesday");
-        treatmentDays.add("Thursday");
-        treatmentDays.add("Friday");
-        treatmentDays.add("Saturday");
-        treatmentDays.add("Sunday");
+        //ArrayList<String> schemaDays = new ArrayList<String>();
+        //TODO: should not hardcode the strings for days
+        schemaDays.add("Monday");
+        schemaDays.add("Tuesday");
+        schemaDays.add("Wednesday");
+        schemaDays.add("Thursday");
+        schemaDays.add("Friday");
+        schemaDays.add("Saturday");
+        schemaDays.add("Sunday");
 
         // creating adapter for ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_checked, treatmentDays);
+                android.R.layout.simple_list_item_checked, schemaDays);
 
         // creates ListView checkboxes
-        ListView listview = (ListView) findViewById(R.id.changeSchema_treatment_days);
+        ListView listview = (ListView) findViewById(R.id.changeSchema_schema_days);
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
-        
         checkSchemaDayBoxes(s);
-        
     }
-    
-    
-    
-    
+
+
+    /**
+     * @author lili
+     * check the checkboxes according to the current schedule
+     */
     public void checkSchemaDayBoxes(Schedule s){
-        ListView treatmentView = (ListView) findViewById(R.id.changeSchema_treatment_days);
+        ListView schemaView = (ListView) findViewById(R.id.changeSchema_schema_days);
         
-        if (s.scheduledLunes())
-            treatmentView.setItemChecked(0,true);
-        if (s.scheduledMartes())
-            treatmentView.setItemChecked(1,true);
-        if (s.scheduledMiercoles())
-            treatmentView.setItemChecked(2,true);
-        if (s.scheduledJueves())
-            treatmentView.setItemChecked(3,true);
-        if (s.scheduledViernes())
-            treatmentView.setItemChecked(4,true);
-        if (s.scheduledSabado())
-            treatmentView.setItemChecked(5,true);
-        if (s.scheduledDomingo())
-            treatmentView.setItemChecked(6,true);
-
-
-
+        String oneHotCoding = s.toOneHotCoding();
+        for (int i = 0; i < 14; i++){
+            schemaView.setItemChecked(i, (oneHotCoding.charAt(i) == '1'));
+        }
     }
-    
 
 
     @Override

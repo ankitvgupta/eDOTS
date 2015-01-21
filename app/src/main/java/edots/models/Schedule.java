@@ -109,7 +109,7 @@ public class Schedule {
     public String toString(){
         JSONObject temp = new JSONObject();
         try {
-            temp.put("days", toDays());
+            temp.put("days", toOneHotCoding());
             temp.put("startDate", getStartDate());
             temp.put("endDate", getEndDate());
         } catch (JSONException e) {
@@ -124,7 +124,7 @@ public class Schedule {
      * @return 14 digit one-hot coding for the schedule
      *
      */
-    public String toDays(){
+    public String toOneHotCoding(){
         return lunes+lunesTarde+martes+martesTarde+miercoles+miercolesTarde+jueves+juevesTarde+viernes+viernesTarde+sabado+sabadoTarde+domingo+domingoTarde;
     }
     
