@@ -19,7 +19,6 @@ public class Drug {
         this.name = "SampleDrugName";
         this.symbol = "SampleDrugSymbol";
         this.dosage = "SampleDrugDosage";
-        
     }
 
     public Drug(String id, String name, String symbol) {
@@ -27,6 +26,13 @@ public class Drug {
         this.name = name;
         this.symbol = symbol;
         this.dosage = null;
+    }
+
+    public Drug(String id, String name, String symbol, String dosage) {
+        this.id = id;
+        this.name = name;
+        this.symbol = symbol;
+        this.dosage = dosage;
     }
 
     /**

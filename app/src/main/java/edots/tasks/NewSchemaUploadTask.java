@@ -55,8 +55,6 @@ public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
         request.addProperty("TipoDeVisito", params[23]);
         request.addProperty("EsquemaNombre", params[24]);
         request.addProperty("EsquemaFase", params[25]);
-;
-
         // setup request
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.dotNet = true;
