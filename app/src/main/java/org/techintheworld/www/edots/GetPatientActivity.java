@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -68,7 +69,11 @@ public class GetPatientActivity extends Activity {
         // fetch promoterID from SharedPreferences
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
         promoterId = sPrefs.getString(getString(R.string.key_userid), "");
-        
+
+        // Makes sure that the keyboard doesn't automatically rise
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();
         testFunction();

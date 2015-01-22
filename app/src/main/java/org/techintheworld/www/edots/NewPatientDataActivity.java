@@ -16,6 +16,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -113,6 +114,9 @@ public class NewPatientDataActivity extends Activity {
         schemaListText = (ListView) findViewById(R.id.schema);
         daysVisited = (ListView) findViewById(R.id.schema_days);
         drugsList = (ListView) findViewById(R.id.drugs);
+
+        // Makes sure that the keyboard doesn't automatically rise
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         loadDatePickers();
         loadSchemaCheckboxes();
