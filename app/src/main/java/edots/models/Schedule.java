@@ -31,15 +31,15 @@ public class Schedule {
     private String endDate;
     
     public Schedule(){
-        this.lunes = "1";
+        this.lunes = "0";
         this.lunesTarde = "0";
         this.martes = "1";
         this.martesTarde = "0";
-        this.miercoles = "0";
+        this.miercoles = "1";
         this.miercolesTarde = "0";
         this.jueves = "0";
-        this.juevesTarde = "0";
-        this.viernes = "1";
+        this.juevesTarde = "1";
+        this.viernes = "0";
         this.viernesTarde = "0";
         this.sabado = "0";
         this.sabadoTarde = "0";

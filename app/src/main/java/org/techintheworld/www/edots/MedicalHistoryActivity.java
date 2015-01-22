@@ -57,6 +57,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat dayOfTheWeekFormatter = new SimpleDateFormat("EEEE");
     SimpleDateFormat visitDateFormatter = new SimpleDateFormat("EEE dd/MM/yyyy");
+    SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
     Date currentDate;
     Date weekAgo;
     Date monthAgo;
@@ -175,6 +176,14 @@ public class MedicalHistoryActivity extends FragmentActivity {
         Saturday = (SaturdayMorning || SaturdayTarde);
         Sunday = (SundayMorning || SundayTarde);
 
+        Log.v("MedicalHistoryActivity", "Visit on Monday?: " + Monday);
+        Log.v("MedicalHistoryActivity", "Visit on Tuesday?: " + Tuesday);
+        Log.v("MedicalHistoryActivity", "Visit on Wednesday?: " + Wednesday);
+        Log.v("MedicalHistoryActivity", "Visit on Thursday?: " + Thursday);
+        Log.v("MedicalHistoryActivity", "Visit on Friday?: " + Friday);
+        Log.v("MedicalHistoryActivity", "Visit on Saturday?: " + Saturday);
+        Log.v("MedicalHistoryActivity", "Visit on Sunday?: " + Sunday);
+
         try {
             endDateObj = dateFormatter.parse(endDate);
         } catch (ParseException e) {
@@ -277,10 +286,23 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
         ArrayList<VisitDay> visitDays = new ArrayList<VisitDay> ();
 
+        String dbStartDate = "";
+        String dbEndDate = "";
+
+        try {
+            Date temp = dateFormatter.parse(startDate);
+            dbStartDate = dbDateFormat.format(temp);
+
+            temp = dateFormatter.parse(endDate);
+            dbEndDate = dbDateFormat.format(temp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         try {
             GetVisitPerDayLoadTask getVisitDays = new GetVisitPerDayLoadTask();
             AsyncTask visit = getVisitDays.execute(getString(R.string.server_url),
-                    currentPatient.getPid(), startDate, endDate);
+                    currentPatient.getPid(), dbStartDate, dbEndDate);
             visitDays = (ArrayList<VisitDay>) visit.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -309,8 +331,14 @@ public class MedicalHistoryActivity extends FragmentActivity {
         for (int i = (numDays - 1); i >= 0; i--) {
             VisitDay visitDay = visitDays.get(i);
             Date visitDate = visitDay.getDate();
+
+            Log.v("MedicalHistoryActivity", "visitDate: " + visitDate);
             morning = visitDay.getMorning();
+
+            Log.v("MedicalHistoryActivity", "morning: " + morning);
             afternoon = visitDay.getAfternoon();
+
+            Log.v("MedicalHistoryActivity", "afternoon: " + afternoon);
 
             if (morning == 0) {
                 morningVisit = false;
@@ -324,38 +352,58 @@ public class MedicalHistoryActivity extends FragmentActivity {
                 afternoonVisit = true;
             }
 
+            Log.v("MedicalHistoryActivity", "morningVisitBool: " + morningVisit);
+
+            Log.v("MedicalHistoryActivity", "afternoonVisitBool: " + afternoonVisit);
+
             c.setTime(visitDate);
             day_of_week = c.get(Calendar.DAY_OF_WEEK);
 
+            // on the selected visitDate, first check which day of the week the visitDate is.
+            // then for that day of the week, compare the schedule for afternoon and morning to the actual morning and afternoon visits
+            // if they match, then if either the morning and afternoon visit was true, color it green. otherwise leave it white.
+            // if they don't match, leave it red.
+
             if (day_of_week == Calendar.MONDAY) {
                 if (morningVisit == MondayMorning && afternoonVisit == MondayTarde) {
-                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                    colorGreen(morningVisit, afternoonVisit, visitDate);
                 }
             } else if (day_of_week == Calendar.TUESDAY) {
                 if (morningVisit == TuesdayMorning && afternoonVisit == TuesdayTarde) {
-                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                    colorGreen(morningVisit, afternoonVisit, visitDate);
                 }
             } else if (day_of_week == Calendar.WEDNESDAY) {
                 if (morningVisit == WednesdayMorning && afternoonVisit == WednesdayTarde) {
-                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                    colorGreen(morningVisit, afternoonVisit, visitDate);
                 }
             } else if (day_of_week == Calendar.THURSDAY) {
                 if (morningVisit == ThursdayMorning && afternoonVisit == ThursdayTarde) {
-                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                    colorGreen(morningVisit, afternoonVisit, visitDate);
                 }
             } else if (day_of_week == Calendar.FRIDAY) {
                 if (morningVisit == FridayMorning && afternoonVisit == FridayTarde) {
-                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                    colorGreen(morningVisit, afternoonVisit, visitDate);
                 }
             } else if (day_of_week == Calendar.SATURDAY) {
                 if (morningVisit == SaturdayMorning && afternoonVisit == SaturdayTarde) {
-                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                    colorGreen(morningVisit, afternoonVisit, visitDate);
                 }
             } else if (day_of_week == Calendar.SUNDAY) {
                 if (morningVisit == SundayMorning && afternoonVisit == SundayTarde) {
-                    caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
+                    colorGreen(morningVisit, afternoonVisit, visitDate);
                 }
             }
+        }
+    }
+
+    /*
+    * Written by Nishant
+    * If there exists a morningVisit or afternoonVisit, then color the Date green.
+    * This is given that the schedule matches, which is checked for before this function is called.
+    */
+    public void colorGreen (boolean morningVisit, boolean afternoonVisit, Date visitDate) {
+        if (morningVisit || afternoonVisit) {
+            caldroidFragment.setBackgroundResourceForDate(R.color.green, visitDate);
         }
     }
 
