@@ -42,62 +42,70 @@ public class GetPatientSchemaLoadTask extends AsyncTask<String,String,ArrayList<
         envelope.dotNet = true;
 
         envelope.setOutputSoapObject(request);
-
+        ArrayList<Schema> schemas = new ArrayList<>();
         HttpTransportSE transporte = new HttpTransportSE(URL);
         transporte.debug = true;
         try
         {
+            // get the response
             transporte.call(SOAP_ACTION, envelope);
 
             // get the response
-            SoapObject resSoap = (SoapObject) envelope.getResponse();
-            
-            
-            
-            String codigoPaciente = resSoap.getProperty("CodigoPaciente").toString(); // need to change the C# function to actually pull the locale
-            String id = resSoap.getProperty("CodigoEsquema").toString();
-            String lunesManana = resSoap.getProperty("LunesManana").toString();
-            String martesManana = resSoap.getProperty("MartesManana").toString();
-            String miercolesManana = resSoap.getProperty("MiercolesManana").toString();
-            String juevesManana = resSoap.getProperty("JuevesManana").toString();
-            String viernesManana = resSoap.getProperty("ViernesManana").toString();
-            String sabadoManana = resSoap.getProperty("SabadoManana").toString();
-            String domingoManana = resSoap.getProperty("DomingoManana").toString();
-            String lunesTarde = resSoap.getProperty("LunesTarde").toString();
-            String martesTarde = resSoap.getProperty("MartesTarde").toString();
-            String miercolesTarde = resSoap.getProperty("MiercolesTarde").toString();
-            String juevesTarde = resSoap.getProperty("JuevesTarde").toString();
-            String viernesTarde = resSoap.getProperty("ViernesTarde").toString();
-            String sabadoTarde = resSoap.getProperty("SabadoTarde").toString();
-            String domingoTarde = resSoap.getProperty("DomingoTarde").toString();
-            String startDate = resSoap.getProperty("FechaComienzo").toString();
-            String endDate = resSoap.getProperty("FechaTermino").toString();
-            String isActive = resSoap.getProperty("Activo").toString();
-            String visitType = resSoap.getProperty("TipoDeVisita").toString();
-            String schemaName = resSoap.getProperty("EsquemaNombre").toString();
-            String schemaPhase = resSoap.getProperty("EsquemaFase").toString();
+            SoapObject resSoapArray = (SoapObject) envelope.getResponse();
+            SoapObject resSoap;
 
-            Schedule schedule = new Schedule(lunesManana, lunesTarde, martesManana, martesTarde,
-                    miercolesManana, miercolesTarde, juevesManana, juevesTarde,
-                    viernesManana, viernesTarde, sabadoManana, sabadoTarde,
-                    domingoManana, domingoTarde, startDate, endDate);
+            int numSchemas = resSoapArray.getPropertyCount();
+            Log.i("GetVisitDayLoadTask: The number of VisitDays is", Integer.toString(numSchemas));
 
-            Schema schema = new Schema(id,schemaName,new ArrayList<Drug>,schemaPhase,visitType,schedule);
+            // loop over all of the visitdays that the patient made
+            for (int i = 0; i < numSchemas; i++) {
+                // for each iteration, create a visitday object and add to the results array
+                resSoap = (SoapObject) resSoapArray.getProperty(i);
 
+                String id = resSoap.getProperty("CodigoEsquema").toString();
+                String lunesManana = resSoap.getProperty("LunesManana").toString();
+                String martesManana = resSoap.getProperty("MartesManana").toString();
+                String miercolesManana = resSoap.getProperty("MiercolesManana").toString();
+                String juevesManana = resSoap.getProperty("JuevesManana").toString();
+                String viernesManana = resSoap.getProperty("ViernesManana").toString();
+                String sabadoManana = resSoap.getProperty("SabadoManana").toString();
+                String domingoManana = resSoap.getProperty("DomingoManana").toString();
+                String lunesTarde = resSoap.getProperty("LunesTarde").toString();
+                String martesTarde = resSoap.getProperty("MartesTarde").toString();
+                String miercolesTarde = resSoap.getProperty("MiercolesTarde").toString();
+                String juevesTarde = resSoap.getProperty("JuevesTarde").toString();
+                String viernesTarde = resSoap.getProperty("ViernesTarde").toString();
+                String sabadoTarde = resSoap.getProperty("SabadoTarde").toString();
+                String domingoTarde = resSoap.getProperty("DomingoTarde").toString();
+                String startDate = resSoap.getProperty("FechaComienzo").toString();
+                String endDate = resSoap.getProperty("FechaTermino").toString();
+                String isActive = resSoap.getProperty("Activo").toString();
+                String visitType = resSoap.getProperty("TipoDeVisita").toString();
+                String schemaName = resSoap.getProperty("EsquemaNombre").toString();
+                String schemaPhase = resSoap.getProperty("EsquemaFase").toString();
+
+                Schedule schedule = new Schedule(lunesManana, lunesTarde, martesManana, martesTarde,
+                        miercolesManana, miercolesTarde, juevesManana, juevesTarde,
+                        viernesManana, viernesTarde, sabadoManana, sabadoTarde,
+                        domingoManana, domingoTarde, startDate, endDate);
+                ArrayList<Drug> drugs = new ArrayList<>();
+                Schema schema = new Schema(id, schemaName, drugs, schemaPhase, visitType, schedule);
+                schemas.add(schema);
+            }
             // return null if no patient found or patient had no visits
-            if (resSoap.getPropertyCount() == 0){
+            if (resSoapArray.getPropertyCount() == 0) {
                 Log.v("GetPatientSchemaLoadTask: This is not a valid person or has no schedule", "This is not a valid person or has no visits");
                 return null;
             }
 
-            Log.v("GetPatientSchemaLoadTask: The object we got is", resSoap.toString());
+            Log.v("GetPatientSchemaLoadTask: The object we got is", resSoapArray.toString());
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
 
-        return result;
+        return schemas;
     }
 
 }

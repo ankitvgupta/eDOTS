@@ -18,6 +18,16 @@ import java.util.Arrays;
 public class Schema  extends Saveable{
     private String id;
     private String name;
+
+    public Schema(String id, String name, ArrayList<Drug> drugs, String phase, String visit_mode, Schedule schedule) {
+        this.id = id;
+        this.name = name;
+        this.drugs = drugs;
+        this.phase = phase;
+        this.visit_mode = visit_mode;
+        this.schedule = schedule;
+    }
+
     private ArrayList<Drug> drugs;
     private String phase;
     private String visit_mode; // 1 for "clinic" or 2 for "patient home"
@@ -42,6 +52,7 @@ public class Schema  extends Saveable{
             e.printStackTrace();
         }
     }
+
 
     
     /**
@@ -146,7 +157,6 @@ public class Schema  extends Saveable{
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
-<<<<<<< HEAD
 
 
     /**
