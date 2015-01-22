@@ -119,9 +119,6 @@ public class ChangeSchemaActivity extends Activity {
     }
     
     public void submitChangeSchema(View view) {
-
-        
-        
         
         EditText startDate = (EditText) findViewById(R.id.schema_start_day);
         String start = startDate.getText().toString();
@@ -161,8 +158,8 @@ public class ChangeSchemaActivity extends Activity {
                     visitDays.get(11),
                     visitDays.get(12),
                     visitDays.get(13),
-                    "2014-05-20 00:00:00.0",
-                    "2015-05-28 00:00:00.0",
+                    "2014-05-20 00:00:00.0", // TODO: SHould be the real start date
+                    "2015-05-28 00:00:00.0", // TODO: Should be the real end date
                     "1",
                     "1").get();
             Log.v("ChangeSchemaActivity.java: The result of the schema upload was: ", s);
