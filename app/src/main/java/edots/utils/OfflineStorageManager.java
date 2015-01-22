@@ -23,8 +23,10 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Patient;
 import edots.models.Promoter;
 import edots.models.Saveable;
+import edots.models.Schema;
 import edots.models.Visit;
 import edots.tasks.GetPatientFromIDTask;
+import edots.tasks.GetPatientSchemaLoadTask;
 import edots.tasks.LoadPatientFromPromoterTask;
 import edots.tasks.NewVisitLoadTask;
 import edots.tasks.NewVisitUploadTask;
@@ -144,12 +146,40 @@ public class OfflineStorageManager {
         try {
             p = (Patient) get_patient.get();
             Log.v("OfflineStorageManager.java: The patient that we pulled from the server is", p.toString());
-            return p;
+            //return p;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
-        return null;
+        GetPatientSchemaLoadTask schemaLoader = new GetPatientSchemaLoadTask();
+        Schema enrolledSchema = new Schema();
+            
+        try{
+            enrolledSchema = schemaLoader.execute(context.getString(R.string.server_url), patient_id).get().get(0);
+            Log.v("Loaded schema successfully", "Loaded schema successfully");
+            p.setEnrolledSchema(enrolledSchema);
+            return p;
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+            Log.v("Using default schema", "Using default schema");
+            return p;
+            //enrolledSchema = new Schema();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+            Log.v("Using default schema", "Using default schema");
+            return p;
+            //enrolledSchema = new Schema();
+        } catch (NullPointerException e1){
+            Log.e("GetPatientLoadTask", "NullPointerException");
+            Log.v("Using default schema", "Using default schema");
+            return p;
+            //enrolledSchema = new Schema();
+        }
+
+        // return null;
+        
+   
 
     }
 
