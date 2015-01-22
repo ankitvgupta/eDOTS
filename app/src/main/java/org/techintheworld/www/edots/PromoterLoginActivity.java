@@ -221,8 +221,7 @@ public class PromoterLoginActivity extends Activity {
                 spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnLocale.setAdapter(spinnerArrayAdapter);
                 OfflineStorageManager sm = new OfflineStorageManager(this);
-                String locale_file = getString(R.string.locale_filename);
-                sm.SaveArrayListToLocal(arrLocale, locale_file);
+                sm.SaveArrayListToLocal(arrLocale, this.getString(R.string.locale_filename));
 
             } catch (InterruptedException e1) {
                 Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");

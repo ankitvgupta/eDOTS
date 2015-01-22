@@ -252,7 +252,7 @@ public class Patient extends Saveable{
     public Schema getEnrolledSchema(){
         //return new Schema();
         return enrolledSchema;
-    } // TODO: This is for testing only, change this to the actual current schema
+    }
 
     public void setName(String n){
         name=n;

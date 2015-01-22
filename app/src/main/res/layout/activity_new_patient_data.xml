@@ -45,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:digits="1234567890"
-                android:layout_width="fill_parent"
-                android:focusable="false">
+                android:layout_width="fill_parent">
+                <!--android:focusable="false">-->
             </EditText>
 
             <!--name field-->
@@ -269,7 +269,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scan_fingerprint"
-                android:onClick="switchCheckFingerPrint"/>
+                android:onClick="switchRegisterFingerPrint"/>
 
             <Button
                 android:layout_width="wrap_content"
