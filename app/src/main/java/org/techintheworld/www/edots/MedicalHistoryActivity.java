@@ -1,39 +1,27 @@
 package org.techintheworld.www.edots;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
@@ -148,7 +136,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     public void updateCalendar() {
 
         Schedule patientSchedule = currentPatient.getEnrolledSchema().getSchedule();
-
+        Log.e("MedicalHistoryActivity: updateCalendar", patientSchedule.toString());
         // gets exact schedule for the current patient
         startDate = patientSchedule.getStartDate(); // day/month/year
         endDate = patientSchedule.getEndDate(); // day/month/year
