@@ -2,7 +2,11 @@ package org.techintheworld.www.edots;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -17,10 +21,16 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
+import edots.models.Schedule;
 import edots.models.Visit;
+import edots.models.VisitDay;
+import edots.tasks.GetVisitPerDayLoadTask;
+import edots.utils.InternetConnection;
 
 /*
  * Written by Nishant
@@ -42,14 +52,38 @@ public class ShowVisitActivity extends Activity {
     String visitMonth;
     String visitYear;
 
+    boolean MondayMorning;
+    boolean MondayTarde;
+    boolean TuesdayMorning;
+    boolean TuesdayTarde;
+    boolean WednesdayMorning;
+    boolean WednesdayTarde;
+    boolean ThursdayMorning;
+    boolean ThursdayTarde;
+    boolean FridayMorning;
+    boolean FridayTarde;
+    boolean SaturdayMorning;
+    boolean SaturdayTarde;
+    boolean SundayMorning;
+    boolean SundayTarde;
+
+    TextView morningHeader;
+    TextView afternoonHeader;
+
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     DateFormat dateFormatter = DateFormat.getDateInstance();
+
+    LinearLayout encloseScrollLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_visit);
+
+        morningHeader = new TextView(this);
+        afternoonHeader= new TextView(this);
+        encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
 
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
@@ -58,7 +92,8 @@ public class ShowVisitActivity extends Activity {
                 loadPastVisits();
             } else {
                 selectedDate = formatter.parse(date);
-                loadOneVisit(selectedDate);
+//                loadOneVisit(selectedDate);
+                loadDateStats(selectedDate);
             }
         }
         catch (Exception e){
@@ -68,8 +103,174 @@ public class ShowVisitActivity extends Activity {
 
     }
 
+    // display the header
+    // see if morning visit was missed
+    // see if afternoon visit was missed
+    // display which visits were missed, if any
+    public void loadDateStats (Date selectedDate) {
+        Schedule patientSchedule = currentPatient.getEnrolledSchema().getSchedule();
+
+        // gets exact schedule for the current patient
+        String startDate = patientSchedule.getStartDate(); // day/month/year
+        String endDate = patientSchedule.getEndDate(); // day/month/year
+        MondayMorning = patientSchedule.scheduledLunes();
+        MondayTarde = patientSchedule.scheduledLunesTarde();
+        TuesdayMorning = patientSchedule.scheduledMartes();
+        TuesdayTarde = patientSchedule.scheduledMartesTarde();
+        WednesdayMorning = patientSchedule.scheduledMiercoles();
+        WednesdayTarde = patientSchedule.scheduledMiercolesTarde();
+        ThursdayMorning = patientSchedule.scheduledJueves();
+        ThursdayTarde = patientSchedule.scheduledJuevesTarde();
+        FridayMorning = patientSchedule.scheduledViernes();
+        FridayTarde = patientSchedule.scheduledViernesTarde();
+        SaturdayMorning = patientSchedule.scheduledSabado();
+        SaturdayTarde = patientSchedule.scheduledSabadoTarde();
+        SundayMorning = patientSchedule.scheduledDomingo();
+        SundayTarde = patientSchedule.scheduledDomingoTarde();
+
+        ArrayList<VisitDay> visitDays = new ArrayList<VisitDay> ();
+
+        try {
+            GetVisitPerDayLoadTask getVisitDays = new GetVisitPerDayLoadTask();
+            AsyncTask visit = getVisitDays.execute(getString(R.string.server_url),
+                    currentPatient.getPid(), startDate, endDate);
+            visitDays = (ArrayList<VisitDay>) visit.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch(NullPointerException e)
+        {
+            if (!InternetConnection.checkConnection(this)) {
+                AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
+            } else {
+                e.printStackTrace();
+            }
+        }
+
+        int numDays = visitDays.size();
+        Calendar c = Calendar.getInstance();
+        int day_of_week;
+        int morning;
+        int afternoon;
+        boolean morningVisit;
+        boolean afternoonVisit;
+
+        morningHeader.setId(6);
+        afternoonHeader.setId(7);
+
+        boolean dateMatchFound = false;
+
+        for (int i = (numDays - 1); i >= 0; i--) {
+            VisitDay visitDay = visitDays.get(i);
+            Date visitDate = visitDay.getDate();
+
+            if (visitDate.compareTo(selectedDate) == 0) {
+                dateMatchFound = true;
+
+                String patientName = currentPatient.getName();
+                TextView header = (TextView) findViewById(R.id.medical_history_for_patient);
+                header.setText("Visit Information for " + patientName + " on " + dateFormatter.format(selectedDate));
+
+                morning = visitDay.getMorning();
+                afternoon = visitDay.getAfternoon();
+
+                if (morning == 0) {
+                    morningVisit = false;
+                } else {
+                    morningVisit = true;
+                }
+
+                if (afternoon == 0) {
+                    afternoonVisit = false;
+                } else {
+                    afternoonVisit = true;
+                }
+
+                c.setTime(visitDate);
+                day_of_week = c.get(Calendar.DAY_OF_WEEK);
+
+                if (day_of_week == Calendar.MONDAY) {
+                    setHeaderText(MondayMorning, MondayTarde, morningVisit, afternoonVisit);
+                } else if (day_of_week == Calendar.TUESDAY) {
+                    if (morningVisit == TuesdayMorning && afternoonVisit == TuesdayTarde) {
+                        setHeaderText(TuesdayMorning, TuesdayTarde, morningVisit, afternoonVisit);
+                    }
+                } else if (day_of_week == Calendar.WEDNESDAY) {
+                    if (morningVisit == WednesdayMorning && afternoonVisit == WednesdayTarde) {
+                        setHeaderText(WednesdayMorning, WednesdayTarde, morningVisit, afternoonVisit);
+                    }
+                } else if (day_of_week == Calendar.THURSDAY) {
+                    if (morningVisit == ThursdayMorning && afternoonVisit == ThursdayTarde) {
+                        setHeaderText(ThursdayMorning, ThursdayTarde, morningVisit, afternoonVisit);
+                    }
+                } else if (day_of_week == Calendar.FRIDAY) {
+                    if (morningVisit == FridayMorning && afternoonVisit == FridayTarde) {
+                        setHeaderText(FridayMorning, FridayTarde, morningVisit, afternoonVisit);
+                    }
+                } else if (day_of_week == Calendar.SATURDAY) {
+                    if (morningVisit == SaturdayMorning && afternoonVisit == SaturdayTarde) {
+                        setHeaderText(SaturdayMorning, SaturdayTarde, morningVisit, afternoonVisit);
+                    }
+                } else if (day_of_week == Calendar.SUNDAY) {
+                    if (morningVisit == SundayMorning && afternoonVisit == SundayTarde) {
+                        setHeaderText(SundayMorning, SaturdayTarde, morningVisit, afternoonVisit);
+                    }
+                }
+
+                // add a new Relative Layout with all this data and append it in the Linear Layout
+                RelativeLayout newVisit = new RelativeLayout(this);
+                RelativeLayout.LayoutParams labelLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                newVisit.setLayoutParams(labelLayoutParams);
+
+                // set position of each TextView within RelativeLayout
+                RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp1.addRule(RelativeLayout.BELOW, morningHeader.getId());
+
+                // append all of the above TextView elements to the Relative Layout
+                newVisit.addView(morningHeader);
+                newVisit.addView(afternoonHeader, lp1);
+
+                // add RelativeLayout to LinearLayout
+                encloseScrollLayout.addView(newVisit);
+            }
+        }
+
+        if (!dateMatchFound) {
+            String patientName = currentPatient.getName();
+            TextView header = (TextView) findViewById(R.id.medical_history_for_patient);
+            header.setText("The selected date is not within the scope of the start and end date for" +
+                    " this patient's schema");
+        }
+    }
+
+    public void setHeaderText(boolean morningScheduled, boolean afternoonScheduled,
+                              boolean morningVisit, boolean afternoonVisit) {
+        if (morningScheduled) {
+            if (morningVisit) {
+                morningHeader.setText("<b>" + "Morning Visit: " + "</b>" + "Attended");
+            } else {
+                morningHeader.setText("<b>" + "Morning Visit: " + "</b>" + "Missed");
+            }
+        } else {
+            morningHeader.setText("<b>" + "Morning Visit: " + "</b>" + "None Scheduled");
+        }
+        if (afternoonScheduled) {
+            if (afternoonVisit) {
+                afternoonHeader.setText("<b>" + "Afternoon Visit: " + "</b>" + "Attended");
+            } else {
+                afternoonHeader.setText("<b>" + "Afternoon Visit: " + "</b>" + "Missed");
+            }
+        } else {
+            afternoonHeader.setText("<b>" + "Afternoon Visit: " + "</b>" + "None Scheduled");
+        }
+    }
+
     /*
      * Written by Nishant
+     * Loads the visit data for the selected date
      */
     public void loadOneVisit (Date selectedDate) {
         // sets header to Past Visits for Patient Name
@@ -82,8 +283,6 @@ public class ShowVisitActivity extends Activity {
         if (patientVisits != null) {
             numVisits = patientVisits.size();
         }
-
-        LinearLayout encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
 
         boolean dateMatchFound = false;
 
@@ -192,6 +391,7 @@ public class ShowVisitActivity extends Activity {
 
     /*
      * Written by Nishant
+     * Lodas the visit data for all of the past visits
      */
     public void loadPastVisits() {
         // sets header to Past Visits for Patient Name
@@ -288,6 +488,23 @@ public class ShowVisitActivity extends Activity {
             v.setBackgroundColor(Color.parseColor("#B3B3B3"));
             encloseScrollLayout.addView(v);
         }
+    }
+
+    /*
+     * Written by Nishant
+     * Alert Dialog in case of User Error
+     */
+    public void AlertError(String title, String message) {
+        // Alert if username and password are not entered
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton (Dialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // here you can add functions
+            }
+        });
+        alertDialog.show();
     }
 
     @Override
