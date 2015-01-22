@@ -54,20 +54,6 @@ public class Schema  extends Saveable{
     }
 
 
-    
-    /**
-     * @param i project id
-     * @param n name of the project
-     */
-
-    public Schema(String i, String n, ArrayList<Drug> d, String p, String v, Schedule sch){
-        id = i;
-        name = n;
-        drugs = d;
-        phase = p;
-        visit_mode = v;
-        schedule = sch;
-    }
 
     /**
      * @param JSONString a JSON object representing the schema
