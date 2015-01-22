@@ -71,7 +71,6 @@ public class ShowVisitActivity extends Activity {
     TextView afternoonHeader;
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
     DateFormat dateFormatter = DateFormat.getDateInstance();
 
     LinearLayout encloseScrollLayout;
