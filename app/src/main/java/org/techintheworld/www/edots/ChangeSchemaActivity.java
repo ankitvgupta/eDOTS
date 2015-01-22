@@ -161,7 +161,7 @@ public class ChangeSchemaActivity extends Activity {
                     visitDays.get(11),
                     visitDays.get(12),
                     visitDays.get(13),
-                    "2014-05-28 00:00:00.0",
+                    "2014-05-20 00:00:00.0",
                     "2015-05-28 00:00:00.0",
                     "1",
                     "1").get();

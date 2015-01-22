@@ -30,31 +30,31 @@ public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         // add all of the patient properties to the request
+
         request.addProperty("CodigoPaciente", params[1]);
-        request.addProperty("Lunes", params[2]);
-        request.addProperty("LunesTarde", params[3]);
-        request.addProperty("Martes", params[4]);
-        request.addProperty("MartesTarde", params[5]);
-        request.addProperty("Miercoles", params[6]);        
-        request.addProperty("MiercolesTarde", params[7]);
-        request.addProperty("Jueves", params[8]);
-        request.addProperty("JuevesTarde", params[9]);
-        request.addProperty("Viernes", params[10]);
-        request.addProperty("ViernesTarde", params[11]);
-        request.addProperty("Sabado", params[12]);
-        request.addProperty("SabadoTarde", params[13]);
-        request.addProperty("Domingo", params[14]);
-        request.addProperty("DomingoTarde", params[15]);
-        
+        request.addProperty("LunesManana", Boolean.toString(params[2] == "1"));
+        request.addProperty("LunesTarde", Boolean.toString(params[3] == "1"));
+        request.addProperty("MartesManana", Boolean.toString(params[4] == "1"));
+        request.addProperty("MartesTarde", Boolean.toString(params[5] == "1"));
+        request.addProperty("MiercolesManana", Boolean.toString(params[6] == "1"));
+        request.addProperty("MiercolesTarde", Boolean.toString(params[7] == "1"));
+        request.addProperty("JuevesManana", Boolean.toString(params[8] == "1"));
+        request.addProperty("JuevesTarde", Boolean.toString(params[9] == "1"));
+        request.addProperty("ViernesManana", Boolean.toString(params[10] == "1"));
+        request.addProperty("ViernesTarde", Boolean.toString(params[11] == "1"));
+        request.addProperty("SabadoManana", Boolean.toString(params[12] == "1"));
+        request.addProperty("SabadoTarde", Boolean.toString(params[13] == "1"));
+        request.addProperty("DomingoManana", Boolean.toString(params[14] == "1"));
+        request.addProperty("DomingoTarde", Boolean.toString(params[15] == "1"));
         request.addProperty("FechaComienzo", params[16]);
         request.addProperty("FechaTermino", params[17]);
-        
         request.addProperty("CodigoEsquema", params[18]);
-        request.addProperty("TipoDeVisito", params[19]);
+        request.addProperty("TipoDeVisita", Boolean.toString(params[19] == "1"));
+
 
         String returnvalue = "";
         
-        /*
+
 
         // setup request
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -75,7 +75,7 @@ public class NewSchemaUploadTask extends AsyncTask<String,String,String> {
         {
             e.printStackTrace();
         }
-        */
+        
 
         return returnvalue;
     }
