@@ -32,7 +32,7 @@ public class GetVisitPerDayLoadTask extends AsyncTask<String,String,ArrayList<Vi
         String urlserver = params[0];
         final String NAMESPACE = urlserver+"/";
         final String URL=NAMESPACE+"EdotsWS/Service1.asmx";
-        final String METHOD_NAME = "ListadoVisitaDias";
+        final String METHOD_NAME = "ListadoVisitasDias";
         final String SOAP_ACTION = NAMESPACE+METHOD_NAME;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
@@ -63,11 +63,12 @@ public class GetVisitPerDayLoadTask extends AsyncTask<String,String,ArrayList<Vi
                 // for each iteration, create a visitday object and add to the results array
                 resSoapTemp = (SoapObject) resSoap.getProperty(i);
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                Date day = format.parse(resSoapTemp.getProperty("CodigoDroga").toString());
+                Date day = format.parse(resSoapTemp.getProperty("Dia").toString());
                 int manana = Integer.parseInt(resSoapTemp.getProperty("Manana").toString());
                 int tarde = Integer.parseInt(resSoapTemp.getProperty("Tarde").toString());
                 VisitDay tmp = new VisitDay(day, manana, tarde);
                 visitDays.add(tmp);
+                Log.i(Integer.toString(manana),Integer.toString(tarde));
             }
 
             // return null if the dates provided are invalid

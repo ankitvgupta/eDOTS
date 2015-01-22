@@ -109,7 +109,8 @@
     <string name="title_activity_change_schema">ChangeSchemaActivity</string>
     <string name="edots_code">5</string>
     <string name="last_updated">Local storage last updated</string>
-
+    <string name="test_phone_1">943229757</string>
+    <string name="test_phone_2">943206118</string>
     <string name="visit_mode">Visit Mode</string>
     <string name="patient_home">Patient Home</string>
     <string name="clinic">Clinic</string>
