@@ -1,13 +1,17 @@
 package edots.models;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.techintheworld.www.edots.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import edots.utils.OfflineStorageManager;
 
 /**
  *
@@ -174,4 +178,23 @@ public class Schema  extends Saveable{
         return result;
     }
 
+    public static String GetSchemaNumber(Context context, String schema_name){
+        OfflineStorageManager sm = new OfflineStorageManager(context);
+        String schema_file = context.getString(R.string.schema_filename);
+        try{
+            JSONArray array = new JSONArray(sm.getStringFromLocal(schema_file));
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                Schema s = new Schema(obj.toString());
+                if ((s.phase + " " + s.name).equals(schema_name)){
+                    return String.valueOf(s.id);
+                }
+            }
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+            Log.e("Locale.java: GetLocaleNumber", "JSONException");
+        }
+        return null;
+    }
 }

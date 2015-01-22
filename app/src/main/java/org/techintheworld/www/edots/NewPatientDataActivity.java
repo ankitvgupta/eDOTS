@@ -42,6 +42,7 @@ import edots.tasks.NewPatientUploadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
 import edots.tasks.NewSchemaUploadTask;
 import edots.utils.InternetConnection;
+import edots.utils.OfflineStorageManager;
 
 /*
  * Written by Nishant
@@ -58,7 +59,7 @@ import edots.utils.InternetConnection;
 
 public class NewPatientDataActivity extends Activity {
 
-    private Spinner spnLocale;
+    private Spinner spnSchema;
     private Patient currentPatient;
     private ArrayList<Schema> schemaList = new ArrayList<Schema>();
     private ArrayList<Drug> drugList = new ArrayList<Drug>();
@@ -117,7 +118,7 @@ public class NewPatientDataActivity extends Activity {
 //        schemaListText = (ListView) findViewById(R.id.schema);
         daysVisited = (ListView) findViewById(R.id.schema_days);
         drugsList = (ListView) findViewById(R.id.drugs);
-        spnLocale = (Spinner) findViewById(R.id.schema_spinner);
+        spnSchema = (Spinner) findViewById(R.id.schema_spinner);
 
         // Makes sure that the keyboard doesn't automatically rise
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -420,7 +421,7 @@ public class NewPatientDataActivity extends Activity {
     public void addToDatabase(String name, String father, String mother, String docType,
                               String nationalID, String birthDate, String phoneNumber, String sex,
                               ArrayList<String> visitDays, String schemaStartDate,
-                              String schemaEndDate, String visit_mode, ArrayList<Schema> enrolledSchemas,
+                              String schemaEndDate, String visit_mode, String schema_num,
                               ArrayList<Drug> enrolledDrugs) {
 
         // TODO: UPLOAD PHONE NUMBER
@@ -514,13 +515,13 @@ public class NewPatientDataActivity extends Activity {
         String schemaStartDateVal = schemaStartDate.getText().toString();
         String schemaEndDateVal = schemaEndDate.getText().toString();
 
-        SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
-        int numSchemas = 0;
-        for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
-            if (checkedItems.get(i)) {
-                numSchemas++;
-            }
-        }
+//        SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
+//        int numSchemas = 0;
+//        for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
+//            if (checkedItems.get(i)) {
+//                numSchemas++;
+//            }
+//        }
 
         SparseBooleanArray daysPicked = daysVisited.getCheckedItemPositions();
         int scheduledDays = 0;
@@ -544,7 +545,7 @@ public class NewPatientDataActivity extends Activity {
                 || !(maleBtn.isChecked() || femaleBtn.isChecked())
                 || !(clinicBtn.isChecked() || patientHomeBtn.isChecked())) {
             return false;
-        } else if (numSchemas == 0 || scheduledDays == 0 || numDrugs == 0) {
+        } else if (scheduledDays == 0 || numDrugs == 0) {
             return false;
         }
         return true;
@@ -594,6 +595,16 @@ public class NewPatientDataActivity extends Activity {
             String phoneNumberVal = phoneNumber.getText().toString();
             String schemaStartDateVal = schemaStartDate.getText().toString();
             String schemaEndDateVal = schemaEndDate.getText().toString();
+            String schema_name = spnSchema.getItemAtPosition(spnSchema.getSelectedItemPosition()).toString();
+            String schema_num = null;
+            Schema[] objSchema = new Schema[0];
+            String[] wee;
+
+
+            if (schema_name != null) {
+                schema_num = Schema.GetSchemaNumber(this, schema_name);
+                Log.e("NewPaitentDataActivity: addPatientBtn", schema_num);
+            }
 
             // get the sex
             String sex = "";
@@ -614,13 +625,13 @@ public class NewPatientDataActivity extends Activity {
             }
             
             // determines which treatments are checked and stores them in ArrayList of Projects
-            ArrayList<Schema> enrolledSchemas = new ArrayList<Schema>();
-            SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
-            for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
-                if (checkedItems.get(i)) {
-                    enrolledSchemas.add(schemaList.get(i));
-                }
-            }
+//            ArrayList<Schema> enrolledSchemas = new ArrayList<Schema>();
+//            SparseBooleanArray checkedItems = schemaListText.getCheckedItemPositions();
+//            for (int i = 0; i < schemaListText.getAdapter().getCount(); i++) {
+//                if (checkedItems.get(i)) {
+//                    enrolledSchemas.add(schemaList.get(i));
+//                }
+//            }
 
             // determines which days are checked and stores them in ArrayList of strings
             ArrayList<String> visitDays = new ArrayList<String>();
@@ -645,7 +656,7 @@ public class NewPatientDataActivity extends Activity {
             // Submit the patient data to the server.
             addToDatabase(nameVal, fatherNameVal, motherNameVal, "2", nationalIDVal, birthDateVal,
                     phoneNumberVal, sex, visitDays, schemaStartDateVal, schemaEndDateVal, visit_mode,
-                    enrolledSchemas, enrolledDrugs);
+                    schema_num, enrolledDrugs);
 
             switchNewVisitActivity(nationalIDVal);
         }
@@ -702,7 +713,9 @@ public class NewPatientDataActivity extends Activity {
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, locales);
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spnLocale.setAdapter(spinnerArrayAdapter);
+            spnSchema.setAdapter(spinnerArrayAdapter);
+            OfflineStorageManager sm = new OfflineStorageManager(this);
+            sm.SaveArrayListToLocal(arrSchema, this.getString(R.string.schema_filename));
         } catch (InterruptedException e1) {
             Log.e("PromoterLoginActivity: loadLocaleActivity1", "Interrupted Exception");
         } catch (ExecutionException e1) {
