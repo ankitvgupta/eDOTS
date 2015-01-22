@@ -37,6 +37,7 @@ import edots.models.Schema;
 import edots.models.Visit;
 import edots.tasks.GetPatientContactLoadTask;
 import edots.tasks.GetPatientLoadTask;
+import edots.tasks.GetPatientSchemaLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
 import edots.utils.OfflineStorageManager;
 
@@ -227,8 +228,23 @@ public class GetPatientActivity extends Activity {
      * load the project a patient is currently enrolled in into the patient object
      */
     public void loadPatientSchema(){
-        Schema currentSchema = new Schema();
-        currentPatient.setEnrolledSchema(currentSchema);
+        //Schema currentSchema = new Schema();
+        GetPatientSchemaLoadTask schemaLoader = new GetPatientSchemaLoadTask();
+        try{
+            Schema currentSchema = schemaLoader.execute(getString(R.string.server_url), currentPatient.getPid()).get().get(0);
+            Log.v("GetPatientActivity.java: The patient schema we just loaded was", currentSchema.toString());
+            currentPatient.setEnrolledSchema(currentSchema);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("null pointer exception","");
+        }
+        
+        return;
+        
+        //currentPatient.setEnrolledSchema(currentSchema);
 //        below is the real code when the load task works
 //        GetPatientSchemaLoadTask loadTask = new GetPatientSchemaLoadTask();
 //
