@@ -73,7 +73,6 @@ public class GetPatientActivity extends Activity {
         loadPatientSpinner();
         testFunction();
         try {
-
             OfflineStorageManager sm = new OfflineStorageManager(this);
             String patient_file = getString(R.string.patient_data_filename);
             object = new JSONArray(sm.getStringFromLocal(patient_file));
@@ -105,6 +104,7 @@ public class GetPatientActivity extends Activity {
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
+            
         });
         try {
             setButtons(false);

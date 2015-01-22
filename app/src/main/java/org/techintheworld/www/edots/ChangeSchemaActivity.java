@@ -1,6 +1,7 @@
 package org.techintheworld.www.edots;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,8 @@ import edots.tasks.NewSchemaUploadTask;
 public class ChangeSchemaActivity extends Activity {
     
     Patient currentPatient;
+    Schema currentPatientSchema;
+    
 
     private ArrayList<String> schemaDays = new ArrayList<String>();
 
@@ -52,10 +55,10 @@ public class ChangeSchemaActivity extends Activity {
         patientName.setText(currentPatient.getName());
         
         // get the current patient's schema
-        Schema currentPatientSchema = currentPatient.getEnrolledSchema();
+        currentPatientSchema = currentPatient.getEnrolledSchema();
         
-        Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
-        currentPatientSchedule = currentPatientSchema.getSchedule();
+        //Schedule currentPatientSchedule = currentPatient.getPatientSchedule();
+        Schedule currentPatientSchedule = currentPatientSchema.getSchedule();
         Log.v("ChangeSchemaActivity: the current schedule is", currentPatientSchedule.toString());
         
         EditText startDate = (EditText) findViewById(R.id.schema_start_day);
@@ -118,6 +121,14 @@ public class ChangeSchemaActivity extends Activity {
         }
     }
     
+    // TODO: Make this actually update the local schema in currentPatient - or perhaps update by pulling from the database
+    public void updateSchema(){
+        
+        Schema tmp = new Schema();
+        currentPatient.setEnrolledSchema(tmp);
+        
+    }
+    
     public void submitChangeSchema(View view) {
         
         EditText startDate = (EditText) findViewById(R.id.schema_start_day);
@@ -162,12 +173,17 @@ public class ChangeSchemaActivity extends Activity {
                     "2015-05-28 00:00:00.0", // TODO: Should be the real end date
                     "1",
                     "1").get();
+            updateSchema();
             Log.v("ChangeSchemaActivity.java: The result of the schema upload was: ", s);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+        Intent intent = new Intent(this, GetPatientActivity.class);
+        intent.putExtra("Patient", currentPatient.toString());
+        startActivity(intent);
         
         return;
         
