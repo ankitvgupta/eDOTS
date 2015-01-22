@@ -61,28 +61,28 @@ public class MedicalHistoryActivity extends FragmentActivity {
     Date weekAgo;
     Date monthAgo;
 
-    Boolean MondayMorning;
-    Boolean MondayTarde;
-    Boolean TuesdayMorning;
-    Boolean TuesdayTarde;
-    Boolean WednesdayMorning;
-    Boolean WednesdayTarde;
-    Boolean ThursdayMorning;
-    Boolean ThursdayTarde;
-    Boolean FridayMorning;
-    Boolean FridayTarde;
-    Boolean SaturdayMorning;
-    Boolean SaturdayTarde;
-    Boolean SundayMorning;
-    Boolean SundayTarde;
+    boolean MondayMorning;
+    boolean MondayTarde;
+    boolean TuesdayMorning;
+    boolean TuesdayTarde;
+    boolean WednesdayMorning;
+    boolean WednesdayTarde;
+    boolean ThursdayMorning;
+    boolean ThursdayTarde;
+    boolean FridayMorning;
+    boolean FridayTarde;
+    boolean SaturdayMorning;
+    boolean SaturdayTarde;
+    boolean SundayMorning;
+    boolean SundayTarde;
 
-    Boolean Monday;
-    Boolean Tuesday;
-    Boolean Wednesday;
-    Boolean Thursday;
-    Boolean Friday;
-    Boolean Saturday;
-    Boolean Sunday;
+    boolean Monday;
+    boolean Tuesday;
+    boolean Wednesday;
+    boolean Thursday;
+    boolean Friday;
+    boolean Saturday;
+    boolean Sunday;
     int difference;
 
 

@@ -58,7 +58,7 @@ public class NewPatientDataActivity extends Activity {
     private Patient currentPatient;
     private ArrayList<Schema> schemaList = new ArrayList<Schema>();
     private ArrayList<Drug> drugList = new ArrayList<Drug>();
-    private ArrayList<String> treatmentDays = new ArrayList<String>();
+    private ArrayList<String> schemaDays = new ArrayList<String>();
     DateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -117,7 +117,7 @@ public class NewPatientDataActivity extends Activity {
         loadDatePickers();
         loadSchemaCheckboxes();
         loadDrugCheckboxes();
-        loadTreatmentDayCheckboxes();
+        loadSchemaDayCheckboxes();
 
         // check if not connected to internet, then disable everything and show dialog
         if (!InternetConnection.checkConnection(this)){
@@ -249,9 +249,9 @@ public class NewPatientDataActivity extends Activity {
         schemaList.add(new Schema());
 
         // sets layout_height for ListView based on number of treatments
-        ListView treatmentView = (ListView) findViewById(R.id.schema);
+        ListView schemaView = (ListView) findViewById(R.id.schema);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * schemaList.size(), getResources().getDisplayMetrics());
-        treatmentView.getLayoutParams().height = height;
+        schemaView.getLayoutParams().height = height;
 
 
         ArrayList<String> checkboxesText = new ArrayList<String>();
@@ -305,28 +305,28 @@ public class NewPatientDataActivity extends Activity {
      * updated: lili
      * loads treatment day checkboxes
      */
-    public void loadTreatmentDayCheckboxes() {
+    public void loadSchemaDayCheckboxes() {
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350, getResources().getDisplayMetrics());
         daysVisited.getLayoutParams().height = height;
 
-        treatmentDays.add("Monday");
-        treatmentDays.add("Tuesday");
-        treatmentDays.add("Wednesday");
-        treatmentDays.add("Thursday");
-        treatmentDays.add("Friday");
-        treatmentDays.add("Saturday");
-        treatmentDays.add("Sunday");
-        treatmentDays.add("Monday Afternoon");
-        treatmentDays.add("Tuesday Afternoon");
-        treatmentDays.add("Wednesday Afternoon");
-        treatmentDays.add("Thursday Afternoon");
-        treatmentDays.add("Friday Afternoon");
-        treatmentDays.add("Saturday Afternoon");
-        treatmentDays.add("Sunday Afternoon");
+        schemaDays.add("Monday");
+        schemaDays.add("Tuesday");
+        schemaDays.add("Wednesday");
+        schemaDays.add("Thursday");
+        schemaDays.add("Friday");
+        schemaDays.add("Saturday");
+        schemaDays.add("Sunday");
+        schemaDays.add("Monday Afternoon");
+        schemaDays.add("Tuesday Afternoon");
+        schemaDays.add("Wednesday Afternoon");
+        schemaDays.add("Thursday Afternoon");
+        schemaDays.add("Friday Afternoon");
+        schemaDays.add("Saturday Afternoon");
+        schemaDays.add("Sunday Afternoon");
 
         // creating adapter for ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_checked, treatmentDays);
+                android.R.layout.simple_list_item_checked, schemaDays);
 
         // creates ListView checkboxes
         daysVisited.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
