@@ -36,6 +36,7 @@ import java.util.concurrent.ExecutionException;
 import edots.models.Drug;
 import edots.models.Patient;
 import edots.models.Schema;
+import edots.tasks.GetDrugLoadTask;
 import edots.tasks.GetPatientLoadTask;
 import edots.tasks.GetPatientSchemaLoadTask;
 import edots.tasks.NewPatientUploadTask;
@@ -90,7 +91,7 @@ public class NewPatientDataActivity extends Activity {
     RadioButton patientHomeBtn;
     ListView schemaListText;
     ListView daysVisited;
-    ListView drugsList;
+    ListView drugListView;
 
     static final int DATE_DIALOG_ID = 0;
 
@@ -117,7 +118,7 @@ public class NewPatientDataActivity extends Activity {
         patientHomeBtn = (RadioButton) findViewById(R.id.radio_patient_home);
 //        schemaListText = (ListView) findViewById(R.id.schema);
         daysVisited = (ListView) findViewById(R.id.schema_days);
-        drugsList = (ListView) findViewById(R.id.drugs);
+        drugListView = (ListView) findViewById(R.id.drugs);
         spnSchema = (Spinner) findViewById(R.id.schema_spinner);
 
         // Makes sure that the keyboard doesn't automatically rise
@@ -314,14 +315,32 @@ public class NewPatientDataActivity extends Activity {
     public void loadDrugCheckboxes() {
         // list of drugs
         // for testing
-        drugList.add(new Drug());
-        drugList.add(new Drug());
-        drugList.add(new Drug());
-        drugList.add(new Drug());
+//        drugList.add(new Drug());
+//        drugList.add(new Drug());
+//        drugList.add(new Drug());
+//        drugList.add(new Drug());
 
+        GetDrugLoadTask getD = new GetDrugLoadTask();
+        try {
+            AsyncTask d = getD.execute(getString(R.string.server_url), "1");
+            drugList = (ArrayList<Drug>) d.get();
+            Log.v("New patient: drug list", drugList.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch(NullPointerException e)
+        {
+            if (!InternetConnection.checkConnection(this)) {
+                AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
+            } else {
+                e.printStackTrace();
+            }
+        }
+        
         // sets layout_height for ListView based on number of drugs
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * drugList.size(), getResources().getDisplayMetrics());
-        drugsList.getLayoutParams().height = height;
+        drugListView.getLayoutParams().height = height;
 
 
         ArrayList<String> checkboxesText = new ArrayList<String>();
@@ -334,8 +353,8 @@ public class NewPatientDataActivity extends Activity {
                 android.R.layout.simple_list_item_checked, checkboxesText);
 
         // creates ListView checkboxes
-        drugsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        drugsList.setAdapter(adapter);
+        drugListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        drugListView.setAdapter(adapter);
     }
 
     /**
@@ -531,9 +550,9 @@ public class NewPatientDataActivity extends Activity {
             }
         }
 
-        SparseBooleanArray drugsPicked = drugsList.getCheckedItemPositions();
+        SparseBooleanArray drugsPicked = drugListView.getCheckedItemPositions();
         int numDrugs = 0;
-        for (int i = 0; i < drugsList.getAdapter().getCount(); i++) {
+        for (int i = 0; i < drugListView.getAdapter().getCount(); i++) {
             if (drugsPicked.get(i)) {
                 numDrugs++;
             }
@@ -646,8 +665,8 @@ public class NewPatientDataActivity extends Activity {
             }
 
             ArrayList<Drug> enrolledDrugs = new ArrayList<Drug>();
-            SparseBooleanArray drugsPicked = drugsList.getCheckedItemPositions();
-            for (int i = 0; i < drugsList.getAdapter().getCount(); i++) {
+            SparseBooleanArray drugsPicked = drugListView.getCheckedItemPositions();
+            for (int i = 0; i < drugListView.getAdapter().getCount(); i++) {
                 if (drugsPicked.get(i)) {
                     enrolledDrugs.add(drugList.get(i));
                 }
