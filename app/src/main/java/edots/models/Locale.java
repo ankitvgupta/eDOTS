@@ -95,8 +95,6 @@ public class Locale extends Saveable {
             Log.e("Locale.java: GetLocaleNumber", "JSONException");
         }
         return null;
-
-
     }
 
 

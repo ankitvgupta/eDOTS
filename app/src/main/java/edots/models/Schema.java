@@ -1,13 +1,17 @@
 package edots.models;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.techintheworld.www.edots.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import edots.utils.OfflineStorageManager;
 
 /**
  *
@@ -18,6 +22,16 @@ import java.util.Arrays;
 public class Schema  extends Saveable{
     private String id;
     private String name;
+
+    public Schema(String id, String name, ArrayList<Drug> drugs, String phase, String visit_mode, Schedule schedule) {
+        this.id = id;
+        this.name = name;
+        this.drugs = drugs;
+        this.phase = phase;
+        this.visit_mode = visit_mode;
+        this.schedule = schedule;
+    }
+
     private ArrayList<Drug> drugs;
     private String phase;
     private String visit_mode; // 1 for "clinic" or 2 for "patient home"
@@ -43,16 +57,7 @@ public class Schema  extends Saveable{
         }
     }
 
-    
-    /**
-     * @param i project id
-     * @param n name of the project
-     */
-    @Deprecated
-    public Schema(String i, String n){
-        id = i;
-        name = n;
-    }
+
 
     /**
      * @param JSONString a JSON object representing the schema
@@ -146,7 +151,22 @@ public class Schema  extends Saveable{
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
-    
+
+
+    /**
+     *
+     * @param schemas a list of scehmas
+     * @return an array with the list of names of the schemas
+     */
+    public static String[] ConvertSchemaObjsToStrings(ArrayList<Schema> schemas) {
+        String[] schema_strings = new String[schemas.size()];
+
+        for (int i = 0; i < schemas.size(); i++) {
+            schema_strings[i] = schemas.get(i).phase + " " + schemas.get(i).name;
+        }
+        return schema_strings;
+    }
+
     public String printDrugs(){
         String result = "";
         for (int i = 0; i < drugs.size(); i++){
@@ -158,4 +178,23 @@ public class Schema  extends Saveable{
         return result;
     }
 
+    public static String GetSchemaNumber(Context context, String schema_name){
+        OfflineStorageManager sm = new OfflineStorageManager(context);
+        String schema_file = context.getString(R.string.schema_filename);
+        try{
+            JSONArray array = new JSONArray(sm.getStringFromLocal(schema_file));
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                Schema s = new Schema(obj.toString());
+                if ((s.phase + " " + s.name).equals(schema_name)){
+                    return String.valueOf(s.id);
+                }
+            }
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+            Log.e("Locale.java: GetLocaleNumber", "JSONException");
+        }
+        return null;
+    }
 }

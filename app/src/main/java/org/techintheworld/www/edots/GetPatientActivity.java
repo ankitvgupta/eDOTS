@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -36,6 +37,7 @@ import edots.models.Schema;
 import edots.models.Visit;
 import edots.tasks.GetPatientContactLoadTask;
 import edots.tasks.GetPatientLoadTask;
+import edots.tasks.GetPatientSchemaLoadTask;
 import edots.tasks.NewPromoterPatientUploadTask;
 import edots.utils.OfflineStorageManager;
 
@@ -68,12 +70,15 @@ public class GetPatientActivity extends Activity {
         // fetch promoterID from SharedPreferences
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext());
         promoterId = sPrefs.getString(getString(R.string.key_userid), "");
-        
+
+        // Makes sure that the keyboard doesn't automatically rise
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
         spnPatient = (Spinner) findViewById(R.id.patient_spinner);
         loadPatientSpinner();
         testFunction();
         try {
-
             OfflineStorageManager sm = new OfflineStorageManager(this);
             String patient_file = getString(R.string.patient_data_filename);
             object = new JSONArray(sm.getStringFromLocal(patient_file));
@@ -105,6 +110,7 @@ public class GetPatientActivity extends Activity {
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
+            
         });
         try {
             setButtons(false);
@@ -222,8 +228,23 @@ public class GetPatientActivity extends Activity {
      * load the project a patient is currently enrolled in into the patient object
      */
     public void loadPatientSchema(){
-        Schema currentSchema = new Schema();
-        currentPatient.setEnrolledSchema(currentSchema);
+        //Schema currentSchema = new Schema();
+        GetPatientSchemaLoadTask schemaLoader = new GetPatientSchemaLoadTask();
+        try{
+            Schema currentSchema = schemaLoader.execute(getString(R.string.server_url), currentPatient.getPid()).get().get(0);
+            Log.v("GetPatientActivity.java: The patient schema we just loaded was", currentSchema.toString());
+            currentPatient.setEnrolledSchema(currentSchema);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        } catch (NullPointerException e1){
+            Log.e("null pointer exception","");
+        }
+        
+        return;
+        
+        //currentPatient.setEnrolledSchema(currentSchema);
 //        below is the real code when the load task works
 //        GetPatientSchemaLoadTask loadTask = new GetPatientSchemaLoadTask();
 //
