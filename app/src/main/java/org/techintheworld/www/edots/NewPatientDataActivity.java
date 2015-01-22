@@ -356,10 +356,10 @@ public class NewPatientDataActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    // switch to CheckFingerPrint Activity
-    public void switchCheckFingerPrint(View view) {
-
-        Intent intent = new Intent(this, CheckFingerPrintActivity.class);
+    // switch to RegisterFingerPrint Activity
+    public void switchRegisterFingerPrint(View view) {
+        Intent intent = new Intent(this, RegisterFingerPrintActivity.class);
+        startActivity(intent);
     }
 
     /*
