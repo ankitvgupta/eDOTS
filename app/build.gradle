@@ -31,4 +31,5 @@ dependencies {
     compile files('libs/Parse-1.7.1.jar')
     compile 'com.android.support:support-v4:18.0.0'
     compile files('libs/ksoap2-android-assembly-3.3.0-jar-with-dependencies.jar')
+    compile files('libs/FDxSDKProAndroid.jar')
 }
