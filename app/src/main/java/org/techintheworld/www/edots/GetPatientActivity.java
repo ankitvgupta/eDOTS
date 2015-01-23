@@ -206,8 +206,9 @@ public class GetPatientActivity extends Activity {
             // parse the result, and return it
             try {
                 currentPatient = (Patient) p.get();
-                ArrayList<Visit> visits = currentPatient.getPatientHistory(this);
-                Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
+                Log.v("GetPatientActivity: The patient loaded is", currentPatient.toString());
+                //ArrayList<Visit> visits = currentPatient.getPatientHistory(this);
+                //Log.v("GetPatientActivity.java: The patient visits that we got are", visits.toString());
                 //Log.v("Patient that we got is", currentPatient.toString());
 
             } catch (InterruptedException e1) {
@@ -228,18 +229,25 @@ public class GetPatientActivity extends Activity {
      */
     public void loadPatientSchema(){
         //Schema currentSchema = new Schema();
+        Log.v("GetPatientActivity.java: About to start loading schema", "About to start loading schema");
         GetPatientSchemaLoadTask schemaLoader = new GetPatientSchemaLoadTask();
         try{
             Schema currentSchema = schemaLoader.execute(getString(R.string.server_url), currentPatient.getPid()).get().get(0);
             Log.v("GetPatientActivity.java: The patient schema we just loaded was", currentSchema.toString());
             currentPatient.setEnrolledSchema(currentSchema);
+            return;
         } catch (InterruptedException e1) {
+            Log.v("GetPatientActivity.java: Could not load schema", "Could not load schema");
             e1.printStackTrace();
         } catch (ExecutionException e1) {
+            Log.v("GetPatientActivity.java: Could not load schema", "Could not load schema");
             e1.printStackTrace();
         } catch (NullPointerException e1){
+            Log.v("GetPatientActivity.java: Could not load schema", "Could not load schema");
             Log.e("null pointer exception","");
         }
+        
+        currentPatient.setEnrolledSchema(new Schema());
         
         return;
         
@@ -387,6 +395,7 @@ public class GetPatientActivity extends Activity {
         
         // lookup the given patient;
         try {
+            
             currentPatient = lookupPatient(pid);
             loadPatientSchema();
         }
