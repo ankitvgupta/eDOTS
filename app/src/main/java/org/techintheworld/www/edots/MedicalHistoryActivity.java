@@ -386,188 +386,56 @@ public class MedicalHistoryActivity extends FragmentActivity {
             // then check if the visitDate is within the past month or week and update those as well
 
             if (day_of_week == Calendar.MONDAY) {
-                if (visitDate.after(currentDate)) {
-                    if (MondayMorning) {
-                        total_future++;
-                    }
-                    if (MondayTarde) {
-                        total_future++;
-                    }
-                } else if (morningVisit == MondayMorning && afternoonVisit == MondayTarde) {
-                    total_received += count_true;
-                    updateReceivedWeekAndMonthCounters(visitDate, count_true);
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                } else if (morningVisit == MondayMorning && morningVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else if (afternoonVisit == MondayTarde && afternoonVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else {
-                    total_missed += 2;
-                    updateMissedWeekAndMonthCounters(visitDate, 2);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, MondayMorning, MondayTarde, count_true);
             } else if (day_of_week == Calendar.TUESDAY) {
-                if (visitDate.after(currentDate)) {
-                    if (TuesdayMorning) {
-                        total_future++;
-                    }
-                    if (TuesdayTarde) {
-                        total_future++;
-                    }
-                } else if (morningVisit == TuesdayMorning && afternoonVisit == TuesdayTarde) {
-                    total_received += count_true;
-                    updateReceivedWeekAndMonthCounters(visitDate, count_true);
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                } else if (morningVisit == TuesdayMorning && morningVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else if (afternoonVisit == TuesdayTarde && afternoonVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else {
-                    total_missed += 2;
-                    updateMissedWeekAndMonthCounters(visitDate, 2);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, TuesdayMorning, TuesdayTarde, count_true);
             } else if (day_of_week == Calendar.WEDNESDAY) {
-                if (visitDate.after(currentDate)) {
-                    if (WednesdayMorning) {
-                        total_future++;
-                    }
-                    if (WednesdayTarde) {
-                        total_future++;
-                    }
-                } else if (morningVisit == WednesdayMorning && afternoonVisit == WednesdayTarde) {
-                    total_received += count_true;
-                    updateReceivedWeekAndMonthCounters(visitDate, count_true);
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                } else if (morningVisit == WednesdayMorning && morningVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else if (afternoonVisit == WednesdayTarde && afternoonVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else {
-                    total_missed += 2;
-                    updateMissedWeekAndMonthCounters(visitDate, 2);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, WednesdayMorning, WednesdayTarde, count_true);
             } else if (day_of_week == Calendar.THURSDAY) {
-                if (visitDate.after(currentDate)) {
-                    if (ThursdayMorning) {
-                        total_future++;
-                    }
-                    if (ThursdayTarde) {
-                        total_future++;
-                    }
-                } else if (morningVisit == ThursdayMorning && afternoonVisit == ThursdayTarde) {
-                    total_received += count_true;
-                    updateReceivedWeekAndMonthCounters(visitDate, count_true);
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                } else if (morningVisit == ThursdayMorning && morningVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else if (afternoonVisit == ThursdayTarde && afternoonVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else {
-                    total_missed += 2;
-                    updateMissedWeekAndMonthCounters(visitDate, 2);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, ThursdayMorning, ThursdayTarde, count_true);
             } else if (day_of_week == Calendar.FRIDAY) {
-                if (visitDate.after(currentDate)) {
-                    if (FridayMorning) {
-                        total_future++;
-                    }
-                    if (FridayTarde) {
-                        total_future++;
-                    }
-                } else if (morningVisit == FridayMorning && afternoonVisit == FridayTarde) {
-                    total_received += count_true;
-                    updateReceivedWeekAndMonthCounters(visitDate, count_true);
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                } else if (morningVisit == FridayMorning && morningVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else if (afternoonVisit == FridayTarde && afternoonVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else {
-                    total_missed += 2;
-                    updateMissedWeekAndMonthCounters(visitDate, 2);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, FridayMorning, FridayTarde, count_true);
             } else if (day_of_week == Calendar.SATURDAY) {
-                if (visitDate.after(currentDate)) {
-                    if (SaturdayMorning) {
-                        total_future++;
-                    }
-                    if (SaturdayTarde) {
-                        total_future++;
-                    }
-                } else if (morningVisit == SaturdayMorning && afternoonVisit == SaturdayTarde) {
-                    total_received += count_true;
-                    updateReceivedWeekAndMonthCounters(visitDate, count_true);
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                } else if (morningVisit == SaturdayMorning && morningVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else if (afternoonVisit == SaturdayTarde && afternoonVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else {
-                    total_missed += 2;
-                    updateMissedWeekAndMonthCounters(visitDate, 2);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, SaturdayMorning, SaturdayTarde, count_true);
             } else if (day_of_week == Calendar.SUNDAY) {
-                if (visitDate.after(currentDate)) {
-                    if (SundayMorning) {
-                        total_future++;
-                    }
-                    if (SundayTarde) {
-                        total_future++;
-                    }
-                } else if (morningVisit == SundayMorning && afternoonVisit == SundayTarde) {
-                    total_received += count_true;
-                    updateReceivedWeekAndMonthCounters(visitDate, count_true);
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                } else if (morningVisit == SundayMorning && morningVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else if (afternoonVisit == SundayTarde && afternoonVisit) {
-                    total_received++;
-                    total_missed++;
-                    updateMissedWeekAndMonthCounters(visitDate, 1);
-                    updateReceivedWeekAndMonthCounters(visitDate, 1);
-                } else {
-                    total_missed += 2;
-                    updateMissedWeekAndMonthCounters(visitDate, 2);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, SundayMorning, SundayTarde, count_true);
             }
+        }
+    }
+
+    /*
+    * Written by Nishant
+    * Updates future, missed and received visit counters
+    */
+    public void updateCounters(Date visitDate, boolean morningVisit, boolean afternoonVisit,
+                       boolean scheduledMorning, boolean scheduledTarde, int count_true) {
+        if (visitDate.after(currentDate)) {
+            if (scheduledMorning) {
+                total_future++;
+            }
+            if (scheduledTarde) {
+                total_future++;
+            }
+        } else if (morningVisit == scheduledMorning && afternoonVisit == scheduledTarde) {
+            total_received += count_true;
+            updateReceivedWeekAndMonthCounters(visitDate, count_true);
+            colorGreen(morningVisit, afternoonVisit, visitDate);
+        } else if (morningVisit == scheduledMorning && morningVisit) {
+            total_received++;
+            total_missed++;
+            updateMissedWeekAndMonthCounters(visitDate, 1);
+            updateReceivedWeekAndMonthCounters(visitDate, 1);
+        } else if (afternoonVisit == scheduledTarde && afternoonVisit) {
+            total_received++;
+            total_missed++;
+            updateMissedWeekAndMonthCounters(visitDate, 1);
+            updateReceivedWeekAndMonthCounters(visitDate, 1);
+        } else if (scheduledMorning || scheduledTarde) {
+            total_missed += 1;
+            updateMissedWeekAndMonthCounters(visitDate, 1);
+        } else {
+            total_missed += 2;
+            updateMissedWeekAndMonthCounters(visitDate, 2);
         }
     }
 
