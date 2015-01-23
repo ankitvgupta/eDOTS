@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -89,7 +91,6 @@ public class NewPatientDataActivity extends Activity {
     RadioButton maleBtn;
     RadioButton clinicBtn;
     RadioButton patientHomeBtn;
-    ListView schemaListText;
     ListView daysVisited;
     ListView drugListView;
 
@@ -104,6 +105,15 @@ public class NewPatientDataActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient_data);
 
+        // check if not connected to internet, then disable everything and show dialog
+        if (!InternetConnection.checkConnection(this)){
+            AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
+            blockAllInput();
+            TextView tview = (TextView)findViewById(R.id.internet_status);
+            tview.setVisibility(View.VISIBLE);
+
+        }
+        
         nationalID = (EditText) findViewById(R.id.National_ID);
         name = (EditText) findViewById(R.id.Name);
         fatherName = (EditText) findViewById(R.id.Fathers_name);
@@ -116,7 +126,6 @@ public class NewPatientDataActivity extends Activity {
         maleBtn = (RadioButton) findViewById(R.id.radio_male);
         clinicBtn = (RadioButton) findViewById(R.id.radio_clinic);
         patientHomeBtn = (RadioButton) findViewById(R.id.radio_patient_home);
-//        schemaListText = (ListView) findViewById(R.id.schema);
         daysVisited = (ListView) findViewById(R.id.schema_days);
         drugListView = (ListView) findViewById(R.id.drugs);
         spnSchema = (Spinner) findViewById(R.id.schema_spinner);
@@ -126,18 +135,22 @@ public class NewPatientDataActivity extends Activity {
 
         loadDatePickers();
         loadSchemaSpinner(this.getString(R.string.server_url));
-        loadDrugCheckboxes();
         loadSchemaDayCheckboxes();
 
+        spnSchema.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO: need to actually map index to CadigoEsquema
+                int index = arg0.getSelectedItemPosition();
+                loadDrugCheckboxes(index+1);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                loadDrugCheckboxes(1);
+            }
 
-        // check if not connected to internet, then disable everything and show dialog
-        if (!InternetConnection.checkConnection(this)){
-            AlertError(getString(R.string.no_internet_title), getString(R.string.no_internet_connection));
-            blockAllInput();
-            TextView tview = (TextView)findViewById(R.id.internet_status);
-            tview.setVisibility(View.VISIBLE);
-
-        }
+        });
     }
 
     /* @author Nishant
@@ -254,16 +267,14 @@ public class NewPatientDataActivity extends Activity {
      * Loads Checkboxes Dynamically for Drugs
      */
     // TODO: add dosage text editors
-    // TODO: respond with real schema number
-    public void loadDrugCheckboxes() {
+    public void loadDrugCheckboxes(Integer CodigoEsquema) {
         // list of drugs
 
         GetDrugLoadTask getD = new GetDrugLoadTask();
         try {
-            AsyncTask d = getD.execute(getString(R.string.server_url), "1");
+            AsyncTask d = getD.execute(getString(R.string.server_url), Integer.toString(CodigoEsquema));
             drugList = (ArrayList<Drug>) d.get();
             Log.v("New patient: drug list", drugList.toString());
-//            Log.v("New patient: first drug", drugList.get(0).toString());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -696,6 +707,7 @@ public class NewPatientDataActivity extends Activity {
         String[] locales;
         try {
             // try server side first
+            // TODO: this is a hack. need a load task and web method to load all schemas in database
             loadSchema = schemaLoadTask.execute(url, "D74CCD37-8DE4-447C-946E-1300E9498577");
             arrSchema = (ArrayList<Schema>) loadSchema.get();
             locales = Schema.ConvertSchemaObjsToStrings(arrSchema);

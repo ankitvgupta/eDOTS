@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import edots.models.Patient;
-import edots.models.Promoter;
 import edots.models.Schema;
 import edots.models.Visit;
 import edots.tasks.GetPatientContactLoadTask;
