@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -72,6 +73,9 @@ public class ShowVisitActivity extends Activity {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat dateFormatter = DateFormat.getDateInstance();
+    SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00.0");
+    SimpleDateFormat customDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
 
     LinearLayout encloseScrollLayout;
 
@@ -129,10 +133,23 @@ public class ShowVisitActivity extends Activity {
 
         ArrayList<VisitDay> visitDays = new ArrayList<VisitDay> ();
 
+        String dbStartDate = "";
+        String dbEndDate = "";
+
+        try {
+            Date temp = customDateFormat.parse(startDate);
+            dbStartDate = dbDateFormat.format(temp);
+
+            temp = customDateFormat.parse(endDate);
+            dbEndDate = dbDateFormat.format(temp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         try {
             GetVisitPerDayLoadTask getVisitDays = new GetVisitPerDayLoadTask();
             AsyncTask visit = getVisitDays.execute(getString(R.string.server_url),
-                    currentPatient.getPid(), startDate, endDate);
+                    currentPatient.getPid(), dbStartDate, dbEndDate);
             visitDays = (ArrayList<VisitDay>) visit.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -147,6 +164,8 @@ public class ShowVisitActivity extends Activity {
             }
         }
 
+        Log.v("ShowVisitActivity", "visitDays: " + visitDays);
+
         int numDays = visitDays.size();
         Calendar c = Calendar.getInstance();
         int day_of_week;
@@ -160,11 +179,23 @@ public class ShowVisitActivity extends Activity {
 
         boolean dateMatchFound = false;
 
+        Log.v("ShowVisitActivity", "right above for loop");
         for (int i = (numDays - 1); i >= 0; i--) {
+            Log.v("ShowVisitActivity", "entered for loop");
             VisitDay visitDay = visitDays.get(i);
             Date visitDate = visitDay.getDate();
+//            String temp = formatter.format(visitDate);
+//            try {
+//                visitDate = formatter.parse(temp);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+
+            Log.v("ShowVisitActivity", "visitDate: " + visitDate);
+            Log.v("ShowVisitActivity", "selectedDate: " + selectedDate);
 
             if (visitDate.compareTo(selectedDate) == 0) {
+                Log.v("ShowVisitActivity", "date match was found!");
                 dateMatchFound = true;
 
                 String patientName = currentPatient.getName();
@@ -249,22 +280,25 @@ public class ShowVisitActivity extends Activity {
                               boolean morningVisit, boolean afternoonVisit) {
         if (morningScheduled) {
             if (morningVisit) {
-                morningHeader.setText("<b>" + "Morning Visit: " + "</b>" + "Attended");
+                morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "Attended"));
             } else {
-                morningHeader.setText("<b>" + "Morning Visit: " + "</b>" + "Missed");
+                morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "Missed"));
             }
         } else {
-            morningHeader.setText("<b>" + "Morning Visit: " + "</b>" + "None Scheduled");
+            morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "None Scheduled"));
         }
         if (afternoonScheduled) {
             if (afternoonVisit) {
-                afternoonHeader.setText("<b>" + "Afternoon Visit: " + "</b>" + "Attended");
+                afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "Attended"));
             } else {
-                afternoonHeader.setText("<b>" + "Afternoon Visit: " + "</b>" + "Missed");
+                afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "Missed"));
             }
         } else {
-            afternoonHeader.setText("<b>" + "Afternoon Visit: " + "</b>" + "None Scheduled");
+            afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "None Scheduled"));
         }
+
+        morningHeader.setTextSize(20);
+        afternoonHeader.setTextSize(20);
     }
 
     /*
