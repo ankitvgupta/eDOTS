@@ -126,7 +126,6 @@ public class NewPatientDataActivity extends Activity {
 
         loadDatePickers();
         loadSchemaSpinner(this.getString(R.string.server_url));
-        //loadSchemaCheckboxes();
         loadDrugCheckboxes();
         loadSchemaDayCheckboxes();
 
@@ -249,82 +248,22 @@ public class NewPatientDataActivity extends Activity {
         }
     }
 
-    /* Written by Nishant
-     * Loads Checkboxes Dynamically for Schemas
-     */
-//    public void loadSchemaCheckboxes() {
-//        // list of treatment study groups
-//        // for testing
-//        schemaList.add(new Schema());
-//        schemaList.add(new Schema());
-//        schemaList.add(new Schema());
-//        schemaList.add(new Schema());
-//
-//        // sets layout_height for ListView based on number of treatments
-//        ListView treatmentView = (ListView) findViewById(R.id.schema);
-//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * schemaList.size(), getResources().getDisplayMetrics());
-//        treatmentView.getLayoutParams().height = height;
-//
-//
-//        ArrayList<String> checkboxesText = new ArrayList<String>();
-//        for (int i = 0; i < schemaList.size(); i++) {
-//            checkboxesText.add(schemaList.get(i).getName());
-//        }
-//        // creating adapter for ListView
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_checked, checkboxesText);
-//
-//        // creates ListView checkboxes
-//        schemaListText.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        schemaListText.setAdapter(adapter);
-//    }
-
-//    public void loadSchemaCheckboxes() {
-//        // list of treatment study groups
-//        // for testing
-//        schemaList.add(new Schema());
-//        schemaList.add(new Schema());
-//        schemaList.add(new Schema());
-//        schemaList.add(new Schema());
-//
-//        // sets layout_height for ListView based on number of treatments
-//        ListView schemaView = (ListView) findViewById(R.id.schema);
-//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50 * schemaList.size(), getResources().getDisplayMetrics());
-//        schemaView.getLayoutParams().height = height;
-//
-//
-//        ArrayList<String> checkboxesText = new ArrayList<String>();
-//        for (int i = 0; i < schemaList.size(); i++) {
-//            checkboxesText.add(schemaList.get(i).getName());
-//        }
-//        // creating adapter for ListView
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_checked, checkboxesText);
-//
-//        // creates ListView checkboxes
-//        schemaListText.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        schemaListText.setAdapter(adapter);
-//    }
-//
 
     /**
-     * @author nishant
+     * @author lili
      * Loads Checkboxes Dynamically for Drugs
      */
     // TODO: add dosage text editors
+    // TODO: respond with real schema number
     public void loadDrugCheckboxes() {
         // list of drugs
-        // for testing
-//        drugList.add(new Drug());
-//        drugList.add(new Drug());
-//        drugList.add(new Drug());
-//        drugList.add(new Drug());
 
         GetDrugLoadTask getD = new GetDrugLoadTask();
         try {
             AsyncTask d = getD.execute(getString(R.string.server_url), "1");
             drugList = (ArrayList<Drug>) d.get();
             Log.v("New patient: drug list", drugList.toString());
+//            Log.v("New patient: first drug", drugList.get(0).toString());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -473,7 +412,7 @@ public class NewPatientDataActivity extends Activity {
                                     */
             SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
             NewPromoterPatientUploadTask npu = new NewPromoterPatientUploadTask();
-            String npuMessage = npu.execute(getString(R.string.server_url), p.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
+            String npuMessage = npu.execute(this.getString(R.string.server_url), p.getPid(), mPreferences.getString(getString(R.string.key_userid), ""), "0").get();
             Log.v("GetPatientActivity: loadPatient: PromoterPatientUploadTask", npuMessage);
         } catch (InterruptedException e) {
             e.printStackTrace();
