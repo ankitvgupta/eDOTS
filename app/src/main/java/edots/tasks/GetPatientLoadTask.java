@@ -89,7 +89,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
             // actual project will be loaded in PatientProjectLoadTask
             GetPatientSchemaLoadTask schemaLoader = new GetPatientSchemaLoadTask();
             Schema enrolledSchema = new Schema();
-            try{
+            /*try{
                 enrolledSchema = schemaLoader.execute(urlserver, patientID).get().get(0);
                 Log.v("Loaded schema successfully", "Loaded schema successfully");
             } catch (InterruptedException e1) {
@@ -104,7 +104,7 @@ public class GetPatientLoadTask extends AsyncTask<String,String,Patient> {
                 Log.e("GetPatientLoadTask", "NullPointerException");
                 Log.v("Using default schema", "Using default schema");
                 enrolledSchema = new Schema();
-            }
+            }*/
            
 
             Log.v("patient data", patientID+name+fathersName+mothersName+nationalID);
