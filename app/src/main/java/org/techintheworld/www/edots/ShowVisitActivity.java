@@ -185,13 +185,6 @@ public class ShowVisitActivity extends Activity {
         for (int i = (numDays - 1); i >= 0; i--) {
             VisitDay visitDay = visitDays.get(i);
             Date visitDate = visitDay.getDate();
-//            String temp = formatter.format(visitDate);
-//            try {
-//                visitDate = formatter.parse(temp);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-
 
             if (visitDate.compareTo(selectedDate) == 0) {
                 dateMatchFound = true;
@@ -217,34 +210,6 @@ public class ShowVisitActivity extends Activity {
 
                 c.setTime(visitDate);
                 day_of_week = c.get(Calendar.DAY_OF_WEEK);
-
-//                if (day_of_week == Calendar.MONDAY) {
-//                    setHeaderText(MondayMorning, MondayTarde, morningVisit, afternoonVisit);
-//                } else if (day_of_week == Calendar.TUESDAY) {
-//                    if (morningVisit == TuesdayMorning && afternoonVisit == TuesdayTarde) {
-//                        setHeaderText(TuesdayMorning, TuesdayTarde, morningVisit, afternoonVisit);
-//                    }
-//                } else if (day_of_week == Calendar.WEDNESDAY) {
-//                    if (morningVisit == WednesdayMorning && afternoonVisit == WednesdayTarde) {
-//                        setHeaderText(WednesdayMorning, WednesdayTarde, morningVisit, afternoonVisit);
-//                    }
-//                } else if (day_of_week == Calendar.THURSDAY) {
-//                    if (morningVisit == ThursdayMorning && afternoonVisit == ThursdayTarde) {
-//                        setHeaderText(ThursdayMorning, ThursdayTarde, morningVisit, afternoonVisit);
-//                    }
-//                } else if (day_of_week == Calendar.FRIDAY) {
-//                    if (morningVisit == FridayMorning && afternoonVisit == FridayTarde) {
-//                        setHeaderText(FridayMorning, FridayTarde, morningVisit, afternoonVisit);
-//                    }
-//                } else if (day_of_week == Calendar.SATURDAY) {
-//                    if (morningVisit == SaturdayMorning && afternoonVisit == SaturdayTarde) {
-//                        setHeaderText(SaturdayMorning, SaturdayTarde, morningVisit, afternoonVisit);
-//                    }
-//                } else if (day_of_week == Calendar.SUNDAY) {
-//                    if (morningVisit == SundayMorning && afternoonVisit == SundayTarde) {
-//                        setHeaderText(SundayMorning, SaturdayTarde, morningVisit, afternoonVisit);
-//                    }
-//                }
 
                 if (selectedDate.after(currentDate)) {
                     Log.v("entered future date condition", "hi");
@@ -294,7 +259,10 @@ public class ShowVisitActivity extends Activity {
                     " this patient's schema");
         }
     }
-
+    /*
+     * Written by Nishant
+     * Sets appropriate header text for morning and afternoon visits
+     */
     public void setHeaderText(boolean morningScheduled, boolean afternoonScheduled,
                               boolean morningVisit, boolean afternoonVisit, boolean futureDate) {
         Log.v("setHeaderText", "futureDateBool: " + futureDate);
