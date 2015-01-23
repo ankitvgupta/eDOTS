@@ -387,13 +387,45 @@ public class NewPatientDataActivity extends Activity {
         // TODO: upload visit mode -- home or clinic
         // TODO: upload enrolledSchemas, enrolledDrugs,
         NewPatientUploadTask uploader = new NewPatientUploadTask();
-        NewSchemaUploadTask scheduleUploader = new NewSchemaUploadTask();
+        NewSchemaUploadTask schemaUploader = new NewSchemaUploadTask();
         try {
             String url = getString(R.string.server_url);
             String result = uploader.execute(url, name, father, mother, docType, nationalID, birthDate, sex).get();
             Log.v("NewPatientDataActivity: what we got was", result);
             GetPatientLoadTask gpl = new GetPatientLoadTask();
             Patient p = gpl.execute(url, nationalID).get();
+
+            try {
+                String s = schemaUploader.execute(
+                        getString(R.string.server_url),
+                        p.getPid(),
+                        visitDays.get(0),
+                        visitDays.get(1),
+                        visitDays.get(2),
+                        visitDays.get(3),
+                        visitDays.get(4),
+                        visitDays.get(5),
+                        visitDays.get(6),
+                        visitDays.get(7),
+                        visitDays.get(8),
+                        visitDays.get(9),
+                        visitDays.get(10),
+                        visitDays.get(11),
+                        visitDays.get(12),
+                        visitDays.get(13),
+                        "2014-05-20 00:00:00.0", // TODO: Should be the real start date
+                        "2015-05-28 00:00:00.0", // TODO: Should be the real end date
+                        "1", // TODO: Should not be hardcoded
+                        "1").get(); // TODO: Should not be hardcoded
+
+                Log.v("ChangeSchemaActivity.java: The result of the schema upload was: ", s);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            
+            
             /*
 
             String result2 = scheduleUploader.execute(
@@ -551,8 +583,8 @@ public class NewPatientDataActivity extends Activity {
             String motherNameVal = motherName.getText().toString();
             String birthDateVal = birthDateText.getText().toString();
             String phoneNumberVal = phoneNumber.getText().toString();
-            String schemaStartDateVal = schemaStartDate.getText().toString();
-            String schemaEndDateVal = schemaEndDate.getText().toString();
+            String schemaStartDateVal = schemaStartDate.getText().toString(); // TODO: Change this to take the format of the server
+            String schemaEndDateVal = schemaEndDate.getText().toString(); // TODO: Change this to take the format of the server
             String schema_name = spnSchema.getItemAtPosition(spnSchema.getSelectedItemPosition()).toString();
             String schema_num = null;
             Schema[] objSchema = new Schema[0];

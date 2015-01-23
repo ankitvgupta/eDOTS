@@ -171,7 +171,6 @@ public class OfflineStorageManager {
             return p;
             //enrolledSchema = new Schema();
         } catch (NullPointerException e1){
-            Log.e("GetPatientLoadTask", "NullPointerException");
             Log.v("Using default schema", "Using default schema");
             return p;
             //enrolledSchema = new Schema();
