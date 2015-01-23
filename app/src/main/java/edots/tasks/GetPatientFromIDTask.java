@@ -83,27 +83,10 @@ public class GetPatientFromIDTask extends AsyncTask<String,String,Patient> {
             String sex = "null";
             if (sexInt == 2){ sex = "Female";}
             else { sex = "Male"; }
-            //Project testProject = new Project();
-            //Project testProject2 = new Project();
-            GetPatientSchemaLoadTask schemaLoader = new GetPatientSchemaLoadTask();
+            
+            // TODO: This loads a fake schema - change this to the real one
             Schema enrolledSchema = new Schema();
-            /*
-            try{
-                enrolledSchema = schemaLoader.execute(urlserver, patientID).get().get(0);
-                Log.v("Loaded schema successfully", "Loaded schema successfully");
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-                Log.v("Using default schema", "Using default schema");
-                enrolledSchema = new Schema();
-            } catch (ExecutionException e1) {
-                e1.printStackTrace();
-                Log.v("Using default schema", "Using default schema");
-                enrolledSchema = new Schema();
-            } catch (NullPointerException e1){
-                Log.e("GetPatientLoadTask", "NullPointerException");
-                Log.v("Using default schema", "Using default schema");
-                enrolledSchema = new Schema();
-            }*/
+       
 
             // instantiate a new patient object to be returned
             p = new Patient(name, birthDate, nationalID, sex, enrolledSchema, mothersName, fathersName, patientID, docType);

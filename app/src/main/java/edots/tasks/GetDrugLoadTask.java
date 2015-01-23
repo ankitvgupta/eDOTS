@@ -54,8 +54,7 @@ public class GetDrugLoadTask extends AsyncTask<String,String,ArrayList<Drug> > {
                 String id = resSoapTemp.getProperty("CodigoDroga").toString();
                 String name = resSoapTemp.getProperty("Farmacos").toString();
                 String symbol = resSoapTemp.getProperty("Siglas").toString();
-                String dosage = resSoapTemp.getProperty("DosiMaxima").toString();
-                // TODO: check whether the service returns NombreGroupoVisita and DescripcionVisita such as "Tamizaje" or "Enrolamiento"
+                String dosage = resSoapTemp.getProperty("DosisMaxima").toString();
                 Drug tmp = new Drug(id, name, symbol, dosage);
                 drugs.add(tmp);
             }

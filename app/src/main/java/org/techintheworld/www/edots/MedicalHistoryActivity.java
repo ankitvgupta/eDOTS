@@ -186,7 +186,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
         individualDateListeners();
 
-        updateSummaryParameters();
+//        updateSummaryParameters();
 
         updateTreatmentTable(total_missed, total_received, total_future, past_week_missed,
                 past_week_received, past_month_missed, past_month_received);
@@ -249,15 +249,15 @@ public class MedicalHistoryActivity extends FragmentActivity {
                 do {
                     if (newDate.before(currentDate)) {
                         caldroidFragment.setBackgroundResourceForDate(R.color.red, newDate);
-                        total_missed++;
-                        if (newDate.after(weekAgo)){
-                            past_week_missed++;
-                        } else if (newDate.after(monthAgo)) {
-                            past_month_missed++;
-                        }
+//                        total_missed++;
+//                        if (newDate.after(weekAgo)){
+//                            past_week_missed++;
+//                        } else if (newDate.after(monthAgo)) {
+//                            past_month_missed++;
+//                        }
                     } else if (newDate.after(currentDate)) {
                         caldroidFragment.setBackgroundResourceForDate(R.color.blue_normal, newDate);
-                        total_future++;
+//                        total_future++;
                     }
                     c.add(Calendar.DATE, 7);
                     newDate = c.getTime();
@@ -269,6 +269,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
     /*
     * Written by Nishant
     * Colors the days with all successfully attended visits (both morning and afternoon) to green
+    * Also updates the summary parameters
     */
     public void assignAttendedDays() {
 
@@ -314,6 +315,7 @@ public class MedicalHistoryActivity extends FragmentActivity {
         int afternoon;
         boolean morningVisit;
         boolean afternoonVisit;
+        int count_true;
 
 
         for (int i = (numDays - 1); i >= 0; i--) {
@@ -328,16 +330,20 @@ public class MedicalHistoryActivity extends FragmentActivity {
 
             Log.v("MedicalHistoryActivity", "afternoon: " + afternoon);
 
+            count_true = 0;
+
             if (morning == 0) {
                 morningVisit = false;
             } else {
                 morningVisit = true;
+                count_true++;
             }
 
             if (afternoon == 0) {
                 afternoonVisit = false;
             } else {
                 afternoonVisit = true;
+                count_true++;
             }
 
             Log.v("MedicalHistoryActivity", "morningVisitBool: " + morningVisit);
@@ -347,40 +353,101 @@ public class MedicalHistoryActivity extends FragmentActivity {
             c.setTime(visitDate);
             day_of_week = c.get(Calendar.DAY_OF_WEEK);
 
-            // on the selected visitDate, first check which day of the week the visitDate is.
-            // then for that day of the week, compare the schedule for afternoon and morning to the actual morning and afternoon visits
-            // if they match, then if either the morning and afternoon visit was true, color it green. otherwise leave it white.
-            // if they don't match, leave it red.
+
+            // if both morningVisit and afternoonVisit match MondayMorning and MondayTarde,
+            // count how many of those two are true and increase total_received by that amount.
+            // then check if the visitDate is within the past month or week and update those values by that same amount
+
+            // if only morningVisit matches MondayMorning, and morningVisit is true total_received should increase
+            // then check if the visitDate is within the past month or week and update those as well
+            // this also means that the afternoonVisit was missed, so total_missed should increase
+            // then check if the visitDate is within the past month or week and update those as well
+
+            // if afternoonVisit matches MondayTarde, and afternoonVisit is true total_received should increase
+            // then check if the visitDate is within the past month or week and update those as well
+            // this also means that the morningVisit was missed, so total_miss
+            // ed should increase
+            // then check if the visitDate is within the past month or week and update those as well
+
+            // if neither morningVisit or afternoonVisit match, that means both are missed and total_missed
+            // should increase by 2.
+            // then check if the visitDate is within the past month or week and update those as well
 
             if (day_of_week == Calendar.MONDAY) {
-                if (morningVisit == MondayMorning && afternoonVisit == MondayTarde) {
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, MondayMorning, MondayTarde, count_true);
             } else if (day_of_week == Calendar.TUESDAY) {
-                if (morningVisit == TuesdayMorning && afternoonVisit == TuesdayTarde) {
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, TuesdayMorning, TuesdayTarde, count_true);
             } else if (day_of_week == Calendar.WEDNESDAY) {
-                if (morningVisit == WednesdayMorning && afternoonVisit == WednesdayTarde) {
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, WednesdayMorning, WednesdayTarde, count_true);
             } else if (day_of_week == Calendar.THURSDAY) {
-                if (morningVisit == ThursdayMorning && afternoonVisit == ThursdayTarde) {
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, ThursdayMorning, ThursdayTarde, count_true);
             } else if (day_of_week == Calendar.FRIDAY) {
-                if (morningVisit == FridayMorning && afternoonVisit == FridayTarde) {
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, FridayMorning, FridayTarde, count_true);
             } else if (day_of_week == Calendar.SATURDAY) {
-                if (morningVisit == SaturdayMorning && afternoonVisit == SaturdayTarde) {
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, SaturdayMorning, SaturdayTarde, count_true);
             } else if (day_of_week == Calendar.SUNDAY) {
-                if (morningVisit == SundayMorning && afternoonVisit == SundayTarde) {
-                    colorGreen(morningVisit, afternoonVisit, visitDate);
-                }
+                updateCounters(visitDate, morningVisit, afternoonVisit, SundayMorning, SundayTarde, count_true);
             }
+        }
+    }
+
+    /*
+    * Written by Nishant
+    * Updates future, missed and received visit counters
+    */
+    public void updateCounters(Date visitDate, boolean morningVisit, boolean afternoonVisit,
+                       boolean scheduledMorning, boolean scheduledTarde, int count_true) {
+        if (visitDate.after(currentDate)) {
+            if (scheduledMorning) {
+                total_future++;
+            }
+            if (scheduledTarde) {
+                total_future++;
+            }
+        } else if (morningVisit == scheduledMorning && afternoonVisit == scheduledTarde) {
+            total_received += count_true;
+            updateReceivedWeekAndMonthCounters(visitDate, count_true);
+            colorGreen(morningVisit, afternoonVisit, visitDate);
+        } else if (morningVisit == scheduledMorning && morningVisit) {
+            total_received++;
+            total_missed++;
+            updateMissedWeekAndMonthCounters(visitDate, 1);
+            updateReceivedWeekAndMonthCounters(visitDate, 1);
+        } else if (afternoonVisit == scheduledTarde && afternoonVisit) {
+            total_received++;
+            total_missed++;
+            updateMissedWeekAndMonthCounters(visitDate, 1);
+            updateReceivedWeekAndMonthCounters(visitDate, 1);
+        } else if (scheduledMorning || scheduledTarde) {
+            total_missed += 1;
+            updateMissedWeekAndMonthCounters(visitDate, 1);
+        } else {
+            total_missed += 2;
+            updateMissedWeekAndMonthCounters(visitDate, 2);
+        }
+    }
+
+
+    /*
+    * Written by Nishant
+    * If the passed in date is within the past month, it updates the past month counter by the passed in amount
+    * If the passed in date is also within the past week, it updates the past week counter by the passed in amount
+    */
+    public void updateMissedWeekAndMonthCounters (Date visitDate, int incrementAmount) {
+        if (visitDate.after(monthAgo)) {
+            past_month_missed += incrementAmount;
+        }
+        if (visitDate.after(weekAgo)) {
+            past_week_missed += incrementAmount;
+        }
+    }
+
+    public void updateReceivedWeekAndMonthCounters (Date visitDate, int incrementAmount) {
+        if (visitDate.after(monthAgo)) {
+            past_month_received += incrementAmount;
+        }
+        if (visitDate.after(weekAgo)) {
+            past_week_received += incrementAmount;
         }
     }
 

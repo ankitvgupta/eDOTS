@@ -36,7 +36,7 @@ public class Schedule {
         this.martes = "1";
         this.martesTarde = "0";
         this.miercoles = "1";
-        this.miercolesTarde = "0";
+        this.miercolesTarde = "1";
         this.jueves = "0";
         this.juevesTarde = "1";
         this.viernes = "0";
