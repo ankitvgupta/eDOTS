@@ -40,6 +40,7 @@ import edots.utils.InternetConnection;
 public class ShowVisitActivity extends Activity {
     Patient currentPatient;
     Date selectedDate;
+    Date currentDate;
 
     String siteCode;
     String visitDate;
@@ -87,6 +88,8 @@ public class ShowVisitActivity extends Activity {
         morningHeader = new TextView(this);
         afternoonHeader= new TextView(this);
         encloseScrollLayout = (LinearLayout) findViewById(R.id.medicalhistory_encloseScroll);
+        Calendar cal = Calendar.getInstance();
+        currentDate = cal.getTime();
 
         try {
             currentPatient = new Patient(getIntent().getExtras().getString("Patient"));
@@ -164,7 +167,6 @@ public class ShowVisitActivity extends Activity {
             }
         }
 
-        Log.v("ShowVisitActivity", "visitDays: " + visitDays);
 
         int numDays = visitDays.size();
         Calendar c = Calendar.getInstance();
@@ -178,10 +180,9 @@ public class ShowVisitActivity extends Activity {
         afternoonHeader.setId(7);
 
         boolean dateMatchFound = false;
+        boolean futureDate = false;
 
-        Log.v("ShowVisitActivity", "right above for loop");
         for (int i = (numDays - 1); i >= 0; i--) {
-            Log.v("ShowVisitActivity", "entered for loop");
             VisitDay visitDay = visitDays.get(i);
             Date visitDate = visitDay.getDate();
 //            String temp = formatter.format(visitDate);
@@ -191,11 +192,8 @@ public class ShowVisitActivity extends Activity {
 //                e.printStackTrace();
 //            }
 
-            Log.v("ShowVisitActivity", "visitDate: " + visitDate);
-            Log.v("ShowVisitActivity", "selectedDate: " + selectedDate);
 
             if (visitDate.compareTo(selectedDate) == 0) {
-                Log.v("ShowVisitActivity", "date match was found!");
                 dateMatchFound = true;
 
                 String patientName = currentPatient.getName();
@@ -220,32 +218,53 @@ public class ShowVisitActivity extends Activity {
                 c.setTime(visitDate);
                 day_of_week = c.get(Calendar.DAY_OF_WEEK);
 
+//                if (day_of_week == Calendar.MONDAY) {
+//                    setHeaderText(MondayMorning, MondayTarde, morningVisit, afternoonVisit);
+//                } else if (day_of_week == Calendar.TUESDAY) {
+//                    if (morningVisit == TuesdayMorning && afternoonVisit == TuesdayTarde) {
+//                        setHeaderText(TuesdayMorning, TuesdayTarde, morningVisit, afternoonVisit);
+//                    }
+//                } else if (day_of_week == Calendar.WEDNESDAY) {
+//                    if (morningVisit == WednesdayMorning && afternoonVisit == WednesdayTarde) {
+//                        setHeaderText(WednesdayMorning, WednesdayTarde, morningVisit, afternoonVisit);
+//                    }
+//                } else if (day_of_week == Calendar.THURSDAY) {
+//                    if (morningVisit == ThursdayMorning && afternoonVisit == ThursdayTarde) {
+//                        setHeaderText(ThursdayMorning, ThursdayTarde, morningVisit, afternoonVisit);
+//                    }
+//                } else if (day_of_week == Calendar.FRIDAY) {
+//                    if (morningVisit == FridayMorning && afternoonVisit == FridayTarde) {
+//                        setHeaderText(FridayMorning, FridayTarde, morningVisit, afternoonVisit);
+//                    }
+//                } else if (day_of_week == Calendar.SATURDAY) {
+//                    if (morningVisit == SaturdayMorning && afternoonVisit == SaturdayTarde) {
+//                        setHeaderText(SaturdayMorning, SaturdayTarde, morningVisit, afternoonVisit);
+//                    }
+//                } else if (day_of_week == Calendar.SUNDAY) {
+//                    if (morningVisit == SundayMorning && afternoonVisit == SundayTarde) {
+//                        setHeaderText(SundayMorning, SaturdayTarde, morningVisit, afternoonVisit);
+//                    }
+//                }
+
+                if (selectedDate.after(currentDate)) {
+                    Log.v("entered future date condition", "hi");
+                    futureDate = true;
+                }
+
                 if (day_of_week == Calendar.MONDAY) {
-                    setHeaderText(MondayMorning, MondayTarde, morningVisit, afternoonVisit);
+                    setHeaderText(MondayMorning, MondayTarde, morningVisit, afternoonVisit, futureDate);
                 } else if (day_of_week == Calendar.TUESDAY) {
-                    if (morningVisit == TuesdayMorning && afternoonVisit == TuesdayTarde) {
-                        setHeaderText(TuesdayMorning, TuesdayTarde, morningVisit, afternoonVisit);
-                    }
+                    setHeaderText(TuesdayMorning, TuesdayTarde, morningVisit, afternoonVisit, futureDate);
                 } else if (day_of_week == Calendar.WEDNESDAY) {
-                    if (morningVisit == WednesdayMorning && afternoonVisit == WednesdayTarde) {
-                        setHeaderText(WednesdayMorning, WednesdayTarde, morningVisit, afternoonVisit);
-                    }
+                  setHeaderText(WednesdayMorning, WednesdayTarde, morningVisit, afternoonVisit, futureDate);
                 } else if (day_of_week == Calendar.THURSDAY) {
-                    if (morningVisit == ThursdayMorning && afternoonVisit == ThursdayTarde) {
-                        setHeaderText(ThursdayMorning, ThursdayTarde, morningVisit, afternoonVisit);
-                    }
+                    setHeaderText(ThursdayMorning, ThursdayTarde, morningVisit, afternoonVisit, futureDate);
                 } else if (day_of_week == Calendar.FRIDAY) {
-                    if (morningVisit == FridayMorning && afternoonVisit == FridayTarde) {
-                        setHeaderText(FridayMorning, FridayTarde, morningVisit, afternoonVisit);
-                    }
+                    setHeaderText(FridayMorning, FridayTarde, morningVisit, afternoonVisit, futureDate);
                 } else if (day_of_week == Calendar.SATURDAY) {
-                    if (morningVisit == SaturdayMorning && afternoonVisit == SaturdayTarde) {
-                        setHeaderText(SaturdayMorning, SaturdayTarde, morningVisit, afternoonVisit);
-                    }
+                    setHeaderText(SaturdayMorning, SaturdayTarde, morningVisit, afternoonVisit, futureDate);
                 } else if (day_of_week == Calendar.SUNDAY) {
-                    if (morningVisit == SundayMorning && afternoonVisit == SundayTarde) {
-                        setHeaderText(SundayMorning, SaturdayTarde, morningVisit, afternoonVisit);
-                    }
+                    setHeaderText(SundayMorning, SaturdayTarde, morningVisit, afternoonVisit, futureDate);
                 }
 
                 // add a new Relative Layout with all this data and append it in the Linear Layout
@@ -277,24 +296,40 @@ public class ShowVisitActivity extends Activity {
     }
 
     public void setHeaderText(boolean morningScheduled, boolean afternoonScheduled,
-                              boolean morningVisit, boolean afternoonVisit) {
-        if (morningScheduled) {
-            if (morningVisit) {
-                morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "Attended"));
+                              boolean morningVisit, boolean afternoonVisit, boolean futureDate) {
+        Log.v("setHeaderText", "futureDateBool: " + futureDate);
+        if (futureDate) {
+            if (morningScheduled) {
+                morningHeader.setText(Html.fromHtml("<b>" + "Future Morning Visit: " + "</b>" + "Scheduled"));
             } else {
-                morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "Missed"));
+                morningHeader.setText(Html.fromHtml("<b>" + "Future Morning Visit: " + "</b>" + "None Scheduled"));
+            }
+
+            if (afternoonScheduled) {
+                afternoonHeader.setText(Html.fromHtml("<b>" + "Future Afternoon Visit: " + "</b>" + "Scheduled"));
+            } else {
+                afternoonHeader.setText(Html.fromHtml("<b>" + "Future Afternoon Visit: " + "</b>" + "None Scheduled"));
             }
         } else {
-            morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "None Scheduled"));
-        }
-        if (afternoonScheduled) {
-            if (afternoonVisit) {
-                afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "Attended"));
+            if (morningScheduled) {
+                if (morningVisit) {
+                    morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "Attended"));
+                } else {
+                    morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "Missed"));
+                }
             } else {
-                afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "Missed"));
+                morningHeader.setText(Html.fromHtml("<b>" + "Morning Visit: " + "</b>" + "None Scheduled"));
             }
-        } else {
-            afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "None Scheduled"));
+
+            if (afternoonScheduled) {
+                if (afternoonVisit) {
+                    afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "Attended"));
+                } else {
+                    afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "Missed"));
+                }
+            } else {
+                afternoonHeader.setText(Html.fromHtml("<b>" + "Afternoon Visit: " + "</b>" + "None Scheduled"));
+            }
         }
 
         morningHeader.setTextSize(20);
