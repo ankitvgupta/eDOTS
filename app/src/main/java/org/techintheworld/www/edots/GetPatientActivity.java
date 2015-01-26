@@ -251,22 +251,7 @@ public class GetPatientActivity extends Activity {
         
         return;
         
-        //currentPatient.setEnrolledSchema(currentSchema);
-//        below is the real code when the load task works
-//        GetPatientSchemaLoadTask loadTask = new GetPatientSchemaLoadTask();
-//
-//        try {
-//            AsyncTask task = loadTask.execute(currentPatient.getPid(), promoterId);
-//            currentSchema = (Schema) task.get();
-//            currentPatient.setEnrolledSchema(currentSchema);
-//            Log.v("GetPatientActivity.java: The project", currentSchema.toString());
-//        } catch (InterruptedException e1) {
-//            e1.printStackTrace();
-//        } catch (ExecutionException e1) {
-//            e1.printStackTrace();
-//        } catch (NullPointerException e1){
-//            Log.e("null pointer exception","");
-//        }
+
     }
 
     /**
