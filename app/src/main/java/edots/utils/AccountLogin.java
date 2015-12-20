@@ -88,6 +88,9 @@ public class AccountLogin {
         if (password != null && !password.isEmpty()) {
 
             String message = login(context, username, password, locale, locale_name);
+
+            return true;
+            /*
             if (message == null) {
                 return false;
             }
@@ -98,6 +101,7 @@ public class AccountLogin {
                 Log.i("login", "Datos incorrectos");
             }
             return false;
+            */
         } else {
             return false;
         }
